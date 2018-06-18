@@ -1,0 +1,33 @@
+# Compiled source #
+###################
+*.pyc
+*.pyd
+*.c
+*.cpp
+*.so
+*.o
+*.cache
+
+# OS generated files #
+######################
+.fuse_hidden*
+*~
+*swp
+
+# Pip generated folders #
+#########################
+tetgen.egg-info/
+build/
+dist/
+
+# MISC
+*.bat
+
+# Testing
+factory/
+Testing/
+UnitTesting/
+TODO
+test.sh
+.pytest_cache/
+
