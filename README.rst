@@ -82,6 +82,7 @@ Cell quality scalars can be obtained and plotted with:
     # plot quality
     subgrid.Plot(scalars=cell_qual, stitle='quality', colormap='bwr', flipscalars=True)
 
+.. image:: https://github.com/akaszynski/tetgen/raw/master/docs/images/sphere_qual.png
 
 
 Acknowledgments
