@@ -29,7 +29,7 @@ From source at `GitHub <https://github.com/akaszynski/tetgen>`__
 
 Basic Example
 -------------
-The features of the C++ TetGen software implemented in this module are primarily focused on tetrahedralizing a manifold triangular surface.  This basic example demonstrates how to tetrahedralize a manifold surface and plot part of the mesh.
+The features of the C++ TetGen software implemented in this module are primarily focused on the tetrahedralization a manifold triangular surface.  This basic example demonstrates how to tetrahedralize a manifold surface and plot part of the mesh.
 
 .. code:: python
 
@@ -44,7 +44,10 @@ The features of the C++ TetGen software implemented in this module are primarily
     grid = tet.grid
     grid.Plot()
 
-.. image:: https://github.com/akaszynski/tetgen/raw/master/docs/images/sphere.png
+.. figure:: https://github.com/akaszynski/tetgen/raw/master/docs/images/sphere.png
+    :width: 300pt
+
+    Tetrahedralized Sphere
 
 Extract a portion of the sphere's tetrahedral mesh below the xy plane and plot the mesh quality.
 
