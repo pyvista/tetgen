@@ -27,17 +27,30 @@ def functional_tet():
     subgrid = grid.ExtractSelectionCells(cell_ind)
 
     # plot this
-    subgrid.Plot(scalars=subgrid.quality, stitle='quality', colormap='bwr', flipscalars=True)
+    subgrid.Plot(scalars=subgrid.quality, stitle='quality', colormap='bwr',
+                 flipscalars=True)
 
     # advanced plotting
     plotter = vtki.PlotClass()
     plotter.SetBackground('w')
     plotter.AddMesh(subgrid, 'lightgrey', lighting=True)
-    plotter.AddMesh(sphere, 'r', 'wireframe')
+    plotter.AddMesh(grid, 'r', 'wireframe')
     plotter.AddLegend([[' Input Mesh ', 'r'],
                        [' Tesselated Mesh ', 'black']])
     plotter.Plot()
 
+    plotter = vtki.PlotClass()
+    plotter.SetBackground('w')
+    plotter.AddMesh(grid, 'r', 'wireframe')
+    plotter.Plot(autoclose=False)
+    plotter.Plot(autoclose=False, interactive_update=True)
+    for i in range(500):
+        single_cell = grid.ExtractSelectionCells([i])
+        plotter.AddMesh(single_cell)
+        plotter.Update()
+    plotter.Close()
 
 if __name__ == '__main__':
-    functional_tet()
+    # functional_tet()
+    test_tetrahedralize()
+    print('PASS')

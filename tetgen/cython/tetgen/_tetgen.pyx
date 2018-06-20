@@ -130,8 +130,8 @@ cdef class PyBehavior:
     cdef tetgenbehavior c_behavior      # hold a C++ instance which we're wrapping
     def __cinit__(self):
         self.c_behavior = tetgenbehavior()
-        
-        
+
+
 cdef class PyTetgenio:
     """ Python interface to tetgenio """
     cdef tetgenio_wrap c_tetio      # hold a C++ instance which we're wrapping

@@ -1,1 +1,2 @@
-from tetgen.tetgen import TetGen
+from tetgen import _tetgen
+from tetgen.pytetgen import TetGen
