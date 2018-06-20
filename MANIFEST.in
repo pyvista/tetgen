@@ -1,0 +1,2 @@
+include tetgen/cython/tetgen/*.h
+include tests/*
