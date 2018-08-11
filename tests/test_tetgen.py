@@ -3,7 +3,6 @@ import vtkInterface as vtki
 import tetgen
 import numpy as np
 
-import vtk
 
 def test_native_tetrahedralize():
     sphere = vtki.PolyData(examples.spherefile)
