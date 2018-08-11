@@ -3,8 +3,20 @@ import vtkInterface as vtki
 import tetgen
 import numpy as np
 
+import vtk
 
-def test_tetrahedralize():
+def test_native_tetrahedralize():
+    sphere = vtki.PolyData(examples.spherefile)
+    tet = tetgen.TetGen(sphere)
+    tet.Tetrahedralize(order=1, mindihedral=20, minratio=1.5)
+    grid = tet.grid
+    assert grid.GetNumberOfCells()
+    assert grid.GetNumberOfPoints()
+    assert np.all(grid.quality > 0)
+    return grid
+
+
+def vtk_tetrahedralize():
     sphere = vtki.PolyData(examples.spherefile)
     tet = tetgen.TetGen(sphere)
     tet.Tetrahedralize(order=1, mindihedral=20, minratio=1.5)
