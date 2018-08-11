@@ -43,7 +43,7 @@ class TetGen(object):
             self.v = mesh.points
             self.f = mesh.GetNumpyFaces(force_C_CONTIGUOUS=True)
         elif isinstance(args[0], np.ndarray):
-                _LoadArrays(args[0], args[1])
+            self._LoadArrays(args[0], args[1])
         else:
             raise invalid_input
 
