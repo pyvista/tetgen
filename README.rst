@@ -1,5 +1,8 @@
 tetgen
 ======
+.. image:: https://travis-ci.org/akaszynski/tetgen.svg?branch=master
+    :target: https://travis-ci.org/akaszynski/tetgen
+
 This python module is a python interface to Hang Si's `tetgen <https://github.com/ufz/tetgen>`__ C++ software. This module combines speed of C++ with the portability and ease of installation of Python along integration with the visualization toolkit  `VTK <https://www.vtk.org/>`__ .  See the `tetgen <https://github.com/ufz/tetgen>`__ GitHub page for more details on the creator.
 
 The last update to the original C++ software was on 19 January 2011, but the software remains relevant today.  Brief description from `Weierstrass Institute Software <http://wias-berlin.de/software/index.jsp?id=TetGen&lang=1>`__:
