@@ -1,67 +1,61 @@
-from vtkInterface import examples
-import vtkInterface as vtki
+import vtki
 import tetgen
 import numpy as np
 
 
-def test_native_tetrahedralize():
-    sphere = vtki.PolyData(examples.spherefile)
+def test_load_arrays():
+    sphere = vtki.Sphere()
+    v = sphere.points
+    f = sphere.faces.reshape(-1, 4)[:, 1:]
+    tet = tetgen.TetGen(v, f)
+
+
+def test_vtk_tetrahedralize():
+    sphere = vtki.Sphere(theta_resolution=10, phi_resolution=10)
     tet = tetgen.TetGen(sphere)
-    tet.Tetrahedralize(order=1, mindihedral=20, minratio=1.5)
+    tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     grid = tet.grid
-    assert grid.GetNumberOfCells()
-    assert grid.GetNumberOfPoints()
-    assert np.all(grid.quality > 0)
-    return grid
+    assert grid.n_cells
+    assert grid.n_points
 
 
-def vtk_tetrahedralize():
-    sphere = vtki.PolyData(examples.spherefile)
+def functional_tet_example():
+    sphere = vtki.Sphere(theta_resolution=10, phi_resolution=10)
     tet = tetgen.TetGen(sphere)
-    tet.Tetrahedralize(order=1, mindihedral=20, minratio=1.5)
+    tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     grid = tet.grid
-    assert grid.GetNumberOfCells()
-    assert grid.GetNumberOfPoints()
-    assert np.all(grid.quality > 0)
-    return grid
+    assert grid.n_cells
+    assert grid.n_points
 
-
-def functional_tet():
-    grid = test_tetrahedralize()
-    # get cell centroids
     cells = grid.cells.reshape(-1, 5)[:, 1:]
     cell_center = grid.points[cells].mean(1)
 
     # extract cells below the 0 xy plane
     mask = cell_center[:, 2] < 0
     cell_ind = mask.nonzero()[0]
-    subgrid = grid.ExtractSelectionCells(cell_ind)
+    subgrid = grid.extract_cells(cell_ind)
 
     # plot this
-    subgrid.Plot(scalars=subgrid.quality, stitle='quality', colormap='bwr',
-                 flipscalars=True)
+    subgrid.plot(scalars=subgrid.quality, stitle='quality', cmap='bwr',
+                 flip_scalars=True)
 
     # advanced plotting
-    plotter = vtki.PlotClass()
-    plotter.SetBackground('w')
-    plotter.AddMesh(subgrid, 'lightgrey', lighting=True)
-    plotter.AddMesh(grid, 'r', 'wireframe')
-    plotter.AddLegend([[' Input Mesh ', 'r'],
+    plotter = vtki.Plotter()
+    plotter.set_background('w')
+    plotter.add_mesh(subgrid, 'lightgrey', lighting=True)
+    plotter.add_mesh(grid, 'r', 'wireframe')
+    plotter.add_legend([[' Input Mesh ', 'r'],
                        [' Tesselated Mesh ', 'black']])
-    plotter.Plot()
+    plotter.show()
 
-    plotter = vtki.PlotClass()
-    plotter.SetBackground('w')
-    plotter.AddMesh(grid, 'r', 'wireframe')
-    plotter.Plot(autoclose=False)
-    plotter.Plot(autoclose=False, interactive_update=True)
+    plotter = vtki.Plotter()
+    plotter.set_background('w')
+    plotter.add_mesh(grid, 'r', 'wireframe')
+    plotter.plot(auto_close=False, interactive_update=True)
     for i in range(500):
-        single_cell = grid.ExtractSelectionCells([i])
-        plotter.AddMesh(single_cell)
-        plotter.Update()
-    plotter.Close()
+        single_cell = grid.extract_cells([i])
+        plotter.add_mesh(single_cell)
+        plotter.update()
+    plotter.close()
 
-if __name__ == '__main__':
-    # functional_tet()
-    test_tetrahedralize()
-    print('PASS')
+

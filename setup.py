@@ -35,6 +35,16 @@ class build_ext(_build_ext):
             pass
         _build_ext.build_extensions(self)
 
+# compiler args
+macros = []
+if os.name == 'nt':  # windows
+    extra_compile_args = ['/openmp', '/O2', '/w', '/GS']
+elif os.name == 'posix':  # linux org mac os
+    extra_compile_args = ['-std=gnu++11', '-O3', '-w']
+else:
+    raise Exception('Unsupported OS %s' % os.name)
+
+
 setup(
     name='tetgen',
     packages = ['tetgen'],
@@ -54,6 +64,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 
     # Build cython modules
@@ -64,14 +75,12 @@ setup(
                               'tetgen/cython/tetgen/predicates.cxx',
                               'tetgen/cython/tetgen/tetgen_wrap.cxx'],
                              language='c++',
-                             extra_compile_args=['-O3', '-w'],
+                             extra_compile_args=extra_compile_args,
                              define_macros=[('TETLIBRARY', None)]),
                    ],
 
     keywords='TetGen',
 
     install_requires=['numpy>1.9.3',
-                      'pymeshfix',
-                      'vtkInterface>=0.8.0']
-
+                      'vtki>=0.16.1']
 )

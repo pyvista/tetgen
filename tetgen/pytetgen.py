@@ -5,18 +5,20 @@ Python module to interface with wrapped TetGen C++ code
 import sys
 import os
 import logging
-import numpy as np
 import ctypes
+
+import numpy as np
+import vtki
 
 from tetgen import _tetgen
 
 log = logging.getLogger(__name__)
 log.setLevel('CRITICAL')
 
-try:
-    import vtkInterface as vtki
-except ImportError:
-    pass
+
+invalid_input = Exception('Invalid input.  Must be either a vtki.PolyData\n' +
+                          'object or vertex and face arrays')
+
 
 class TetGen(object):
     """
@@ -24,8 +26,8 @@ class TetGen(object):
 
     Parameters
     ----------
-    args : vtkInterface.PolyData or (np.ndarray, np.ndarray)
-        Either a vtkInterface surface mesh or a nx3 vertex array and nx3 face
+    args : vtki.PolyData or (np.ndarray, np.ndarray)
+        Either a vtki surface mesh or a nx3 vertex array and nx3 face
         array.
 
     """
@@ -33,21 +35,22 @@ class TetGen(object):
 
     def __init__(self, *args):
         """ initializes MeshFix using a mesh """
-        invalid_input = Exception('Invalid input.  Must be either a vtkInterface.PolyData\n' +
-                                  'object or vertex and face arrays')
-
         if not args:
             raise invalid_input
         elif isinstance(args[0], vtki.PolyData):
             mesh = args[0]
             self.v = mesh.points
-            self.f = mesh.GetNumpyFaces(force_C_CONTIGUOUS=True)
+
+            faces = mesh.faces
+            if faces.size % 4:
+                raise Exception('Invalid mesh.  Must be an all triangular mesh.')
+            self.f = np.ascontiguousarray(faces.reshape(-1 , 4)[:, 1:])
         elif isinstance(args[0], np.ndarray):
-            self._LoadArrays(args[0], args[1])
+            self._load_arrays(args[0], args[1])
         else:
             raise invalid_input
 
-    def _LoadArrays(self, v, f):
+    def _load_arrays(self, v, f):
         """
         Loads triangular mesh from vertex and face arrays
 
@@ -80,10 +83,12 @@ class TetGen(object):
         self.v = v
         self.f = f
 
-    def Repair(self, verbose=False):
+    def make_manifold(self, verbose=False):
         """
         Reconstruct a manifold clean surface from input mesh.  Updates
         mesh in-place.
+
+        Requires pymeshfix
 
         Parameters
         ----------
@@ -96,30 +101,32 @@ class TetGen(object):
                             'pip install pymeshfix')
 
         # Run meshfix
-        meshfix = pymeshfix.MeshFix(self.v, self.f)
-        meshfix.Repair(verbose)
+        import pymeshfix
+        meshfix = pymeshfix.meshfix(self.v, self.f)
+        meshfix.repair(verbose)
 
         # overwrite this object with cleaned mesh
         self.v = meshfix.v
         self.f = meshfix.f
 
-    def Plot(self, **kwargs):
+    def plot(self, **kwargs):
         """
         Displays input mesh
 
-        See help(vtkInterface.Plot) for available arguments.
+        See help(vtki.Plot) for available arguments.
         """
-        self.mesh.Plot(**kwargs)
+        self.mesh.plot(**kwargs)
 
     @property
     def mesh(self):
-        if 'vtkInterface' in sys.modules:
-            return vtki.MeshfromVF(self.v, self.f)
-        else:
-            raise Exception('Cannot generate mesh without vtkInterface.  Run:\n' +
-                            'pip install vtkInterface')
+        """ Return the surface mesh """
+        triangles = np.empty((self.f.shape[0], 4))
+        triangles[:, -3:] = self.f
+        triangles[:, 0] = 3
+        return vtki.PolyData(self.v, triangles, deep=False)
 
-    def Tetrahedralize(self, switches='',
+    def tetrahedralize(self,
+                       switches='',
                        plc=1,
                        psc=0,
                        refine=0,
@@ -511,10 +518,7 @@ class TetGen(object):
     @property
     def grid(self):
         """ Returns a vtkInterface unstructured grid """
-        if 'vtkInterface' not in sys.modules:
-            raise Exception('Cannot create grid without vtkInterface.\n' +
-                            'Please run:\npip install vtkInterface')
-        elif not hasattr(self, 'node'):
+        if not hasattr(self, 'node'):
             raise Exception('Run Tetrahedralize first')
 
         if hasattr(self, '_grid') and not self._updated:
@@ -537,13 +541,7 @@ class TetGen(object):
         self._updated = False
         return self._grid
 
-    def PlotQuality(self, rng=[0, 1], flipscalars=True,
-                    stitle='Scalard Jacobian', **kwargs):
-        """ Computes the minimum scaled jacobian for each tetrahedral cell """
-        self.grid.Plot(scalars=self.grid.quality, flipscalars=flipscalars,
-                       rng=rng, stitle=stitle, **kwargs)
-
-    def Save(self, filename, binary=False):
+    def write(self, filename, binary=False):
         """
         Writes an unstructured grid to disk.
 
@@ -567,8 +565,4 @@ class TetGen(object):
         one system may not be readable on other systems.  Binary can be used
         only with the legacy writer.
         """
-        # if filename[-3:] == 'cdb':  # write ANSYS cdb
-            # assert self.elem.shape[1] == 10, 'Can only save quadradic grid.  Use order=2'
-            # WriteCDB(filename, self.grid)
-        # else:
-        self.grid.Write(filename, binary)
+        self.grid.write(filename, binary)
