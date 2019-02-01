@@ -36,16 +36,15 @@ The features of the C++ TetGen software implemented in this module are primarily
 
 .. code:: python
 
-    from vtkInterface import examples
-    import vtkInterface as vtki
+    import vtki
     import tetgen
     import numpy as np
 
-    sphere = vtki.PolyData(examples.spherefile)
+    sphere = vtki.Sphere()
     tet = tetgen.TetGen(sphere)
-    tet.Tetrahedralize(order=1, mindihedral=20, minratio=1.5)
+    tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     grid = tet.grid
-    grid.Plot()
+    grid.plot()
 
 .. figure:: https://github.com/akaszynski/tetgen/raw/master/docs/images/sphere.png
     :width: 300pt
@@ -63,16 +62,16 @@ Extract a portion of the sphere's tetrahedral mesh below the xy plane and plot t
     # extract cells below the 0 xy plane
     mask = cell_center[:, 2] < 0
     cell_ind = mask.nonzero()[0]
-    subgrid = grid.ExtractSelectionCells(cell_ind)
+    subgrid = grid.extract_cells(cell_ind)
 
     # advanced plotting
-    plotter = vtki.PlotClass()
-    plotter.SetBackground('w')
-    plotter.AddMesh(subgrid, 'lightgrey', lighting=True)
-    plotter.AddMesh(sphere, 'r', 'wireframe')
-    plotter.AddLegend([[' Input Mesh ', 'r'],
-                       [' Tesselated Mesh ', 'black']])
-    plotter.Plot()
+    plotter = vtki.Plotter()
+    plotter.set_background('w')
+    plotter.add_mesh(subgrid, 'lightgrey', lighting=True)
+    plotter.add_mesh(sphere, 'r', 'wireframe')
+    plotter.add_legend([[' Input Mesh ', 'r'],
+                        [' Tesselated Mesh ', 'black']])
+    plotter.plot()
 
 .. image:: https://github.com/akaszynski/tetgen/raw/master/docs/images/sphere_subgrid.png
 
@@ -83,7 +82,7 @@ Cell quality scalars can be obtained and plotted with:
     cell_qual = subgrid.quality
 
     # plot quality
-    subgrid.Plot(scalars=cell_qual, stitle='quality', colormap='bwr', flipscalars=True)
+    subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr', flip_scalars=True)
 
 .. image:: https://github.com/akaszynski/tetgen/raw/master/docs/images/sphere_qual.png
 
