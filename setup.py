@@ -49,7 +49,7 @@ setup(
     name='tetgen',
     packages = ['tetgen'],
     version=__version__,
-    description='Python interface to pytetgen',
+    description='Python interface to tetgen',
     long_description=open('README.rst').read(),
 
     author='Alex Kaszynski',
