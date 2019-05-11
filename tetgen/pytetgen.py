@@ -8,7 +8,7 @@ import logging
 import ctypes
 
 import numpy as np
-import vtki
+import vista as vtki
 
 from tetgen import _tetgen
 
