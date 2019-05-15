@@ -3,12 +3,11 @@ Python module to interface with wrapped TetGen C++ code
 
 """
 import sys
-import os
 import logging
 import ctypes
 
 import numpy as np
-import vtki
+import pyvista as pv
 
 from tetgen import _tetgen
 
@@ -16,7 +15,7 @@ log = logging.getLogger(__name__)
 log.setLevel('CRITICAL')
 
 
-invalid_input = Exception('Invalid input.  Must be either a vtki.PolyData\n' +
+invalid_input = Exception('Invalid input.  Must be either a pyvista.PolyData\n' +
                           'object or vertex and face arrays')
 
 
@@ -26,8 +25,8 @@ class TetGen(object):
 
     Parameters
     ----------
-    args : vtki.PolyData or (np.ndarray, np.ndarray)
-        Either a vtki surface mesh or a nx3 vertex array and nx3 face
+    args : pyvista.PolyData or (np.ndarray, np.ndarray)
+        Either a pyvista surface mesh or a nx3 vertex array and nx3 face
         array.
 
     """
@@ -37,7 +36,7 @@ class TetGen(object):
         """ initializes MeshFix using a mesh """
         if not args:
             raise invalid_input
-        elif isinstance(args[0], vtki.PolyData):
+        elif isinstance(args[0], pv.PolyData):
             mesh = args[0]
             self.v = mesh.points
 
@@ -113,7 +112,7 @@ class TetGen(object):
         """
         Displays input mesh
 
-        See help(vtki.Plot) for available arguments.
+        See help(pyvista.plot) for available arguments.
         """
         self.mesh.plot(**kwargs)
 
@@ -123,7 +122,7 @@ class TetGen(object):
         triangles = np.empty((self.f.shape[0], 4))
         triangles[:, -3:] = self.f
         triangles[:, 0] = 3
-        return vtki.PolyData(self.v, triangles, deep=False)
+        return pv.PolyData(self.v, triangles, deep=False)
 
     def tetrahedralize(self,
                        switches='',
@@ -517,7 +516,7 @@ class TetGen(object):
 
     @property
     def grid(self):
-        """ Returns a vtkInterface unstructured grid """
+        """ Returns a pyvista.UnstructuredGrid """
         if not hasattr(self, 'node'):
             raise Exception('Run Tetrahedralize first')
 
@@ -537,20 +536,19 @@ class TetGen(object):
 
         offset = np.cumsum(buf + 1) - (buf[0] + 1)
         cells = np.hstack((buf, self.elem))
-        self._grid = vtki.UnstructuredGrid(offset, cells, cell_type, self.node)
+        self._grid = pv.UnstructuredGrid(offset, cells, cell_type, self.node)
         self._updated = False
         return self._grid
 
     def write(self, filename, binary=False):
-        """
-        Writes an unstructured grid to disk.
+        """Writes an unstructured grid to disk.
 
         Parameters
         ----------
         filename : str
             Filename of grid to be written.  The file extension will select the
-            type of writer to use. 
-            
+            type of writer to use.
+
             - ".vtk" will use the vtk legacy writer, while
             - ".vtu" will select the VTK XML writer.
             - ".cdb" will write an ANSYS APDL archive file.

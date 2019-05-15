@@ -36,11 +36,11 @@ The features of the C++ TetGen software implemented in this module are primarily
 
 .. code:: python
 
-    import vtki
+    import pyvista as pv
     import tetgen
     import numpy as np
 
-    sphere = vtki.Sphere()
+    sphere = pv.Sphere()
     tet = tetgen.TetGen(sphere)
     tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     grid = tet.grid
@@ -65,7 +65,7 @@ Extract a portion of the sphere's tetrahedral mesh below the xy plane and plot t
     subgrid = grid.extract_cells(cell_ind)
 
     # advanced plotting
-    plotter = vtki.Plotter()
+    plotter = pv.Plotter()
     plotter.set_background('w')
     plotter.add_mesh(subgrid, 'lightgrey', lighting=True)
     plotter.add_mesh(sphere, 'r', 'wireframe')
