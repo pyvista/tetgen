@@ -53,13 +53,12 @@ before_install:
 
 install:
   - pip install -r requirements.txt
+  - CFLAGS='-stdlib=libc++' pip install -e .
 
 script:
   - $PIP install cibuildwheel==0.10.0
   # Test
   - cibuildwheel --output-dir wheelhouse
-  # Install
-  - CFLAGS='-stdlib=libc++' pip install -e .
   # Make documentation
   - cd ./docs;
   - make html;
