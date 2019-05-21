@@ -1,0 +1,9 @@
+Sphinx<=2.0.0
+sphinx-autobuild>
+sphinx-rtd-theme
+sphinxcontrib-napoleon
+sphinxcontrib-websupport
+doctr
+sphinx-copybutton
+sphinx-gallery
+sphinx-notfound-page

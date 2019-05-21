@@ -46,7 +46,17 @@ env:
 
 script:
   - $PIP install cibuildwheel==0.10.0
+  # Test
   - cibuildwheel --output-dir wheelhouse
+  # Make documentation
+  - cd ./docs;
+  - make html;
+  - set -e;
+  - make html;
+  - cd ..;
+  # TODO: @banesullivan can set this up:
+  # - doctr deploy --built-docs ./docs/_build/html/ .;
+  # Deploy on tags
   - if [ "${TRAVIS_TAG:-}" != "" ]; then
       python3 setup.py sdist;
       cp dist/*.tar.gz wheelhouse/;
