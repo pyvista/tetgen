@@ -14,3 +14,12 @@
    :hidden:
 
    examples/index
+
+
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Reference
+   :hidden:
+
+   api

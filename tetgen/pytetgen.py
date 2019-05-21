@@ -25,7 +25,7 @@ class TetGen(object):
 
     Parameters
     ----------
-    args : pyvista.PolyData or (np.ndarray, np.ndarray)
+    args : :class:`pyvista.PolyData` or (np.ndarray, np.ndarray)
         Either a pyvista surface mesh or a nx3 vertex array and nx3 face
         array.
 
@@ -112,7 +112,7 @@ class TetGen(object):
         """
         Displays input mesh
 
-        See help(pyvista.plot) for available arguments.
+        See help(:func:`pyvista.plot`) for available arguments.
         """
         self.mesh.plot(**kwargs)
 
@@ -270,7 +270,7 @@ class TetGen(object):
             the quality of the mesh.  Avoid overly restrictive requirements,
             otherwise, meshing will appear to hang.  Default 2.0
 
-            Testing has showed that 1.1 is a reasonable input for a high quality 
+            Testing has showed that 1.1 is a reasonable input for a high quality
             mesh.
 
         mindihedral : double, optional
@@ -327,7 +327,7 @@ class TetGen(object):
         --------
         >>> node, elem = Tetrahedralize(switches='pq1.1/10Y')
 
-        >>> node, elem = Tetrahedralize(plc=1, nobisect=True, quality=True, 
+        >>> node, elem = Tetrahedralize(plc=1, nobisect=True, quality=True,
                                         minratio=1.1, mindihedral=10)
 
         Notes
@@ -511,12 +511,12 @@ class TetGen(object):
         info = (self.node.shape[0], self.elem.shape[0])
         log.info('Generated mesh with %d nodes and %d elements' % info)
         self._updated = True
-        
+
         return self.node, self.elem
 
     @property
     def grid(self):
-        """ Returns a pyvista.UnstructuredGrid """
+        """ Returns a :class:`pyvista.UnstructuredGrid` """
         if not hasattr(self, 'node'):
             raise Exception('Run Tetrahedralize first')
 
