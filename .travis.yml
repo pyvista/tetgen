@@ -19,7 +19,8 @@ matrix:
       services:
         - docker
       env: PIP=pip
-
+    - os: osx
+      osx_image: xcode8.3
 
 # for reference, these are the python installs on
 # quay.io/pypa/manylinux1_x86_64
@@ -30,16 +31,13 @@ matrix:
 # cp36-cp36m
 # cp37-cp37m
 
-# need to skip 32-bit development
+# skip 32-bit development
 # quay.io/pypa/manylinux1_i686
-
-# CIBW_SKIP
-# must skip cp27-cp27m and cp37-cp37m
-# cp37-cp34m has a vtk bug that I'm not willing on fixing
 
 env:
   global:
-    - CIBW_BEFORE_BUILD="pip install numpy==1.15.0; pip install cython; yum install libXt -y"
+    - CIBW_BEFORE_BUILD_LINUX="pip install numpy==1.15.0; pip install cython;yum install libXt -y"
+    - CIBW_BEFORE_BUILD_MACOS="pip install numpy==1.15.0; pip install cython"
     - CIBW_TEST_REQUIRES="pytest"
     - CIBW_TEST_COMMAND="pytest {project}/tests"
     - CIBW_SKIP="cp27-cp27m-manylinux1_x86_64 cp34-* *manylinux1_i686*"
@@ -51,13 +49,19 @@ before_install:
   - git clone --depth 1 git://github.com/pyvista/gl-ci-helpers.git
   - source ./gl-ci-helpers/travis/setup_headless_display.sh
 
+
 install:
   - pip install -r requirements.txt
-  - CFLAGS='-stdlib=libc++' pip install -e .
+  # Setup for python 3 wheels in Mac OS X
+  - |
+    if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+      brew update
+      brew upgrade python
+      CFLAGS='-stdlib=libc++'
+    fi;
+  - pip3 install --upgrade cibuildwheel
 
 script:
-  - $PIP install cibuildwheel==0.10.0
-  # Test
   - cibuildwheel --output-dir wheelhouse
   # Make documentation
   - cd ./docs;

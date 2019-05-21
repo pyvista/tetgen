@@ -1,9 +1,15 @@
+"""Setup for tetgen"""
 import os
 import sys
-import numpy
+
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
 from io import open as io_open
+
+try:
+    import numpy
+except:
+    raise ImportError('Please install numpy first')
 
 if sys.version_info[0] < 3:
     import __builtin__ as builtins
@@ -56,10 +62,9 @@ setup(
     author_email='akascap@gmail.com',
     url = 'https://github.com/akaszynski/tetgen',
 
-    license='MIT',
     classifiers=[
         'Intended Audience :: Science/Research',
-        'License :: OSI Approved :: MIT License',
+        'License :: OSI Approved :: GNU Affero General Public License v3',
         'Development Status :: 4 - Beta',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
