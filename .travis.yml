@@ -20,22 +20,10 @@ matrix:
     - os: osx
       osx_image: xcode8.3
 
-# for reference, these are the python installs on
-# quay.io/pypa/manylinux1_x86_64
-# cp27-cp27m
-# cp27-cp27mu
-# cp34-cp34m
-# cp35-cp35m
-# cp36-cp36m
-# cp37-cp37m
-
-# skip 32-bit development
-# quay.io/pypa/manylinux1_i686
-
 env:
   global:
-    - CIBW_BEFORE_BUILD_LINUX="pip install numpy==1.15.0; pip install cython;yum install libXt -y"
-    - CIBW_BEFORE_BUILD_MACOS="pip install numpy==1.15.0; pip install cython"
+    - CIBW_BEFORE_BUILD_LINUX="pip install numpy==1.15.0; pip install cython;pip install pymeshfix; yum install libXt -y"
+    - CIBW_BEFORE_BUILD_MACOS="pip install numpy==1.15.0; pip install cython; pip install pymeshfix"
     - CIBW_TEST_REQUIRES="pytest"
     - CIBW_TEST_COMMAND="pytest {project}/tests"
     - CIBW_SKIP="cp27-cp27m-manylinux1_x86_64 cp34-* *manylinux1_i686*"
