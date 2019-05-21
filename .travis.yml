@@ -56,7 +56,7 @@ script:
   # Test
   - cibuildwheel --output-dir wheelhouse
   # Install
-  - pip install .
+  - CFLAGS='-stdlib=libc++' pip install -e .
   # Make documentation
   - cd ./docs;
   - make html;
