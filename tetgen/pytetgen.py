@@ -25,7 +25,7 @@ class TetGen(object):
 
     Parameters
     ----------
-    args : pyvista.PolyData or (np.ndarray, np.ndarray)
+    args : str, pyvista.PolyData or (np.ndarray, np.ndarray)
         Either a pyvista surface mesh or a nx3 vertex array and nx3 face
         array.
 
@@ -34,18 +34,22 @@ class TetGen(object):
 
     def __init__(self, *args):
         """ initializes MeshFix using a mesh """
-        if not args:
-            raise invalid_input
-        elif isinstance(args[0], pv.PolyData):
-            mesh = args[0]
+        def parse_mesh(mesh):
             self.v = mesh.points
-
             faces = mesh.faces
             if faces.size % 4:
                 raise Exception('Invalid mesh.  Must be an all triangular mesh.')
             self.f = np.ascontiguousarray(faces.reshape(-1 , 4)[:, 1:])
+
+        if not args:
+            raise invalid_input
+        elif isinstance(args[0], pv.PolyData):
+            parse_mesh(args[0])
         elif isinstance(args[0], np.ndarray):
             self._load_arrays(args[0], args[1])
+        elif isinstance(args[0], str):
+            mesh = pv.read(args[0])
+            parse_mesh(mesh)
         else:
             raise invalid_input
 
@@ -95,13 +99,15 @@ class TetGen(object):
             Controls output printing.  Default False.
 
         """
-        if 'pymeshfix' not in sys.modules:
-            raise Exception('pymeshfix not installed.  Please run: \n' +
-                            'pip install pymeshfix')
+        try:
+            import pymeshfix
+        except:
+            raise ImportError('pymeshfix not installed.  Please run: \n' +
+                              'pip install pymeshfix')
 
         # Run meshfix
         import pymeshfix
-        meshfix = pymeshfix.meshfix(self.v, self.f)
+        meshfix = pymeshfix.MeshFix(self.v, self.f)
         meshfix.repair(verbose)
 
         # overwrite this object with cleaned mesh
