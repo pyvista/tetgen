@@ -9,6 +9,8 @@
 # Builds wheels for Linux using cibuildwheel, inside the manylinux1 Docker image.
 # builds 64-bit Python2.7, Python3.5, Python3.6, Python3.7
 
+dist: xenial
+
 matrix:
   include:
     - sudo: required
@@ -44,10 +46,17 @@ env:
     - TWINE_USERNAME=akaszynski
       # Note: TWINE_PASSWORD is set in Travis settings
 
+before_install:
+  # configure a headless display
+  - git clone --depth 1 git://github.com/pyvista/gl-ci-helpers.git
+  - source ./gl-ci-helpers/travis/setup_headless_display.sh
+
 script:
   - $PIP install cibuildwheel==0.10.0
   # Test
   - cibuildwheel --output-dir wheelhouse
+  # Install
+  - pip install .
   # Make documentation
   - cd ./docs;
   - make html;
