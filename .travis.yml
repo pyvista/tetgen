@@ -51,6 +51,9 @@ before_install:
   - git clone --depth 1 git://github.com/pyvista/gl-ci-helpers.git
   - source ./gl-ci-helpers/travis/setup_headless_display.sh
 
+install:
+  - pip install -r requirements.txt
+
 script:
   - $PIP install cibuildwheel==0.10.0
   # Test

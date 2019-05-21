@@ -7,3 +7,5 @@ doctr
 sphinx-copybutton
 sphinx-gallery
 sphinx-notfound-page
+pyansys
+ansys_corba
