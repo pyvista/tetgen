@@ -1,0 +1,482 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API Reference &mdash; tetgen 0.3.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+        <script type="text/javascript" src="_static/copybutton.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Super Toroid" href="examples/super_toroid.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> tetgen
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="index.html">tetgen</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">tetgen</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>API Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-tetgen.pytetgen">
+<span id="api-reference"></span><h1>API Reference<a class="headerlink" href="#module-tetgen.pytetgen" title="Permalink to this headline">¶</a></h1>
+<p>Python module to interface with wrapped TetGen C++ code</p>
+<dl class="class">
+<dt id="tetgen.TetGen">
+<em class="property">class </em><code class="descclassname">tetgen.</code><code class="descname">TetGen</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to input, clean, and tetrahedralize surface meshes using TetGen</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> (str, <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.PolyData</span></code> or (np.ndarray, np.ndarray)) – Either a pyvista surface mesh or a nx3 vertex array and nx3 face
+array.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="tetgen.TetGen.grid">
+<code class="descname">grid</code><a class="headerlink" href="#tetgen.TetGen.grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.UnstructuredGrid</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tetgen.TetGen.make_manifold">
+<code class="descname">make_manifold</code><span class="sig-paren">(</span><em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.make_manifold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconstruct a manifold clean surface from input mesh.  Updates
+mesh in-place.</p>
+<p>Requires pymeshfix</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – Controls output printing.  Default False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="tetgen.TetGen.mesh">
+<code class="descname">mesh</code><a class="headerlink" href="#tetgen.TetGen.mesh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the surface mesh</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tetgen.TetGen.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays input mesh</p>
+<p>See help(<code class="xref py py-func docutils literal notranslate"><span class="pre">pyvista.plot()</span></code>) for available arguments.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tetgen.TetGen.tetrahedralize">
+<code class="descname">tetrahedralize</code><span class="sig-paren">(</span><em>switches=''</em>, <em>plc=1</em>, <em>psc=0</em>, <em>refine=0</em>, <em>quality=1</em>, <em>nobisect=True</em>, <em>coarsen=0</em>, <em>metric=0</em>, <em>weighted=0</em>, <em>brio_hilbert=1</em>, <em>incrflip=0</em>, <em>flipinsert=0</em>, <em>varvolume=0</em>, <em>fixedvolume=0</em>, <em>noexact=0</em>, <em>nostaticfilter=0</em>, <em>insertaddpoints=0</em>, <em>regionattrib=0</em>, <em>cdtrefine=0</em>, <em>diagnose=0</em>, <em>convex=0</em>, <em>zeroindex=0</em>, <em>facesout=0</em>, <em>edgesout=0</em>, <em>neighout=0</em>, <em>voroout=0</em>, <em>meditview=0</em>, <em>vtkview=0</em>, <em>nobound=0</em>, <em>nonodewritten=1</em>, <em>noelewritten=1</em>, <em>nofacewritten=1</em>, <em>noiterationnum=0</em>, <em>nomergefacet=0</em>, <em>nomergevertex=0</em>, <em>nojettison=0</em>, <em>docheck=0</em>, <em>quiet=0</em>, <em>verbose=0</em>, <em>vertexperblock=4092</em>, <em>tetrahedraperblock=8188</em>, <em>shellfaceperblock=4092</em>, <em>nobisect_nomerge=1</em>, <em>supsteiner_level=2</em>, <em>addsteiner_algo=1</em>, <em>coarsen_param=0</em>, <em>weighted_param=0</em>, <em>fliplinklevel=-1</em>, <em>flipstarsize=-1</em>, <em>fliplinklevelinc=1</em>, <em>reflevel=3</em>, <em>optscheme=7</em>, <em>optlevel=2</em>, <em>delmaxfliplevel=1</em>, <em>order=2</em>, <em>reversetetori=0</em>, <em>steinerleft=10000</em>, <em>no_sort=0</em>, <em>hilbert_order=52</em>, <em>hilbert_limit=8</em>, <em>brio_threshold=64</em>, <em>brio_ratio=0.125</em>, <em>facet_separate_ang_tol=179.9</em>, <em>facet_overlap_ang_tol=0.001</em>, <em>facet_small_ang_tol=15.0</em>, <em>maxvolume=-1.0</em>, <em>minratio=2.0</em>, <em>mindihedral=0.0</em>, <em>optmaxdihedral=165.0</em>, <em>optminsmtdihed=179.0</em>, <em>optminslidihed=179.0</em>, <em>epsilon=1e-08</em>, <em>coarsen_percent=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.tetrahedralize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates tetrahedrals interior to the surface mesh described by the
+vertex and face arrays already loaded.  Returns nodes and elements
+belonging to the all tetrahedral mesh.</p>
+<p>The tetrehedral generator uses the C++ library TetGen and can be
+configured by either using a string of ‘switches’ or by changing the
+underlying behavior using optional inputs.</p>
+<p>Should the user desire more control over the mesh tetrahedralization or
+wish to control the tetrahedralization in a more pythonic manner, use
+the optional inputs rather than inputting switches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>switches</strong> (<em>string</em><em>, </em><em>optional</em>) – <p>String containing the same switches as in the C++ standalone
+implementation:</p>
+<blockquote>
+<div><p>-p Tetrahedralizes a piecewise linear complex (PLC).
+-Y Preserves the input surface mesh (does not modify it).
+-q Refines mesh (to improve mesh quality).
+-R Mesh coarsening (to reduce the mesh elements).
+-A Assigns attributes to tetrahedra in different regions.
+-a Applies a maximum tetrahedron volume constraint.
+-m Applies a mesh sizing function.
+-O Specifies the level of mesh optimization.
+-S Specifies maximum number of added points.
+-T Sets a tolerance for coplanar test (default 1E-8)
+-X Suppresses use of exact arithmetic.
+-M No merge of coplanar facets or very close vertices.
+-w Generates weighted Delaunay (regular) triangulation.
+-c Retains the convex hull of the PLC.
+-d Detects self-intersections of facets of the PLC.
+-z Numbers all output items starting from zero.
+-f Outputs all faces to .face file.
+-e Outputs all edges to .edge file.
+-n Outputs tetrahedra neighbors to .neigh file.
+-v Outputs Voronoi diagram to files.
+-g Outputs mesh to .mesh file for viewing by Medit.
+-k Outputs mesh to .vtk file for viewing by Paraview.
+-J No jettison of unused vertices from output .node file.
+-B Suppresses output of boundary information.
+-N Suppresses output of .node file.
+-E Suppresses output of .ele file.
+-F Suppresses output of .face and .edge file.
+-I Suppresses mesh iteration numbers.
+-C Checks the consistency of the final mesh.
+-Q Quiet: No terminal output except errors.
+-V Verbose: Detailed information, more terminal output.
+-h Help: A brief instruction for using TetGen.</p>
+</div></blockquote>
+</p></li>
+<li><p><strong>plc</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables tetrahedral generation.  Default True.</p></li>
+<li><p><strong>facet_overlap_ang_tol</strong> (<em>double</em><em>, </em><em>optional</em>) – Threshold angle at which TetGen will consider to faces overlapping.
+Raising this will require a higher quality mesh input and may cause
+tetrahedralize to fail.  Default 0.001.</p></li>
+<li><p><strong>quality</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables mesh improvement.  Enabled by default.  Disable
+this to speed up mesh generation while sacrificing quality.
+Default True.</p></li>
+<li><p><strong>minratio</strong> (<em>double</em><em>, </em><em>optional.</em>) – <p>Maximum allowable radius-edge ratio.  Must be greater than 1.0
+the closer to 1.0, the higher the quality of the mesh.  Be sure
+to raise steinerleft to allow for the addition of points to improve
+the quality of the mesh.  Avoid overly restrictive requirements,
+otherwise, meshing will appear to hang.  Default 2.0</p>
+<p>Testing has showed that 1.1 is a reasonable input for a high quality
+mesh.</p>
+</p></li>
+<li><p><strong>mindihedral</strong> (<em>double</em><em>, </em><em>optional</em>) – <p>Minimum allowable dihedral angle.  The larger this number, the
+higher the quality of the resulting mesh.  Be sure to raise
+steinerleft to allow for the addition of points to improve
+the quality of the mesh.  Avoid overly restrictive requirements,
+otherwise, meshing will appear to hang.   Default 0.0</p>
+<p>Testing has shown that 10 is a reasonable input</p>
+</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Controls the underlying TetGen library to output text to console.
+Users using iPython will not see this output.  Setting to 1 enables
+some information about the mesh generation while setting verbose to
+2 enables more debug output.  Default 0, or no output.</p></li>
+<li><p><strong>nobisect</strong> (<em>bool</em><em>, </em><em>optional</em>) – <p>Controls if Steiner points are added to the input surface
+mesh.  When enabled, the surface mesh will be modified.  Default False.</p>
+<p>Testing has shown that if your input surface mesh is already well
+shaped, disabling this setting will improve meshing speed and
+mesh quality.</p>
+</p></li>
+<li><p><strong>steinerleft</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>Steiner points are points added to the original surface mesh to
+create a valid tetrahedral mesh.  Settings this to -1 will allow
+tetgen to create an unlimited number of steiner points, but the
+program will likely hang if this is used in combination with narrow
+quality requirements.  Default 100000.</p>
+<p>The first type of Steiner points are used in creating an initial
+tetrahedralization of PLC. These Steiner points are mandatory in
+order to create a valid tetrahedralization</p>
+<p>The second type of Steiner points are used in creating quality tetra-
+hedral meshes of PLCs. These Steiner points are optional, while they
+may be necessary in order to improve the mesh quality or to conform
+the size of mesh elements.</p>
+</p></li>
+<li><p><strong>double</strong> (<em>optmaxdihedral</em><em>, </em><em>optional</em>) – Setting unreachable using switches.  Controls the optimial maximum
+dihedral.  Settings closer, but not exceeding, 180 degrees results
+in a lower quality mesh.  Should be between 135 and 180 degrees.
+Default 165.0</p></li>
+<li><p><strong>order</strong> (<em>int optional</em>) – Controls whether TetGen creates linear tetrahedrals or quadradic
+tetrahedrals.  Set order to 2 to output quadradic tetrahedrals.
+Default 2.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">Tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s1">&#39;pq1.1/10Y&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">Tetrahedralize</span><span class="p">(</span><span class="n">plc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nobisect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="go">                                minratio=1.1, mindihedral=10)</span>
+</pre></div>
+</div>
+<p class="rubric">Notes</p>
+<p>There are many other options and the TetGen documentation contains
+descritpions only for the switches of the original C++ program.  This
+is the relationship between tetgen switches and python optinal inputs:</p>
+<p>PYTHON OPTION                                            TETGEN SWITCH
+int plc;                                                 // -p
+int psc;                                                 // -s
+int refine;                                              // -r
+int quality;                                             // -q
+int nobisect;                                            // -Y
+int coarsen;                                             // -R
+int weighted;                                            // -w
+int brio_hilbert;                                        // -b
+int incrflip;                                            // -l
+int flipinsert;                                          // -L
+int metric;                                              // -m
+int varvolume;                                           // -a
+int fixedvolume;                                         // -a
+int regionattrib;                                        // -A
+int cdtrefine;                                           // -D
+int insertaddpoints;                                     // -i
+int diagnose;                                            // -d
+int convex;                                              // -c
+int nomergefacet;                                        // -M
+int nomergevertex;                                       // -M
+int noexact;                                             // -X
+int nostaticfilter;                                      // -X
+int zeroindex;                                           // -z
+int facesout;                                            // -f
+int edgesout;                                            // -e
+int neighout;                                            // -n
+int voroout;                                             // -v
+int meditview;                                           // -g
+int vtkview;                                             // -k
+int nobound;                                             // -B
+int nonodewritten;                                       // -N
+int noelewritten;                                        // -E
+int nofacewritten;                                       // -F
+int noiterationnum;                                      // -I
+int nojettison;                                          // -J
+int docheck;                                             // -C
+int quiet;                                               // -Q
+int verbose;                                             // -V</p>
+<p>PYTHON OPTION                                            TETGEN SWITCH
+int vertexperblock;                                      // ‘-x’, 4092.
+int tetrahedraperblock;                                  // ‘-x’, 8188.
+int shellfaceperblock;                                   // ‘-x’, 2044.
+int nobisect_nomerge;                                    // ‘-Y’, 1.
+int supsteiner_level;                                    // ‘-Y/’, 2.
+int addsteiner_algo;                                     // ‘-Y//’, 1.
+int coarsen_param;                                       // ‘-R’, 0.
+int weighted_param;                                      // ‘-w’, 0.
+int fliplinklevel;                                       // -1.
+int flipstarsize;                                        // -1.
+int fliplinklevelinc;                                    //  1.
+int reflevel;                                            // ‘-D’, 3.
+int optlevel;                                            // ‘-O’, 2.
+int optscheme;                                           // ‘-O’, 7.
+int delmaxfliplevel;                                     // 1.
+int order;                                               // ‘-o’, 1.
+int reversetetori;                                       // ‘-o/’, 0.
+int steinerleft;                                         // ‘-S’, 0.
+int no_sort;                                             // 0.
+int hilbert_order;                                       // ‘-b///’, 52.
+int hilbert_limit;                                       // ‘-b//’  8.
+int brio_threshold;                                      // ‘-b’ 64.
+REAL brio_ratio;                                         // ‘-b/’ 0.125.
+REAL facet_separate_ang_tol;                             // ‘-p’, 179.9.
+REAL facet_overlap_ang_tol;                              // ‘-p/’,  0.1.
+REAL facet_small_ang_tol;                                // ‘-p//’, 15.0.
+REAL maxvolume;                                          // ‘-a’, -1.0.
+REAL minratio;                                           // ‘-q’, 0.0.
+REAL mindihedral;                                        // ‘-q’, 5.0.
+REAL optmaxdihedral;                                     // 165.0.
+REAL optminsmtdihed;                                     // 179.0.
+REAL optminslidihed;                                     // 179.0.
+REAL epsilon;                                            // ‘-T’, 1.0e-8.
+REAL coarsen_percent;                                    // -R1/#, 1.0.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="tetgen.TetGen.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>filename</em>, <em>binary=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an unstructured grid to disk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em>) – <p>Filename of grid to be written.  The file extension will select the
+type of writer to use.</p>
+<ul>
+<li><p>”.vtk” will use the vtk legacy writer, while</p></li>
+<li><p>”.vtu” will select the VTK XML writer.</p></li>
+<li><p>”.cdb” will write an ANSYS APDL archive file.</p></li>
+</ul>
+</p></li>
+<li><p><strong>binary</strong> (<em>bool</em><em>, </em><em>optional</em>) – Writes as a binary file by default.  Set to False to write ASCII.
+Ignored when output is a cdb.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Binary files write much faster than ASCII, but binary files written on
+one system may not be readable on other systems.  Binary can be used
+only with the legacy writer.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="examples/super_toroid.html" class="btn btn-neutral float-left" title="Super Toroid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2019, Alex Kaszynski
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
