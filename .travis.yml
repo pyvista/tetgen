@@ -48,6 +48,7 @@ install:
     fi;
   - pip3 install --upgrade cibuildwheel
   - pip3 install -r requirements.txt
+  - pip3 install .
 
 script:
   - cibuildwheel --output-dir wheelhouse
