@@ -58,15 +58,15 @@ script:
     # Make documentation
   - |
     if [ "$TRAVIS_OS_NAME" != "osx" ]; then
-    - cd ./wheelhouse
-    - pip3 install tetgen-*-cp36-cp36m-manylinux1_x86_64.whl
-    - cd ../docs;
-    - make html;
-    - set -e;
-    - make html;
-    - cd ..;
-    # TODO: @banesullivan can set this up:
-    # - doctr deploy --built-docs ./docs/_build/html/ .;
+      cd ./wheelhouse
+      pip3 install tetgen-*-cp36-cp36m-manylinux1_x86_64.whl
+      cd ../docs
+      make html
+      set -e
+      make html
+      cd ..
+      # TODO: @banesullivan can set this up:
+      # - doctr deploy --built-docs ./docs/_build/html/ .;
     fi;
   # Deploy on tags
   - if [ "${TRAVIS_TAG:-}" != "" ]; then
