@@ -48,10 +48,11 @@ install:
     fi;
   - pip3 install --upgrade cibuildwheel
   - pip3 install -r requirements.txt
-  - pip3 install .
 
 script:
   - cibuildwheel --output-dir wheelhouse
+  - cd ./wheelhouse
+  - pip3 install tetgen-*-cp36-cp36m-manylinux1_x86_64.whl
   # Make documentation
   - cd ./docs;
   - make html;
