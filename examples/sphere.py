@@ -4,7 +4,7 @@ Sphere
 
 Tetrahedralize a sphere
 """
-
+# sphinx_gallery_thumbnail_number = 2
 import pyvista as pv
 import tetgen
 import numpy as np

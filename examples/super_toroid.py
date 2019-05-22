@@ -4,7 +4,7 @@ Super Toroid
 
 Tetrahedralize a super toroid surface
 """
-
+# sphinx_gallery_thumbnail_number = 2
 import pyvista as pv
 import tetgen
 import numpy as np
