@@ -39,7 +39,6 @@ before_install:
 
 
 install:
-  - pip3 install -r requirements.txt
   # Setup for python 3 wheels in Mac OS X
   - |
     if [ "$TRAVIS_OS_NAME" == "osx" ]; then
@@ -48,6 +47,7 @@ install:
       CFLAGS='-stdlib=libc++'
     fi;
   - pip3 install --upgrade cibuildwheel
+  - pip3 install -r requirements.txt
 
 script:
   - cibuildwheel --output-dir wheelhouse
