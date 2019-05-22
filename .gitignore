@@ -31,3 +31,6 @@ TODO
 test.sh
 .pytest_cache/
 
+docs/errors.txt
+docs/_build
+docs/examples
