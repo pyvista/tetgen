@@ -4,20 +4,17 @@
 # cython: cdivision=True
 # cython nonecheck=False
 
-from libcpp cimport bool
-from cpython.string cimport PyString_AsString
-
 import numpy as np
 cimport numpy as np
 
 import ctypes
 from cython cimport view
 
-# Numpy must be initialized. When using numpy from C or Cython you must
-# _always_ do that, or you will have segfaults
-np.import_array()
+# # Numpy must be initialized. When using numpy from C or Cython you must
+# # _always_ do that, or you will have segfaults
+# np.import_array()
 
-    
+
 """ Wrapped tetgen class """
 cdef extern from "tetgen_wrap.h":
     cdef cppclass tetgenio_wrap:
@@ -281,7 +278,6 @@ def Tetrahedralize(v, f, switches='',
     
     """
     # convert switches to c object
-    # cdef char *cstring = PyString_AsString(switches)
     cdef char *cstring = switches
 
     # Check that inputs are valid
@@ -312,21 +308,19 @@ def Tetrahedralize(v, f, switches='',
     tetgenio_out = PyTetgenio()        
     
     if switches:
-        tetrahedralize(cstring, &tetgenio_in.c_tetio, &tetgenio_out.c_tetio)    
-
-        if 'o2' in switches:
+        tetrahedralize(cstring, &tetgenio_in.c_tetio, &tetgenio_out.c_tetio)
+        if b'o2' in switches:
             order = 2
     
     else: # set defaults or user input settings
-        
         # Enable plc if checking for self intersections
         if diagnose:
             plc = 1
-        
+
         # Ensure user has input order properly
         if order != 1 and order != 2:
             raise Exception('Settings error: Order should be 1 or 2')
-        
+
         # Set behavior 
         behavior = PyBehavior()
         behavior.c_behavior.plc = plc

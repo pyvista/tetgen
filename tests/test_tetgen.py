@@ -1,7 +1,15 @@
+import os
+
 import pyvista as pv
 import tetgen
 import numpy as np
 
+try:
+    __file__
+except:  # local testing
+    __file__ = '/home/alex/afrl/python/source/tetgen/tests/test_tetgen.py'
+
+path = os.path.dirname(os.path.abspath(__file__))
 
 def test_load_arrays():
     sphere = pv.Sphere()
@@ -17,6 +25,13 @@ def test_vtk_tetrahedralize():
     grid = tet.grid
     assert grid.n_cells
     assert grid.n_points
+
+
+def test_mesh_repair():
+    cowfile = os.path.join(path, 'cow.ply')
+    tet = tetgen.TetGen(cowfile)
+    tet.make_manifold()
+    tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
 
 
 def functional_tet_example():
