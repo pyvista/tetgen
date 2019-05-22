@@ -54,7 +54,7 @@ script:
   - cd ./wheelhouse
   - pip3 install tetgen-*-cp36-cp36m-manylinux1_x86_64.whl
   # Make documentation
-  - cd ./docs;
+  - cd ../docs;
   - make html;
   - set -e;
   - make html;
