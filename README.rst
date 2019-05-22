@@ -1,8 +1,8 @@
 tetgen
 ======
 
-.. image:: https://travis-ci.org/akaszynski/tetgen.svg?branch=master
-    :target: https://travis-ci.org/akaszynski/tetgen
+.. image:: https://travis-ci.org/pyvista/tetgen.svg?branch=master
+    :target: https://travis-ci.org/pyvista/tetgen
 
 .. image:: https://img.shields.io/pypi/v/tetgen.svg?logo=python&logoColor=white
    :target: https://pypi.org/project/tetgen/
@@ -37,11 +37,11 @@ From `PyPI <https://pypi.python.org/pypi/tetgen>`__
 
     pip install tetgen --user
 
-From source at `GitHub <https://github.com/akaszynski/tetgen>`__
+From source at `GitHub <https://github.com/pyvista/tetgen>`__
 
 .. code:: bash
 
-    git clone https://github.com/akaszynski/tetgen
+    git clone https://github.com/pyvista/tetgen
     cd tetgen
     pip install . --user
 
@@ -65,7 +65,7 @@ the mesh.
     grid = tet.grid
     grid.plot()
 
-.. figure:: https://github.com/akaszynski/tetgen/raw/master/docs/images/sphere.png
+.. figure:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere.png
     :width: 300pt
 
     Tetrahedralized Sphere
@@ -93,7 +93,7 @@ the mesh quality.
                         [' Tesselated Mesh ', 'black']])
     plotter.plot()
 
-.. image:: https://github.com/akaszynski/tetgen/raw/master/docs/images/sphere_subgrid.png
+.. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_subgrid.png
 
 Cell quality scalars can be obtained and plotted with:
 
@@ -104,7 +104,7 @@ Cell quality scalars can be obtained and plotted with:
     # plot quality
     subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr', flip_scalars=True)
 
-.. image:: https://github.com/akaszynski/tetgen/raw/master/docs/images/sphere_qual.png
+.. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_qual.png
 
 
 Acknowledgments
