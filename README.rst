@@ -7,25 +7,26 @@ tetgen
 .. image:: https://img.shields.io/pypi/v/tetgen.svg?logo=python&logoColor=white
    :target: https://pypi.org/project/tetgen/
 
-This python module is a python interface to Hang Si's
-`tetgen <https://github.com/ufz/tetgen>`__ C++ software.
+This Python module is an interface to Hang Si's
+`TetGen <https://github.com/ufz/tetgen>`__ C++ software.
 This module combines speed of C++ with the portability and ease of installation
-of Python along integration with the visualization toolkit
-`VTK <https://www.vtk.org/>`__ .  See the `tetgen <https://github.com/ufz/tetgen>`__
-GitHub page for more details on the creator.
+of Python along with integration to `PyVista <https://docs.pyvista.org>`_ for
+3D visualization and analysis.
+See the `TetGen <https://github.com/ufz/tetgen>`__ GitHub page for more details
+on the original creator.
 
 The last update to the original C++ software was on 19 January 2011, but the
 software remains relevant today.  Brief description from
 `Weierstrass Institute Software <http://wias-berlin.de/software/index.jsp?id=TetGen&lang=1>`__:
 
-TetGen is a program to generate tetrahedral meshes of any 3D polyhedral domains.
-TetGen generates exact constrained Delaunay tetrahedralization, boundary
-conforming Delaunay meshes, and Voronoi partitions.
+    TetGen is a program to generate tetrahedral meshes of any 3D polyhedral domains.
+    TetGen generates exact constrained Delaunay tetrahedralization, boundary
+    conforming Delaunay meshes, and Voronoi partitions.
 
-TetGen provides various features to generate good quality and adaptive
-tetrahedral meshes suitable for numerical methods, such as finite element or
-finite volume methods. For more information of TetGen, please take a look at a
-list of `features <http://wias-berlin.de/software/tetgen/features.html>`__.
+    TetGen provides various features to generate good quality and adaptive
+    tetrahedral meshes suitable for numerical methods, such as finite element or
+    finite volume methods. For more information of TetGen, please take a look at a
+    list of `features <http://wias-berlin.de/software/tetgen/features.html>`__.
 
 
 Installation
@@ -35,7 +36,7 @@ From `PyPI <https://pypi.python.org/pypi/tetgen>`__
 
 .. code:: bash
 
-    pip install tetgen --user
+    pip install tetgen
 
 From source at `GitHub <https://github.com/pyvista/tetgen>`__
 
@@ -43,11 +44,12 @@ From source at `GitHub <https://github.com/pyvista/tetgen>`__
 
     git clone https://github.com/pyvista/tetgen
     cd tetgen
-    pip install . --user
+    pip install .
 
 
 Basic Example
 -------------
+
 The features of the C++ TetGen software implemented in this module are primarily
 focused on the tetrahedralization a manifold triangular surface.  This basic
 example demonstrates how to tetrahedralize a manifold surface and plot part of
