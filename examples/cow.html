@@ -221,6 +221,10 @@
  <span class="p">(</span><span class="mf">0.44</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.37</span><span class="p">),</span>
  <span class="p">(</span><span class="o">-</span><span class="mf">0.28</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)]</span>
 
+<span class="n">cpos</span><span class="o">=</span><span class="p">[(</span><span class="mf">15.87144235049248</span><span class="p">,</span> <span class="mf">4.879216382405231</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.14248864876951</span><span class="p">),</span>
+ <span class="p">(</span><span class="mf">1.1623113035352375</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7609060338348953</span><span class="p">,</span> <span class="mf">0.3192320579894903</span><span class="p">),</span>
+ <span class="p">(</span><span class="o">-</span><span class="mf">0.19477922834083672</span><span class="p">,</span> <span class="mf">0.9593375398915212</span><span class="p">,</span> <span class="mf">0.20428542963665386</span><span class="p">)]</span>
+
 <span class="n">cow_mesh</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cpos</span><span class="o">=</span><span class="n">cpos</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -245,25 +249,25 @@
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_cow_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_cow_002.png" />
-<p>Construct silly spinning cow animation</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">off_screen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">400</span><span class="p">,</span> <span class="mi">400</span><span class="p">])</span>
+<p>Make animation of the mesh construction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">off_screen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">open_gif</span><span class="p">(</span><span class="s1">&#39;cow.gif&#39;</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">half_cow</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">cow_grid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;wireframe&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="n">cpos</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">write_frame</span><span class="p">()</span>
 <span class="n">nframe</span> <span class="o">=</span> <span class="mi">36</span>
-<span class="n">deg</span> <span class="o">=</span> <span class="mf">360.</span><span class="o">/</span><span class="p">(</span><span class="n">nframe</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nframe</span><span class="p">):</span>
-    <span class="n">half_cow</span><span class="o">.</span><span class="n">rotate_y</span><span class="p">(</span><span class="n">deg</span><span class="p">)</span>
-    <span class="n">cow_grid</span><span class="o">.</span><span class="n">rotate_y</span><span class="p">(</span><span class="n">deg</span><span class="p">)</span>
+    <span class="n">dn</span> <span class="o">=</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">n_cells</span> <span class="o">//</span> <span class="n">nframe</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">half_cow</span> <span class="o">=</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">extract_cells</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">half_cow</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;building&#39;</span><span class="p">)</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">write_frame</span><span class="p">()</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_cow_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_cow_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  10.320 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  18.148 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-cow-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/dfe0fc540378a0dc60004cbef7c55c93/cow.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cow.py</span></code></a></p>
