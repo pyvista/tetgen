@@ -196,32 +196,35 @@
 <h1>tetgen<a class="headerlink" href="#tetgen" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://travis-ci.org/pyvista/tetgen"><img alt="https://travis-ci.org/pyvista/tetgen.svg?branch=master" src="https://travis-ci.org/pyvista/tetgen.svg?branch=master" /></a>
 <a class="reference external image-reference" href="https://pypi.org/project/tetgen/"><img alt="https://img.shields.io/pypi/v/tetgen.svg?logo=python&amp;logoColor=white" src="https://img.shields.io/pypi/v/tetgen.svg?logo=python&amp;logoColor=white" /></a>
-<p>This python module is a python interface to Hang Si’s
-<a class="reference external" href="https://github.com/ufz/tetgen">tetgen</a> C++ software.
+<p>This Python module is an interface to Hang Si’s
+<a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> C++ software.
 This module combines speed of C++ with the portability and ease of installation
-of Python along integration with the visualization toolkit
-<a class="reference external" href="https://www.vtk.org/">VTK</a> .  See the <a class="reference external" href="https://github.com/ufz/tetgen">tetgen</a>
-GitHub page for more details on the creator.</p>
+of Python along with integration to <a class="reference external" href="https://docs.pyvista.org">PyVista</a> for
+3D visualization and analysis.
+See the <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> GitHub page for more details
+on the original creator.</p>
 <p>The last update to the original C++ software was on 19 January 2011, but the
 software remains relevant today.  Brief description from
 <a class="reference external" href="http://wias-berlin.de/software/index.jsp?id=TetGen&amp;lang=1">Weierstrass Institute Software</a>:</p>
-<p>TetGen is a program to generate tetrahedral meshes of any 3D polyhedral domains.
+<blockquote>
+<div><p>TetGen is a program to generate tetrahedral meshes of any 3D polyhedral domains.
 TetGen generates exact constrained Delaunay tetrahedralization, boundary
 conforming Delaunay meshes, and Voronoi partitions.</p>
 <p>TetGen provides various features to generate good quality and adaptive
 tetrahedral meshes suitable for numerical methods, such as finite element or
 finite volume methods. For more information of TetGen, please take a look at a
 list of <a class="reference external" href="http://wias-berlin.de/software/tetgen/features.html">features</a>.</p>
+</div></blockquote>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>From <a class="reference external" href="https://pypi.python.org/pypi/tetgen">PyPI</a></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install tetgen --user
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install tetgen
 </pre></div>
 </div>
 <p>From source at <a class="reference external" href="https://github.com/pyvista/tetgen">GitHub</a></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/pyvista/tetgen
 <span class="nb">cd</span> tetgen
-pip install . --user
+pip install .
 </pre></div>
 </div>
 </div>
