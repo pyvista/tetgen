@@ -100,6 +100,21 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 #
 html_theme = "sphinx_rtd_theme"
+html_context = {
+    # Enable the "Edit in GitHub link within the header of each page.
+    'display_github': True,
+    # Set the following variables to generate the resulting github URL for each page.
+    # Format Template: https://{{ github_host|default("github.com") }}/{{ github_user }}/{{ github_repo }}/blob/{{ github_version }}{{ conf_py_path }}{{ pagename }}{{ suffix }}
+    'github_user': 'pyvista',
+    'github_repo': 'tetgen',
+    'github_version': 'master/docs/',
+    'menu_links_name': 'Getting Connected',
+    'menu_links': [
+        ('<i class="fa fa-slack fa-fw"></i> Slack Community', 'http://slack.pyvista.org'),
+        ('<i class="fa fa-comment fa-fw"></i> Support', 'https://github.com/pyvista/pyvista-support'),
+        ('<i class="fa fa-github fa-fw"></i> Source Code', 'https://github.com/pyvista/tetgen'),
+    ],
+}
 
 
 # Theme options are theme-specific and customize the look and feel of a theme

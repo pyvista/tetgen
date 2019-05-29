@@ -60,7 +60,7 @@ setup(
 
     author='Alex Kaszynski',
     author_email='akascap@gmail.com',
-    url = 'https://github.com/akaszynski/tetgen',
+    url = 'https://github.com/pyvista/tetgen',
 
     classifiers=[
         'Intended Audience :: Science/Research',
