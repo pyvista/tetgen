@@ -29,7 +29,7 @@ Tetrahedralize a super toroid surface
 
 .. code-block:: default
 
-    toroid = pv.SuperToroid()
+    toroid = pv.ParametricSuperToroid()
     tet = tetgen.TetGen(toroid)
     tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     grid = tet.grid
@@ -98,7 +98,7 @@ Tetrahedralize a super toroid surface
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.654 seconds)
+   **Total running time of the script:** ( 0 minutes  5.639 seconds)
 
 
 .. _sphx_glr_download_examples_super_toroid.py:

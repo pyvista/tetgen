@@ -213,7 +213,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">toroid</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">SuperToroid</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">toroid</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">ParametricSuperToroid</span><span class="p">()</span>
 <span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">toroid</span><span class="p">)</span>
 <span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mindihedral</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">minratio</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">grid</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
@@ -250,7 +250,7 @@
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_super_toroid_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_super_toroid_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.654 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.639 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-super-toroid-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/f2097db3e51d1384e33f84cfe30f876e/super_toroid.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">super_toroid.py</span></code></a></p>

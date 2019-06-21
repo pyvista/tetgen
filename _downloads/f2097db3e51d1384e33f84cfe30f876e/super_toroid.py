@@ -10,7 +10,7 @@ import tetgen
 import numpy as np
 
 ###############################################################################
-toroid = pv.SuperToroid()
+toroid = pv.ParametricSuperToroid()
 tet = tetgen.TetGen(toroid)
 tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
 grid = tet.grid
