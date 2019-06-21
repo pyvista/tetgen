@@ -30,18 +30,16 @@ subgrid = grid.extract_cells(cell_ind)
 
 # advanced plotting
 plotter = pv.Plotter()
-plotter.add_mesh(subgrid, 'lightgrey', lighting=True)
-plotter.add_mesh(toroid, 'r', 'wireframe')
+plotter.add_mesh(subgrid, color='lightgrey', lighting=True, show_edges=True)
+plotter.add_mesh(toroid, color='r', style='wireframe')
 plotter.add_legend([[' Input Mesh ', 'r'],
                     [' Tesselated Mesh ', 'black']])
 plotter.plot()
 
 ###############################################################################
 
-try:
-    cell_qual = subgrid.quality
+cell_qual = subgrid.quality
 
-    # plot quality
-    subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr', flip_scalars=True)
-except:
-    pass
+# plot quality
+subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr',  clim=[0,1],
+             flip_scalars=True, show_edges=True)
