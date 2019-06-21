@@ -217,7 +217,7 @@
 <span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
 <span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mindihedral</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">minratio</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">grid</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
-<span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_sphere_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_001.png" />
@@ -232,25 +232,23 @@
 
 <span class="c1"># advanced plotting</span>
 <span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">subgrid</span><span class="p">,</span> <span class="s1">&#39;lightgrey&#39;</span><span class="p">,</span> <span class="n">lighting</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">subgrid</span><span class="p">,</span> <span class="s1">&#39;lightgrey&#39;</span><span class="p">,</span> <span class="n">lighting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">sphere</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;wireframe&#39;</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">add_legend</span><span class="p">([[</span><span class="s1">&#39; Input Mesh &#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">],</span>
                     <span class="p">[</span><span class="s1">&#39; Tesselated Mesh &#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">]])</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_sphere_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_002.png" />
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">quality</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">quality</span>
 
-    <span class="c1"># plot quality</span>
-    <span class="n">subgrid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scalars</span><span class="o">=</span><span class="n">cell_qual</span><span class="p">,</span> <span class="n">stitle</span><span class="o">=</span><span class="s1">&#39;quality&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span> <span class="n">flip_scalars</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">except</span><span class="p">:</span>
-    <span class="k">pass</span>
+<span class="c1"># plot quality</span>
+<span class="n">subgrid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scalars</span><span class="o">=</span><span class="n">cell_qual</span><span class="p">,</span> <span class="n">stitle</span><span class="o">=</span><span class="s1">&#39;Quality&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+             <span class="n">flip_scalars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_sphere_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.073 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.494 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-sphere-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d3f2b02e15bf3a94566a256a80d2ac6a/sphere.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sphere.py</span></code></a></p>
