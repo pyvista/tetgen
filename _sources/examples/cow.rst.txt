@@ -51,6 +51,14 @@ Tetrahedralize a cow mesh
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    WARNING:root:DEPRECATED: ``.tri_filter`` is deprecated. Use ``.triangulate`` instead.
+
 
 
 
@@ -134,7 +142,7 @@ Make animation of the mesh construction
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  17.715 seconds)
+   **Total running time of the script:** ( 0 minutes  17.970 seconds)
 
 
 .. _sphx_glr_download_examples_cow.py:
