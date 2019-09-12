@@ -215,7 +215,7 @@
 <span class="kn">import</span> <span class="nn">pymeshfix</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cow_mesh</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">download_cow</span><span class="p">()</span><span class="o">.</span><span class="n">tri_filter</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cow_mesh</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">download_cow</span><span class="p">()</span><span class="o">.</span><span class="n">triangulate</span><span class="p">()</span>
 
 <span class="n">cpos</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">13.</span><span class="p">,</span> <span class="mf">7.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.85</span><span class="p">),</span>
  <span class="p">(</span><span class="mf">0.44</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.37</span><span class="p">),</span>
@@ -229,10 +229,6 @@
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_cow_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_cow_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>WARNING:root:DEPRECATED: ``.tri_filter`` is deprecated. Use ``.triangulate`` instead.
-</pre></div>
-</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">cow_mesh</span><span class="p">)</span>
 <span class="n">tet</span><span class="o">.</span><span class="n">make_manifold</span><span class="p">()</span>
 <span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
@@ -242,7 +238,7 @@
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot half the cow</span>
 <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">cow_grid</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">half_cow</span> <span class="o">=</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">extract_selection_points</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+<span class="n">half_cow</span> <span class="o">=</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">extract_points</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
@@ -259,19 +255,22 @@
 <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">cow_grid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;wireframe&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="n">cpos</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">write_frame</span><span class="p">()</span>
+
 <span class="n">nframe</span> <span class="o">=</span> <span class="mi">36</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nframe</span><span class="p">):</span>
-    <span class="n">dn</span> <span class="o">=</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">n_cells</span> <span class="o">//</span> <span class="n">nframe</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">dn</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">xb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cow_grid</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">step</span> <span class="o">=</span> <span class="n">xb</span><span class="o">.</span><span class="n">ptp</span><span class="p">()</span> <span class="o">/</span> <span class="n">nframe</span>
+<span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">step</span><span class="p">,</span> <span class="n">xb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">step</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">cow_grid</span><span class="o">.</span><span class="n">cell_centers</span><span class="p">()</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">val</span><span class="p">)</span>
     <span class="n">half_cow</span> <span class="o">=</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">extract_cells</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">half_cow</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;building&#39;</span><span class="p">)</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
     <span class="n">plotter</span><span class="o">.</span><span class="n">write_frame</span><span class="p">()</span>
+
 <span class="n">plotter</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_cow_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_cow_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  17.702 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  14.364 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-cow-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/dfe0fc540378a0dc60004cbef7c55c93/cow.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cow.py</span></code></a></p>

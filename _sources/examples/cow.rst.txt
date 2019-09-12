@@ -32,7 +32,7 @@ Tetrahedralize a cow mesh
 .. code-block:: default
 
 
-    cow_mesh = examples.download_cow().tri_filter()
+    cow_mesh = examples.download_cow().triangulate()
 
     cpos = [(13., 7.6, -13.85),
      (0.44, -0.4, -0.37),
@@ -50,14 +50,6 @@ Tetrahedralize a cow mesh
 .. image:: /examples/images/sphx_glr_cow_001.png
     :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    WARNING:root:DEPRECATED: ``.tri_filter`` is deprecated. Use ``.triangulate`` instead.
 
 
 
@@ -83,7 +75,7 @@ Tetrahedralize a cow mesh
 
     # plot half the cow
     mask = np.logical_or(cow_grid.points[:, 0] < 0, cow_grid.points[:, 0] > 4)
-    half_cow = cow_grid.extract_selection_points(mask)
+    half_cow = cow_grid.extract_points(mask)
 
 
 
@@ -121,14 +113,17 @@ Make animation of the mesh construction
     plotter.add_mesh(cow_grid, color='r', style='wireframe', opacity=0.2)
     plotter.camera_position = cpos
     plotter.write_frame()
+
     nframe = 36
-    for i in range(nframe):
-        dn = cow_grid.n_cells // nframe * (i + 1)
-        mask = np.linspace(0, dn, dn, dtype=int)
+    xb = np.array(cow_grid.bounds[0:2])
+    step = xb.ptp() / nframe
+    for val in np.arange(xb[0]+step, xb[1]+step, step):
+        mask = np.argwhere(cow_grid.cell_centers().points[:,0] < val)
         half_cow = cow_grid.extract_cells(mask)
         plotter.add_mesh(half_cow, color='w', show_edges=True, name='building')
         plotter.update()
         plotter.write_frame()
+
     plotter.close()
 
 
@@ -142,7 +137,7 @@ Make animation of the mesh construction
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  17.702 seconds)
+   **Total running time of the script:** ( 0 minutes  14.364 seconds)
 
 
 .. _sphx_glr_download_examples_cow.py:
