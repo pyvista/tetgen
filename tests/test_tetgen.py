@@ -26,6 +26,25 @@ def test_vtk_tetrahedralize():
     assert grid.n_cells
     assert grid.n_points
 
+def test_numpy_tetrahedralize():
+    v = np.array([[0, 0, 0], [1, 0, 0],
+                  [1, 1, 0], [0, 1, 0],
+                  [0, 0, 1], [1, 0, 1],
+                  [1, 1, 1], [0, 1, 1],])
+
+    f = np.vstack([[0, 1, 2], [2, 3, 0],
+                   [0, 1, 5], [5, 4, 0],
+                   [1, 2, 6], [6, 5, 1],
+                   [2, 3, 7], [7, 6, 2],
+                   [3, 0, 4], [4, 7, 3],
+                   [4, 5, 6], [6, 7, 4]])
+
+    tgen = tetgen.TetGen(v, f)
+
+    nodes, elems = tgen.tetrahedralize()
+    assert np.any(nodes)
+    assert np.any(elems)
+
 
 def test_mesh_repair():
     cowfile = os.path.join(path, 'cow.ply')

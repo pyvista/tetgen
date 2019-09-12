@@ -49,11 +49,10 @@ From source at `GitHub <https://github.com/pyvista/tetgen>`__
 
 Basic Example
 -------------
-
-The features of the C++ TetGen software implemented in this module are primarily
-focused on the tetrahedralization a manifold triangular surface.  This basic
-example demonstrates how to tetrahedralize a manifold surface and plot part of
-the mesh.
+The features of the C++ TetGen software implemented in this module are
+primarily focused on the tetrahedralization a manifold triangular
+surface.  This basic example demonstrates how to tetrahedralize a
+manifold surface and plot part of the mesh.
 
 .. code:: python
 

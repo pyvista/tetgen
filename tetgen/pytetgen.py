@@ -1,8 +1,7 @@
-"""
-Python module to interface with wrapped TetGen C++ code
+"""Python module to interface with wrapped TetGen C++ code
 
 """
-import sys
+import warnings
 import logging
 import ctypes
 
@@ -20,8 +19,8 @@ invalid_input = Exception('Invalid input.  Must be either a pyvista.PolyData\n' 
 
 
 class TetGen(object):
-    """
-    Class to input, clean, and tetrahedralize surface meshes using TetGen
+    """Input, clean, and tetrahedralize surface meshes using
+    TetGen
 
     Parameters
     ----------
@@ -29,11 +28,41 @@ class TetGen(object):
         Either a pyvista surface mesh or a nx3 vertex array and nx3 face
         array.
 
+    Examples
+    --------
+    Tetrahedralize a sphere using pyvista
+    >>> import pyvista
+    >>> import tetgen
+    >>> sphere = pyvista.Sphere(theta_resolution=10, phi_resolution=10)
+    >>> tgen = tetgen.TetGen(sphere)
+    >>> nodes, elem = tgen.tetrahedralize()
+    >>> tgen.grid.plot(show_edges=True)
+
+    Tetrahedralize a cube using numpy arrays
+    >>> import numpy as np
+    >>> import tetgen
+    >>> v = np.array([[0, 0, 0], [1, 0, 0],
+                      [1, 1, 0], [0, 1, 0],
+                      [0, 0, 1], [1, 0, 1],
+                      [1, 1, 1], [0, 1, 1],])
+    >>> f = np.vstack([[0, 1, 2], [2, 3, 0],
+                       [0, 1, 5], [5, 4, 0],
+                       [1, 2, 6], [6, 5, 1],
+                       [2, 3, 7], [7, 6, 2],
+                       [3, 0, 4], [4, 7, 3],
+                       [4, 5, 6], [6, 7, 4]])
+    >>> tgen = tetgen.TetGen(v, f)
+    >>> nodes, elems = tgen.tetrahedralize()
     """
     _updated = None
 
     def __init__(self, *args):
         """ initializes MeshFix using a mesh """
+        self.v = None
+        self.f = None
+        self.node = None
+        self.elem = None
+
         def parse_mesh(mesh):
             self.v = mesh.points
             faces = mesh.faces
@@ -57,9 +86,9 @@ class TetGen(object):
         """
         Loads triangular mesh from vertex and face arrays
 
-        Face arrays/lists are v and f.  Both vertex and face arrays should be
-        2D arrays with each vertex containing XYZ data and each face containing
-        three points
+        Face arrays/lists are v and f.  Both vertex and face arrays
+        should be 2D arrays with each vertex containing XYZ data and
+        each face containing three points
         """
         # Check inputs
         if not isinstance(v, np.ndarray):
@@ -131,8 +160,6 @@ class TetGen(object):
         return pv.PolyData(self.v, triangles, deep=False)
 
     def tetrahedralize(self,
-                       switches='',
-                       plc=1,
                        psc=0,
                        refine=0,
                        quality=1,
@@ -204,146 +231,114 @@ class TetGen(object):
                        optminslidihed=179.0,
                        epsilon=1.0e-8,
                        coarsen_percent=1.0):
-        """
-        Generates tetrahedrals interior to the surface mesh described by the
-        vertex and face arrays already loaded.  Returns nodes and elements
-        belonging to the all tetrahedral mesh.
+        """Generates tetrahedrals interior to the surface mesh
+        described by the vertex and face arrays already loaded.
+        Returns nodes and elements belonging to the all tetrahedral
+        mesh.
 
-        The tetrehedral generator uses the C++ library TetGen and can be
-        configured by either using a string of 'switches' or by changing the
-        underlying behavior using optional inputs.
+        The tetrahedral generator uses the C++ library TetGen and can
+        be configured by either using a string of 'switches' or by
+        changing the underlying behavior using optional inputs.
 
-        Should the user desire more control over the mesh tetrahedralization or
-        wish to control the tetrahedralization in a more pythonic manner, use
-        the optional inputs rather than inputting switches.
+        Should the user desire more control over the mesh
+        tetrahedralization or wish to control the tetrahedralization
+        in a more pythonic manner, use the optional inputs rather than
+        inputting switches.
 
         Parameters
         ----------
-        switches : string, optional
-            String containing the same switches as in the C++ standalone
-            implementation:
-
-                -p Tetrahedralizes a piecewise linear complex (PLC).
-                -Y Preserves the input surface mesh (does not modify it).
-                -q Refines mesh (to improve mesh quality).
-                -R Mesh coarsening (to reduce the mesh elements).
-                -A Assigns attributes to tetrahedra in different regions.
-                -a Applies a maximum tetrahedron volume constraint.
-                -m Applies a mesh sizing function.
-                -O Specifies the level of mesh optimization.
-                -S Specifies maximum number of added points.
-                -T Sets a tolerance for coplanar test (default 1E-8)
-                -X Suppresses use of exact arithmetic.
-                -M No merge of coplanar facets or very close vertices.
-                -w Generates weighted Delaunay (regular) triangulation.
-                -c Retains the convex hull of the PLC.
-                -d Detects self-intersections of facets of the PLC.
-                -z Numbers all output items starting from zero.
-                -f Outputs all faces to .face file.
-                -e Outputs all edges to .edge file.
-                -n Outputs tetrahedra neighbors to .neigh file.
-                -v Outputs Voronoi diagram to files.
-                -g Outputs mesh to .mesh file for viewing by Medit.
-                -k Outputs mesh to .vtk file for viewing by Paraview.
-                -J No jettison of unused vertices from output .node file.
-                -B Suppresses output of boundary information.
-                -N Suppresses output of .node file.
-                -E Suppresses output of .ele file.
-                -F Suppresses output of .face and .edge file.
-                -I Suppresses mesh iteration numbers.
-                -C Checks the consistency of the final mesh.
-                -Q Quiet: No terminal output except errors.
-                -V Verbose: Detailed information, more terminal output.
-                -h Help: A brief instruction for using TetGen.
-
-        plc : bool, optional
-            Enables/disables tetrahedral generation.  Default True.
-
         facet_overlap_ang_tol : double, optional
-            Threshold angle at which TetGen will consider to faces overlapping.
-            Raising this will require a higher quality mesh input and may cause
-            tetrahedralize to fail.  Default 0.001.
+            Threshold angle at which TetGen will consider to faces
+            overlapping.  Raising this will require a higher quality
+            mesh input and may cause tetrahedralize to fail.  Default
+            0.001.
 
         quality : bool, optional
-            Enables/disables mesh improvement.  Enabled by default.  Disable
-            this to speed up mesh generation while sacrificing quality.
-            Default True.
+            Enables/disables mesh improvement.  Enabled by default.
+            Disable this to speed up mesh generation while sacrificing
+            quality.  Default True.
 
         minratio : double, optional.
-            Maximum allowable radius-edge ratio.  Must be greater than 1.0
-            the closer to 1.0, the higher the quality of the mesh.  Be sure
-            to raise steinerleft to allow for the addition of points to improve
-            the quality of the mesh.  Avoid overly restrictive requirements,
-            otherwise, meshing will appear to hang.  Default 2.0
+            Maximum allowable radius-edge ratio.  Must be greater than
+            1.0 the closer to 1.0, the higher the quality of the mesh.
+            Be sure to raise steinerleft to allow for the addition of
+            points to improve the quality of the mesh.  Avoid overly
+            restrictive requirements, otherwise, meshing will appear
+            to hang.  Default 2.0
 
-            Testing has showed that 1.1 is a reasonable input for a high quality
-            mesh.
+            Testing has showed that 1.1 is a reasonable input for a
+            high quality mesh.
 
         mindihedral : double, optional
-            Minimum allowable dihedral angle.  The larger this number, the
-            higher the quality of the resulting mesh.  Be sure to raise
-            steinerleft to allow for the addition of points to improve
-            the quality of the mesh.  Avoid overly restrictive requirements,
-            otherwise, meshing will appear to hang.   Default 0.0
+            Minimum allowable dihedral angle.  The larger this number,
+            the higher the quality of the resulting mesh.  Be sure to
+            raise steinerleft to allow for the addition of points to
+            improve the quality of the mesh.  Avoid overly restrictive
+            requirements, otherwise, meshing will appear to hang.
+            Default 0.0
 
             Testing has shown that 10 is a reasonable input
 
         verbose : int, optional
-            Controls the underlying TetGen library to output text to console.
-            Users using iPython will not see this output.  Setting to 1 enables
-            some information about the mesh generation while setting verbose to
-            2 enables more debug output.  Default 0, or no output.
+            Controls the underlying TetGen library to output text to
+            console.  Users using iPython will not see this output.
+            Setting to 1 enables some information about the mesh
+            generation while setting verbose to 2 enables more debug
+            output.  Default 0, or no output.
 
         nobisect : bool, optional
             Controls if Steiner points are added to the input surface
-            mesh.  When enabled, the surface mesh will be modified.  Default False.
+            mesh.  When enabled, the surface mesh will be modified.
+            Default False.
 
-            Testing has shown that if your input surface mesh is already well
-            shaped, disabling this setting will improve meshing speed and
-            mesh quality.
+            Testing has shown that if your input surface mesh is
+            already well shaped, disabling this setting will improve
+            meshing speed and mesh quality.
 
         steinerleft : int, optional
-            Steiner points are points added to the original surface mesh to
-            create a valid tetrahedral mesh.  Settings this to -1 will allow
-            tetgen to create an unlimited number of steiner points, but the
-            program will likely hang if this is used in combination with narrow
-            quality requirements.  Default 100000.
+            Steiner points are points added to the original surface
+            mesh to create a valid tetrahedral mesh.  Settings this to
+            -1 will allow tetgen to create an unlimited number of
+            steiner points, but the program will likely hang if this
+            is used in combination with narrow quality requirements.
+            Default 100000.
 
-            The first type of Steiner points are used in creating an initial
-            tetrahedralization of PLC. These Steiner points are mandatory in
-            order to create a valid tetrahedralization
+            The first type of Steiner points are used in creating an
+            initial tetrahedralization of PLC. These Steiner points
+            are mandatory in order to create a valid
+            tetrahedralization
 
-            The second type of Steiner points are used in creating quality tetra-
-            hedral meshes of PLCs. These Steiner points are optional, while they
-            may be necessary in order to improve the mesh quality or to conform
-            the size of mesh elements.
+            The second type of Steiner points are used in creating
+            quality tetra- hedral meshes of PLCs. These Steiner points
+            are optional, while they may be necessary in order to
+            improve the mesh quality or to conform the size of mesh
+            elements.
 
         double : optmaxdihedral, optional
-            Setting unreachable using switches.  Controls the optimial maximum
-            dihedral.  Settings closer, but not exceeding, 180 degrees results
-            in a lower quality mesh.  Should be between 135 and 180 degrees.
-            Default 165.0
+            Setting unreachable using switches.  Controls the optimial
+            maximum dihedral.  Settings closer, but not exceeding, 180
+            degrees results in a lower quality mesh.  Should be
+            between 135 and 180 degrees.  Default 165.0
 
         order : int optional
-            Controls whether TetGen creates linear tetrahedrals or quadradic
-            tetrahedrals.  Set order to 2 to output quadradic tetrahedrals.
-            Default 2.
+            Controls whether TetGen creates linear tetrahedrals or
+            quadradic tetrahedrals.  Set order to 2 to output
+            quadradic tetrahedrals.  Default 2.
 
         Examples
         --------
-        >>> node, elem = Tetrahedralize(switches='pq1.1/10Y')
-
-        >>> node, elem = Tetrahedralize(plc=1, nobisect=True, quality=True,
-                                        minratio=1.1, mindihedral=10)
+        The following switches "pq1.1/10Y" would be:
+        >>> node, elem = tgen.Tetrahedralize(nobisect=True, quality=True,
+                                             minratio=1.1, mindihedral=10)
 
         Notes
         -----
-        There are many other options and the TetGen documentation contains
-        descritpions only for the switches of the original C++ program.  This
-        is the relationship between tetgen switches and python optinal inputs:
+        There are many other options and the TetGen documentation
+        contains descritpions only for the switches of the original
+        C++ program.  This is the relationship between tetgen switches
+        and python optinal inputs:
 
         PYTHON OPTION                                            TETGEN SWITCH
-        int plc;                                                 // -p
         int psc;                                                 // -s
         int refine;                                              // -r
         int quality;                                             // -q
@@ -366,16 +361,10 @@ class TetGen(object):
         int noexact;                                             // -X
         int nostaticfilter;                                      // -X
         int zeroindex;                                           // -z
-        int facesout;                                            // -f
-        int edgesout;                                            // -e
-        int neighout;                                            // -n
         int voroout;                                             // -v
         int meditview;                                           // -g
         int vtkview;                                             // -k
         int nobound;                                             // -B
-        int nonodewritten;                                       // -N
-        int noelewritten;                                        // -E
-        int nofacewritten;                                       // -F
         int noiterationnum;                                      // -I
         int nojettison;                                          // -J
         int docheck;                                             // -C
@@ -417,17 +406,16 @@ class TetGen(object):
         REAL optminslidihed;                                     // 179.0.
         REAL epsilon;                                            // '-T', 1.0e-8.
         REAL coarsen_percent;                                    // -R1/#, 1.0.
-
         """
-        # python 2/3 compatability
-        if not isinstance(switches, bytes):
-            switches = switches.encode()
+        # supressing switches
+        switches = b''
 
         # check verbose switch
         if verbose == 0:
             quiet = 1
 
         # Call libary
+        plc = True  # always true
         try:
             self.node, self.elem = _tetgen.Tetrahedralize(self.v,
                                                           self.f,
@@ -504,9 +492,10 @@ class TetGen(object):
                                                           optminslidihed,
                                                           epsilon,
                                                           coarsen_percent)
-        except RuntimeError:
+        except RuntimeError as e:
             raise Exception('Failed to tetrahedralize.\n' +
-                            'May need to repair surface by making it manifold')
+                            'May need to repair surface by making it manifold:\n' +
+                            str(e))
 
         # check if a mesh was generated
         if not np.any(self.node):
