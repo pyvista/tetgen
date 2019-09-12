@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API Reference &mdash; tetgen 0.3.4 documentation</title>
+  <title>API Reference &mdash; tetgen 0.4.2 documentation</title>
   
 
   
@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                0.3.4
+                0.4.2
               </div>
             
           
@@ -199,13 +199,41 @@
 <dt id="tetgen.TetGen">
 <em class="property">class </em><code class="descclassname">tetgen.</code><code class="descname">TetGen</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to input, clean, and tetrahedralize surface meshes using TetGen</p>
+<p>Input, clean, and tetrahedralize surface meshes using
+TetGen</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>args</strong> (str, <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.PolyData</span></code> or (np.ndarray, np.ndarray)) – Either a pyvista surface mesh or a nx3 vertex array and nx3 face
 array.</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<p>Tetrahedralize a sphere using pyvista
+&gt;&gt;&gt; import pyvista
+&gt;&gt;&gt; import tetgen
+&gt;&gt;&gt; sphere = pyvista.Sphere(theta_resolution=10, phi_resolution=10)
+&gt;&gt;&gt; tgen = tetgen.TetGen(sphere)
+&gt;&gt;&gt; nodes, elem = tgen.tetrahedralize()
+&gt;&gt;&gt; tgen.grid.plot(show_edges=True)</p>
+<p>Tetrahedralize a cube using numpy arrays
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; import tetgen
+&gt;&gt;&gt; v = np.array([[0, 0, 0], [1, 0, 0],</p>
+<blockquote>
+<div><p>[1, 1, 0], [0, 1, 0],
+[0, 0, 1], [1, 0, 1],
+[1, 1, 1], [0, 1, 1],])</p>
+</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="go">                   [0, 1, 5], [5, 4, 0],</span>
+<span class="go">                   [1, 2, 6], [6, 5, 1],</span>
+<span class="go">                   [2, 3, 7], [7, 6, 2],</span>
+<span class="go">                   [3, 0, 4], [4, 7, 3],</span>
+<span class="go">                   [4, 5, 6], [6, 7, 4]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elems</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
+</pre></div>
+</div>
 <dl class="attribute">
 <dt id="tetgen.TetGen.grid">
 <code class="descname">grid</code><a class="headerlink" href="#tetgen.TetGen.grid" title="Permalink to this definition">¶</a></dt>
@@ -240,125 +268,95 @@ mesh in-place.</p>
 
 <dl class="method">
 <dt id="tetgen.TetGen.tetrahedralize">
-<code class="descname">tetrahedralize</code><span class="sig-paren">(</span><em>switches=''</em>, <em>plc=1</em>, <em>psc=0</em>, <em>refine=0</em>, <em>quality=1</em>, <em>nobisect=True</em>, <em>coarsen=0</em>, <em>metric=0</em>, <em>weighted=0</em>, <em>brio_hilbert=1</em>, <em>incrflip=0</em>, <em>flipinsert=0</em>, <em>varvolume=0</em>, <em>fixedvolume=0</em>, <em>noexact=0</em>, <em>nostaticfilter=0</em>, <em>insertaddpoints=0</em>, <em>regionattrib=0</em>, <em>cdtrefine=0</em>, <em>diagnose=0</em>, <em>convex=0</em>, <em>zeroindex=0</em>, <em>facesout=0</em>, <em>edgesout=0</em>, <em>neighout=0</em>, <em>voroout=0</em>, <em>meditview=0</em>, <em>vtkview=0</em>, <em>nobound=0</em>, <em>nonodewritten=1</em>, <em>noelewritten=1</em>, <em>nofacewritten=1</em>, <em>noiterationnum=0</em>, <em>nomergefacet=0</em>, <em>nomergevertex=0</em>, <em>nojettison=0</em>, <em>docheck=0</em>, <em>quiet=0</em>, <em>verbose=0</em>, <em>vertexperblock=4092</em>, <em>tetrahedraperblock=8188</em>, <em>shellfaceperblock=4092</em>, <em>nobisect_nomerge=1</em>, <em>supsteiner_level=2</em>, <em>addsteiner_algo=1</em>, <em>coarsen_param=0</em>, <em>weighted_param=0</em>, <em>fliplinklevel=-1</em>, <em>flipstarsize=-1</em>, <em>fliplinklevelinc=1</em>, <em>reflevel=3</em>, <em>optscheme=7</em>, <em>optlevel=2</em>, <em>delmaxfliplevel=1</em>, <em>order=2</em>, <em>reversetetori=0</em>, <em>steinerleft=10000</em>, <em>no_sort=0</em>, <em>hilbert_order=52</em>, <em>hilbert_limit=8</em>, <em>brio_threshold=64</em>, <em>brio_ratio=0.125</em>, <em>facet_separate_ang_tol=179.9</em>, <em>facet_overlap_ang_tol=0.001</em>, <em>facet_small_ang_tol=15.0</em>, <em>maxvolume=-1.0</em>, <em>minratio=2.0</em>, <em>mindihedral=0.0</em>, <em>optmaxdihedral=165.0</em>, <em>optminsmtdihed=179.0</em>, <em>optminslidihed=179.0</em>, <em>epsilon=1e-08</em>, <em>coarsen_percent=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.tetrahedralize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generates tetrahedrals interior to the surface mesh described by the
-vertex and face arrays already loaded.  Returns nodes and elements
-belonging to the all tetrahedral mesh.</p>
-<p>The tetrehedral generator uses the C++ library TetGen and can be
-configured by either using a string of ‘switches’ or by changing the
-underlying behavior using optional inputs.</p>
-<p>Should the user desire more control over the mesh tetrahedralization or
-wish to control the tetrahedralization in a more pythonic manner, use
-the optional inputs rather than inputting switches.</p>
+<code class="descname">tetrahedralize</code><span class="sig-paren">(</span><em>psc=0</em>, <em>refine=0</em>, <em>quality=1</em>, <em>nobisect=True</em>, <em>coarsen=0</em>, <em>metric=0</em>, <em>weighted=0</em>, <em>brio_hilbert=1</em>, <em>incrflip=0</em>, <em>flipinsert=0</em>, <em>varvolume=0</em>, <em>fixedvolume=0</em>, <em>noexact=0</em>, <em>nostaticfilter=0</em>, <em>insertaddpoints=0</em>, <em>regionattrib=0</em>, <em>cdtrefine=0</em>, <em>diagnose=0</em>, <em>convex=0</em>, <em>zeroindex=0</em>, <em>facesout=0</em>, <em>edgesout=0</em>, <em>neighout=0</em>, <em>voroout=0</em>, <em>meditview=0</em>, <em>vtkview=0</em>, <em>nobound=0</em>, <em>nonodewritten=1</em>, <em>noelewritten=1</em>, <em>nofacewritten=1</em>, <em>noiterationnum=0</em>, <em>nomergefacet=0</em>, <em>nomergevertex=0</em>, <em>nojettison=0</em>, <em>docheck=0</em>, <em>quiet=0</em>, <em>verbose=0</em>, <em>vertexperblock=4092</em>, <em>tetrahedraperblock=8188</em>, <em>shellfaceperblock=4092</em>, <em>nobisect_nomerge=1</em>, <em>supsteiner_level=2</em>, <em>addsteiner_algo=1</em>, <em>coarsen_param=0</em>, <em>weighted_param=0</em>, <em>fliplinklevel=-1</em>, <em>flipstarsize=-1</em>, <em>fliplinklevelinc=1</em>, <em>reflevel=3</em>, <em>optscheme=7</em>, <em>optlevel=2</em>, <em>delmaxfliplevel=1</em>, <em>order=2</em>, <em>reversetetori=0</em>, <em>steinerleft=10000</em>, <em>no_sort=0</em>, <em>hilbert_order=52</em>, <em>hilbert_limit=8</em>, <em>brio_threshold=64</em>, <em>brio_ratio=0.125</em>, <em>facet_separate_ang_tol=179.9</em>, <em>facet_overlap_ang_tol=0.001</em>, <em>facet_small_ang_tol=15.0</em>, <em>maxvolume=-1.0</em>, <em>minratio=2.0</em>, <em>mindihedral=0.0</em>, <em>optmaxdihedral=165.0</em>, <em>optminsmtdihed=179.0</em>, <em>optminslidihed=179.0</em>, <em>epsilon=1e-08</em>, <em>coarsen_percent=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.tetrahedralize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates tetrahedrals interior to the surface mesh
+described by the vertex and face arrays already loaded.
+Returns nodes and elements belonging to the all tetrahedral
+mesh.</p>
+<p>The tetrahedral generator uses the C++ library TetGen and can
+be configured by either using a string of ‘switches’ or by
+changing the underlying behavior using optional inputs.</p>
+<p>Should the user desire more control over the mesh
+tetrahedralization or wish to control the tetrahedralization
+in a more pythonic manner, use the optional inputs rather than
+inputting switches.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>switches</strong> (<em>string</em><em>, </em><em>optional</em>) – <p>String containing the same switches as in the C++ standalone
-implementation:</p>
-<blockquote>
-<div><p>-p Tetrahedralizes a piecewise linear complex (PLC).
--Y Preserves the input surface mesh (does not modify it).
--q Refines mesh (to improve mesh quality).
--R Mesh coarsening (to reduce the mesh elements).
--A Assigns attributes to tetrahedra in different regions.
--a Applies a maximum tetrahedron volume constraint.
--m Applies a mesh sizing function.
--O Specifies the level of mesh optimization.
--S Specifies maximum number of added points.
--T Sets a tolerance for coplanar test (default 1E-8)
--X Suppresses use of exact arithmetic.
--M No merge of coplanar facets or very close vertices.
--w Generates weighted Delaunay (regular) triangulation.
--c Retains the convex hull of the PLC.
--d Detects self-intersections of facets of the PLC.
--z Numbers all output items starting from zero.
--f Outputs all faces to .face file.
--e Outputs all edges to .edge file.
--n Outputs tetrahedra neighbors to .neigh file.
--v Outputs Voronoi diagram to files.
--g Outputs mesh to .mesh file for viewing by Medit.
--k Outputs mesh to .vtk file for viewing by Paraview.
--J No jettison of unused vertices from output .node file.
--B Suppresses output of boundary information.
--N Suppresses output of .node file.
--E Suppresses output of .ele file.
--F Suppresses output of .face and .edge file.
--I Suppresses mesh iteration numbers.
--C Checks the consistency of the final mesh.
--Q Quiet: No terminal output except errors.
--V Verbose: Detailed information, more terminal output.
--h Help: A brief instruction for using TetGen.</p>
-</div></blockquote>
+<li><p><strong>facet_overlap_ang_tol</strong> (<em>double</em><em>, </em><em>optional</em>) – Threshold angle at which TetGen will consider to faces
+overlapping.  Raising this will require a higher quality
+mesh input and may cause tetrahedralize to fail.  Default
+0.001.</p></li>
+<li><p><strong>quality</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables mesh improvement.  Enabled by default.
+Disable this to speed up mesh generation while sacrificing
+quality.  Default True.</p></li>
+<li><p><strong>minratio</strong> (<em>double</em><em>, </em><em>optional.</em>) – <p>Maximum allowable radius-edge ratio.  Must be greater than
+1.0 the closer to 1.0, the higher the quality of the mesh.
+Be sure to raise steinerleft to allow for the addition of
+points to improve the quality of the mesh.  Avoid overly
+restrictive requirements, otherwise, meshing will appear
+to hang.  Default 2.0</p>
+<p>Testing has showed that 1.1 is a reasonable input for a
+high quality mesh.</p>
 </p></li>
-<li><p><strong>plc</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables tetrahedral generation.  Default True.</p></li>
-<li><p><strong>facet_overlap_ang_tol</strong> (<em>double</em><em>, </em><em>optional</em>) – Threshold angle at which TetGen will consider to faces overlapping.
-Raising this will require a higher quality mesh input and may cause
-tetrahedralize to fail.  Default 0.001.</p></li>
-<li><p><strong>quality</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables mesh improvement.  Enabled by default.  Disable
-this to speed up mesh generation while sacrificing quality.
-Default True.</p></li>
-<li><p><strong>minratio</strong> (<em>double</em><em>, </em><em>optional.</em>) – <p>Maximum allowable radius-edge ratio.  Must be greater than 1.0
-the closer to 1.0, the higher the quality of the mesh.  Be sure
-to raise steinerleft to allow for the addition of points to improve
-the quality of the mesh.  Avoid overly restrictive requirements,
-otherwise, meshing will appear to hang.  Default 2.0</p>
-<p>Testing has showed that 1.1 is a reasonable input for a high quality
-mesh.</p>
-</p></li>
-<li><p><strong>mindihedral</strong> (<em>double</em><em>, </em><em>optional</em>) – <p>Minimum allowable dihedral angle.  The larger this number, the
-higher the quality of the resulting mesh.  Be sure to raise
-steinerleft to allow for the addition of points to improve
-the quality of the mesh.  Avoid overly restrictive requirements,
-otherwise, meshing will appear to hang.   Default 0.0</p>
+<li><p><strong>mindihedral</strong> (<em>double</em><em>, </em><em>optional</em>) – <p>Minimum allowable dihedral angle.  The larger this number,
+the higher the quality of the resulting mesh.  Be sure to
+raise steinerleft to allow for the addition of points to
+improve the quality of the mesh.  Avoid overly restrictive
+requirements, otherwise, meshing will appear to hang.
+Default 0.0</p>
 <p>Testing has shown that 10 is a reasonable input</p>
 </p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Controls the underlying TetGen library to output text to console.
-Users using iPython will not see this output.  Setting to 1 enables
-some information about the mesh generation while setting verbose to
-2 enables more debug output.  Default 0, or no output.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – Controls the underlying TetGen library to output text to
+console.  Users using iPython will not see this output.
+Setting to 1 enables some information about the mesh
+generation while setting verbose to 2 enables more debug
+output.  Default 0, or no output.</p></li>
 <li><p><strong>nobisect</strong> (<em>bool</em><em>, </em><em>optional</em>) – <p>Controls if Steiner points are added to the input surface
-mesh.  When enabled, the surface mesh will be modified.  Default False.</p>
-<p>Testing has shown that if your input surface mesh is already well
-shaped, disabling this setting will improve meshing speed and
-mesh quality.</p>
+mesh.  When enabled, the surface mesh will be modified.
+Default False.</p>
+<p>Testing has shown that if your input surface mesh is
+already well shaped, disabling this setting will improve
+meshing speed and mesh quality.</p>
 </p></li>
-<li><p><strong>steinerleft</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>Steiner points are points added to the original surface mesh to
-create a valid tetrahedral mesh.  Settings this to -1 will allow
-tetgen to create an unlimited number of steiner points, but the
-program will likely hang if this is used in combination with narrow
-quality requirements.  Default 100000.</p>
-<p>The first type of Steiner points are used in creating an initial
-tetrahedralization of PLC. These Steiner points are mandatory in
-order to create a valid tetrahedralization</p>
-<p>The second type of Steiner points are used in creating quality tetra-
-hedral meshes of PLCs. These Steiner points are optional, while they
-may be necessary in order to improve the mesh quality or to conform
-the size of mesh elements.</p>
+<li><p><strong>steinerleft</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>Steiner points are points added to the original surface
+mesh to create a valid tetrahedral mesh.  Settings this to
+-1 will allow tetgen to create an unlimited number of
+steiner points, but the program will likely hang if this
+is used in combination with narrow quality requirements.
+Default 100000.</p>
+<p>The first type of Steiner points are used in creating an
+initial tetrahedralization of PLC. These Steiner points
+are mandatory in order to create a valid
+tetrahedralization</p>
+<p>The second type of Steiner points are used in creating
+quality tetra- hedral meshes of PLCs. These Steiner points
+are optional, while they may be necessary in order to
+improve the mesh quality or to conform the size of mesh
+elements.</p>
 </p></li>
-<li><p><strong>double</strong> (<em>optmaxdihedral</em><em>, </em><em>optional</em>) – Setting unreachable using switches.  Controls the optimial maximum
-dihedral.  Settings closer, but not exceeding, 180 degrees results
-in a lower quality mesh.  Should be between 135 and 180 degrees.
-Default 165.0</p></li>
-<li><p><strong>order</strong> (<em>int optional</em>) – Controls whether TetGen creates linear tetrahedrals or quadradic
-tetrahedrals.  Set order to 2 to output quadradic tetrahedrals.
-Default 2.</p></li>
+<li><p><strong>double</strong> (<em>optmaxdihedral</em><em>, </em><em>optional</em>) – Setting unreachable using switches.  Controls the optimial
+maximum dihedral.  Settings closer, but not exceeding, 180
+degrees results in a lower quality mesh.  Should be
+between 135 and 180 degrees.  Default 165.0</p></li>
+<li><p><strong>order</strong> (<em>int optional</em>) – Controls whether TetGen creates linear tetrahedrals or
+quadradic tetrahedrals.  Set order to 2 to output
+quadradic tetrahedrals.  Default 2.</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">Tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s1">&#39;pq1.1/10Y&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">Tetrahedralize</span><span class="p">(</span><span class="n">plc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nobisect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="go">                                minratio=1.1, mindihedral=10)</span>
-</pre></div>
-</div>
+<p>The following switches “pq1.1/10Y” would be:
+&gt;&gt;&gt; node, elem = tgen.Tetrahedralize(nobisect=True, quality=True,</p>
+<blockquote>
+<div><p>minratio=1.1, mindihedral=10)</p>
+</div></blockquote>
 <p class="rubric">Notes</p>
-<p>There are many other options and the TetGen documentation contains
-descritpions only for the switches of the original C++ program.  This
-is the relationship between tetgen switches and python optinal inputs:</p>
+<p>There are many other options and the TetGen documentation
+contains descritpions only for the switches of the original
+C++ program.  This is the relationship between tetgen switches
+and python optinal inputs:</p>
 <p>PYTHON OPTION                                            TETGEN SWITCH
-int plc;                                                 // -p
 int psc;                                                 // -s
 int refine;                                              // -r
 int quality;                                             // -q
@@ -381,16 +379,10 @@ int nomergevertex;                                       // -M
 int noexact;                                             // -X
 int nostaticfilter;                                      // -X
 int zeroindex;                                           // -z
-int facesout;                                            // -f
-int edgesout;                                            // -e
-int neighout;                                            // -n
 int voroout;                                             // -v
 int meditview;                                           // -g
 int vtkview;                                             // -k
 int nobound;                                             // -B
-int nonodewritten;                                       // -N
-int noelewritten;                                        // -E
-int nofacewritten;                                       // -F
 int noiterationnum;                                      // -I
 int nojettison;                                          // -J
 int docheck;                                             // -C
