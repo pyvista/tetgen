@@ -13,7 +13,7 @@ import pymeshfix
 
 ###############################################################################
 
-cow_mesh = examples.download_cow().tri_filter()
+cow_mesh = examples.download_cow().triangulate()
 
 cpos = [(13., 7.6, -13.85),
  (0.44, -0.4, -0.37),
@@ -37,7 +37,7 @@ cow_grid = tet.grid
 
 # plot half the cow
 mask = np.logical_or(cow_grid.points[:, 0] < 0, cow_grid.points[:, 0] > 4)
-half_cow = cow_grid.extract_selection_points(mask)
+half_cow = cow_grid.extract_points(mask)
 
 ###############################################################################
 
@@ -55,12 +55,15 @@ plotter.open_gif('cow.gif')
 plotter.add_mesh(cow_grid, color='r', style='wireframe', opacity=0.2)
 plotter.camera_position = cpos
 plotter.write_frame()
+
 nframe = 36
-for i in range(nframe):
-    dn = cow_grid.n_cells // nframe * (i + 1)
-    mask = np.linspace(0, dn, dn, dtype=int)
+xb = np.array(cow_grid.bounds[0:2])
+step = xb.ptp() / nframe
+for val in np.arange(xb[0]+step, xb[1]+step, step):
+    mask = np.argwhere(cow_grid.cell_centers().points[:,0] < val)
     half_cow = cow_grid.extract_cells(mask)
     plotter.add_mesh(half_cow, color='w', show_edges=True, name='building')
     plotter.update()
     plotter.write_frame()
+
 plotter.close()
