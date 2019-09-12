@@ -59,12 +59,13 @@ manifold surface and plot part of the mesh.
     import pyvista as pv
     import tetgen
     import numpy as np
+    pv.set_plot_theme('document')
 
     sphere = pv.Sphere()
     tet = tetgen.TetGen(sphere)
     tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     grid = tet.grid
-    grid.plot()
+    grid.plot(show_edges=True)
 
 .. figure:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere.png
     :width: 300pt
@@ -87,12 +88,11 @@ the mesh quality.
 
     # advanced plotting
     plotter = pv.Plotter()
-    plotter.set_background('w')
-    plotter.add_mesh(subgrid, 'lightgrey', lighting=True)
+    plotter.add_mesh(subgrid, 'lightgrey', lighting=True, show_edges=True)
     plotter.add_mesh(sphere, 'r', 'wireframe')
     plotter.add_legend([[' Input Mesh ', 'r'],
                         [' Tesselated Mesh ', 'black']])
-    plotter.plot()
+    plotter.show()
 
 .. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_subgrid.png
 
@@ -103,7 +103,8 @@ Cell quality scalars can be obtained and plotted with:
     cell_qual = subgrid.quality
 
     # plot quality
-    subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr', flip_scalars=True)
+    subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0,1],
+                 flip_scalars=True, show_edges=True,)
 
 .. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_qual.png
 

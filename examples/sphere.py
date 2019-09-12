@@ -14,7 +14,7 @@ sphere = pv.Sphere()
 tet = tetgen.TetGen(sphere)
 tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
 grid = tet.grid
-grid.plot()
+grid.plot(show_edges=True)
 
 
 ###############################################################################
@@ -30,18 +30,16 @@ subgrid = grid.extract_cells(cell_ind)
 
 # advanced plotting
 plotter = pv.Plotter()
-plotter.add_mesh(subgrid, 'lightgrey', lighting=True)
+plotter.add_mesh(subgrid, 'lightgrey', lighting=True, show_edges=True)
 plotter.add_mesh(sphere, 'r', 'wireframe')
 plotter.add_legend([[' Input Mesh ', 'r'],
                     [' Tesselated Mesh ', 'black']])
-plotter.plot()
+plotter.show()
 
 ###############################################################################
 
-try:
-    cell_qual = subgrid.quality
+cell_qual = subgrid.quality
 
-    # plot quality
-    subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr', flip_scalars=True)
-except:
-    pass
+# plot quality
+subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0,1],
+             flip_scalars=True, show_edges=True,)
