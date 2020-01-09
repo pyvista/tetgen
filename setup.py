@@ -66,7 +66,6 @@ setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Development Status :: 4 - Beta',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
@@ -74,9 +73,9 @@ setup(
 
     # Build cython modules
     cmdclass={'build_ext': build_ext},
-    ext_modules = [Extension("tetgen._tetgen", 
-                             ['tetgen/cython/tetgen/_tetgen.pyx', 
-                              'tetgen/cython/tetgen/tetgen.cxx', 
+    ext_modules = [Extension("tetgen._tetgen",
+                             ['tetgen/cython/tetgen/_tetgen.pyx',
+                              'tetgen/cython/tetgen/tetgen.cxx',
                               'tetgen/cython/tetgen/predicates.cxx',
                               'tetgen/cython/tetgen/tetgen_wrap.cxx'],
                              language='c++',
