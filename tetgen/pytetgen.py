@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 log.setLevel('CRITICAL')
 
 
-invalid_input = Exception('Invalid input.  Must be either a pyvista.PolyData\n' +
+invalid_input = TypeError('Invalid input.  Must be either a pyvista.PolyData\n' +
                           'object or vertex and face arrays')
 
 
@@ -84,12 +84,11 @@ class TetGen(object):
             raise invalid_input
 
     def _load_arrays(self, v, f):
-        """
-        Loads triangular mesh from vertex and face arrays
+        """Loads triangular mesh from vertex and face arrays
 
         Face arrays/lists are v and f.  Both vertex and face arrays
         should be 2D arrays with each vertex containing XYZ data and
-        each face containing three points
+        each face containing three points.
         """
         # Check inputs
         if not isinstance(v, np.ndarray):
@@ -129,12 +128,11 @@ class TetGen(object):
         """
         try:
             import pymeshfix
-        except:
-            raise ImportError('pymeshfix not installed.  Please run: \n' +
+        except ImportError:
+            raise ImportError('pymeshfix not installed.  Please run:\n'
                               'pip install pymeshfix')
 
         # Run meshfix
-        import pymeshfix
         meshfix = pymeshfix.MeshFix(self.v, self.f)
         meshfix.repair(verbose)
 
@@ -151,7 +149,7 @@ class TetGen(object):
 
     @property
     def mesh(self):
-        """ Return the surface mesh """
+        """Return the surface mesh"""
         triangles = np.empty((self.f.shape[0], 4))
         triangles[:, -3:] = self.f
         triangles[:, 0] = 3
@@ -228,14 +226,15 @@ class TetGen(object):
                        optminsmtdihed=179.0,
                        optminslidihed=179.0,
                        epsilon=1.0e-8,
-                       coarsen_percent=1.0):
+                       coarsen_percent=1.0,
+                       switches=None):
         """Generates tetrahedrals interior to the surface mesh
         described by the vertex and face arrays already loaded.
         Returns nodes and elements belonging to the all tetrahedral
         mesh.
 
         The tetrahedral generator uses the C++ library TetGen and can
-        be configured by either using a string of 'switches' or by
+        be configured by either using a string of ``switches`` or by
         changing the underlying behavior using optional inputs.
 
         Should the user desire more control over the mesh
@@ -330,6 +329,10 @@ class TetGen(object):
         >>> node, elem = tgen.Tetrahedralize(nobisect=True, quality=True,
                                              minratio=1.1, mindihedral=10)
 
+        Using the switches option:
+
+        >>> node, elem = tgen.Tetrahedralize(switches="pq1.1/10Y")
+
         Notes
         -----
         There are many other options and the TetGen documentation
@@ -407,7 +410,10 @@ class TetGen(object):
         REAL coarsen_percent;                                    // -R1/#, 1.0.
         """
         # supressing switches
-        switches = b''
+        if switches is None:
+            switches_str = b''
+        else:
+            switches_str = bytes(switches, 'utf-8')
 
         # check verbose switch
         if verbose == 0:
@@ -418,7 +424,7 @@ class TetGen(object):
         try:
             self.node, self.elem = _tetgen.Tetrahedralize(self.v,
                                                           self.f,
-                                                          switches,
+                                                          switches_str,
                                                           plc,
                                                           psc,
                                                           refine,

@@ -11,6 +11,7 @@ except:  # local testing
 
 path = os.path.dirname(os.path.abspath(__file__))
 
+
 def test_load_arrays():
     sphere = pv.Sphere()
     v = sphere.points
@@ -25,6 +26,7 @@ def test_vtk_tetrahedralize():
     grid = tet.grid
     assert grid.n_cells
     assert grid.n_points
+
 
 def test_numpy_tetrahedralize():
     v = np.array([[0, 0, 0], [1, 0, 0],
@@ -91,5 +93,3 @@ def functional_tet_example():
         plotter.add_mesh(single_cell)
         plotter.update()
     plotter.close()
-
-
