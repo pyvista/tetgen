@@ -1,7 +1,5 @@
 """Python module to interface with wrapped TetGen C++ code
-
 """
-import warnings
 import logging
 import ctypes
 
@@ -31,6 +29,7 @@ class TetGen(object):
     Examples
     --------
     Tetrahedralize a sphere using pyvista
+
     >>> import pyvista
     >>> import tetgen
     >>> sphere = pyvista.Sphere(theta_resolution=10, phi_resolution=10)
@@ -39,6 +38,7 @@ class TetGen(object):
     >>> tgen.grid.plot(show_edges=True)
 
     Tetrahedralize a cube using numpy arrays
+
     >>> import numpy as np
     >>> import tetgen
     >>> v = np.array([[0, 0, 0], [1, 0, 0],
@@ -64,17 +64,18 @@ class TetGen(object):
         self.elem = None
 
         def parse_mesh(mesh):
+            if not mesh.is_all_triangles:
+                raise RuntimeError('Invalid mesh.  Must be an all triangular mesh')
+
             self.v = mesh.points
             faces = mesh.faces
-            if faces.size % 4:
-                raise Exception('Invalid mesh.  Must be an all triangular mesh.')
-            self.f = np.ascontiguousarray(faces.reshape(-1 , 4)[:, 1:])
+            self.f = np.ascontiguousarray(faces.reshape(-1, 4)[:, 1:])
 
         if not args:
             raise invalid_input
         elif isinstance(args[0], pv.PolyData):
             parse_mesh(args[0])
-        elif isinstance(args[0], np.ndarray):
+        elif isinstance(args[0], (np.ndarray, list)):
             self._load_arrays(args[0], args[1])
         elif isinstance(args[0], str):
             mesh = pv.read(args[0])
@@ -116,9 +117,8 @@ class TetGen(object):
         self.f = f
 
     def make_manifold(self, verbose=False):
-        """
-        Reconstruct a manifold clean surface from input mesh.  Updates
-        mesh in-place.
+        """Reconstruct a manifold clean surface from input mesh.
+        Updates mesh in-place.
 
         Requires pymeshfix
 
@@ -126,7 +126,6 @@ class TetGen(object):
         ----------
         verbose : bool, optional
             Controls output printing.  Default False.
-
         """
         try:
             import pymeshfix
@@ -144,8 +143,7 @@ class TetGen(object):
         self.f = meshfix.f
 
     def plot(self, **kwargs):
-        """
-        Displays input mesh
+        """Displays input mesh
 
         See help(:func:`pyvista.plot`) for available arguments.
         """
@@ -328,6 +326,7 @@ class TetGen(object):
         Examples
         --------
         The following switches "pq1.1/10Y" would be:
+
         >>> node, elem = tgen.Tetrahedralize(nobisect=True, quality=True,
                                              minratio=1.1, mindihedral=10)
 
@@ -544,18 +543,22 @@ class TetGen(object):
             Filename of grid to be written.  The file extension will select the
             type of writer to use.
 
-            - ".vtk" will use the vtk legacy writer, while
-            - ".vtu" will select the VTK XML writer.
-            - ".cdb" will write an ANSYS APDL archive file.
+            - ``".vtk"`` will use the vtk legacy writer
+            - ``".vtu"`` will select the VTK XML writer
+            - ``".cdb"`` will write an ANSYS APDL archive file
 
         binary : bool, optional
             Writes as a binary file by default.  Set to False to write ASCII.
             Ignored when output is a cdb.
 
+        Examples
+        --------
+        >>> tgen.write('grid.vtk', binary=True)
+
         Notes
         -----
-        Binary files write much faster than ASCII, but binary files written on
-        one system may not be readable on other systems.  Binary can be used
-        only with the legacy writer.
+        Binary files write much faster than ASCII, but binary files
+        written on one system may not be readable on other systems.
+        Binary can be used only with the legacy writer.
         """
         self.grid.write(filename, binary)
