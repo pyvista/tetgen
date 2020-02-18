@@ -28,6 +28,15 @@ def test_vtk_tetrahedralize():
     assert grid.n_points
 
 
+def test_tetrahedralize_swithces():
+    sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+    tet = tetgen.TetGen(sphere)
+    tet.tetrahedralize(switches="pq1.1/10YQ")
+    grid = tet.grid
+    assert grid.n_cells
+    assert grid.n_points
+
+
 def test_numpy_tetrahedralize():
     v = np.array([[0, 0, 0], [1, 0, 0],
                   [1, 1, 0], [0, 1, 0],

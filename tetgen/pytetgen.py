@@ -22,8 +22,8 @@ class TetGen(object):
 
     Parameters
     ----------
-    args : str, :class:`pyvista.PolyData` or (np.ndarray, np.ndarray)
-        Either a pyvista surface mesh or a nx3 vertex array and nx3 face
+    args : str, :class:`pyvista.PolyData` or (``np.ndarray``, ``np.ndarray``)
+        Either a pyvista surface mesh or a ``n x 3`` vertex array and ``n x 3`` face
         array.
 
     Examples
@@ -326,12 +326,12 @@ class TetGen(object):
         --------
         The following switches "pq1.1/10Y" would be:
 
-        >>> node, elem = tgen.Tetrahedralize(nobisect=True, quality=True,
+        >>> node, elem = tgen.tetrahedralize(nobisect=True, quality=True,
                                              minratio=1.1, mindihedral=10)
 
         Using the switches option:
 
-        >>> node, elem = tgen.Tetrahedralize(switches="pq1.1/10Y")
+        >>> node, elem = tgen.tetrahedralize(switches="pq1.1/10Y")
 
         Notes
         -----
@@ -340,76 +340,69 @@ class TetGen(object):
         C++ program.  This is the relationship between tetgen switches
         and python optinal inputs:
 
-        PYTHON OPTION                                            TETGEN SWITCH
-        int psc;                                                 // -s
-        int refine;                                              // -r
-        int quality;                                             // -q
-        int nobisect;                                            // -Y
-        int coarsen;                                             // -R
-        int weighted;                                            // -w
-        int brio_hilbert;                                        // -b
-        int incrflip;                                            // -l
-        int flipinsert;                                          // -L
-        int metric;                                              // -m
-        int varvolume;                                           // -a
-        int fixedvolume;                                         // -a
-        int regionattrib;                                        // -A
-        int cdtrefine;                                           // -D
-        int insertaddpoints;                                     // -i
-        int diagnose;                                            // -d
-        int convex;                                              // -c
-        int nomergefacet;                                        // -M
-        int nomergevertex;                                       // -M
-        int noexact;                                             // -X
-        int nostaticfilter;                                      // -X
-        int zeroindex;                                           // -z
-        int voroout;                                             // -v
-        int meditview;                                           // -g
-        int vtkview;                                             // -k
-        int nobound;                                             // -B
-        int noiterationnum;                                      // -I
-        int nojettison;                                          // -J
-        int docheck;                                             // -C
-        int quiet;                                               // -Q
-        int verbose;                                             // -V
-
-        PYTHON OPTION                                            TETGEN SWITCH
-        int vertexperblock;                                      // '-x', 4092.
-        int tetrahedraperblock;                                  // '-x', 8188.
-        int shellfaceperblock;                                   // '-x', 2044.
-        int nobisect_nomerge;                                    // '-Y', 1.
-        int supsteiner_level;                                    // '-Y/', 2.
-        int addsteiner_algo;                                     // '-Y//', 1.
-        int coarsen_param;                                       // '-R', 0.
-        int weighted_param;                                      // '-w', 0.
-        int fliplinklevel;                                       // -1.
-        int flipstarsize;                                        // -1.
-        int fliplinklevelinc;                                    //  1.
-        int reflevel;                                            // '-D', 3.
-        int optlevel;                                            // '-O', 2.
-        int optscheme;                                           // '-O', 7.
-        int delmaxfliplevel;                                     // 1.
-        int order;                                               // '-o', 1.
-        int reversetetori;                                       // '-o/', 0.
-        int steinerleft;                                         // '-S', 0.
-        int no_sort;                                             // 0.
-        int hilbert_order;                                       // '-b///', 52.
-        int hilbert_limit;                                       // '-b//'  8.
-        int brio_threshold;                                      // '-b' 64.
-        REAL brio_ratio;                                         // '-b/' 0.125.
-        REAL facet_separate_ang_tol;                             // '-p', 179.9.
-        REAL facet_overlap_ang_tol;                              // '-p/',  0.1.
-        REAL facet_small_ang_tol;                                // '-p//', 15.0.
-        REAL maxvolume;                                          // '-a', -1.0.
-        REAL minratio;                                           // '-q', 0.0.
-        REAL mindihedral;                                        // '-q', 5.0.
-        REAL optmaxdihedral;                                     // 165.0.
-        REAL optminsmtdihed;                                     // 179.0.
-        REAL optminslidihed;                                     // 179.0.
-        REAL epsilon;                                            // '-T', 1.0e-8.
-        REAL coarsen_percent;                                    // -R1/#, 1.0.
+        - ``psc`` --> ``'-s'``
+        - ``refine`` --> ``'-r'``
+        - ``quality`` --> ``'-q'``
+        - ``nobisect`` --> ``'-Y'``
+        - ``coarsen`` --> ``'-R'``
+        - ``weighted`` --> ``'-w'``
+        - ``brio_hilbert`` --> ``'-b'``
+        - ``incrflip`` --> ``'-l'``
+        - ``flipinsert`` --> ``'-L'``
+        - ``metric`` --> ``'-m'``
+        - ``varvolume`` --> ``'-a'``
+        - ``fixedvolume`` --> ``'-a'``
+        - ``regionattrib`` --> ``'-A'``
+        - ``cdtrefine`` --> ``'-D'``
+        - ``insertaddpoints`` --> ``'-i'``
+        - ``diagnose`` --> ``'-d'``
+        - ``convex`` --> ``'-c'``
+        - ``nomergefacet`` --> ``'-M'``
+        - ``nomergevertex`` --> ``'-M'``
+        - ``noexact`` --> ``'-X'``
+        - ``nostaticfilter`` --> ``'-X'``
+        - ``zeroindex`` --> ``'-z'``
+        - ``voroout`` --> ``'-v'``
+        - ``meditview`` --> ``'-g'``
+        - ``vtkview`` --> ``'-k'``
+        - ``nobound`` --> ``'-B'``
+        - ``noiterationnum`` --> ``'-I'``
+        - ``nojettison`` --> ``'-J'``
+        - ``docheck`` --> ``'-C'``
+        - ``quiet`` --> ``'-Q'``
+        - ``verbose`` --> ``'-V'``
+        - ``vertexperblock`` --> ``'-x', 4092.``
+        - ``tetrahedraperblock`` --> ``'-x', 8188.``
+        - ``shellfaceperblock`` --> ``'-x', 2044.``
+        - ``nobisect_nomerge`` --> ``'-Y', 1.``
+        - ``supsteiner_level`` --> ``'-Y/', 2.``
+        - ``addsteiner_algo`` --> ``'-Y//', 1.``
+        - ``coarsen_param`` --> ``'-R', 0.``
+        - ``weighted_param`` --> ``'-w', 0.``
+        - ``reflevel`` --> ``'-D', 3.``
+        - ``optlevel`` --> ``'-O', 2.``
+        - ``optscheme`` --> ``'-O', 7.``
+        - ``order`` --> ``'-o', 1.``
+        - ``reversetetori`` --> ``'-o/', 0.``
+        - ``steinerleft`` --> ``'-S', 0.``
+        - ``hilbert_order`` --> ``'-b///', 52.``
+        - ``hilbert_limit`` --> ``'-b//'  8.``
+        - ``brio_threshold`` --> ``'-b' 64.``
+        - ``brio_ratio`` --> ``'-b/' 0.125.``
+        - ``facet_separate_ang_tol`` --> ``'-p', 179.9.``
+        - ``facet_overlap_ang_tol`` --> ``'-p/',  0.1.``
+        - ``facet_small_ang_tol`` --> ``'-p//', 15.0.``
+        - ``maxvolume`` --> ``'-a', -1.0.``
+        - ``minratio`` --> ``'-q', 0.0.``
+        - ``mindihedral`` --> ``'-q', 5.0.``
+        - ``optmaxdihedral`` --> ``165.0.``
+        - ``optminsmtdihed`` --> ``179.0.``
+        - ``optminslidihed`` --> ``179.0.``
+        - ``epsilon`` --> ``'-T', 1.0e-8.``
+        - ``coarsen_percent`` --> ``-R1/#, 1.0.``
         """
-        # supressing switches
+
+        # format switches
         if switches is None:
             switches_str = b''
         else:
