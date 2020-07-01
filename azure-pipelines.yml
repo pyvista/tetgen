@@ -60,6 +60,8 @@ jobs:
         python.version: '3.6'
       Python37:
         python.version: '3.7'
+      Python38:
+	python.version: '3.7'
   pool:
     vmImage: 'macOS-10.14'
   steps:
@@ -83,6 +85,8 @@ jobs:
         python.version: '3.6'
       Python37:
         python.version: '3.7'
+      Python38:
+        python.version: '3.8'
   steps:
     - template: .ci/azure-setup.yml
     - template: .ci/azure-steps.yml
