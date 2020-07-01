@@ -37,7 +37,7 @@ def test_tetrahedralize_swithces():
     assert grid.n_points
 
 
-def test_numpy_tetrahedralize():
+def test_numpy_tetrahedralize(tmpdir):
     v = np.array([[0, 0, 0], [1, 0, 0],
                   [1, 1, 0], [0, 1, 0],
                   [0, 0, 1], [1, 0, 1],
@@ -55,6 +55,10 @@ def test_numpy_tetrahedralize():
     nodes, elems = tgen.tetrahedralize()
     assert np.any(nodes)
     assert np.any(elems)
+
+    # test save as well
+    filename = tmpdir.mkdir("tmpdir").join("test_mesh.vtk")
+    tgen.write(filename)
 
 
 def test_mesh_repair():

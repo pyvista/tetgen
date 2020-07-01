@@ -539,16 +539,16 @@ class TetGen(object):
         Parameters
         ----------
         filename : str
-            Filename of grid to be written.  The file extension will select the
-            type of writer to use.
+            Filename of grid to be written.  The file extension will
+            select the type of writer to use.
 
             - ``".vtk"`` will use the vtk legacy writer
             - ``".vtu"`` will select the VTK XML writer
             - ``".cdb"`` will write an ANSYS APDL archive file
 
         binary : bool, optional
-            Writes as a binary file by default.  Set to False to write ASCII.
-            Ignored when output is a cdb.
+            Writes as a binary file by default.  Set to False to write
+            ASCII.  Ignored when output is a cdb.
 
         Examples
         --------
@@ -560,4 +560,4 @@ class TetGen(object):
         written on one system may not be readable on other systems.
         Binary can be used only with the legacy writer.
         """
-        self.grid.write(filename, binary)
+        self.grid.save(filename, binary)
