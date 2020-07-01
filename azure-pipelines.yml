@@ -36,18 +36,16 @@ jobs:
       displayName: 'Use Python $(python.version)'
     - script: |
         set -ex
-	docker pull quay.io/pypa/manylinux2010_x86_64
-	docker run -e package_name=$(package_name) --rm -v `pwd`:/io quay.io/pypa/manylinux2010_x86_64 /io/.ci/build_wheels.sh $(python.version)
+        docker pull quay.io/pypa/manylinux2010_x86_64
+        docker run -e package_name=$(package_name) --rm -v `pwd`:/io quay.io/pypa/manylinux2010_x86_64 /io/.ci/build_wheels.sh $(python.version)
       displayName: Build wheel using manylinux2010
     - script: |
         pip install dist/*.whl
       displayName: Install wheel
     - script: |
         pip install -r requirements_test.txt
-	pip install pytest-azurepipelines
-	cd tests
-	pytest --cov $(package_name) --cov-report html
-	cd ..
+        pip install pytest-azurepipelines
+        (cd tests && pytest --cov $(package_name) --cov-report html)
     - template: .ci/azure-publish-dist.yml
 
 
