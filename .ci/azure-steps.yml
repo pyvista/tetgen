@@ -7,8 +7,6 @@ steps:
 
 - script: |
     python -m pip install $(package_name) --no-index -f wheelhouse/ --upgrade --ignore-installed
-    cd tests
-    cd ..
   displayName: 'Install'
 
 - script: |

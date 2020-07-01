@@ -37,8 +37,9 @@ plotter.add_legend([[' Input Mesh ', 'r'],
 plotter.plot()
 
 ###############################################################################
-
-cell_qual = subgrid.quality
+# Cell quality using pyansys
+import pyansys
+cell_qual = pyansys.quality(subgrid)
 
 # plot quality
 subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr',  clim=[0,1],

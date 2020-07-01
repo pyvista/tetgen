@@ -33,12 +33,12 @@ pyvista.rcParams['window_size'] = np.array([1024, 768]) * 2
 pyvista.FIGURE_PATH = os.path.abspath('./images/')
 if not os.path.exists(pyvista.FIGURE_PATH):
     os.makedirs(pyvista.FIGURE_PATH)
-
+pyvista.BUILDING_GALLERY = True
 
 # -- Project information -----------------------------------------------------
 
 project = 'tetgen'
-copyright = '2018-2019, Alex Kaszynski'
+copyright = '2020, Alex Kaszynski'
 author = 'Alex Kaszynski'
 
 # The short X.Y version
