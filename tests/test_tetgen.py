@@ -57,7 +57,7 @@ def test_numpy_tetrahedralize(tmpdir):
     assert np.any(elems)
 
     # test save as well
-    filename = tmpdir.mkdir("tmpdir").join("test_mesh.vtk")
+    filename = str(tmpdir.mkdir("tmpdir").join("test_mesh.vtk"))
     tgen.write(filename)
 
 

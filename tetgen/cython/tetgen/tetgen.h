@@ -5,9 +5,9 @@
 // A Quality Tetrahedral Mesh Generator and A 3D Delaunay Triangulator       //
 //                                                                           //
 // Version 1.5                                                               //
-// May 31, 2014                                                              //
+// August 18, 2018                                                           //
 //                                                                           //
-// Copyright (C) 2002--2014                                                  //
+// Copyright (C) 2002--2018                                                  //
 //                                                                           //
 // TetGen is freely available through the website: http://www.tetgen.org.    //
 //   It may be copied, modified, and redistributed for non-commercial use.   //
@@ -341,6 +341,7 @@ public:
   bool load_stl(char*);
   bool load_vtk(char*);
   bool load_medit(char*, int);
+  bool load_neumesh(char*, int);
   bool load_plc(char*, int);
   bool load_tetmesh(char*, int);
   void save_nodes(char*);
@@ -613,6 +614,7 @@ public:
   int fixedvolume;                                                 // '-a', 0.
   int regionattrib;                                                // '-A', 0.
   int cdtrefine;                                                   // '-D', 0.
+  int use_equatorial_lens;                                        // '-Dl', 0.
   int insertaddpoints;                                             // '-i', 0.
   int diagnose;                                                    // '-d', 0.
   int convex;                                                      // '-c', 0.
@@ -637,7 +639,7 @@ public:
   int quiet;                                                       // '-Q', 0.
   int verbose;                                                     // '-V', 0.
 
-  // Parameters of TetGen. 
+  // Parameters of TetGen.
   int vertexperblock;                                           // '-x', 4092.
   int tetrahedraperblock;                                       // '-x', 8188.
   int shellfaceperblock;                                        // '-x', 2044.
@@ -680,6 +682,11 @@ public:
   char addinfilename[1024];
   char bgmeshfilename[1024];
 
+  // Read an additional tetrahedral mesh and treat it as holes [2018-07-30].
+  int hole_mesh;                                                   // '-H', 0.
+  char hole_mesh_filename[1024];
+  int apply_flow_bc;                                               // '-K', 0.
+
   // The input object of TetGen. They are recognized by either the input 
   //   file extensions or by the specified options. 
   // Currently the following objects are supported:
@@ -692,7 +699,7 @@ public:
   //   - MESH, a tetrahedral mesh (.ele).
   // If no extension is available, the imposed command line switch
   //   (-p or -r) implies the object. 
-  enum objecttype {NODES, POLY, OFF, PLY, STL, MEDIT, VTK, MESH} object;
+  enum objecttype {NODES, POLY, OFF, PLY, STL, MEDIT, VTK, MESH, NEU_MESH} object;
 
 
   void syntax();
@@ -725,6 +732,7 @@ public:
     insertaddpoints = 0;
     regionattrib = 0;
     cdtrefine = 0;
+    use_equatorial_lens = 0; // -Dl
     diagnose = 0;
     convex = 0;
     zeroindex = 0;
@@ -787,6 +795,10 @@ public:
     outfilename[0] = '\0';
     addinfilename[0] = '\0';
     bgmeshfilename[0] = '\0';
+
+    hole_mesh = 0;
+    hole_mesh_filename[0] = '\0';
+    apply_flow_bc = 0;
 
   }
 
@@ -1642,6 +1654,8 @@ public:
   REAL tetaspectratio(point, point, point, point);
   bool circumsphere(REAL*, REAL*, REAL*, REAL*, REAL* cent, REAL* radius);
   bool orthosphere(REAL*,REAL*,REAL*,REAL*,REAL,REAL,REAL,REAL,REAL*,REAL*);
+  void tetcircumcenter(point tetorg, point tetdest, point tetfapex,
+                       point tettapex, REAL *circumcenter, REAL *radius);
   void planelineint(REAL*, REAL*, REAL*, REAL*, REAL*, REAL*, REAL*);
   int linelineint(REAL*, REAL*, REAL*, REAL*, REAL*, REAL*, REAL*, REAL*);
   REAL tetprismvol(REAL* pa, REAL* pb, REAL* pc, REAL* pd);
@@ -1803,6 +1817,7 @@ public:
   void unifysegments();
   void identifyinputedges(point*);
   void mergefacets();
+  void removesmallangles();
   void meshsurface();
 
   void interecursive(shellface** subfacearray, int arraysize, int axis,
@@ -1958,9 +1973,12 @@ public:
 
   void reconstructmesh();
 
+  int  search_face(point p0, point p1, point p2, triface &tetloop);
+  int  search_edge(point p0, point p1, triface &tetloop);
   int  scoutpoint(point, triface*, int randflag);
   REAL getpointmeshsize(point, triface*, int iloc);
   void interpolatemeshsize();
+  void out_points_to_cells_map(); // in flow_main()
 
   void insertconstrainedpoints(point *insertarray, int arylen, int rejflag);
   void insertconstrainedpoints(tetgenio *addio);
@@ -2092,6 +2110,7 @@ public:
   void outsmesh(char*);
   void outmesh2medit(char*);
   void outmesh2vtk(char*);
+
 
 
 
@@ -2292,6 +2311,39 @@ void tetrahedralize(char *switches, tetgenio *in, tetgenio *out,
 // terminatetetgen()    Terminate TetGen with a given exit code.             //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+// selfint_event, a structure to report self-intersections.
+//
+//   - e_type,  report the type of self-intersections, 
+//     it may be one of:
+//     0, reserved.
+//     1, two edges intersect,
+//     2, an edge and a triangle intersect,
+//     3, two triangles intersect,
+//     4, two edges are overlapping,
+//     5, an edge and a triangle are overlapping,
+//     6, two triangles are overlapping,
+//     7, a vertex lies in an edge,
+//     8, a vertex lies in a facet,         
+
+class selfint_event {
+public:
+  int e_type;
+  int f_marker1; // Tag of the 1st facet.
+  int s_marker1; // Tag of the 1st segment.
+  int f_vertices1[3];
+  int f_marker2; // Tag of the 2nd facet.
+  int s_marker2; // Tag of the 2nd segment.
+  int f_vertices2[3];
+  REAL int_point[3];
+  selfint_event() {
+    e_type = 0;
+    f_marker1 = f_marker2 = 0; 
+    s_marker1 = s_marker2 = 0;
+  }
+};
+
+static selfint_event sevent;
 
 inline void terminatetetgen(tetgenmesh *m, int x)
 {
@@ -3379,6 +3431,7 @@ inline REAL tetgenmesh::norm2(REAL x, REAL y, REAL z)
 {
   return (x) * (x) + (y) * (y) + (z) * (z);
 }
+
 
 
 #endif // #ifndef tetgenH
