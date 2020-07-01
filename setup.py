@@ -22,6 +22,8 @@ version_file = os.path.join(os.path.dirname(__file__), 'tetgen', '_version.py')
 with io_open(version_file, mode='r') as fd:
     exec(fd.read())
 
+
+
 # for: the cc1plus: warning: command line option '-Wstrict-prototypes'
 class build_ext(_build_ext):
     def finalize_options(self):
