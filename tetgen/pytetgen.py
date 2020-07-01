@@ -5,11 +5,15 @@ import ctypes
 
 import numpy as np
 import pyvista as pv
+import vtk
 
 from tetgen import _tetgen
 
-log = logging.getLogger(__name__)
-log.setLevel('CRITICAL')
+LOG = logging.getLogger(__name__)
+LOG.setLevel('CRITICAL')
+
+
+VTK9 = vtk.vtkVersion().GetVTKMajorVersion() >= 9
 
 
 invalid_input = TypeError('Invalid input.  Must be either a pyvista.PolyData\n' +
@@ -62,6 +66,7 @@ class TetGen(object):
         self.f = None
         self.node = None
         self.elem = None
+        self._grid = None
 
         def parse_mesh(mesh):
             if not mesh.is_all_triangles:
@@ -491,18 +496,18 @@ class TetGen(object):
                                                           epsilon,
                                                           coarsen_percent)
         except RuntimeError as e:
-            raise Exception('Failed to tetrahedralize.\n' +
-                            'May need to repair surface by making it manifold:\n' +
-                            str(e))
+            raise RuntimeError('Failed to tetrahedralize.\n' +
+                               'May need to repair surface by making it manifold:\n' +
+                               str(e))
 
         # check if a mesh was generated
         if not np.any(self.node):
-            raise Exception('Failed to tetrahedralize.\n' +
-                            'May need to repair surface by making it manifold')
+            raise RuntimeError('Failed to tetrahedralize.\n' +
+                               'May need to repair surface by making it manifold')
 
         # Return nodes and elements
-        info = (self.node.shape[0], self.elem.shape[0])
-        log.info('Generated mesh with %d nodes and %d elements' % info)
+        LOG.info('Generated mesh with %d nodes and %d elements', self.node.shape[0],
+                 self.elem.shape[0])
         self._updated = True
 
         return self.node, self.elem
@@ -510,13 +515,13 @@ class TetGen(object):
     @property
     def grid(self):
         """ Returns a :class:`pyvista.UnstructuredGrid` """
-        if not hasattr(self, 'node'):
-            raise Exception('Run Tetrahedralize first')
+        if self.node is None:
+            raise RuntimeError('Run Tetrahedralize first')
 
-        if hasattr(self, '_grid') and not self._updated:
+        if self._grid is not None and not self._updated:
             return self._grid
 
-        buf = np.empty((self.elem.shape[0], 1), np.int64)
+        buf = np.empty((self.elem.shape[0], 1), pv.ID_TYPE)
         cell_type = np.empty(self.elem.shape[0], dtype='uint8')
         if self.elem.shape[1] == 4:  # linear
             buf[:] = 4
@@ -527,9 +532,13 @@ class TetGen(object):
         else:
             raise Exception('Invalid element array shape %s' % str(self.elem.shape))
 
-        offset = np.cumsum(buf + 1) - (buf[0] + 1)
         cells = np.hstack((buf, self.elem))
-        self._grid = pv.UnstructuredGrid(offset, cells, cell_type, self.node)
+        if VTK9:
+            self._grid = pv.UnstructuredGrid(cells, cell_type, self.node)
+        else:
+            offset = np.cumsum(buf + 1) - (buf[0] + 1)
+            self._grid = pv.UnstructuredGrid(offset, cells, cell_type, self.node)
+
         self._updated = False
         return self._grid
 

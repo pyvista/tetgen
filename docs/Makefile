@@ -12,6 +12,11 @@ BUILDDIR      = _build
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
+clean:
+	rm -rf $(BUILDDIR)/*
+	rm -rf examples/
+	rm -f errors.txt
+
 .PHONY: help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new

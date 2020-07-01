@@ -15,8 +15,10 @@ of Python along with integration to `PyVista <https://docs.pyvista.org>`_ for
 See the `TetGen <https://github.com/ufz/tetgen>`__ GitHub page for more details
 on the original creator.
 
-The last update to the original C++ software was on 19 January 2011, but the
-software remains relevant today.  Brief description from
+This python module uses the C++ source from TetGen (version 1.5.1,
+released on August 18, 2018) hosted at `ufz/TetGen <https://github.com/ufz/tetgen>`__.
+
+Brief description from
 `Weierstrass Institute Software <http://wias-berlin.de/software/index.jsp?id=TetGen&lang=1>`__:
 
     TetGen is a program to generate tetrahedral meshes of any 3D polyhedral domains.
@@ -96,10 +98,11 @@ the mesh quality.
 
 .. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_subgrid.png
 
-Cell quality scalars can be obtained and plotted with:
+Cell quality scalars can be obtained and plotted using ``pyansys``:
 
 .. code:: python
 
+    import pyansys
     cell_qual = subgrid.quality
 
     # plot quality

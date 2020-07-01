@@ -37,9 +37,11 @@ plotter.add_legend([[' Input Mesh ', 'r'],
 plotter.show()
 
 ###############################################################################
+# Use pyansys to compute cell quality
 
-cell_qual = subgrid.quality
+import pyansys
+cell_qual = pyansys.quality(subgrid)
 
 # plot quality
-subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0,1],
+subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0, 1],
              flip_scalars=True, show_edges=True,)
