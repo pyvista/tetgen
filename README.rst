@@ -37,6 +37,7 @@ Installation
 From `PyPI <https://pypi.python.org/pypi/tetgen>`__
 
 .. code:: bash
+
     pip install cython
     pip install tetgen
 
