@@ -38,7 +38,7 @@ From `PyPI <https://pypi.python.org/pypi/tetgen>`__
 
 .. code:: bash
 
-    pip install cython
+    pip install -r requirements_build.txt
     pip install tetgen
 
 From source at `GitHub <https://github.com/pyvista/tetgen>`__
@@ -47,6 +47,7 @@ From source at `GitHub <https://github.com/pyvista/tetgen>`__
 
     git clone https://github.com/pyvista/tetgen
     cd tetgen
+    pip install -r requirements_build.txt
     pip install .
 
 
