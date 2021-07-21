@@ -124,7 +124,7 @@ html_context = {
 
 html_theme_options = {
     "show_prev_next": False,
-    "github_url": "https://github.com/pyvista/pymeshfix",
+    "github_url": "https://github.com/pyvista/tetgen",
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
