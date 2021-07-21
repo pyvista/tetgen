@@ -24,6 +24,7 @@ jobs:
 
       - name: Install tetgen
         run: |
+          pip install -r requirements_build.txt
           pip install .
   
       - name: Build Documentation

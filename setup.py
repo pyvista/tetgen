@@ -22,7 +22,7 @@ def needs_cython():
         try:
             import cython
         except ImportError:
-            return True
+            raise ImportError('Please install cython to build ``tetgen``')
     return not has_cython_src
 
 
@@ -36,8 +36,6 @@ def needs_numpy():
 setup_requires = []
 if needs_cython():
     setup_requires.extend(['cython'])
-if needs_numpy():
-    setup_requires.extend(['numpy'])
 
 # for: the cc1plus: warning: command line option '-Wstrict-prototypes'
 class build_ext(_build_ext):
@@ -83,10 +81,10 @@ setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Development Status :: 4 - Beta',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
 
     # Build cython modules
