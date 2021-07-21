@@ -15,8 +15,6 @@ jobs:
 - job: Linux
   strategy:
     matrix:
-      Python35:
-        python.version: '3.5'
       Python36:
         python.version: '3.6'
       Python37:
@@ -55,7 +53,7 @@ jobs:
       Python37:
         python.version: '3.7'
       Python38:
-        python.version: '3.7'
+        python.version: '3.8'
   pool:
     vmImage: 'macOS-10.14'
   steps:
@@ -73,8 +71,6 @@ jobs:
     python.architecture: 'x64'
   strategy:
     matrix:
-      Python35:
-        python.version: '3.5'
       Python36:
         python.version: '3.6'
       Python37:
