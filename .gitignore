@@ -31,6 +31,10 @@ TODO
 test.sh
 .pytest_cache/
 
-docs/errors.txt
-docs/_build
-docs/examples
+doc/errors.txt
+doc/_build
+doc/examples
+
+
+# MISC
+.mypy_cache
