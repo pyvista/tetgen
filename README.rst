@@ -96,7 +96,14 @@ the mesh quality.
 
 .. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_subgrid.png
 
-Here is the cell quality as computed according to the scaled jacobian.
+Here is the cell quality as computed according to the scaled jacobian.  This example uses the ansys.mapdl.reader library to compute the quality.
+
+from ansys.mapdl.reader import quality
+cell_qual = quality(subgrid)
+
+# plot quality
+subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0, 1],
+             flip_scalars=True, show_edges=True,)
 
 .. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_qual.png
 
