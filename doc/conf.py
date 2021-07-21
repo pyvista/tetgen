@@ -14,8 +14,7 @@
 #
 import os
 import sys
-# path = os.path.abspath('../')
-# sys.path.insert(0, path)
+import datetime
 
 import tetgen
 
@@ -38,16 +37,17 @@ pyvista.BUILDING_GALLERY = True
 # -- Project information -----------------------------------------------------
 
 project = 'tetgen'
-copyright = '2020, Alex Kaszynski'
+year = datetime.date.today().year
+copyright = f"2017-{year}, The PyVista Developers"
 author = 'Alex Kaszynski'
 
+
 # The short X.Y version
-version = tetgen.__version__
-# The full version, including alpha/beta/rc tags
-release = tetgen.__version__
+release = version = tetgen.__version__
 
 
 # -- General configuration ---------------------------------------------------
+html_logo = "./_static/pyvista_logo_sm.png"
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
@@ -94,12 +94,18 @@ exclude_patterns = []
 pygments_style = 'sphinx'
 
 
+# Copy button customization ---------------------------------------------------
+# exclude traditional Python prompts from the copied code
+copybutton_prompt_text = r'>>> ?|\.\.\. '
+copybutton_prompt_is_regexp = True
+
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
+html_theme = "pydata_sphinx_theme"
 html_context = {
     # Enable the "Edit in GitHub link within the header of each page.
     'display_github': True,
@@ -116,6 +122,10 @@ html_context = {
     ],
 }
 
+html_theme_options = {
+    "show_prev_next": False,
+    "github_url": "https://github.com/pyvista/pymeshfix",
+}
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the

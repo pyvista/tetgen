@@ -34,7 +34,7 @@ plotter.add_mesh(subgrid, color='lightgrey', lighting=True, show_edges=True)
 plotter.add_mesh(toroid, color='r', style='wireframe')
 plotter.add_legend([[' Input Mesh ', 'r'],
                     [' Tesselated Mesh ', 'black']])
-plotter.plot()
+plotter.show()
 
 ###############################################################################
 # Cell quality using pyansys
