@@ -22,7 +22,7 @@ def needs_cython():
         try:
             import cython
         except ImportError:
-            raise ImportError('Please install cython to build ``tetgen``')
+            return True
     return not has_cython_src
 
 
