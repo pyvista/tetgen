@@ -1,0 +1,10 @@
+Sphinx==4.0.3
+pydata-sphinx-theme
+matplotlib
+pyvista
+sphinx_gallery
+sphinx-notfound-page>=0.3.0
+sphinx-copybutton
+pymeshfix
+ansys-mapdl-reader
+pyacvd

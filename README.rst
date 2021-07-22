@@ -1,9 +1,6 @@
 tetgen
 ======
 
-.. image:: https://travis-ci.org/pyvista/tetgen.svg?branch=master
-    :target: https://travis-ci.org/pyvista/tetgen
-
 .. image:: https://img.shields.io/pypi/v/tetgen.svg?logo=python&logoColor=white
    :target: https://pypi.org/project/tetgen/
 
@@ -38,7 +35,6 @@ From `PyPI <https://pypi.python.org/pypi/tetgen>`__
 
 .. code:: bash
 
-    pip install -r requirements_build.txt
     pip install tetgen
 
 From source at `GitHub <https://github.com/pyvista/tetgen>`__
@@ -100,16 +96,19 @@ the mesh quality.
 
 .. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_subgrid.png
 
-Cell quality scalars can be obtained and plotted using ``pyansys``:
+Here is the cell quality as computed according to the scaled jacobian.  This example uses the ansys.mapdl.reader library to compute the quality.
 
-.. code:: python
+.. code::
 
-    import pyansys
-    cell_qual = subgrid.quality
+   Compute cell quality
 
-    # plot quality
-    subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0,1],
-                 flip_scalars=True, show_edges=True,)
+   >>> from ansys.mapdl.reader import quality
+   >>> cell_qual = quality(subgrid)
+
+   Plot quality
+
+   >>> subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0, 1],
+   ...              flip_scalars=True, show_edges=True)
 
 .. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_qual.png
 

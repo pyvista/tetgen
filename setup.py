@@ -36,8 +36,6 @@ def needs_numpy():
 setup_requires = []
 if needs_cython():
     setup_requires.extend(['cython'])
-if needs_numpy():
-    setup_requires.extend(['numpy'])
 
 # for: the cc1plus: warning: command line option '-Wstrict-prototypes'
 class build_ext(_build_ext):
@@ -74,6 +72,7 @@ setup(
     version=__version__,
     description='Python interface to tetgen',
     long_description=open('README.rst').read(),
+    long_description_content_type='text/x-rst',
 
     author='Alex Kaszynski',
     author_email='akascap@gmail.com',
@@ -83,10 +82,10 @@ setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: GNU Affero General Public License v3',
         'Development Status :: 4 - Beta',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
     ],
 
     # Build cython modules
