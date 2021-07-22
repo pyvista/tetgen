@@ -72,6 +72,7 @@ setup(
     version=__version__,
     description='Python interface to tetgen',
     long_description=open('README.rst').read(),
+    long_description_content_type='text/x-rst',
 
     author='Alex Kaszynski',
     author_email='akascap@gmail.com',
