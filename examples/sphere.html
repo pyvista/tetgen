@@ -1,211 +1,234 @@
 
 
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Sphere &mdash; tetgen 0.4.2 documentation</title>
-  
 
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
-  
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Using external modules to create a mesh &#8212; tetgen 0.5.2 documentation</title>
     
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-        <script type="text/javascript" src="../_static/copybutton.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  <link href="../_static/css/theme.css" rel="stylesheet" />
+  <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
 
     
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    
+  <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Super Toroid" href="super_toroid.html" />
     <link rel="prev" title="Cow" href="cow.html" />
- 
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
 <meta name="keywords" content="python, 3D, tetrahedral-meshing, mesh, open-source">
 
 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="../index.html" class="icon icon-home"> tetgen
-          
-
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                0.4.2
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-    
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">tetgen</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="cow.html">Cow</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Sphere</a></li>
-<li class="toctree-l2"><a class="reference internal" href="super_toroid.html">Super Toroid</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
-</ul>
-
-            
-          
+    <div class="container-fluid" id="banner"></div>
 
     
-        <p class="caption">
-            <span class="caption-text">
-            
-                Getting Connected
-            
-            </span>
-        </p>
-        <ul>
-            
-                <li class="toctree-l1"><a href="http://slack.pyvista.org"><i class="fa fa-slack fa-fw"></i> Slack Community</a></li>
-            
-                <li class="toctree-l1"><a href="https://github.com/pyvista/pyvista-support"><i class="fa fa-comment fa-fw"></i> Support</a></li>
-            
-                <li class="toctree-l1"><a href="https://github.com/pyvista/tetgen"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
-            
-        </ul>
-    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
 
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">tetgen</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="../index.html">Docs</a> &raquo;</li>
-        
-          <li><a href="index.html">Examples</a> &raquo;</li>
-        
-      <li>Sphere</li>
+  <div id="navbar-start">
     
     
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            
-              <a href="https://github.com/pyvista/tetgen/blob/master/docs/examples/sphere.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
-      </li>
+
+<a class="navbar-brand" href="../index.html">
+  <img src="../_static/pyvista_logo_sm.png" class="logo" alt="logo">
+</a>
+
+
     
-  </ul>
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
   
-  <hr/>
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  tetgen
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../api.html">
+  API Reference
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pyvista/tetgen" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
             
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="cow.html">
+   Cow
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Using external modules to create a mesh
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="super_toroid.html">
+   Super Toroid
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage pt-5 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Using external modules to create a mesh
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-pyvista">
+   Using PyVista
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-ansys-mapdl-reader">
+   Using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     ansys-mapdl-reader
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-pyacvd">
+   Using pyacvd
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p>Click <a class="reference internal" href="#sphx-glr-download-examples-sphere-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-sphere-py"><span class="std std-ref">here</span></a>
+to download the full example code</p>
 </div>
-<div class="sphx-glr-example-title section" id="sphere">
-<span id="sphx-glr-examples-sphere-py"></span><h1>Sphere<a class="headerlink" href="#sphere" title="Permalink to this headline">¶</a></h1>
+<div class="sphx-glr-example-title section" id="using-external-modules-to-create-a-mesh">
+<span id="sphx-glr-examples-sphere-py"></span><h1>Using external modules to create a mesh<a class="headerlink" href="#using-external-modules-to-create-a-mesh" title="Permalink to this headline">¶</a></h1>
 <p>Tetrahedralize a sphere</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 2</span>
 <span class="kn">import</span> <span class="nn">pyvista</span> <span class="k">as</span> <span class="nn">pv</span>
@@ -213,6 +236,10 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="using-pyvista">
+<h1>Using PyVista<a class="headerlink" href="#using-pyvista" title="Permalink to this headline">¶</a></h1>
+<p>Create a surface mesh using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code> and then tetrahedralize it.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">()</span>
 <span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
 <span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mindihedral</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">minratio</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
@@ -220,10 +247,16 @@
 <span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_sphere_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_001.png" />
+<img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_001.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(1.9264490110725325, 1.9264490110725325, 1.9264490110725325),
+ (0.0, 0.0, 0.0),
+ (0.0, 0.0, 1.0)]
+</pre></div>
+</div>
+<p>Use pyvista to plot</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get cell centroids</span>
-<span class="n">cells</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">:]</span>
-<span class="n">cell_center</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">cells</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">cell_center</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">cell_centers</span><span class="p">()</span><span class="o">.</span><span class="n">points</span>
 
 <span class="c1"># extract cells below the 0 xy plane</span>
 <span class="n">mask</span> <span class="o">=</span> <span class="n">cell_center</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span>
@@ -239,74 +272,132 @@
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_sphere_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_002.png" />
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">quality</span>
-
-<span class="c1"># plot quality</span>
-<span class="n">subgrid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scalars</span><span class="o">=</span><span class="n">cell_qual</span><span class="p">,</span> <span class="n">stitle</span><span class="o">=</span><span class="s1">&#39;Quality&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
-             <span class="n">flip_scalars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
+<img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_002.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(1.9264490110725325, 1.9264490110725325, 1.9264490110725325),
+ (0.0, 0.0, 0.0),
+ (0.0, 0.0, 1.0)]
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_sphere_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.970 seconds)</p>
-<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-sphere-py">
-<div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/d3f2b02e15bf3a94566a256a80d2ac6a/sphere.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sphere.py</span></code></a></p>
 </div>
-<div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/4e88becc414a11f104cdbe03668963f6/sphere.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere.ipynb</span></code></a></p>
+<div class="section" id="using-ansys-mapdl-reader">
+<h1>Using <code class="docutils literal notranslate"><span class="pre">ansys-mapdl-reader</span></code><a class="headerlink" href="#using-ansys-mapdl-reader" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use pyansys&#39;s `legacy reader &lt;https://github.com/pyansys/reader&gt;`_</span>
+<span class="c1"># library to compute cell quality.  This is the minimum scaled</span>
+<span class="c1"># jacobian of each cell.</span>
+
+<span class="kn">from</span> <span class="nn">ansys.mapdl.reader</span> <span class="kn">import</span> <span class="n">quality</span>
+<span class="n">cell_qual</span> <span class="o">=</span> <span class="n">quality</span><span class="p">(</span><span class="n">subgrid</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mean cell quality: </span><span class="si">{</span><span class="n">cell_qual</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.3</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot quality</span>
+<span class="n">subgrid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scalars</span><span class="o">=</span><span class="n">cell_qual</span><span class="p">,</span> <span class="n">scalar_bar_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Quality&#39;</span><span class="p">},</span>
+             <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">flip_scalars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
+</pre></div>
+</div>
+<img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_003.png" />
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean cell quality: 0.566
+
+[(1.688873209535967, 1.688873209535967, 1.4670659512002875),
+ (0.0, 0.0, -0.22180725833567966),
+ (0.0, 0.0, 1.0)]
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-pyacvd">
+<h1>Using pyacvd<a class="headerlink" href="#using-pyacvd" title="Permalink to this headline">¶</a></h1>
+<p>We can use <a class="reference external" href="https://github.com/pyvista/pyacvd">pyacvd</a> to create a
+more uniform mesh using the mesh generated from <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.  We can
+use the <code class="docutils literal notranslate"><span class="pre">pyacvd</span></code> module to generate a more uniform surface mesh
+and then tetrahedralize that.</p>
+<p>Here we re-run the above example, except using a more uniform surface</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyacvd</span>
+
+<span class="n">n_surf</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="n">clustered</span> <span class="o">=</span> <span class="n">pyacvd</span><span class="o">.</span><span class="n">Clustering</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="n">clustered</span><span class="o">.</span><span class="n">subdivide</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">clustered</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">n_surf</span><span class="p">)</span>
+<span class="n">uniform_surf</span> <span class="o">=</span> <span class="n">clustered</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">()</span>
+
+<span class="c1"># generate interior mesh</span>
+<span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">uniform_surf</span><span class="p">)</span>
+<span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mindihedral</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">minratio</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">uniform_grid</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
+<span class="n">uniform_grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">cell_center</span> <span class="o">=</span> <span class="n">uniform_grid</span><span class="o">.</span><span class="n">cell_centers</span><span class="p">()</span><span class="o">.</span><span class="n">points</span>
+
+<span class="c1"># extract cells below the 0 xy plane</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">cell_center</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span>
+<span class="n">cell_ind</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">subgrid</span> <span class="o">=</span> <span class="n">uniform_grid</span><span class="o">.</span><span class="n">extract_cells</span><span class="p">(</span><span class="n">cell_ind</span><span class="p">)</span>
+
+<span class="n">cell_qual</span> <span class="o">=</span> <span class="n">quality</span><span class="p">(</span><span class="n">subgrid</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mean cell quality: </span><span class="si">{</span><span class="n">cell_qual</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.3</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># plot quality</span>
+<span class="n">subgrid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scalars</span><span class="o">=</span><span class="n">cell_qual</span><span class="p">,</span> <span class="n">scalar_bar_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Quality&#39;</span><span class="p">},</span>
+             <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span> <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">flip_scalars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+             <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
+</pre></div>
+</div>
+<ul class="sphx-glr-horizontal">
+<li><img alt="sphere" class="sphx-glr-multi-img" src="../_images/sphx_glr_sphere_004.png" />
+</li>
+<li><img alt="sphere" class="sphx-glr-multi-img" src="../_images/sphx_glr_sphere_005.png" />
+</li>
+</ul>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean cell quality: 0.594
+
+[(1.6920245703037755, 1.6919326955379055, 1.4790218232482062),
+ (-8.963581475990301e-05, -0.0001815105806299011, -0.2130923828703293),
+ (0.0, 0.0, 1.0)]
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.567 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-sphere-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/9c151cee03463a436f8f8d2bc4a1c381/sphere.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sphere.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/c1e72683f2866b0f79702e3bf8ba6a4b/sphere.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="super_toroid.html" class="btn btn-neutral float-right" title="Super Toroid" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="cow.html" class="btn btn-neutral float-left" title="Cow" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+              </div>
+              
+              
+          </main>
+          
+
+      </div>
     </div>
   
+  <script src="../_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2018-2019, Alex Kaszynski
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     
-   
-
-</body>
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2017-2021, The PyVista Developers.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
 </html>

@@ -1,230 +1,208 @@
 
 
-
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>API Reference &mdash; tetgen 0.4.2 documentation</title>
-  
 
-  
-  
-  
-  
-
-  
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Reference &#8212; tetgen 0.5.2 documentation</title>
     
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
-        <script type="text/javascript" src="_static/copybutton.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
 
     
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
-  <link rel="stylesheet" href="_static/gallery.css" type="text/css" />
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/gallery-rendered-html.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Super Toroid" href="examples/super_toroid.html" />
- 
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
 <meta name="keywords" content="python, 3D, tetrahedral-meshing, mesh, open-source">
 
 
-</head>
-
-<body class="wy-body-for-nav">
-
-   
-  <div class="wy-grid-for-nav">
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
     
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-          
-
-          
-            <a href="index.html" class="icon icon-home"> tetgen
-          
-
-          
-          </a>
-
-          
-            
-            
-              <div class="version">
-                0.4.2
-              </div>
-            
-          
-
-          
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-
-          
-        </div>
-
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-    
-            
-            
-              
-            
-            
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">tetgen</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Examples</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
-</ul>
-<p class="caption"><span class="caption-text">API Reference</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a></li>
-</ul>
-
-            
-          
+    <div class="container-fluid" id="banner"></div>
 
     
-        <p class="caption">
-            <span class="caption-text">
-            
-                Getting Connected
-            
-            </span>
-        </p>
-        <ul>
-            
-                <li class="toctree-l1"><a href="http://slack.pyvista.org"><i class="fa fa-slack fa-fw"></i> Slack Community</a></li>
-            
-                <li class="toctree-l1"><a href="https://github.com/pyvista/pyvista-support"><i class="fa fa-comment fa-fw"></i> Support</a></li>
-            
-                <li class="toctree-l1"><a href="https://github.com/pyvista/tetgen"><i class="fa fa-github fa-fw"></i> Source Code</a></li>
-            
-        </ul>
-    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
 
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">tetgen</a>
-        
-      </nav>
-
-
-      <div class="wy-nav-content">
-        
-        <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
-  <ul class="wy-breadcrumbs">
-    
-      <li><a href="index.html">Docs</a> &raquo;</li>
-        
-      <li>API Reference</li>
+  <div id="navbar-start">
     
     
-      <li class="wy-breadcrumbs-aside">
-        
-            
-            
-              <a href="https://github.com/pyvista/tetgen/blob/master/docs/api.rst" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
-      </li>
+
+<a class="navbar-brand" href="index.html">
+  <img src="_static/pyvista_logo_sm.png" class="logo" alt="logo">
+</a>
+
+
     
-  </ul>
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
   
-  <hr/>
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  tetgen
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="examples/index.html">
+  Examples
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="current reference internal nav-link" href="#">
+  API Reference
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/pyvista/tetgen" rel="noopener" target="_blank" title="GitHub">
+            <span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label>
+          </a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
             
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    
+  </div>
+</nav>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
   <div class="section" id="module-tetgen.pytetgen">
 <span id="api-reference"></span><h1>API Reference<a class="headerlink" href="#module-tetgen.pytetgen" title="Permalink to this headline">¶</a></h1>
 <p>Python module to interface with wrapped TetGen C++ code</p>
-<dl class="class">
-<dt id="tetgen.TetGen">
-<em class="property">class </em><code class="descclassname">tetgen.</code><code class="descname">TetGen</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen" title="Permalink to this definition">¶</a></dt>
+<dl class="py class">
+<dt class="sig sig-object py" id="tetgen.TetGen">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">tetgen.</span></span><span class="sig-name descname"><span class="pre">TetGen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Input, clean, and tetrahedralize surface meshes using
 TetGen</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>args</strong> (str, <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.PolyData</span></code> or (np.ndarray, np.ndarray)) – Either a pyvista surface mesh or a nx3 vertex array and nx3 face
+<dd class="field-odd"><p><strong>args</strong> (str, <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.PolyData</span></code> or (<code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>, <code class="docutils literal notranslate"><span class="pre">np.ndarray</span></code>)) – Either a pyvista surface mesh or a <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">3</span></code> vertex array and <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">x</span> <span class="pre">3</span></code> face
 array.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>Tetrahedralize a sphere using pyvista
-&gt;&gt;&gt; import pyvista
-&gt;&gt;&gt; import tetgen
-&gt;&gt;&gt; sphere = pyvista.Sphere(theta_resolution=10, phi_resolution=10)
-&gt;&gt;&gt; tgen = tetgen.TetGen(sphere)
-&gt;&gt;&gt; nodes, elem = tgen.tetrahedralize()
-&gt;&gt;&gt; tgen.grid.plot(show_edges=True)</p>
-<p>Tetrahedralize a cube using numpy arrays
-&gt;&gt;&gt; import numpy as np
-&gt;&gt;&gt; import tetgen
-&gt;&gt;&gt; v = np.array([[0, 0, 0], [1, 0, 0],</p>
-<blockquote>
-<div><p>[1, 1, 0], [0, 1, 0],
-[0, 0, 1], [1, 0, 1],
-[1, 1, 1], [0, 1, 1],])</p>
-</div></blockquote>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<p>Tetrahedralize a sphere using pyvista</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyvista</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Tetrahedralize a cube using numpy arrays</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+<span class="go">                  [1, 1, 0], [0, 1, 0],</span>
+<span class="go">                  [0, 0, 1], [1, 0, 1],</span>
+<span class="go">                  [1, 1, 1], [0, 1, 1],])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
 <span class="go">                   [0, 1, 5], [5, 4, 0],</span>
 <span class="go">                   [1, 2, 6], [6, 5, 1],</span>
 <span class="go">                   [2, 3, 7], [7, 6, 2],</span>
@@ -234,17 +212,17 @@ array.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elems</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
 </pre></div>
 </div>
-<dl class="attribute">
-<dt id="tetgen.TetGen.grid">
-<code class="descname">grid</code><a class="headerlink" href="#tetgen.TetGen.grid" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="tetgen.TetGen.grid">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">grid</span></span><a class="headerlink" href="#tetgen.TetGen.grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.UnstructuredGrid</span></code></p>
 </dd></dl>
 
-<dl class="method">
-<dt id="tetgen.TetGen.make_manifold">
-<code class="descname">make_manifold</code><span class="sig-paren">(</span><em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.make_manifold" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reconstruct a manifold clean surface from input mesh.  Updates
-mesh in-place.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tetgen.TetGen.make_manifold">
+<span class="sig-name descname"><span class="pre">make_manifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.make_manifold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reconstruct a manifold clean surface from input mesh.
+Updates mesh in-place.</p>
 <p>Requires pymeshfix</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -253,28 +231,28 @@ mesh in-place.</p>
 </dl>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="tetgen.TetGen.mesh">
-<code class="descname">mesh</code><a class="headerlink" href="#tetgen.TetGen.mesh" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="tetgen.TetGen.mesh">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">mesh</span></span><a class="headerlink" href="#tetgen.TetGen.mesh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the surface mesh</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="tetgen.TetGen.plot">
-<code class="descname">plot</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.plot" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="tetgen.TetGen.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Displays input mesh</p>
 <p>See help(<code class="xref py py-func docutils literal notranslate"><span class="pre">pyvista.plot()</span></code>) for available arguments.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="tetgen.TetGen.tetrahedralize">
-<code class="descname">tetrahedralize</code><span class="sig-paren">(</span><em>psc=0</em>, <em>refine=0</em>, <em>quality=1</em>, <em>nobisect=True</em>, <em>coarsen=0</em>, <em>metric=0</em>, <em>weighted=0</em>, <em>brio_hilbert=1</em>, <em>incrflip=0</em>, <em>flipinsert=0</em>, <em>varvolume=0</em>, <em>fixedvolume=0</em>, <em>noexact=0</em>, <em>nostaticfilter=0</em>, <em>insertaddpoints=0</em>, <em>regionattrib=0</em>, <em>cdtrefine=0</em>, <em>diagnose=0</em>, <em>convex=0</em>, <em>zeroindex=0</em>, <em>facesout=0</em>, <em>edgesout=0</em>, <em>neighout=0</em>, <em>voroout=0</em>, <em>meditview=0</em>, <em>vtkview=0</em>, <em>nobound=0</em>, <em>nonodewritten=1</em>, <em>noelewritten=1</em>, <em>nofacewritten=1</em>, <em>noiterationnum=0</em>, <em>nomergefacet=0</em>, <em>nomergevertex=0</em>, <em>nojettison=0</em>, <em>docheck=0</em>, <em>quiet=0</em>, <em>verbose=0</em>, <em>vertexperblock=4092</em>, <em>tetrahedraperblock=8188</em>, <em>shellfaceperblock=4092</em>, <em>nobisect_nomerge=1</em>, <em>supsteiner_level=2</em>, <em>addsteiner_algo=1</em>, <em>coarsen_param=0</em>, <em>weighted_param=0</em>, <em>fliplinklevel=-1</em>, <em>flipstarsize=-1</em>, <em>fliplinklevelinc=1</em>, <em>reflevel=3</em>, <em>optscheme=7</em>, <em>optlevel=2</em>, <em>delmaxfliplevel=1</em>, <em>order=2</em>, <em>reversetetori=0</em>, <em>steinerleft=10000</em>, <em>no_sort=0</em>, <em>hilbert_order=52</em>, <em>hilbert_limit=8</em>, <em>brio_threshold=64</em>, <em>brio_ratio=0.125</em>, <em>facet_separate_ang_tol=179.9</em>, <em>facet_overlap_ang_tol=0.001</em>, <em>facet_small_ang_tol=15.0</em>, <em>maxvolume=-1.0</em>, <em>minratio=2.0</em>, <em>mindihedral=0.0</em>, <em>optmaxdihedral=165.0</em>, <em>optminsmtdihed=179.0</em>, <em>optminslidihed=179.0</em>, <em>epsilon=1e-08</em>, <em>coarsen_percent=1.0</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.tetrahedralize" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="tetgen.TetGen.tetrahedralize">
+<span class="sig-name descname"><span class="pre">tetrahedralize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">psc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobisect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_hilbert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incrflip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipinsert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixedvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noexact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nostaticfilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertaddpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regionattrib</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdtrefine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeroindex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facesout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgesout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voroout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meditview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vtkview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonodewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noelewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nofacewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noiterationnum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergefacet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergevertex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nojettison</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertexperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4092</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tetrahedraperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8188</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shellfaceperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4092</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobisect_nomerge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supsteiner_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addsteiner_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipstarsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevelinc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optscheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optlevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delmaxfliplevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversetetori</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steinerleft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">52</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_separate_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_overlap_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_small_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mindihedral</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optmaxdihedral</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">165.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optminsmtdihed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optminslidihed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.tetrahedralize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates tetrahedrals interior to the surface mesh
 described by the vertex and face arrays already loaded.
 Returns nodes and elements belonging to the all tetrahedral
 mesh.</p>
 <p>The tetrahedral generator uses the C++ library TetGen and can
-be configured by either using a string of ‘switches’ or by
+be configured by either using a string of <code class="docutils literal notranslate"><span class="pre">switches</span></code> or by
 changing the underlying behavior using optional inputs.</p>
 <p>Should the user desire more control over the mesh
 tetrahedralization or wish to control the tetrahedralization
@@ -346,109 +324,112 @@ quadradic tetrahedrals.  Default 2.</p></li>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<p>The following switches “pq1.1/10Y” would be:
-&gt;&gt;&gt; node, elem = tgen.Tetrahedralize(nobisect=True, quality=True,</p>
-<blockquote>
-<div><p>minratio=1.1, mindihedral=10)</p>
-</div></blockquote>
+<p>The following switches “pq1.1/10Y” would be:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">nobisect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="go">                                     minratio=1.1, mindihedral=10)</span>
+</pre></div>
+</div>
+<p>Using the switches option:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pq1.1/10Y&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 <p class="rubric">Notes</p>
 <p>There are many other options and the TetGen documentation
 contains descritpions only for the switches of the original
 C++ program.  This is the relationship between tetgen switches
 and python optinal inputs:</p>
-<p>PYTHON OPTION                                            TETGEN SWITCH
-int psc;                                                 // -s
-int refine;                                              // -r
-int quality;                                             // -q
-int nobisect;                                            // -Y
-int coarsen;                                             // -R
-int weighted;                                            // -w
-int brio_hilbert;                                        // -b
-int incrflip;                                            // -l
-int flipinsert;                                          // -L
-int metric;                                              // -m
-int varvolume;                                           // -a
-int fixedvolume;                                         // -a
-int regionattrib;                                        // -A
-int cdtrefine;                                           // -D
-int insertaddpoints;                                     // -i
-int diagnose;                                            // -d
-int convex;                                              // -c
-int nomergefacet;                                        // -M
-int nomergevertex;                                       // -M
-int noexact;                                             // -X
-int nostaticfilter;                                      // -X
-int zeroindex;                                           // -z
-int voroout;                                             // -v
-int meditview;                                           // -g
-int vtkview;                                             // -k
-int nobound;                                             // -B
-int noiterationnum;                                      // -I
-int nojettison;                                          // -J
-int docheck;                                             // -C
-int quiet;                                               // -Q
-int verbose;                                             // -V</p>
-<p>PYTHON OPTION                                            TETGEN SWITCH
-int vertexperblock;                                      // ‘-x’, 4092.
-int tetrahedraperblock;                                  // ‘-x’, 8188.
-int shellfaceperblock;                                   // ‘-x’, 2044.
-int nobisect_nomerge;                                    // ‘-Y’, 1.
-int supsteiner_level;                                    // ‘-Y/’, 2.
-int addsteiner_algo;                                     // ‘-Y//’, 1.
-int coarsen_param;                                       // ‘-R’, 0.
-int weighted_param;                                      // ‘-w’, 0.
-int fliplinklevel;                                       // -1.
-int flipstarsize;                                        // -1.
-int fliplinklevelinc;                                    //  1.
-int reflevel;                                            // ‘-D’, 3.
-int optlevel;                                            // ‘-O’, 2.
-int optscheme;                                           // ‘-O’, 7.
-int delmaxfliplevel;                                     // 1.
-int order;                                               // ‘-o’, 1.
-int reversetetori;                                       // ‘-o/’, 0.
-int steinerleft;                                         // ‘-S’, 0.
-int no_sort;                                             // 0.
-int hilbert_order;                                       // ‘-b///’, 52.
-int hilbert_limit;                                       // ‘-b//’  8.
-int brio_threshold;                                      // ‘-b’ 64.
-REAL brio_ratio;                                         // ‘-b/’ 0.125.
-REAL facet_separate_ang_tol;                             // ‘-p’, 179.9.
-REAL facet_overlap_ang_tol;                              // ‘-p/’,  0.1.
-REAL facet_small_ang_tol;                                // ‘-p//’, 15.0.
-REAL maxvolume;                                          // ‘-a’, -1.0.
-REAL minratio;                                           // ‘-q’, 0.0.
-REAL mindihedral;                                        // ‘-q’, 5.0.
-REAL optmaxdihedral;                                     // 165.0.
-REAL optminsmtdihed;                                     // 179.0.
-REAL optminslidihed;                                     // 179.0.
-REAL epsilon;                                            // ‘-T’, 1.0e-8.
-REAL coarsen_percent;                                    // -R1/#, 1.0.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">psc</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refine</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-r'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quality</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-q'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nobisect</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Y'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coarsen</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-R'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weighted</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-w'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brio_hilbert</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">incrflip</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-l'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flipinsert</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-L'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metric</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-m'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">varvolume</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fixedvolume</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">regionattrib</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-A'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdtrefine</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-D'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insertaddpoints</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-i'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">diagnose</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-d'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">convex</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-c'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nomergefacet</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-M'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nomergevertex</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-M'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">noexact</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-X'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nostaticfilter</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-X'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zeroindex</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-z'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">voroout</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-v'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meditview</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-g'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vtkview</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-k'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nobound</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-B'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">noiterationnum</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-I'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nojettison</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-J'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docheck</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-C'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quiet</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Q'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-V'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vertexperblock</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-x',</span> <span class="pre">4092.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tetrahedraperblock</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-x',</span> <span class="pre">8188.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shellfaceperblock</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-x',</span> <span class="pre">2044.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nobisect_nomerge</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Y',</span> <span class="pre">1.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">supsteiner_level</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Y/',</span> <span class="pre">2.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addsteiner_algo</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Y//',</span> <span class="pre">1.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coarsen_param</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-R',</span> <span class="pre">0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weighted_param</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-w',</span> <span class="pre">0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reflevel</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-D',</span> <span class="pre">3.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optlevel</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-O',</span> <span class="pre">2.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optscheme</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-O',</span> <span class="pre">7.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">order</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-o',</span> <span class="pre">1.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reversetetori</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-o/',</span> <span class="pre">0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">steinerleft</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-S',</span> <span class="pre">0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hilbert_order</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b///',</span> <span class="pre">52.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hilbert_limit</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b//'</span>&#160; <span class="pre">8.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brio_threshold</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b'</span> <span class="pre">64.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brio_ratio</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b/'</span> <span class="pre">0.125.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">facet_separate_ang_tol</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-p',</span> <span class="pre">179.9.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">facet_overlap_ang_tol</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-p/',</span>&#160; <span class="pre">0.1.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">facet_small_ang_tol</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-p//',</span> <span class="pre">15.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxvolume</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-a',</span> <span class="pre">-1.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minratio</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-q',</span> <span class="pre">0.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mindihedral</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-q',</span> <span class="pre">5.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optmaxdihedral</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">165.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optminsmtdihed</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">179.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optminslidihed</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">179.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epsilon</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-T',</span> <span class="pre">1.0e-8.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coarsen_percent</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">-R1/#,</span> <span class="pre">1.0.</span></code></p></li>
+</ul>
 </dd></dl>
 
-<dl class="method">
-<dt id="tetgen.TetGen.write">
-<code class="descname">write</code><span class="sig-paren">(</span><em>filename</em>, <em>binary=False</em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.write" title="Permalink to this definition">¶</a></dt>
+<dl class="py method">
+<dt class="sig sig-object py" id="tetgen.TetGen.write">
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes an unstructured grid to disk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – <p>Filename of grid to be written.  The file extension will select the
-type of writer to use.</p>
+<li><p><strong>filename</strong> (<em>str</em>) – <p>Filename of grid to be written.  The file extension will
+select the type of writer to use.</p>
 <ul>
-<li><p>”.vtk” will use the vtk legacy writer, while</p></li>
-<li><p>”.vtu” will select the VTK XML writer.</p></li>
-<li><p>”.cdb” will write an ANSYS APDL archive file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;.vtk&quot;</span></code> will use the vtk legacy writer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;.vtu&quot;</span></code> will select the VTK XML writer</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;.cdb&quot;</span></code> will write an ANSYS APDL archive file</p></li>
 </ul>
 </p></li>
-<li><p><strong>binary</strong> (<em>bool</em><em>, </em><em>optional</em>) – Writes as a binary file by default.  Set to False to write ASCII.
-Ignored when output is a cdb.</p></li>
+<li><p><strong>binary</strong> (<em>bool</em><em>, </em><em>optional</em>) – Writes as a binary file by default.  Set to False to write
+ASCII.  Ignored when output is a cdb.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;grid.vtk&#39;</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
 <p class="rubric">Notes</p>
-<p>Binary files write much faster than ASCII, but binary files written on
-one system may not be readable on other systems.  Binary can be used
-only with the legacy writer.</p>
+<p>Binary files write much faster than ASCII, but binary files
+written on one system may not be readable on other systems.
+Binary can be used only with the legacy writer.</p>
 </dd></dl>
 
 </dd></dl>
@@ -456,50 +437,33 @@ only with the legacy writer.</p>
 </div>
 
 
-           </div>
-           
-          </div>
-          <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="examples/super_toroid.html" class="btn btn-neutral float-left" title="Super Toroid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+              </div>
+              
+              
+          </main>
+          
+
+      </div>
     </div>
   
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>
-        &copy; Copyright 2018-2019, Alex Kaszynski
-
-    </p>
-  </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
-
-</footer>
-
-        </div>
-      </div>
-
-    </section>
-
-  </div>
-  
-
-
-  <script type="text/javascript">
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script>
-
-  
-  
+  <footer class="footer mt-5 mt-md-0">
+  <div class="container">
     
-   
-
-</body>
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright 2017-2021, The PyVista Developers.<br/>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
 </html>

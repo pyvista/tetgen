@@ -11,13 +11,14 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a cow mesh ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a cow mesh">
 
 .. only:: html
 
-    .. figure:: /examples/images/thumb/sphx_glr_cow_thumb.png
+ .. figure:: /examples/images/thumb/sphx_glr_cow_thumb.png
+     :alt: Cow
 
-        :ref:`sphx_glr_examples_cow.py`
+     :ref:`sphx_glr_examples_cow.py`
 
 .. raw:: html
 
@@ -31,13 +32,14 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a sphere ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a sphere">
 
 .. only:: html
 
-    .. figure:: /examples/images/thumb/sphx_glr_sphere_thumb.png
+ .. figure:: /examples/images/thumb/sphx_glr_sphere_thumb.png
+     :alt: Using external modules to create a mesh
 
-        :ref:`sphx_glr_examples_sphere.py`
+     :ref:`sphx_glr_examples_sphere.py`
 
 .. raw:: html
 
@@ -51,13 +53,14 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a super toroid surface ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a super toroid surface">
 
 .. only:: html
 
-    .. figure:: /examples/images/thumb/sphx_glr_super_toroid_thumb.png
+ .. figure:: /examples/images/thumb/sphx_glr_super_toroid_thumb.png
+     :alt: Super Toroid
 
-        :ref:`sphx_glr_examples_super_toroid.py`
+     :ref:`sphx_glr_examples_super_toroid.py`
 
 .. raw:: html
 
@@ -70,7 +73,7 @@ Examples
    /examples/super_toroid
 .. raw:: html
 
-    <div style='clear:both'></div>
+    <div class="sphx-glr-clear"></div>
 
 
 

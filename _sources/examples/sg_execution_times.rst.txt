@@ -5,8 +5,12 @@
 
 Computation times
 =================
-**00:30.776** total execution time for **examples** files:
+**00:32.891** total execution time for **examples** files:
 
-- **00:16.855**: :ref:`sphx_glr_examples_cow.py` (``cow.py``)
-- **00:08.951**: :ref:`sphx_glr_examples_super_toroid.py` (``super_toroid.py``)
-- **00:04.970**: :ref:`sphx_glr_examples_sphere.py` (``sphere.py``)
++----------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_cow.py` (``cow.py``)                   | 00:24.608 | 0.0 MB |
++----------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_sphere.py` (``sphere.py``)             | 00:04.567 | 0.0 MB |
++----------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_examples_super_toroid.py` (``super_toroid.py``) | 00:03.716 | 0.0 MB |
++----------------------------------------------------------------+-----------+--------+
