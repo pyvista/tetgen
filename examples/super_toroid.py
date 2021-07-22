@@ -38,8 +38,8 @@ plotter.show()
 
 ###############################################################################
 # Cell quality using pyansys
-import pyansys
-cell_qual = pyansys.quality(subgrid)
+from ansys.mapdl.reader import quality
+cell_qual = quality(subgrid)
 
 # plot quality
 subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr',  clim=[0,1],
