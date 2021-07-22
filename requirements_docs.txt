@@ -6,3 +6,4 @@ sphinx_gallery
 sphinx-notfound-page>=0.3.0
 sphinx-copybutton
 pymeshfix
+ansys-mapdl-reader
