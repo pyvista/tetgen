@@ -67,7 +67,7 @@ manifold surface and plot part of the mesh.
     grid = tet.grid
     grid.plot(show_edges=True)
 
-.. figure:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere.png
+.. figure:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere.png
     :width: 300pt
 
     Tetrahedralized Sphere
@@ -94,7 +94,7 @@ the mesh quality.
                         [' Tesselated Mesh ', 'black']])
     plotter.show()
 
-.. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_subgrid.png
+.. image:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_subgrid.png
 
 Here is the cell quality as computed according to the scaled jacobian.  This example uses the ansys.mapdl.reader library to compute the quality.
 
@@ -110,7 +110,7 @@ Here is the cell quality as computed according to the scaled jacobian.  This exa
    >>> subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0, 1],
    ...              flip_scalars=True, show_edges=True)
 
-.. image:: https://github.com/pyvista/tetgen/raw/master/docs/images/sphere_qual.png
+.. image:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_qual.png
 
 
 Acknowledgments
