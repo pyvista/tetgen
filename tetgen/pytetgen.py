@@ -5,7 +5,7 @@ import ctypes
 
 import numpy as np
 import pyvista as pv
-import vtk
+from pyvista._vtk import VTK9
 
 from tetgen import _tetgen
 
@@ -13,14 +13,11 @@ LOG = logging.getLogger(__name__)
 LOG.setLevel('CRITICAL')
 
 
-VTK9 = vtk.vtkVersion().GetVTKMajorVersion() >= 9
-
-
 invalid_input = TypeError('Invalid input.  Must be either a pyvista.PolyData\n' +
                           'object or vertex and face arrays')
 
 
-class TetGen(object):
+class TetGen:
     """Input, clean, and tetrahedralize surface meshes using
     TetGen
 
@@ -341,9 +338,9 @@ class TetGen(object):
         Notes
         -----
         There are many other options and the TetGen documentation
-        contains descritpions only for the switches of the original
+        contains descriptions only for the switches of the original
         C++ program.  This is the relationship between tetgen switches
-        and python optinal inputs:
+        and python optional inputs:
 
         - ``psc`` --> ``'-s'``
         - ``refine`` --> ``'-r'``
@@ -417,7 +414,7 @@ class TetGen(object):
         if verbose == 0:
             quiet = 1
 
-        # Call libary
+        # Call library
         plc = True  # always true
         try:
             self.node, self.elem = _tetgen.Tetrahedralize(self.v,
