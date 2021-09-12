@@ -400,7 +400,7 @@ def Tetrahedralize(v, f, switches='',
         tetrahedralize(&behavior.c_behavior, &tetgenio_in.c_tetio, 
                        &tetgenio_out.c_tetio)
 
-    # Returns verticies and tetrahedrals of new mesh
+    # Returns vertices and tetrahedrals of new mesh
     nodes = tetgenio_out.ReturnNodes()
     tets = tetgenio_out.ReturnTetrahedrals(order)
 

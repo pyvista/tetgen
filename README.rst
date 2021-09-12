@@ -91,7 +91,7 @@ the mesh quality.
     plotter.add_mesh(subgrid, 'lightgrey', lighting=True, show_edges=True)
     plotter.add_mesh(sphere, 'r', 'wireframe')
     plotter.add_legend([[' Input Mesh ', 'r'],
-                        [' Tesselated Mesh ', 'black']])
+                        [' Tessellated Mesh ', 'black']])
     plotter.show()
 
 .. image:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_subgrid.png
