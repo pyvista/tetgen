@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Using external modules to create a mesh &#8212; tetgen 0.5.3 documentation</title>
+    <title>Using external modules to create a mesh &#8212; tetgen 0.5.4 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -248,12 +248,6 @@ to download the full example code</p>
 </pre></div>
 </div>
 <img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(1.9264490110725325, 1.9264490110725325, 1.9264490110725325),
- (0.0, 0.0, 0.0),
- (0.0, 0.0, 1.0)]
-</pre></div>
-</div>
 <p>Use pyvista to plot</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get cell centroids</span>
 <span class="n">cell_center</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">cell_centers</span><span class="p">()</span><span class="o">.</span><span class="n">points</span>
@@ -273,12 +267,6 @@ to download the full example code</p>
 </pre></div>
 </div>
 <img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(1.9264490110725325, 1.9264490110725325, 1.9264490110725325),
- (0.0, 0.0, 0.0),
- (0.0, 0.0, 1.0)]
-</pre></div>
-</div>
 </div>
 <div class="section" id="using-ansys-mapdl-reader">
 <h1>Using <code class="docutils literal notranslate"><span class="pre">ansys-mapdl-reader</span></code><a class="headerlink" href="#using-ansys-mapdl-reader" title="Permalink to this headline">¶</a></h1>
@@ -298,11 +286,7 @@ to download the full example code</p>
 </div>
 <img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_003.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean cell quality: 0.566
-
-[(1.688873209535967, 1.688873209535967, 1.4670659512002875),
- (0.0, 0.0, -0.22180725833567966),
- (0.0, 0.0, 1.0)]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean cell quality: 0.561
 </pre></div>
 </div>
 </div>
@@ -351,14 +335,14 @@ and then tetrahedralize that.</p>
 </li>
 </ul>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean cell quality: 0.594
-
-[(1.6920245703037755, 1.6919326955379055, 1.4790218232482062),
- (-8.963581475990301e-05, -0.0001815105806299011, -0.2130923828703293),
- (0.0, 0.0, 1.0)]
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1192: PyvistaDeprecationWarning: Use of `point_arrays` is deprecated. Use `point_data` instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1332: PyvistaDeprecationWarning: Use of `cell_arrays` is deprecated. Use `cell_data` instead.
+  warnings.warn(
+Mean cell quality: 0.595
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.486 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.904 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-sphere-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/9c151cee03463a436f8f8d2bc4a1c381/sphere.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sphere.py</span></code></a></p>

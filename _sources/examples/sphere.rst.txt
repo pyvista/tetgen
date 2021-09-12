@@ -64,16 +64,6 @@ Create a surface mesh using ``pyvista`` and then tetrahedralize it.
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-
-    [(1.9264490110725325, 1.9264490110725325, 1.9264490110725325),
-     (0.0, 0.0, 0.0),
-     (0.0, 0.0, 1.0)]
 
 
 
@@ -110,16 +100,6 @@ Use pyvista to plot
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-
-    [(1.9264490110725325, 1.9264490110725325, 1.9264490110725325),
-     (0.0, 0.0, 0.0),
-     (0.0, 0.0, 1.0)]
 
 
 
@@ -161,11 +141,8 @@ Using ``ansys-mapdl-reader``
 
  .. code-block:: none
 
-    Mean cell quality: 0.566
+    Mean cell quality: 0.561
 
-    [(1.688873209535967, 1.688873209535967, 1.4670659512002875),
-     (0.0, 0.0, -0.22180725833567966),
-     (0.0, 0.0, 1.0)]
 
 
 
@@ -240,18 +217,19 @@ Here we re-run the above example, except using a more uniform surface
 
  .. code-block:: none
 
-    Mean cell quality: 0.594
+    /opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1192: PyvistaDeprecationWarning: Use of `point_arrays` is deprecated. Use `point_data` instead.
+      warnings.warn(
+    /opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1332: PyvistaDeprecationWarning: Use of `cell_arrays` is deprecated. Use `cell_data` instead.
+      warnings.warn(
+    Mean cell quality: 0.595
 
-    [(1.6920245703037755, 1.6919326955379055, 1.4790218232482062),
-     (-8.963581475990301e-05, -0.0001815105806299011, -0.2130923828703293),
-     (0.0, 0.0, 1.0)]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.486 seconds)
+   **Total running time of the script:** ( 0 minutes  5.904 seconds)
 
 
 .. _sphx_glr_download_examples_sphere.py:

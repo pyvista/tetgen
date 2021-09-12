@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Super Toroid &#8212; tetgen 0.5.3 documentation</title>
+    <title>Super Toroid &#8212; tetgen 0.5.4 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -214,12 +214,6 @@ to download the full example code</p>
 </pre></div>
 </div>
 <img alt="super toroid" class="sphx-glr-single-img" src="../_images/sphx_glr_super_toroid_001.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(4.860818269572256, 4.861195864996908, 4.860818269572256),
- (0.0, 0.0003775954246520996, 0.0),
- (0.0, 0.0, 1.0)]
-</pre></div>
-</div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get cell centroids</span>
 <span class="n">cells</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">:]</span>
 <span class="n">cell_center</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">cells</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -239,12 +233,6 @@ to download the full example code</p>
 </pre></div>
 </div>
 <img alt="super toroid" class="sphx-glr-single-img" src="../_images/sphx_glr_super_toroid_002.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[(4.860818269572256, 4.861195864996908, 4.860818269572256),
- (0.0, 0.0003775954246520996, 0.0),
- (0.0, 0.0, 1.0)]
-</pre></div>
-</div>
 <p>Cell quality using pyansys</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ansys.mapdl.reader</span> <span class="kn">import</span> <span class="n">quality</span>
 <span class="n">cell_qual</span> <span class="o">=</span> <span class="n">quality</span><span class="p">(</span><span class="n">subgrid</span><span class="p">)</span>
@@ -256,7 +244,7 @@ to download the full example code</p>
 </div>
 <img alt="super toroid" class="sphx-glr-single-img" src="../_images/sphx_glr_super_toroid_003.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/plotting/plotting.py:1354: PyvistaDeprecationWarning:
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/plotting/plotting.py:1795: PyvistaDeprecationWarning:
 &quot;stitle&quot; is a depreciated keyword and will be removed in a future
 release.
 
@@ -265,13 +253,9 @@ Use ``scalar_bar_args`` instead.  For example:
 scalar_bar_args={&#39;title&#39;: &#39;Scalar Bar Title&#39;}
 
   warnings.warn(USE_SCALAR_BAR_ARGS, PyvistaDeprecationWarning)
-
-[(4.785913940733171, 4.786291536157823, 4.609590302489707),
- (0.0, 0.0003775954246520996, -0.17632363824346414),
- (0.0, 0.0, 1.0)]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.611 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.936 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-super-toroid-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/3267e74c35bd22f4d7d3f4cbd53c2ebf/super_toroid.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">super_toroid.py</span></code></a></p>

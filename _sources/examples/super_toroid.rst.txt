@@ -58,16 +58,6 @@ Tetrahedralize a super toroid surface
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-
-    [(4.860818269572256, 4.861195864996908, 4.860818269572256),
-     (0.0, 0.0003775954246520996, 0.0),
-     (0.0, 0.0, 1.0)]
 
 
 
@@ -101,16 +91,6 @@ Tetrahedralize a super toroid surface
     :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-
-    [(4.860818269572256, 4.861195864996908, 4.860818269572256),
-     (0.0, 0.0003775954246520996, 0.0),
-     (0.0, 0.0, 1.0)]
 
 
 
@@ -142,7 +122,7 @@ Cell quality using pyansys
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/plotting/plotting.py:1354: PyvistaDeprecationWarning: 
+    /opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/plotting/plotting.py:1795: PyvistaDeprecationWarning: 
     "stitle" is a depreciated keyword and will be removed in a future
     release.
 
@@ -152,16 +132,13 @@ Cell quality using pyansys
 
       warnings.warn(USE_SCALAR_BAR_ARGS, PyvistaDeprecationWarning)
 
-    [(4.785913940733171, 4.786291536157823, 4.609590302489707),
-     (0.0, 0.0003775954246520996, -0.17632363824346414),
-     (0.0, 0.0, 1.0)]
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.611 seconds)
+   **Total running time of the script:** ( 0 minutes  4.936 seconds)
 
 
 .. _sphx_glr_download_examples_super_toroid.py:
