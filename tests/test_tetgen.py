@@ -4,10 +4,6 @@ import pyvista as pv
 import tetgen
 import numpy as np
 
-try:
-    __file__
-except:  # local testing
-    __file__ = '/home/alex/afrl/python/source/tetgen/tests/test_tetgen.py'
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -94,7 +90,7 @@ def functional_tet_example():
     plotter.add_mesh(subgrid, 'lightgrey', lighting=True)
     plotter.add_mesh(grid, 'r', 'wireframe')
     plotter.add_legend([[' Input Mesh ', 'r'],
-                       [' Tesselated Mesh ', 'black']])
+                       [' Tessellated Mesh ', 'black']])
     plotter.show()
 
     plotter = pv.Plotter()

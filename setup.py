@@ -100,7 +100,7 @@ setup(
                            define_macros=[('TETLIBRARY', None)]),
                    ],
     keywords='TetGen',
-    install_requires=['numpy>1.9.3',
-                      'pyvista>=0.23.0'],
+    install_requires=['numpy>1.16.0',
+                      'pyvista>=0.31.0'],
     setup_requires=setup_requires,
 )
