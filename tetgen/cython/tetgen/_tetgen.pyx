@@ -40,82 +40,91 @@ cdef extern from "tetgen.h":
 
     cdef cppclass tetgenbehavior:
         void tetgenbehavior()
-        
-        # Switches of TetGen
-        int plc;                                                         # '-p', 0.
-        int psc;                                                         # '-s', 0.
-        int refine;                                                      # '-r', 0.
-        int quality;                                                     # '-q', 0.
-        int nobisect;                                                    # '-Y', 0.
-        int coarsen;                                                     # '-R', 0.
-        int weighted;                                                    # '-w', 0.
-        int brio_hilbert;                                                # '-b', 1.
-        int incrflip;                                                    # '-l', 0.
-        int flipinsert;                                                  # '-L', 0.
-        int metric;                                                      # '-m', 0.
-        int varvolume;                                                   # '-a', 0.
-        int fixedvolume;                                                 # '-a', 0.
-        int regionattrib;                                                # '-A', 0.
-        int cdtrefine;                                                   # '-D', 0.
-        int insertaddpoints;                                             # '-i', 0.
-        int diagnose;                                                    # '-d', 0.
-        int convex;                                                      # '-c', 0.
-        int nomergefacet;                                                # '-M', 0.
-        int nomergevertex;                                               # '-M', 0.
-        int noexact;                                                     # '-X', 0.
-        int nostaticfilter;                                              # '-X', 0.
-        int zeroindex;                                                   # '-z', 0.
-        int facesout;                                                    # '-f', 0.
-        int edgesout;                                                    # '-e', 0.
-        int neighout;                                                    # '-n', 0.
-        int voroout;                                                     # '-v', 0.
-        int meditview;                                                   # '-g', 0.
-        int vtkview;                                                     # '-k', 0.
-        int nobound;                                                     # '-B', 0.
-        int nonodewritten;                                               # '-N', 0.
-        int noelewritten;                                                # '-E', 0.
-        int nofacewritten;                                               # '-F', 0.
-        int noiterationnum;                                              # '-I', 0.
-        int nojettison;                                                  # '-J', 0.
-        int docheck;                                                     # '-C', 0.
-        int quiet;                                                       # '-Q', 0.
-        int verbose;                                                     # '-V', 0.
 
-        # Parameters of TetGen. 
-        int vertexperblock;                                           # '-x', 4092.
-        int tetrahedraperblock;                                       # '-x', 8188.
-        int shellfaceperblock;                                        # '-x', 2044.
-        int nobisect_nomerge;                                            # '-Y', 1.
-        int supsteiner_level;                                           # '-Y/', 2.
-        int addsteiner_algo;                                           # '-Y#', 1.
-        int coarsen_param;                                               # '-R', 0.
-        int weighted_param;                                              # '-w', 0.
-        int fliplinklevel;                                                    # -1.
-        int flipstarsize;                                                     # -1.
-        int fliplinklevelinc;                                                 #  1.
-        int reflevel;                                                    # '-D', 3.
-        int optlevel;                                                    # '-O', 2.
-        int optscheme;                                                   # '-O', 7.
-        int delmaxfliplevel;                                                   # 1.
-        int order;                                                       # '-o', 1.
-        int reversetetori;                                              # '-o/', 0.
-        int steinerleft;                                                 # '-S', 0.
-        int no_sort;                                                           # 0.
-        int hilbert_order;                                           # '-b#/', 52.
-        int hilbert_limit;                                             # '-b#'  8.
-        int brio_threshold;                                              # '-b' 64.
-        double brio_ratio;                                             # '-b/' 0.125.
-        double facet_separate_ang_tol;                                 # '-p', 179.9.
-        double facet_overlap_ang_tol;                                  # '-p/',  0.1.
-        double facet_small_ang_tol;                                   # '-p#', 15.0.
-        double maxvolume;                                               # '-a', -1.0.
-        double minratio;                                                 # '-q', 0.0.
-        double mindihedral;                                              # '-q', 5.0.
-        double optmaxdihedral;                                               # 165.0.
-        double optminsmtdihed;                                               # 179.0.
-        double optminslidihed;                                               # 179.0.  
-        double epsilon;                                               # '-T', 1.0e-8.
-        double coarsen_percent;                                         # -R1/#, 1.0.
+        # Switches of TetGen. 
+        int plc
+        int psc
+        int refine
+        int quality
+        int nobisect
+        int cdt
+        int cdtrefine
+        int coarsen
+        int weighted
+        int brio_hilbert
+        int flipinsert
+        int metric
+        int varvolume
+        int fixedvolume
+        int regionattrib
+        int insertaddpoints
+        int diagnose
+        int convex
+        int nomergefacet
+        int nomergevertex
+        int noexact
+        int nostaticfilter
+        int zeroindex
+        int facesout
+        int edgesout
+        int neighout
+        int voroout
+        int meditview
+        int vtkview
+        int vtksurfview
+        int nobound
+        int nonodewritten
+        int noelewritten
+        int nofacewritten
+        int noiterationnum
+        int nojettison
+        int docheck
+        int quiet
+        int nowarning
+        int verbose
+
+        # Parameters of TetGen.
+        int vertexperblock
+        int tetrahedraperblock
+        int shellfaceperblock
+        int supsteiner_level
+        int addsteiner_algo
+        int coarsen_param
+        int weighted_param
+        int fliplinklevel
+        int flipstarsize
+        int fliplinklevelinc
+        int opt_max_flip_level
+        int opt_scheme
+        int opt_iterations
+        int smooth_cirterion
+        int smooth_maxiter
+        int delmaxfliplevel
+        int order
+        int reversetetori
+        int steinerleft
+        int unflip_queue_limit
+        int no_sort
+        int hilbert_order
+        int hilbert_limit
+        int brio_threshold
+        double brio_ratio
+        double epsilon
+        double facet_separate_ang_tol
+        double collinear_ang_tol
+        double facet_small_ang_tol
+        double maxvolume
+        double maxvolume_length
+        double minratio
+        double opt_max_asp_ratio
+        double opt_max_edge_ratio
+        double mindihedral
+        double optmaxdihedral
+        double metric_scale
+        double smooth_alpha
+        double coarsen_percent
+        double elem_growth_ratio
+        double refine_progress_ratio
 
     # Different calls depending on using settings input
     cdef void tetrahedralize(tetgenbehavior*, tetgenio_wrap*, tetgenio_wrap*) except +
@@ -200,83 +209,98 @@ cdef class PyTetgenio:
         self.c_tetio.LoadArray(npoints, &points[0], nfaces, &faces[0])
     
     
-def Tetrahedralize(v, f, switches='', 
-    plc=0,
-    psc=0,
-    refine=0,
-    quality=0,
-    nobisect=0,
-    coarsen=0,
-    metric=0,
-    weighted=0,
-    brio_hilbert=1,
-    incrflip=0,
-    flipinsert=0,
-    varvolume=0,
-    fixedvolume=0,
-    noexact=0,
-    nostaticfilter=0,
-    insertaddpoints=0,
-    regionattrib=0,
-    cdtrefine=0,
-    diagnose=0,
-    convex=0,
-    zeroindex=0,
-    facesout =0,
-    edgesout =0,
-    neighout =0,
-    voroout =0,
-    meditview =0,
-    vtkview=0,
-    nobound=0,
-    nonodewritten=1,
-    noelewritten=1,
-    nofacewritten=1,
-    noiterationnum =0,
-    nomergefacet=0,
-    nomergevertex=0,
-    nojettison=0,
-    docheck=0,
-    quiet=0,
-    verbose=0,
-    vertexperblock=4092,
-    tetrahedraperblock=8188,
-    shellfaceperblock=4092,
-    nobisect_nomerge=1,
-    supsteiner_level=2,
-    addsteiner_algo=1,
-    coarsen_param=0,
-    weighted_param=0,
-    fliplinklevel=-1, 
-    flipstarsize=-1,  
-    fliplinklevelinc=1,
-    reflevel=3,
-    optscheme=7,  
-    optlevel=2,
-    delmaxfliplevel=1,
-    order=1,
-    reversetetori=0,
-    steinerleft=10000, # default is -1, but this often leads to the program hanging
-    no_sort=0,
-    hilbert_order=52,
-    hilbert_limit=8,
-    brio_threshold=64,
-    brio_ratio=0.125,
-    facet_separate_ang_tol=179.9,
-    facet_overlap_ang_tol=0.1,
-    facet_small_ang_tol=15.0,
-    maxvolume=-1.0,
-    minratio=2.0,
-    mindihedral=0.0,
-    optmaxdihedral=165.0,
-    optminsmtdihed=179.0,
-    optminslidihed=179.0,
-    epsilon=1.0e-8,
-    coarsen_percent=1.0):
-    """
-    Tetgen function to interface with TetGen C++ program
-    
-    """
+def Tetrahedralize(
+        v,
+        f,
+        switches='',
+
+        # Switches of TetGen
+        plc=0.,
+        psc=0.,
+        refine=0.,
+        quality=0.,
+        nobisect=0.,
+        cdt=0.,
+        cdtrefine=7.,
+        coarsen=0.,
+        weighted=0.,
+        brio_hilbert=1.,
+        flipinsert=0.,
+        metric=0.,
+        varvolume=0.,
+        fixedvolume=0.,
+        regionattrib=0.,
+        insertaddpoints=0.,
+        diagnose=0.,
+        convex=0.,
+        nomergefacet=0.,
+        nomergevertex=0.,
+        noexact=0.,
+        nostaticfilter=0.,
+        zeroindex=0.,
+        facesout=0.,
+        edgesout=0.,
+        neighout=0.,
+        voroout=0.,
+        meditview=0.,
+        vtkview=0.,
+        vtksurfview=0.,
+        nobound=0.,
+        nonodewritten=0.,
+        noelewritten=0.,
+        nofacewritten=0.,
+        noiterationnum=0.,
+        nojettison=0.,
+        docheck=0.,
+        quiet=0.,
+        nowarning=0.,
+        verbose=0.,
+
+        # Parameters of TetGen.
+        vertexperblock=4092.,
+        tetrahedraperblock=8188.,
+        shellfaceperblock=2044.,
+        supsteiner_level=2.,
+        addsteiner_algo=1.,
+        coarsen_param=0.,
+        weighted_param=0.,
+        fliplinklevel=-1.,
+        flipstarsize=-1.,
+        fliplinklevelinc=1.,
+        opt_max_flip_level=3.,
+        opt_scheme=7.,
+        opt_iterations=3.,
+        smooth_cirterion=1.,
+        smooth_maxiter=7.,
+        delmaxfliplevel=1.,
+        order=1.,
+        reversetetori=0.,
+        steinerleft=0.,
+        unflip_queue_limit=1000.,
+        no_sort=0.,
+        hilbert_order=52.,
+        hilbert_limit=8.,
+        brio_threshold=64.,
+        brio_ratio=0.125,
+        epsilon=1.0e-8,
+        facet_separate_ang_tol=179.9,
+        collinear_ang_tol=179.9,
+        facet_small_ang_tol=15.0,
+        maxvolume=-1.0,
+        maxvolume_length=-1.0,
+        minratio=0.0,
+        opt_max_asp_ratio=1000.0,
+        opt_max_edge_ratio=100.0,
+        mindihedral=5.0,
+        optmaxdihedral=177.0,
+        metric_scale=1.0,
+        smooth_alpha=0.3,
+        coarsen_percent=1.0,
+        elem_growth_ratio=0.0,
+        refine_progress_ratio=0.333,
+    ):
+
+    """Tetgen function to interface with TetGen C++ program."""
     # convert switches to c object
     cdef char *cstring = switches
 
@@ -328,21 +352,23 @@ def Tetrahedralize(v, f, switches='',
         behavior.c_behavior.refine = refine
         behavior.c_behavior.quality = quality
         behavior.c_behavior.nobisect = nobisect
+        behavior.c_behavior.cdt = cdt
+        behavior.c_behavior.cdtrefine = cdtrefine
         behavior.c_behavior.coarsen = coarsen
-        behavior.c_behavior.metric = metric
         behavior.c_behavior.weighted = weighted
         behavior.c_behavior.brio_hilbert = brio_hilbert
-        behavior.c_behavior.incrflip = incrflip
         behavior.c_behavior.flipinsert = flipinsert
+        behavior.c_behavior.metric = metric
         behavior.c_behavior.varvolume = varvolume
         behavior.c_behavior.fixedvolume = fixedvolume
-        behavior.c_behavior.noexact = noexact
-        behavior.c_behavior.nostaticfilter = nostaticfilter
-        behavior.c_behavior.insertaddpoints = insertaddpoints
         behavior.c_behavior.regionattrib = regionattrib
-        behavior.c_behavior.cdtrefine = cdtrefine
+        behavior.c_behavior.insertaddpoints = insertaddpoints
         behavior.c_behavior.diagnose = diagnose
         behavior.c_behavior.convex = convex
+        behavior.c_behavior.nomergefacet = nomergefacet
+        behavior.c_behavior.nomergevertex = nomergevertex
+        behavior.c_behavior.noexact = noexact
+        behavior.c_behavior.nostaticfilter = nostaticfilter
         behavior.c_behavior.zeroindex = zeroindex
         behavior.c_behavior.facesout = facesout
         behavior.c_behavior.edgesout = edgesout
@@ -350,51 +376,58 @@ def Tetrahedralize(v, f, switches='',
         behavior.c_behavior.voroout = voroout
         behavior.c_behavior.meditview = meditview
         behavior.c_behavior.vtkview = vtkview
+        behavior.c_behavior.vtksurfview = vtksurfview
         behavior.c_behavior.nobound = nobound
-    #    behavior.c_behavior.nonodewritten = nonodewritten
-    #    behavior.c_behavior.noelewritten = noelewritten
-    #    behavior.c_behavior.nofacewritten = nofacewritten,
+        behavior.c_behavior.nonodewritten = nonodewritten
+        behavior.c_behavior.noelewritten = noelewritten
+        behavior.c_behavior.nofacewritten = nofacewritten
         behavior.c_behavior.noiterationnum = noiterationnum
-        behavior.c_behavior.nomergefacet = nomergefacet
-        behavior.c_behavior.nomergevertex = nomergevertex
         behavior.c_behavior.nojettison = nojettison
         behavior.c_behavior.docheck = docheck
         behavior.c_behavior.quiet = quiet
+        behavior.c_behavior.nowarning = nowarning
         behavior.c_behavior.verbose = verbose
-    #    behavior.c_behavior.vertexperblock = 4092,
-    #    behavior.c_behavior.tetrahedraperblock = 8188,
-    #    behavior.c_behavior.shellfaceperblock = 4092,
-        behavior.c_behavior.nobisect_nomerge = nobisect_nomerge
+        behavior.c_behavior.vertexperblock = vertexperblock
+        behavior.c_behavior.tetrahedraperblock = tetrahedraperblock
+        behavior.c_behavior.shellfaceperblock = shellfaceperblock
         behavior.c_behavior.supsteiner_level = supsteiner_level
         behavior.c_behavior.addsteiner_algo = addsteiner_algo
         behavior.c_behavior.coarsen_param = coarsen_param
         behavior.c_behavior.weighted_param = weighted_param
-    #    behavior.c_behavior.fliplinklevel = -1, 
-    #    behavior.c_behavior.flipstarsize = -1,  
-    #    behavior.c_behavior.fliplinklevelinc = 1,
-        behavior.c_behavior.reflevel = reflevel
-        behavior.c_behavior.optscheme = optscheme
-        behavior.c_behavior.optlevel = optlevel
+        behavior.c_behavior.fliplinklevel = fliplinklevel
+        behavior.c_behavior.flipstarsize = flipstarsize
+        behavior.c_behavior.fliplinklevelinc = fliplinklevelinc
+        behavior.c_behavior.opt_max_flip_level = opt_max_flip_level
+        behavior.c_behavior.opt_scheme = opt_scheme
+        behavior.c_behavior.opt_iterations = opt_iterations
+        behavior.c_behavior.smooth_cirterion = smooth_cirterion
+        behavior.c_behavior.smooth_maxiter = smooth_maxiter
         behavior.c_behavior.delmaxfliplevel = delmaxfliplevel
         behavior.c_behavior.order = order
         behavior.c_behavior.reversetetori = reversetetori
         behavior.c_behavior.steinerleft = steinerleft
+        behavior.c_behavior.unflip_queue_limit = unflip_queue_limit
         behavior.c_behavior.no_sort = no_sort
         behavior.c_behavior.hilbert_order = hilbert_order
         behavior.c_behavior.hilbert_limit = hilbert_limit
         behavior.c_behavior.brio_threshold = brio_threshold
         behavior.c_behavior.brio_ratio = brio_ratio
+        behavior.c_behavior.epsilon = epsilon
         behavior.c_behavior.facet_separate_ang_tol = facet_separate_ang_tol
-        behavior.c_behavior.facet_overlap_ang_tol = facet_overlap_ang_tol
+        behavior.c_behavior.collinear_ang_tol = collinear_ang_tol
         behavior.c_behavior.facet_small_ang_tol = facet_small_ang_tol
         behavior.c_behavior.maxvolume = maxvolume
+        behavior.c_behavior.maxvolume_length = maxvolume_length
         behavior.c_behavior.minratio = minratio
+        behavior.c_behavior.opt_max_asp_ratio = opt_max_asp_ratio
+        behavior.c_behavior.opt_max_edge_ratio = opt_max_edge_ratio
         behavior.c_behavior.mindihedral = mindihedral
         behavior.c_behavior.optmaxdihedral = optmaxdihedral
-        behavior.c_behavior.optminsmtdihed = optminsmtdihed
-        behavior.c_behavior.optminslidihed = optminslidihed
-        behavior.c_behavior.epsilon = epsilon
+        behavior.c_behavior.metric_scale = metric_scale
+        behavior.c_behavior.smooth_alpha = smooth_alpha
         behavior.c_behavior.coarsen_percent = coarsen_percent
+        behavior.c_behavior.elem_growth_ratio = elem_growth_ratio
+        behavior.c_behavior.refine_progress_ratio = refine_progress_ratio
     
         # Process from C++ side using behavior object
         tetrahedralize(&behavior.c_behavior, &tetgenio_in.c_tetio, 
