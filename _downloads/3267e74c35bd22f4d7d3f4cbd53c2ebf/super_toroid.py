@@ -2,15 +2,21 @@
 Super Toroid
 ~~~~~~~~~~~~
 
-Tetrahedralize a super toroid surface
+Tetrahedralize a super toroid surface.
+
 """
 # sphinx_gallery_thumbnail_number = 2
 import pyvista as pv
 import tetgen
 import numpy as np
 
+
 ###############################################################################
-toroid = pv.ParametricSuperToroid()
+# Create and tetrahedralize a super torid.
+#
+# We merge the points here to make sure that the surface is manifold.
+
+toroid = pv.ParametricSuperToroid(u_res=50, v_res=50, w_res=50).clean(tolerance=1E-9)
 tet = tetgen.TetGen(toroid)
 tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
 grid = tet.grid
@@ -18,6 +24,7 @@ grid.plot()
 
 
 ###############################################################################
+# Plot the tesselated mesh.
 
 # get cell centroids
 cells = grid.cells.reshape(-1, 5)[:, 1:]
@@ -33,14 +40,13 @@ plotter = pv.Plotter()
 plotter.add_mesh(subgrid, color='lightgrey', lighting=True, show_edges=True)
 plotter.add_mesh(toroid, color='r', style='wireframe')
 plotter.add_legend([[' Input Mesh ', 'r'],
-                    [' Tesselated Mesh ', 'black']])
+                    [' Tessellated Mesh ', 'black']])
 plotter.show()
 
 ###############################################################################
-# Cell quality using pyansys
-from ansys.mapdl.reader import quality
-cell_qual = quality(subgrid)
+# Show the cell quality
 
-# plot quality
-subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr',  clim=[0,1],
+cell_qual = subgrid.compute_cell_quality()['CellQuality']
+subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Cell Quality'},
+             cmap='bwr',  clim=[0, 1],
              flip_scalars=True, show_edges=True)

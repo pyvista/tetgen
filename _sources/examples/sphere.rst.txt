@@ -89,7 +89,7 @@ Use pyvista to plot
     plotter.add_mesh(subgrid, 'lightgrey', lighting=True, show_edges=True)
     plotter.add_mesh(sphere, 'r', 'wireframe')
     plotter.add_legend([[' Input Mesh ', 'r'],
-                        [' Tesselated Mesh ', 'black']])
+                        [' Tessellated Mesh ', 'black']])
     plotter.show()
 
 
@@ -105,20 +105,15 @@ Use pyvista to plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 43-45
 
-Using ``ansys-mapdl-reader``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Use pyvista to compute cell quality.  This is the minimum scaled
+jacobian of each cell.
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-60
+.. GENERATED FROM PYTHON SOURCE LINES 45-55
 
 .. code-block:: default
 
 
-    # Use pyansys's `legacy reader <https://github.com/pyansys/reader>`_
-    # library to compute cell quality.  This is the minimum scaled
-    # jacobian of each cell.
-
-    from ansys.mapdl.reader import quality
-    cell_qual = quality(subgrid)
+    cell_qual = subgrid.compute_cell_quality()['CellQuality']
     print(f'Mean cell quality: {cell_qual.mean():.3}')
 
     # plot quality
@@ -141,12 +136,12 @@ Using ``ansys-mapdl-reader``
 
  .. code-block:: none
 
-    Mean cell quality: 0.561
+    Mean cell quality: 0.605
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-70
+.. GENERATED FROM PYTHON SOURCE LINES 56-65
 
 Using pyacvd
 ~~~~~~~~~~~~
@@ -158,7 +153,7 @@ and then tetrahedralize that.
 
 Here we re-run the above example, except using a more uniform surface
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-100
+.. GENERATED FROM PYTHON SOURCE LINES 65-81
 
 .. code-block:: default
 
@@ -172,43 +167,18 @@ Here we re-run the above example, except using a more uniform surface
     clustered.cluster(n_surf)
     uniform_surf = clustered.create_mesh()
 
-    # generate interior mesh
+    # generate interior mesh and plot the surface of it
     tet = tetgen.TetGen(uniform_surf)
     tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     uniform_grid = tet.grid
     uniform_grid.plot(show_edges=True)
 
-    cell_center = uniform_grid.cell_centers().points
-
-    # extract cells below the 0 xy plane
-    mask = cell_center[:, 2] < 0
-    cell_ind = mask.nonzero()[0]
-    subgrid = uniform_grid.extract_cells(cell_ind)
-
-    cell_qual = quality(subgrid)
-    print(f'Mean cell quality: {cell_qual.mean():.3}')
-
-    # plot quality
-    subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Quality'},
-                 cmap='bwr', clim=[0, 1], flip_scalars=True,
-                 show_edges=True,)
 
 
 
-.. rst-class:: sphx-glr-horizontal
-
-
-    *
-
-      .. image:: /examples/images/sphx_glr_sphere_004.png
-          :alt: sphere
-          :class: sphx-glr-multi-img
-
-    *
-
-      .. image:: /examples/images/sphx_glr_sphere_005.png
-          :alt: sphere
-          :class: sphx-glr-multi-img
+.. image:: /examples/images/sphx_glr_sphere_004.png
+    :alt: sphere
+    :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -221,7 +191,48 @@ Here we re-run the above example, except using a more uniform surface
       warnings.warn(
     /opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1332: PyvistaDeprecationWarning: Use of `cell_arrays` is deprecated. Use `cell_data` instead.
       warnings.warn(
-    Mean cell quality: 0.595
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 82-83
+
+Plot the cross section of the tetrahedralization
+
+.. GENERATED FROM PYTHON SOURCE LINES 83-98
+
+.. code-block:: default
+
+
+    cell_center = uniform_grid.cell_centers().points
+
+    # extract cells below the 0 xy plane
+    mask = cell_center[:, 2] < 0
+    cell_ind = mask.nonzero()[0]
+    subgrid = uniform_grid.extract_cells(cell_ind)
+
+    cell_qual = subgrid.compute_cell_quality()['CellQuality']
+    print(f'Mean cell quality: {cell_qual.mean():.3}')
+
+    # plot quality
+    subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Quality'},
+                 cmap='bwr', clim=[0, 1], flip_scalars=True,
+                 show_edges=True,)
+
+
+
+.. image:: /examples/images/sphx_glr_sphere_005.png
+    :alt: sphere
+    :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    Mean cell quality: 0.646
 
 
 
@@ -229,7 +240,7 @@ Here we re-run the above example, except using a more uniform surface
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.904 seconds)
+   **Total running time of the script:** ( 0 minutes  5.415 seconds)
 
 
 .. _sphx_glr_download_examples_sphere.py:

@@ -36,19 +36,14 @@ plotter = pv.Plotter()
 plotter.add_mesh(subgrid, 'lightgrey', lighting=True, show_edges=True)
 plotter.add_mesh(sphere, 'r', 'wireframe')
 plotter.add_legend([[' Input Mesh ', 'r'],
-                    [' Tesselated Mesh ', 'black']])
+                    [' Tessellated Mesh ', 'black']])
 plotter.show()
 
 ###############################################################################
-# Using ``ansys-mapdl-reader``
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# Use pyansys's `legacy reader <https://github.com/pyansys/reader>`_
-# library to compute cell quality.  This is the minimum scaled
+# Use pyvista to compute cell quality.  This is the minimum scaled
 # jacobian of each cell.
 
-from ansys.mapdl.reader import quality
-cell_qual = quality(subgrid)
+cell_qual = subgrid.compute_cell_quality()['CellQuality']
 print(f'Mean cell quality: {cell_qual.mean():.3}')
 
 # plot quality
@@ -77,11 +72,14 @@ clustered.subdivide(2)
 clustered.cluster(n_surf)
 uniform_surf = clustered.create_mesh()
 
-# generate interior mesh
+# generate interior mesh and plot the surface of it
 tet = tetgen.TetGen(uniform_surf)
 tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
 uniform_grid = tet.grid
 uniform_grid.plot(show_edges=True)
+
+###############################################################################
+# Plot the cross section of the tetrahedralization
 
 cell_center = uniform_grid.cell_centers().points
 
@@ -90,7 +88,7 @@ mask = cell_center[:, 2] < 0
 cell_ind = mask.nonzero()[0]
 subgrid = uniform_grid.extract_cells(cell_ind)
 
-cell_qual = quality(subgrid)
+cell_qual = subgrid.compute_cell_quality()['CellQuality']
 print(f'Mean cell quality: {cell_qual.mean():.3}')
 
 # plot quality
