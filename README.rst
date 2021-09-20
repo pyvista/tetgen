@@ -4,7 +4,7 @@ tetgen
 .. image:: https://img.shields.io/pypi/v/tetgen.svg?logo=python&logoColor=white
    :target: https://pypi.org/project/tetgen/
 
-This Python module is an interface to Hang Si's
+This Python library is an interface to Hang Si's
 `TetGen <https://github.com/ufz/tetgen>`__ C++ software.
 This module combines speed of C++ with the portability and ease of installation
 of Python along with integration to `PyVista <https://docs.pyvista.org>`_ for
@@ -12,8 +12,8 @@ of Python along with integration to `PyVista <https://docs.pyvista.org>`_ for
 See the `TetGen <https://github.com/ufz/tetgen>`__ GitHub page for more details
 on the original creator.
 
-This python module uses the C++ source from TetGen (version 1.5.1,
-released on August 18, 2018) hosted at `ufz/TetGen <https://github.com/ufz/tetgen>`__.
+This Python library uses the C++ source from TetGen (version 1.6.0,
+released on August 31, 2020) hosted at `libigl/tetgen <https://github.com/libigl/tetgen>`__.
 
 Brief description from
 `Weierstrass Institute Software <http://wias-berlin.de/software/index.jsp?id=TetGen&lang=1>`__:
@@ -96,14 +96,13 @@ the mesh quality.
 
 .. image:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_subgrid.png
 
-Here is the cell quality as computed according to the scaled jacobian.  This example uses the ansys.mapdl.reader library to compute the quality.
+Here is the cell quality as computed according to the minimum scaled jacobian.
 
 .. code::
 
    Compute cell quality
 
-   >>> from ansys.mapdl.reader import quality
-   >>> cell_qual = quality(subgrid)
+   >>> cell_qual = subgrid.compute_cell_quality()['CellQuality']
 
    Plot quality
 

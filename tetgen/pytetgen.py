@@ -157,79 +157,91 @@ class TetGen:
         triangles[:, 0] = 3
         return pv.PolyData(self.v, triangles, deep=False)
 
-    def tetrahedralize(self,
-                       psc=0,
-                       refine=0,
-                       quality=1,
-                       nobisect=True,
-                       coarsen=0,
-                       metric=0,
-                       weighted=0,
-                       brio_hilbert=1,
-                       incrflip=0,
-                       flipinsert=0,
-                       varvolume=0,
-                       fixedvolume=0,
-                       noexact=0,
-                       nostaticfilter=0,
-                       insertaddpoints=0,
-                       regionattrib=0,
-                       cdtrefine=0,
-                       diagnose=0,
-                       convex=0,
-                       zeroindex=0,
-                       facesout=0,
-                       edgesout=0,
-                       neighout=0,
-                       voroout=0,
-                       meditview=0,
-                       vtkview=0,
-                       nobound=0,
-                       nonodewritten=1,
-                       noelewritten=1,
-                       nofacewritten=1,
-                       noiterationnum=0,
-                       nomergefacet=0,
-                       nomergevertex=0,
-                       nojettison=0,
-                       docheck=0,
-                       quiet=0,
-                       verbose=0,
-                       vertexperblock=4092,
-                       tetrahedraperblock=8188,
-                       shellfaceperblock=4092,
-                       nobisect_nomerge=1,
-                       supsteiner_level=2,
-                       addsteiner_algo=1,
-                       coarsen_param=0,
-                       weighted_param=0,
-                       fliplinklevel=-1,
-                       flipstarsize=-1,
-                       fliplinklevelinc=1,
-                       reflevel=3,
-                       optscheme=7,
-                       optlevel=2,
-                       delmaxfliplevel=1,
-                       order=2,
-                       reversetetori=0,
-                       steinerleft=10000,
-                       no_sort=0,
-                       hilbert_order=52,
-                       hilbert_limit=8,
-                       brio_threshold=64,
-                       brio_ratio=0.125,
-                       facet_separate_ang_tol=179.9,
-                       facet_overlap_ang_tol=0.001,
-                       facet_small_ang_tol=15.0,
-                       maxvolume=-1.0,
-                       minratio=2.0,
-                       mindihedral=0.0,
-                       optmaxdihedral=165.0,
-                       optminsmtdihed=179.0,
-                       optminslidihed=179.0,
-                       epsilon=1.0e-8,
-                       coarsen_percent=1.0,
-                       switches=None):
+    def tetrahedralize(
+            self,
+            plc=True,
+            psc=0.,
+            refine=0.,
+            quality=True,
+            nobisect=False,
+            cdt=0.,
+            cdtrefine=7.,
+            coarsen=0.,
+            weighted=0.,
+            brio_hilbert=1.,
+            flipinsert=0.,
+            metric=0.,
+            varvolume=0.,
+            fixedvolume=0.,
+            regionattrib=0.,
+            insertaddpoints=0.,
+            diagnose=0.,
+            convex=0.,
+            nomergefacet=0.,
+            nomergevertex=0.,
+            noexact=0.,
+            nostaticfilter=0.,
+            zeroindex=0.,
+            facesout=0.,
+            edgesout=0.,
+            neighout=0.,
+            voroout=0.,
+            meditview=0.,
+            vtkview=0.,
+            vtksurfview=0.,
+            nobound=0.,
+            nonodewritten=0.,
+            noelewritten=0.,
+            nofacewritten=0.,
+            noiterationnum=0.,
+            nojettison=0.,
+            docheck=0.,
+            quiet=0.,
+            nowarning=0.,
+            verbose=0.,
+            vertexperblock=4092.,
+            tetrahedraperblock=8188.,
+            shellfaceperblock=2044.,
+            supsteiner_level=2.,
+            addsteiner_algo=1.,
+            coarsen_param=0.,
+            weighted_param=0.,
+            fliplinklevel=-1.,
+            flipstarsize=-1.,
+            fliplinklevelinc=1.,
+            opt_max_flip_level=3.,
+            opt_scheme=7.,
+            opt_iterations=3.,
+            smooth_cirterion=1.,
+            smooth_maxiter=7.,
+            delmaxfliplevel=1.,
+            order=1.,
+            reversetetori=0.,
+            steinerleft=100000.,
+            unflip_queue_limit=1000.,
+            no_sort=0.,
+            hilbert_order=52.,
+            hilbert_limit=8.,
+            brio_threshold=64.,
+            brio_ratio=0.125,
+            epsilon=1.0e-8,
+            facet_separate_ang_tol=179.9,
+            collinear_ang_tol=179.9,
+            facet_small_ang_tol=15.0,
+            maxvolume=-1.0,
+            maxvolume_length=-1.0,
+            minratio=2.0,
+            opt_max_asp_ratio=1000.0,
+            opt_max_edge_ratio=100.0,
+            mindihedral=0.0,
+            optmaxdihedral=177.0,
+            metric_scale=1.0,
+            smooth_alpha=0.3,
+            coarsen_percent=1.0,
+            elem_growth_ratio=0.0,
+            refine_progress_ratio=0.333,
+            switches=None
+    ):
         """Generates tetrahedrals interior to the surface mesh
         described by the vertex and face arrays already loaded.
         Returns nodes and elements belonging to the all tetrahedral
@@ -246,12 +258,6 @@ class TetGen:
 
         Parameters
         ----------
-        facet_overlap_ang_tol : double, optional
-            Threshold angle at which TetGen will consider to faces
-            overlapping.  Raising this will require a higher quality
-            mesh input and may cause tetrahedralize to fail.  Default
-            0.001.
-
         quality : bool, optional
             Enables/disables mesh improvement.  Enabled by default.
             Disable this to speed up mesh generation while sacrificing
@@ -260,7 +266,7 @@ class TetGen:
         minratio : double, optional.
             Maximum allowable radius-edge ratio.  Must be greater than
             1.0 the closer to 1.0, the higher the quality of the mesh.
-            Be sure to raise steinerleft to allow for the addition of
+            Be sure to raise ``steinerleft`` to allow for the addition of
             points to improve the quality of the mesh.  Avoid overly
             restrictive requirements, otherwise, meshing will appear
             to hang.  Default 2.0
@@ -271,7 +277,7 @@ class TetGen:
         mindihedral : double, optional
             Minimum allowable dihedral angle.  The larger this number,
             the higher the quality of the resulting mesh.  Be sure to
-            raise steinerleft to allow for the addition of points to
+            raise ``steinerleft`` to allow for the addition of points to
             improve the quality of the mesh.  Avoid overly restrictive
             requirements, otherwise, meshing will appear to hang.
             Default 0.0
@@ -313,12 +319,6 @@ class TetGen:
             improve the mesh quality or to conform the size of mesh
             elements.
 
-        double : optmaxdihedral, optional
-            Setting unreachable using switches.  Controls the optimial
-            maximum dihedral.  Settings closer, but not exceeding, 180
-            degrees results in a lower quality mesh.  Should be
-            between 135 and 180 degrees.  Default 165.0
-
         order : int optional
             Controls whether TetGen creates linear tetrahedrals or
             quadradic tetrahedrals.  Set order to 2 to output
@@ -342,66 +342,166 @@ class TetGen:
         C++ program.  This is the relationship between tetgen switches
         and python optional inputs:
 
-        - ``psc`` --> ``'-s'``
-        - ``refine`` --> ``'-r'``
-        - ``quality`` --> ``'-q'``
-        - ``nobisect`` --> ``'-Y'``
-        - ``coarsen`` --> ``'-R'``
-        - ``weighted`` --> ``'-w'``
-        - ``brio_hilbert`` --> ``'-b'``
-        - ``incrflip`` --> ``'-l'``
-        - ``flipinsert`` --> ``'-L'``
-        - ``metric`` --> ``'-m'``
-        - ``varvolume`` --> ``'-a'``
-        - ``fixedvolume`` --> ``'-a'``
-        - ``regionattrib`` --> ``'-A'``
-        - ``cdtrefine`` --> ``'-D'``
-        - ``insertaddpoints`` --> ``'-i'``
-        - ``diagnose`` --> ``'-d'``
-        - ``convex`` --> ``'-c'``
-        - ``nomergefacet`` --> ``'-M'``
-        - ``nomergevertex`` --> ``'-M'``
-        - ``noexact`` --> ``'-X'``
-        - ``nostaticfilter`` --> ``'-X'``
-        - ``zeroindex`` --> ``'-z'``
-        - ``voroout`` --> ``'-v'``
-        - ``meditview`` --> ``'-g'``
-        - ``vtkview`` --> ``'-k'``
-        - ``nobound`` --> ``'-B'``
-        - ``noiterationnum`` --> ``'-I'``
-        - ``nojettison`` --> ``'-J'``
-        - ``docheck`` --> ``'-C'``
-        - ``quiet`` --> ``'-Q'``
-        - ``verbose`` --> ``'-V'``
-        - ``vertexperblock`` --> ``'-x', 4092.``
-        - ``tetrahedraperblock`` --> ``'-x', 8188.``
-        - ``shellfaceperblock`` --> ``'-x', 2044.``
-        - ``nobisect_nomerge`` --> ``'-Y', 1.``
-        - ``supsteiner_level`` --> ``'-Y/', 2.``
-        - ``addsteiner_algo`` --> ``'-Y//', 1.``
-        - ``coarsen_param`` --> ``'-R', 0.``
-        - ``weighted_param`` --> ``'-w', 0.``
-        - ``reflevel`` --> ``'-D', 3.``
-        - ``optlevel`` --> ``'-O', 2.``
-        - ``optscheme`` --> ``'-O', 7.``
-        - ``order`` --> ``'-o', 1.``
-        - ``reversetetori`` --> ``'-o/', 0.``
-        - ``steinerleft`` --> ``'-S', 0.``
-        - ``hilbert_order`` --> ``'-b///', 52.``
-        - ``hilbert_limit`` --> ``'-b//'  8.``
-        - ``brio_threshold`` --> ``'-b' 64.``
-        - ``brio_ratio`` --> ``'-b/' 0.125.``
-        - ``facet_separate_ang_tol`` --> ``'-p', 179.9.``
-        - ``facet_overlap_ang_tol`` --> ``'-p/',  0.1.``
-        - ``facet_small_ang_tol`` --> ``'-p//', 15.0.``
-        - ``maxvolume`` --> ``'-a', -1.0.``
-        - ``minratio`` --> ``'-q', 0.0.``
-        - ``mindihedral`` --> ``'-q', 5.0.``
-        - ``optmaxdihedral`` --> ``165.0.``
-        - ``optminsmtdihed`` --> ``179.0.``
-        - ``optminslidihed`` --> ``179.0.``
-        - ``epsilon`` --> ``'-T', 1.0e-8.``
-        - ``coarsen_percent`` --> ``-R1/#, 1.0.``
+        Switches of TetGen.
+
+        +---------------------------+---------------+---------+
+        | Option                    | Switch        | Default |
+        +---------------------------+---------------+---------+
+        | plc                       | ``'-p'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | psc                       | ``'-s'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | refine                    | ``'-r'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | quality                   | ``'-q'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | nobisect                  | ``'-Y'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | cdt                       | ``'-D'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | cdtrefine                 | ``'-D#'``     | 7.      |
+        +---------------------------+---------------+---------+
+        | coarsen                   | ``'-R'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | weighted                  | ``'-w'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | brio_hilbert              | ``'-b'``      | 1.      |
+        +---------------------------+---------------+---------+
+        | flipinsert                | ``'-L'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | metric                    | ``'-m'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | varvolume                 | ``'-a'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | fixedvolume               | ``'-a'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | regionattrib              | ``'-A'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | insertaddpoints           | ``'-i'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | diagnose                  | ``'-d'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | convex                    | ``'-c'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | nomergefacet              | ``'-M'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | nomergevertex             | ``'-M'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | noexact                   | ``'-X'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | nostaticfilter            | ``'-X'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | zeroindex                 | ``'-z'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | facesout                  | ``'-f'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | edgesout                  | ``'-e'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | neighout                  | ``'-n'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | voroout                   | ``'-v'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | meditview                 | ``'-g'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | vtkview                   | ``'-k'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | vtksurfview               | ``'-k'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | nobound                   | ``'-B'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | nonodewritten             | ``'-N'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | noelewritten              | ``'-E'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | nofacewritten             | ``'-F'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | noiterationnum            | ``'-I'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | nojettison                | ``'-J'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | docheck                   | ``'-C'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | quiet                     | ``'-Q'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | nowarning                 | ``'-W'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | verbose                   | ``'-V'``      | 0.      |
+        +---------------------------+---------------+---------+
+
+        Parameters of TetGen.
+
+        +---------------------------+---------------+---------+
+        | Option                    | Switch        | Default |
+        +---------------------------+---------------+---------+
+        | vertexperblock            | ``'-x'``      | 4092.   |
+        +---------------------------+---------------+---------+
+        | tetrahedraperblock        | ``'-x'``      | 8188.   |
+        +---------------------------+---------------+---------+
+        | shellfaceperblock         | ``'-x'``      | 2044.   |
+        +---------------------------+---------------+---------+
+        | supsteiner_level          | ``'-Y/'``     | 2.      |
+        +---------------------------+---------------+---------+
+        | addsteiner_algo           | ``'-Y//'``    | 1.      |
+        +---------------------------+---------------+---------+
+        | coarsen_param             | ``'-R'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | weighted_param            | ``'-w'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | opt_max_flip_level        | ``'-O'``      | 3.      |
+        +---------------------------+---------------+---------+
+        | opt_scheme                | ``'-O/#'``    | 7.      |
+        +---------------------------+---------------+---------+
+        | opt_iterations            | ``'-O//#'``   | 3.      |
+        +---------------------------+---------------+---------+
+        | smooth_cirterion          | ``'-s'``      | 1.      |
+        +---------------------------+---------------+---------+
+        | smooth_maxiter            | ``'-s'``      | 7.      |
+        +---------------------------+---------------+---------+
+        | order                     | ``'-o'``      | 1.      |
+        +---------------------------+---------------+---------+
+        | reversetetori             | ``'-o/'``     | 0.      |
+        +---------------------------+---------------+---------+
+        | steinerleft               | ``'-S'``      | 0.      |
+        +---------------------------+---------------+---------+
+        | unflip_queue_limit        | ``'-U#'``     | 1000.   |
+        +---------------------------+---------------+---------+
+        | hilbert_order             | ``'-b///'``   | 52.     |
+        +---------------------------+---------------+---------+
+        | hilbert_limit             | ``'-b//'``    |  8.     |
+        +---------------------------+---------------+---------+
+        | brio_threshold            | ``'-b'``      | 64.     |
+        +---------------------------+---------------+---------+
+        | brio_ratio                | ``'-b/'``     |0.125.   |
+        +---------------------------+---------------+---------+
+        | epsilon                   | ``'-T'``      | 1.0e-8. |
+        +---------------------------+---------------+---------+
+        | facet_separate_ang_tol    | ``'-p'``      | 179.9.  |
+        +---------------------------+---------------+---------+
+        | collinear_ang_tol         | ``'-p/'``     | 179.9.  |
+        +---------------------------+---------------+---------+
+        | facet_small_ang_tol       | ``'-p//'``    | 15.0.   |
+        +---------------------------+---------------+---------+
+        | maxvolume                 | ``'-a'``      | -1.0.   |
+        +---------------------------+---------------+---------+
+        | maxvolume_length          | ``'-a'``      | -1.0.   |
+        +---------------------------+---------------+---------+
+        | minratio                  | ``'-q'``      | 0.0.    |
+        +---------------------------+---------------+---------+
+        | mindihedral               | ``'-q'``      | 5.0.    |
+        +---------------------------+---------------+---------+
+        | optmaxdihedral            | ``'-o/#'``    | 177.0.  |
+        +---------------------------+---------------+---------+
+        | metric_scale              | ``'-m#'``     | 1.0.    |
+        +---------------------------+---------------+---------+
+        | smooth_alpha              | ``'-s'``      | 0.3.    |
+        +---------------------------+---------------+---------+
+        | coarsen_percent           | ``'-R1/#'``   | 1.0.    |
+        +---------------------------+---------------+---------+
+        | elem_growth_ratio         | ``'-r#'``     | 0.0.    |
+        +---------------------------+---------------+---------+
+        | refine_progress_ratio     | ``'-r/#'``    | 0.333.  |
+        +---------------------------+---------------+---------+
+
         """
 
         # format switches
@@ -417,81 +517,92 @@ class TetGen:
         # Call library
         plc = True  # always true
         try:
-            self.node, self.elem = _tetgen.Tetrahedralize(self.v,
-                                                          self.f,
-                                                          switches_str,
-                                                          plc,
-                                                          psc,
-                                                          refine,
-                                                          quality,
-                                                          nobisect,
-                                                          coarsen,
-                                                          metric,
-                                                          weighted,
-                                                          brio_hilbert,
-                                                          incrflip,
-                                                          flipinsert,
-                                                          varvolume,
-                                                          fixedvolume,
-                                                          noexact,
-                                                          nostaticfilter,
-                                                          insertaddpoints,
-                                                          regionattrib,
-                                                          cdtrefine,
-                                                          diagnose,
-                                                          convex,
-                                                          zeroindex,
-                                                          facesout,
-                                                          edgesout,
-                                                          neighout,
-                                                          voroout,
-                                                          meditview,
-                                                          vtkview,
-                                                          nobound,
-                                                          nonodewritten,
-                                                          noelewritten,
-                                                          nofacewritten,
-                                                          noiterationnum,
-                                                          nomergefacet,
-                                                          nomergevertex,
-                                                          nojettison,
-                                                          docheck,
-                                                          quiet,
-                                                          verbose,
-                                                          vertexperblock,
-                                                          tetrahedraperblock,
-                                                          shellfaceperblock,
-                                                          nobisect_nomerge,
-                                                          supsteiner_level,
-                                                          addsteiner_algo,
-                                                          coarsen_param,
-                                                          weighted_param,
-                                                          fliplinklevel,
-                                                          flipstarsize,
-                                                          fliplinklevelinc,
-                                                          reflevel,
-                                                          optscheme,
-                                                          optlevel,
-                                                          delmaxfliplevel,
-                                                          order,
-                                                          reversetetori,
-                                                          steinerleft,
-                                                          no_sort,
-                                                          hilbert_order,
-                                                          hilbert_limit,
-                                                          brio_threshold,
-                                                          brio_ratio,
-                                                          facet_separate_ang_tol,
-                                                          facet_overlap_ang_tol,
-                                                          facet_small_ang_tol,
-                                                          maxvolume,
-                                                          minratio,
-                                                          mindihedral,
-                                                          optmaxdihedral,
-                                                          optminsmtdihed,
-                                                          optminslidihed,
-                                                          epsilon,
-                                                          coarsen_percent)
+            self.node, self.elem = _tetgen.Tetrahedralize(
+                self.v,
+                self.f,
+                switches_str,
+                plc,
+                psc,
+                refine,
+                quality,
+                nobisect,
+                cdt,
+                cdtrefine,
+                coarsen,
+                weighted,
+                brio_hilbert,
+                flipinsert,
+                metric,
+                varvolume,
+                fixedvolume,
+                regionattrib,
+                insertaddpoints,
+                diagnose,
+                convex,
+                nomergefacet,
+                nomergevertex,
+                noexact,
+                nostaticfilter,
+                zeroindex,
+                facesout,
+                edgesout,
+                neighout,
+                voroout,
+                meditview,
+                vtkview,
+                vtksurfview,
+                nobound,
+                nonodewritten,
+                noelewritten,
+                nofacewritten,
+                noiterationnum,
+                nojettison,
+                docheck,
+                quiet,
+                nowarning,
+                verbose,
+                vertexperblock,
+                tetrahedraperblock,
+                shellfaceperblock,
+                supsteiner_level,
+                addsteiner_algo,
+                coarsen_param,
+                weighted_param,
+                fliplinklevel,
+                flipstarsize,
+                fliplinklevelinc,
+                opt_max_flip_level,
+                opt_scheme,
+                opt_iterations,
+                smooth_cirterion,
+                smooth_maxiter,
+                delmaxfliplevel,
+                order,
+                reversetetori,
+                steinerleft,
+                unflip_queue_limit,
+                no_sort,
+                hilbert_order,
+                hilbert_limit,
+                brio_threshold,
+                brio_ratio,
+                epsilon,
+                facet_separate_ang_tol,
+                collinear_ang_tol,
+                facet_small_ang_tol,
+                maxvolume,
+                maxvolume_length,
+                minratio,
+                opt_max_asp_ratio,
+                opt_max_edge_ratio,
+                mindihedral,
+                optmaxdihedral,
+                metric_scale,
+                smooth_alpha,
+                coarsen_percent,
+                elem_growth_ratio,
+                refine_progress_ratio,
+            )
         except RuntimeError as e:
             raise RuntimeError('Failed to tetrahedralize.\n' +
                                'May need to repair surface by making it manifold:\n' +
