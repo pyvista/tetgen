@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Using external modules to create a mesh &#8212; tetgen 0.6.0 documentation</title>
+    <title>Using external modules to create a mesh &#8212; tetgen 0.5.5 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -26,10 +26,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
@@ -187,6 +187,16 @@
   </a>
  </li>
  <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-ansys-mapdl-reader">
+   Using
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     ansys-mapdl-reader
+    </span>
+   </code>
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#using-pyacvd">
    Using pyacvd
   </a>
@@ -237,8 +247,7 @@ to download the full example code</p>
 <span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_001.png" />
-<p>Use pyvista to plot</p>
+<img src="../_images/sphx_glr_sphere_001.png" srcset="../_images/sphx_glr_sphere_001.png" alt="sphere" class = "sphx-glr-single-img"/><p>Use pyvista to plot</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get cell centroids</span>
 <span class="n">cell_center</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">cell_centers</span><span class="p">()</span><span class="o">.</span><span class="n">points</span>
 
@@ -256,10 +265,15 @@ to download the full example code</p>
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_002.png" />
-<p>Use pyvista to compute cell quality.  This is the minimum scaled
-jacobian of each cell.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">compute_cell_quality</span><span class="p">()[</span><span class="s1">&#39;CellQuality&#39;</span><span class="p">]</span>
+<img src="../_images/sphx_glr_sphere_002.png" srcset="../_images/sphx_glr_sphere_002.png" alt="sphere" class = "sphx-glr-single-img"/></div>
+<div class="section" id="using-ansys-mapdl-reader">
+<h1>Using <code class="docutils literal notranslate"><span class="pre">ansys-mapdl-reader</span></code><a class="headerlink" href="#using-ansys-mapdl-reader" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use pyansys&#39;s `legacy reader &lt;https://github.com/pyansys/reader&gt;`_</span>
+<span class="c1"># library to compute cell quality.  This is the minimum scaled</span>
+<span class="c1"># jacobian of each cell.</span>
+
+<span class="kn">from</span> <span class="nn">ansys.mapdl.reader</span> <span class="kn">import</span> <span class="n">quality</span>
+<span class="n">cell_qual</span> <span class="o">=</span> <span class="n">quality</span><span class="p">(</span><span class="n">subgrid</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mean cell quality: </span><span class="si">{</span><span class="n">cell_qual</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.3</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># plot quality</span>
@@ -268,9 +282,8 @@ jacobian of each cell.</p>
              <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
 </pre></div>
 </div>
-<img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_003.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean cell quality: 0.605
+<img src="../_images/sphx_glr_sphere_003.png" srcset="../_images/sphx_glr_sphere_003.png" alt="sphere" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean cell quality: 0.561
 </pre></div>
 </div>
 </div>
@@ -290,30 +303,20 @@ and then tetrahedralize that.</p>
 <span class="n">clustered</span><span class="o">.</span><span class="n">cluster</span><span class="p">(</span><span class="n">n_surf</span><span class="p">)</span>
 <span class="n">uniform_surf</span> <span class="o">=</span> <span class="n">clustered</span><span class="o">.</span><span class="n">create_mesh</span><span class="p">()</span>
 
-<span class="c1"># generate interior mesh and plot the surface of it</span>
+<span class="c1"># generate interior mesh</span>
 <span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">uniform_surf</span><span class="p">)</span>
 <span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mindihedral</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">minratio</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">uniform_grid</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
 <span class="n">uniform_grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_004.png" />
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1192: PyvistaDeprecationWarning: Use of `point_arrays` is deprecated. Use `point_data` instead.
-  warnings.warn(
-/opt/hostedtoolcache/Python/3.8.11/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1332: PyvistaDeprecationWarning: Use of `cell_arrays` is deprecated. Use `cell_data` instead.
-  warnings.warn(
-</pre></div>
-</div>
-<p>Plot the cross section of the tetrahedralization</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cell_center</span> <span class="o">=</span> <span class="n">uniform_grid</span><span class="o">.</span><span class="n">cell_centers</span><span class="p">()</span><span class="o">.</span><span class="n">points</span>
+
+<span class="n">cell_center</span> <span class="o">=</span> <span class="n">uniform_grid</span><span class="o">.</span><span class="n">cell_centers</span><span class="p">()</span><span class="o">.</span><span class="n">points</span>
 
 <span class="c1"># extract cells below the 0 xy plane</span>
 <span class="n">mask</span> <span class="o">=</span> <span class="n">cell_center</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span>
 <span class="n">cell_ind</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">subgrid</span> <span class="o">=</span> <span class="n">uniform_grid</span><span class="o">.</span><span class="n">extract_cells</span><span class="p">(</span><span class="n">cell_ind</span><span class="p">)</span>
 
-<span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">compute_cell_quality</span><span class="p">()[</span><span class="s1">&#39;CellQuality&#39;</span><span class="p">]</span>
+<span class="n">cell_qual</span> <span class="o">=</span> <span class="n">quality</span><span class="p">(</span><span class="n">subgrid</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mean cell quality: </span><span class="si">{</span><span class="n">cell_qual</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.3</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="c1"># plot quality</span>
@@ -322,12 +325,19 @@ and then tetrahedralize that.</p>
              <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
 </pre></div>
 </div>
-<img alt="sphere" class="sphx-glr-single-img" src="../_images/sphx_glr_sphere_005.png" />
+<ul class="sphx-glr-horizontal">
+<li><img src="../_images/sphx_glr_sphere_004.png" srcset="../_images/sphx_glr_sphere_004.png" alt="sphere" class = "sphx-glr-multi-img"/></li>
+<li><img src="../_images/sphx_glr_sphere_005.png" srcset="../_images/sphx_glr_sphere_005.png" alt="sphere" class = "sphx-glr-multi-img"/></li>
+</ul>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mean cell quality: 0.646
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1192: PyvistaDeprecationWarning: Use of `point_arrays` is deprecated. Use `point_data` instead.
+  warnings.warn(
+/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1332: PyvistaDeprecationWarning: Use of `cell_arrays` is deprecated. Use `cell_data` instead.
+  warnings.warn(
+Mean cell quality: 0.595
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.415 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.598 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-sphere-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/9c151cee03463a436f8f8d2bc4a1c381/sphere.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sphere.py</span></code></a></p>

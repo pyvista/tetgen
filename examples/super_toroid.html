@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Super Toroid &#8212; tetgen 0.6.0 documentation</title>
+    <title>Super Toroid &#8212; tetgen 0.5.5 documentation</title>
     
   <link href="../_static/css/theme.css" rel="stylesheet" />
   <link href="../_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -26,10 +26,10 @@
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
     
   <link rel="preload" as="script" href="../_static/js/index.1c5a1a01449ed65a7b51.js">
 
@@ -199,25 +199,21 @@ to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="super-toroid">
 <span id="sphx-glr-examples-super-toroid-py"></span><h1>Super Toroid<a class="headerlink" href="#super-toroid" title="Permalink to this headline">¶</a></h1>
-<p>Tetrahedralize a super toroid surface.</p>
+<p>Tetrahedralize a super toroid surface</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 2</span>
 <span class="kn">import</span> <span class="nn">pyvista</span> <span class="k">as</span> <span class="nn">pv</span>
 <span class="kn">import</span> <span class="nn">tetgen</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 </pre></div>
 </div>
-<p>Create and tetrahedralize a super torid.</p>
-<p>We merge the points here to make sure that the surface is manifold.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">toroid</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">ParametricSuperToroid</span><span class="p">(</span><span class="n">u_res</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">v_res</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">w_res</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">tolerance</span><span class="o">=</span><span class="mf">1E-9</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">toroid</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">ParametricSuperToroid</span><span class="p">()</span>
 <span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">toroid</span><span class="p">)</span>
 <span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mindihedral</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">minratio</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">grid</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
 <span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="super toroid" class="sphx-glr-single-img" src="../_images/sphx_glr_super_toroid_001.png" />
-<p>Plot the tesselated mesh.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get cell centroids</span>
+<img src="../_images/sphx_glr_super_toroid_001.png" srcset="../_images/sphx_glr_super_toroid_001.png" alt="super toroid" class = "sphx-glr-single-img"/><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># get cell centroids</span>
 <span class="n">cells</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">:]</span>
 <span class="n">cell_center</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">cells</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
@@ -235,16 +231,28 @@ to download the full example code</p>
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="super toroid" class="sphx-glr-single-img" src="../_images/sphx_glr_super_toroid_002.png" />
-<p>Show the cell quality</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">compute_cell_quality</span><span class="p">()[</span><span class="s1">&#39;CellQuality&#39;</span><span class="p">]</span>
-<span class="n">subgrid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scalars</span><span class="o">=</span><span class="n">cell_qual</span><span class="p">,</span> <span class="n">scalar_bar_args</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="s1">&#39;Cell Quality&#39;</span><span class="p">},</span>
-             <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span>  <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<img src="../_images/sphx_glr_super_toroid_002.png" srcset="../_images/sphx_glr_super_toroid_002.png" alt="super toroid" class = "sphx-glr-single-img"/><p>Cell quality using pyansys</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ansys.mapdl.reader</span> <span class="kn">import</span> <span class="n">quality</span>
+<span class="n">cell_qual</span> <span class="o">=</span> <span class="n">quality</span><span class="p">(</span><span class="n">subgrid</span><span class="p">)</span>
+
+<span class="c1"># plot quality</span>
+<span class="n">subgrid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">scalars</span><span class="o">=</span><span class="n">cell_qual</span><span class="p">,</span> <span class="n">stitle</span><span class="o">=</span><span class="s1">&#39;quality&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;bwr&#39;</span><span class="p">,</span>  <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
              <span class="n">flip_scalars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="super toroid" class="sphx-glr-single-img" src="../_images/sphx_glr_super_toroid_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.683 seconds)</p>
+<img src="../_images/sphx_glr_super_toroid_003.png" srcset="../_images/sphx_glr_super_toroid_003.png" alt="super toroid" class = "sphx-glr-single-img"/><p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pyvista/plotting/plotting.py:1795: PyvistaDeprecationWarning:
+&quot;stitle&quot; is a depreciated keyword and will be removed in a future
+release.
+
+Use ``scalar_bar_args`` instead.  For example:
+
+scalar_bar_args={&#39;title&#39;: &#39;Scalar Bar Title&#39;}
+
+  warnings.warn(USE_SCALAR_BAR_ARGS, PyvistaDeprecationWarning)
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.764 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-super-toroid-py">
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/3267e74c35bd22f4d7d3f4cbd53c2ebf/super_toroid.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">super_toroid.py</span></code></a></p>

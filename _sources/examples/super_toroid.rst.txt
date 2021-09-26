@@ -21,9 +21,9 @@
 Super Toroid
 ~~~~~~~~~~~~
 
-Tetrahedralize a super toroid surface.
+Tetrahedralize a super toroid surface
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-14
+.. GENERATED FROM PYTHON SOURCE LINES 7-12
 
 .. code-block:: default
 
@@ -39,19 +39,11 @@ Tetrahedralize a super toroid surface.
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 15-18
-
-Create and tetrahedralize a super torid.
-
-We merge the points here to make sure that the surface is manifold.
-
-.. GENERATED FROM PYTHON SOURCE LINES 18-26
+.. GENERATED FROM PYTHON SOURCE LINES 13-20
 
 .. code-block:: default
 
-
-    toroid = pv.ParametricSuperToroid(u_res=50, v_res=50, w_res=50).clean(tolerance=1E-9)
+    toroid = pv.ParametricSuperToroid()
     tet = tetgen.TetGen(toroid)
     tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     grid = tet.grid
@@ -61,19 +53,16 @@ We merge the points here to make sure that the surface is manifold.
 
 
 
-.. image:: /examples/images/sphx_glr_super_toroid_001.png
-    :alt: super toroid
-    :class: sphx-glr-single-img
+.. image-sg:: /examples/images/sphx_glr_super_toroid_001.png
+   :alt: super toroid
+   :srcset: /examples/images/sphx_glr_super_toroid_001.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-28
-
-Plot the tesselated mesh.
-
-.. GENERATED FROM PYTHON SOURCE LINES 28-46
+.. GENERATED FROM PYTHON SOURCE LINES 21-39
 
 .. code-block:: default
 
@@ -98,34 +87,53 @@ Plot the tesselated mesh.
 
 
 
-.. image:: /examples/images/sphx_glr_super_toroid_002.png
-    :alt: super toroid
-    :class: sphx-glr-single-img
+.. image-sg:: /examples/images/sphx_glr_super_toroid_002.png
+   :alt: super toroid
+   :srcset: /examples/images/sphx_glr_super_toroid_002.png
+   :class: sphx-glr-single-img
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-48
+.. GENERATED FROM PYTHON SOURCE LINES 40-41
 
-Show the cell quality
+Cell quality using pyansys
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-53
+.. GENERATED FROM PYTHON SOURCE LINES 41-47
 
 .. code-block:: default
 
+    from ansys.mapdl.reader import quality
+    cell_qual = quality(subgrid)
 
-    cell_qual = subgrid.compute_cell_quality()['CellQuality']
-    subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Cell Quality'},
-                 cmap='bwr',  clim=[0, 1],
+    # plot quality
+    subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr',  clim=[0,1],
                  flip_scalars=True, show_edges=True)
 
 
 
-.. image:: /examples/images/sphx_glr_super_toroid_003.png
-    :alt: super toroid
-    :class: sphx-glr-single-img
+.. image-sg:: /examples/images/sphx_glr_super_toroid_003.png
+   :alt: super toroid
+   :srcset: /examples/images/sphx_glr_super_toroid_003.png
+   :class: sphx-glr-single-img
 
+
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pyvista/plotting/plotting.py:1795: PyvistaDeprecationWarning: 
+    "stitle" is a depreciated keyword and will be removed in a future
+    release.
+
+    Use ``scalar_bar_args`` instead.  For example:
+
+    scalar_bar_args={'title': 'Scalar Bar Title'}
+
+      warnings.warn(USE_SCALAR_BAR_ARGS, PyvistaDeprecationWarning)
 
 
 
@@ -133,7 +141,7 @@ Show the cell quality
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.683 seconds)
+   **Total running time of the script:** ( 0 minutes  3.764 seconds)
 
 
 .. _sphx_glr_download_examples_super_toroid.py:

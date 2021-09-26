@@ -53,7 +53,7 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a super toroid surface.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a super toroid surface">
 
 .. only:: html
 

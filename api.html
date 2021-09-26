@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API Reference &#8212; tetgen 0.6.0 documentation</title>
+    <title>API Reference &#8212; tetgen 0.5.5 documentation</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -26,10 +26,10 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
     
   <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
 
@@ -246,7 +246,7 @@ Updates mesh in-place.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tetgen.TetGen.tetrahedralize">
-<span class="sig-name descname"><span class="pre">tetrahedralize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobisect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdtrefine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_hilbert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipinsert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixedvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regionattrib</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertaddpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergefacet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergevertex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noexact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nostaticfilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeroindex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facesout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgesout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voroout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meditview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vtkview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vtksurfview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonodewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noelewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nofacewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noiterationnum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nojettison</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nowarning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertexperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4092.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tetrahedraperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8188.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shellfaceperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2044.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supsteiner_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addsteiner_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipstarsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevelinc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_max_flip_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_cirterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delmaxfliplevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversetetori</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steinerleft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unflip_queue_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">52.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_separate_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collinear_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_small_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxvolume_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_max_asp_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_max_edge_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mindihedral</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optmaxdihedral</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">177.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elem_growth_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine_progress_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.333</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.tetrahedralize" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">tetrahedralize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">psc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobisect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_hilbert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incrflip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipinsert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixedvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noexact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nostaticfilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertaddpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regionattrib</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdtrefine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeroindex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facesout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgesout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voroout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meditview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vtkview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonodewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noelewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nofacewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noiterationnum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergefacet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergevertex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nojettison</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertexperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4092</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tetrahedraperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8188</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shellfaceperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4092</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobisect_nomerge</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supsteiner_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addsteiner_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipstarsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevelinc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reflevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optscheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optlevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delmaxfliplevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversetetori</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steinerleft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">52</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_separate_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_overlap_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_small_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mindihedral</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optmaxdihedral</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">165.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optminsmtdihed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optminslidihed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.tetrahedralize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates tetrahedrals interior to the surface mesh
 described by the vertex and face arrays already loaded.
 Returns nodes and elements belonging to the all tetrahedral
@@ -261,12 +261,16 @@ inputting switches.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>facet_overlap_ang_tol</strong> (<em>double</em><em>, </em><em>optional</em>) – Threshold angle at which TetGen will consider to faces
+overlapping.  Raising this will require a higher quality
+mesh input and may cause tetrahedralize to fail.  Default
+0.001.</p></li>
 <li><p><strong>quality</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables mesh improvement.  Enabled by default.
 Disable this to speed up mesh generation while sacrificing
 quality.  Default True.</p></li>
 <li><p><strong>minratio</strong> (<em>double</em><em>, </em><em>optional.</em>) – <p>Maximum allowable radius-edge ratio.  Must be greater than
 1.0 the closer to 1.0, the higher the quality of the mesh.
-Be sure to raise <code class="docutils literal notranslate"><span class="pre">steinerleft</span></code> to allow for the addition of
+Be sure to raise steinerleft to allow for the addition of
 points to improve the quality of the mesh.  Avoid overly
 restrictive requirements, otherwise, meshing will appear
 to hang.  Default 2.0</p>
@@ -275,7 +279,7 @@ high quality mesh.</p>
 </p></li>
 <li><p><strong>mindihedral</strong> (<em>double</em><em>, </em><em>optional</em>) – <p>Minimum allowable dihedral angle.  The larger this number,
 the higher the quality of the resulting mesh.  Be sure to
-raise <code class="docutils literal notranslate"><span class="pre">steinerleft</span></code> to allow for the addition of points to
+raise steinerleft to allow for the addition of points to
 improve the quality of the mesh.  Avoid overly restrictive
 requirements, otherwise, meshing will appear to hang.
 Default 0.0</p>
@@ -309,6 +313,10 @@ are optional, while they may be necessary in order to
 improve the mesh quality or to conform the size of mesh
 elements.</p>
 </p></li>
+<li><p><strong>double</strong> (<em>optmaxdihedral</em><em>, </em><em>optional</em>) – Setting unreachable using switches.  Controls the optimial
+maximum dihedral.  Settings closer, but not exceeding, 180
+degrees results in a lower quality mesh.  Should be
+between 135 and 180 degrees.  Default 165.0</p></li>
 <li><p><strong>order</strong> (<em>int optional</em>) – Controls whether TetGen creates linear tetrahedrals or
 quadradic tetrahedrals.  Set order to 2 to output
 quadradic tetrahedrals.  Default 2.</p></li>
@@ -330,507 +338,68 @@ quadradic tetrahedrals.  Default 2.</p></li>
 contains descriptions only for the switches of the original
 C++ program.  This is the relationship between tetgen switches
 and python optional inputs:</p>
-<p>Switches of TetGen.</p>
-<table class="table">
-<colgroup>
-<col style="width: 53%" />
-<col style="width: 29%" />
-<col style="width: 18%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Option</p></td>
-<td><p>Switch</p></td>
-<td><p>Default</p></td>
-</tr>
-<tr class="row-even"><td><p>plc</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-p'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>psc</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>refine</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-r'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>quality</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-q'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>nobisect</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-Y'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>cdt</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-D'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>cdtrefine</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-D#'</span></code></p></td>
-<td><ol class="arabic simple" start="7">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>coarsen</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-R'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>weighted</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-w'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>brio_hilbert</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-b'</span></code></p></td>
-<td><ol class="arabic simple">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>flipinsert</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-L'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>metric</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-m'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>varvolume</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>fixedvolume</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>regionattrib</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-A'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>insertaddpoints</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-i'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>diagnose</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-d'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>convex</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-c'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>nomergefacet</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-M'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>nomergevertex</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-M'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>noexact</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-X'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>nostaticfilter</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-X'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>zeroindex</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-z'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>facesout</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-f'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>edgesout</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-e'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>neighout</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-n'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>voroout</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-v'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>meditview</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-g'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>vtkview</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-k'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>vtksurfview</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-k'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>nobound</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-B'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>nonodewritten</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-N'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>noelewritten</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-E'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>nofacewritten</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-F'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>noiterationnum</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-I'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>nojettison</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-J'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>docheck</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-C'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>quiet</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-Q'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>nowarning</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-W'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>verbose</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-V'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-</tbody>
-</table>
-<p>Parameters of TetGen.</p>
-<table class="table">
-<colgroup>
-<col style="width: 53%" />
-<col style="width: 29%" />
-<col style="width: 18%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>Option</p></td>
-<td><p>Switch</p></td>
-<td><p>Default</p></td>
-</tr>
-<tr class="row-even"><td><p>vertexperblock</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-x'</span></code></p></td>
-<td><ol class="arabic simple" start="4092">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>tetrahedraperblock</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-x'</span></code></p></td>
-<td><ol class="arabic simple" start="8188">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>shellfaceperblock</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-x'</span></code></p></td>
-<td><ol class="arabic simple" start="2044">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>supsteiner_level</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-Y/'</span></code></p></td>
-<td><ol class="arabic simple" start="2">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>addsteiner_algo</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-Y//'</span></code></p></td>
-<td><ol class="arabic simple">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>coarsen_param</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-R'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>weighted_param</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-w'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>opt_max_flip_level</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-O'</span></code></p></td>
-<td><ol class="arabic simple" start="3">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>opt_scheme</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-O/#'</span></code></p></td>
-<td><ol class="arabic simple" start="7">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>opt_iterations</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-O//#'</span></code></p></td>
-<td><ol class="arabic simple" start="3">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>smooth_cirterion</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></td>
-<td><ol class="arabic simple">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>smooth_maxiter</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></td>
-<td><ol class="arabic simple" start="7">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>order</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-o'</span></code></p></td>
-<td><ol class="arabic simple">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>reversetetori</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-o/'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>steinerleft</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-S'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>unflip_queue_limit</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-U#'</span></code></p></td>
-<td><ol class="arabic simple" start="1000">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>hilbert_order</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-b///'</span></code></p></td>
-<td><ol class="arabic simple" start="52">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>hilbert_limit</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-b//'</span></code></p></td>
-<td><ol class="arabic simple" start="8">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-even"><td><p>brio_threshold</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-b'</span></code></p></td>
-<td><ol class="arabic simple" start="64">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>brio_ratio</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-b/'</span></code></p></td>
-<td><p>0.125.</p></td>
-</tr>
-<tr class="row-even"><td><p>epsilon</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-T'</span></code></p></td>
-<td><p>1.0e-8.</p></td>
-</tr>
-<tr class="row-odd"><td><p>facet_separate_ang_tol</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-p'</span></code></p></td>
-<td><p>179.9.</p></td>
-</tr>
-<tr class="row-even"><td><p>collinear_ang_tol</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-p/'</span></code></p></td>
-<td><p>179.9.</p></td>
-</tr>
-<tr class="row-odd"><td><p>facet_small_ang_tol</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-p//'</span></code></p></td>
-<td><p>15.0.</p></td>
-</tr>
-<tr class="row-even"><td><p>maxvolume</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></td>
-<td><p>-1.0.</p></td>
-</tr>
-<tr class="row-odd"><td><p>maxvolume_length</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></td>
-<td><p>-1.0.</p></td>
-</tr>
-<tr class="row-even"><td><p>minratio</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-q'</span></code></p></td>
-<td><p>0.0.</p></td>
-</tr>
-<tr class="row-odd"><td><p>mindihedral</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-q'</span></code></p></td>
-<td><p>5.0.</p></td>
-</tr>
-<tr class="row-even"><td><p>optmaxdihedral</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-o/#'</span></code></p></td>
-<td><p>177.0.</p></td>
-</tr>
-<tr class="row-odd"><td><p>metric_scale</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-m#'</span></code></p></td>
-<td><p>1.0.</p></td>
-</tr>
-<tr class="row-even"><td><p>smooth_alpha</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></td>
-<td><p>0.3.</p></td>
-</tr>
-<tr class="row-odd"><td><p>coarsen_percent</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-R1/#'</span></code></p></td>
-<td><p>1.0.</p></td>
-</tr>
-<tr class="row-even"><td><p>elem_growth_ratio</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-r#'</span></code></p></td>
-<td><p>0.0.</p></td>
-</tr>
-<tr class="row-odd"><td><p>refine_progress_ratio</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-r/#'</span></code></p></td>
-<td><p>0.333.</p></td>
-</tr>
-</tbody>
-</table>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">psc</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">refine</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-r'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quality</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-q'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nobisect</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Y'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coarsen</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-R'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weighted</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-w'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brio_hilbert</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">incrflip</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-l'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">flipinsert</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-L'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metric</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-m'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">varvolume</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fixedvolume</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">regionattrib</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-A'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdtrefine</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-D'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">insertaddpoints</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-i'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">diagnose</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-d'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">convex</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-c'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nomergefacet</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-M'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nomergevertex</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-M'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">noexact</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-X'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nostaticfilter</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-X'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">zeroindex</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-z'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">voroout</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-v'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meditview</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-g'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vtkview</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-k'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nobound</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-B'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">noiterationnum</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-I'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nojettison</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-J'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">docheck</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-C'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">quiet</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Q'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-V'</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vertexperblock</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-x',</span> <span class="pre">4092.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tetrahedraperblock</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-x',</span> <span class="pre">8188.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">shellfaceperblock</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-x',</span> <span class="pre">2044.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nobisect_nomerge</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Y',</span> <span class="pre">1.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">supsteiner_level</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Y/',</span> <span class="pre">2.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">addsteiner_algo</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-Y//',</span> <span class="pre">1.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coarsen_param</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-R',</span> <span class="pre">0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">weighted_param</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-w',</span> <span class="pre">0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reflevel</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-D',</span> <span class="pre">3.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optlevel</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-O',</span> <span class="pre">2.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optscheme</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-O',</span> <span class="pre">7.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">order</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-o',</span> <span class="pre">1.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reversetetori</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-o/',</span> <span class="pre">0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">steinerleft</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-S',</span> <span class="pre">0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hilbert_order</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b///',</span> <span class="pre">52.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hilbert_limit</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b//'</span>&#160; <span class="pre">8.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brio_threshold</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b'</span> <span class="pre">64.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">brio_ratio</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-b/'</span> <span class="pre">0.125.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">facet_separate_ang_tol</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-p',</span> <span class="pre">179.9.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">facet_overlap_ang_tol</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-p/',</span>&#160; <span class="pre">0.1.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">facet_small_ang_tol</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-p//',</span> <span class="pre">15.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">maxvolume</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-a',</span> <span class="pre">-1.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minratio</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-q',</span> <span class="pre">0.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mindihedral</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-q',</span> <span class="pre">5.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optmaxdihedral</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">165.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optminsmtdihed</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">179.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optminslidihed</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">179.0.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epsilon</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">'-T',</span> <span class="pre">1.0e-8.</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coarsen_percent</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">-R1/#,</span> <span class="pre">1.0.</span></code></p></li>
+</ul>
 </dd></dl>
 
 <dl class="py method">
