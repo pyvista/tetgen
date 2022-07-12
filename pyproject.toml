@@ -22,7 +22,7 @@ filterwarnings = [
 [tool.cibuildwheel]
 archs = ["auto64"]  # 64-bit only
 skip = "pp* *musllinux*"  # disable PyPy and musl-based wheels
-test-requires = "pytest"
+test-requires = "pytest pymeshfix"
 test-command = "pytest {project}/tests"
 
 [tool.cibuildwheel.macos]
