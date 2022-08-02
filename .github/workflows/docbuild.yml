@@ -23,9 +23,7 @@ jobs:
           .ci/setup_headless_display.sh
 
       - name: Install tetgen
-        run: |
-          pip install -r requirements_build.txt
-          pip install .
+        run: pip install .
   
       - name: Build Documentation
         run: |
