@@ -49,12 +49,12 @@ Tetrahedralize a cow mesh
     cow_mesh = examples.download_cow().triangulate()
 
     cpos = [(13., 7.6, -13.85),
-     (0.44, -0.4, -0.37),
-     (-0.28, 0.9, 0.3)]
+            (0.44, -0.4, -0.37),
+            (-0.28, 0.9, 0.3)]
 
-    cpos=[(15.87144235049248, 4.879216382405231, -12.14248864876951),
-     (1.1623113035352375, -0.7609060338348953, 0.3192320579894903),
-     (-0.19477922834083672, 0.9593375398915212, 0.20428542963665386)]
+    cpos = [(15.87144235049248, 4.879216382405231, -12.14248864876951),
+            (1.1623113035352375, -0.7609060338348953, 0.3192320579894903),
+            (-0.19477922834083672, 0.9593375398915212, 0.20428542963665386)]
 
     cow_mesh.plot(cpos=cpos)
 
@@ -146,7 +146,7 @@ Make animation of the mesh construction
     xb = np.array(cow_grid.bounds[0:2])
     step = xb.ptp() / nframe
     for val in np.arange(xb[0]+step, xb[1]+step, step):
-        mask = np.argwhere(cow_grid.cell_centers().points[:,0] < val)
+        mask = np.argwhere(cow_grid.cell_centers().points[:, 0] < val)
         half_cow = cow_grid.extract_cells(mask)
         plotter.add_mesh(half_cow, color='w', show_edges=True, name='building')
         plotter.update()
@@ -168,28 +168,23 @@ Make animation of the mesh construction
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  22.016 seconds)
+   **Total running time of the script:** ( 0 minutes  27.253 seconds)
 
 
 .. _sphx_glr_download_examples_cow.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: cow.py <cow.py>`
 
-     :download:`Download Python source code: cow.py <cow.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: cow.ipynb <cow.ipynb>`
+      :download:`Download Jupyter notebook: cow.ipynb <cow.ipynb>`
 
 
 .. only:: html

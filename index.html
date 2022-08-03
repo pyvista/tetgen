@@ -5,13 +5,19 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tetgen &#8212; tetgen 0.5.5 documentation</title>
-    
-  <link href="_static/css/theme.css" rel="stylesheet" />
-  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    
+    <title>tetgen &#8212; tetgen 0.6.1 documentation</title>
+<script>
+  document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+  document.documentElement.dataset.theme = localStorage.getItem("theme") || "light"
+</script>
+
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+<link href="_static/styles/pydata-sphinx-theme.css?digest=92025949c220c2e29695" rel="stylesheet">
+
+
   <link rel="stylesheet"
     href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
@@ -19,19 +25,15 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin
     href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
-    
-      
-
-    
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/basic.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
-    
-  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695">
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -43,9 +45,8 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Examples" href="examples/index.html" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="en" />
-    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="docsearch:language" content="None">
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
@@ -53,27 +54,38 @@
 
 
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
-    
-    <div class="container-fluid" id="banner"></div>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+    <div class="bd-header-announcement container-fluid" id="banner">
+      
+
+    </div>
 
     
-    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+    <nav class="bd-header navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="bd-header__inner container-xl">
 
   <div id="navbar-start">
     
     
+  
 
-<a class="navbar-brand" href="#">
-  <img src="_static/pyvista_logo_sm.png" class="logo" alt="logo">
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="Logo image">
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark" alt="Logo image">
+  
+  
 </a>
-
-
     
   </div>
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <span class="fas fa-bars"></span>
   </button>
 
   
@@ -109,12 +121,18 @@
     <div id="navbar-end">
       
       <div class="navbar-end-item">
+        <span id="theme-switch" class="btn btn-sm btn-outline-primary navbar-btn rounded-circle">
+    <a class="theme-switch" data-mode="light"><i class="fas fa-sun"></i></a>
+    <a class="theme-switch" data-mode="dark"><i class="far fa-moon"></i></a>
+    <a class="theme-switch" data-mode="auto"><i class="fas fa-adjust"></i></a>
+</span>
+      </div>
+      
+      <div class="navbar-end-item">
         <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/pyvista/tetgen" rel="noopener" target="_blank" title="GitHub">
-            <span><i class="fab fa-github-square"></i></span>
-            <label class="sr-only">GitHub</label>
-          </a>
+          <a class="nav-link" href="https://github.com/pyvista/tetgen" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
         </li>
       </ul>
       </div>
@@ -125,12 +143,13 @@
     </nav>
     
 
-    <div class="container-xl">
-      <div class="row">
+    <div class="bd-container container-xl">
+      <div class="bd-container__inner row">
           
-            
-            <!-- Only show if we have sidebars configured, else just a small margin  -->
-            <div class="col-12 col-md-3 bd-sidebar"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+
+<!-- Only show if we have sidebars configured, else just a small margin  -->
+<div class="bd-sidebar-primary col-12 col-md-3 bd-sidebar">
+  <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
 </form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
@@ -138,22 +157,31 @@
     
   </div>
 </nav>
-            </div>
-            
-          
+  </div>
+  <div class="sidebar-end-items">
+  </div>
+</div>
+
 
           
-          <div class="d-none d-xl-block col-xl-2 bd-toc">
-            
-              
-              <div class="toc-item">
-                
-<div class="tocsection onthispage pt-5 pb-3">
+
+
+<div class="bd-sidebar-secondary d-none d-xl-block col-xl-2 bd-toc">
+  
+    
+    <div class="toc-item">
+      
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
     <i class="fas fa-list"></i> On this page
 </div>
 
 <nav id="bd-toc-nav">
     <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#license-agpl">
+   License (AGPL)
+  </a>
+ </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#installation">
    Installation
@@ -174,36 +202,34 @@
 </ul>
 
 </nav>
-              </div>
-              
-              <div class="toc-item">
-                
-              </div>
-              
-            
-          </div>
-          
+    </div>
+    
+    <div class="toc-item">
+      
+    </div>
+    
+  
+</div>
+
 
           
           
-            
-          
-          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+          <div class="bd-content col-12 col-md-9 col-xl-7">
               
-              <div>
+              <article class="bd-article" role="main">
                 
-  <div class="section" id="tetgen">
-<h1>tetgen<a class="headerlink" href="#tetgen" title="Permalink to this headline">¶</a></h1>
+  <section id="tetgen">
+<h1>tetgen<a class="headerlink" href="#tetgen" title="Permalink to this headline">#</a></h1>
 <a class="reference external image-reference" href="https://pypi.org/project/tetgen/"><img alt="https://img.shields.io/pypi/v/tetgen.svg?logo=python&amp;logoColor=white" src="https://img.shields.io/pypi/v/tetgen.svg?logo=python&amp;logoColor=white" /></a>
-<p>This Python module is an interface to Hang Si’s
+<p>This Python library is an interface to Hang Si’s
 <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> C++ software.
 This module combines speed of C++ with the portability and ease of installation
 of Python along with integration to <a class="reference external" href="https://docs.pyvista.org">PyVista</a> for
 3D visualization and analysis.
 See the <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> GitHub page for more details
 on the original creator.</p>
-<p>This python module uses the C++ source from TetGen (version 1.5.1,
-released on August 18, 2018) hosted at <a class="reference external" href="https://github.com/ufz/tetgen">ufz/TetGen</a>.</p>
+<p>This Python library uses the C++ source from TetGen (version 1.6.0,
+released on August 31, 2020) hosted at <a class="reference external" href="https://github.com/libigl/tetgen">libigl/tetgen</a>.</p>
 <p>Brief description from
 <a class="reference external" href="http://wias-berlin.de/software/index.jsp?id=TetGen&amp;lang=1">Weierstrass Institute Software</a>:</p>
 <blockquote>
@@ -215,8 +241,18 @@ tetrahedral meshes suitable for numerical methods, such as finite element or
 finite volume methods. For more information of TetGen, please take a look at a
 list of <a class="reference external" href="http://wias-berlin.de/software/tetgen/features.html">features</a>.</p>
 </div></blockquote>
-<div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<section id="license-agpl">
+<h2>License (AGPL)<a class="headerlink" href="#license-agpl" title="Permalink to this headline">#</a></h2>
+<p>The original <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> software is under AGPL
+(see <a class="reference external" href="https://github.com/pyvista/tetgen/blob/master/LICENSE">LICENSE</a>) and thus this
+Python wrapper package must adopt that license as well.</p>
+<p>Please look into the terms of this license before creating a dynamic link to this software
+in your downstream package and understand commercial use limitations. We are not lawyers
+and cannot provide any guidance on the terms of this license.</p>
+<p>Please see <a class="reference external" href="https://www.gnu.org/licenses/agpl-3.0.en.html">https://www.gnu.org/licenses/agpl-3.0.en.html</a></p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">#</a></h2>
 <p>From <a class="reference external" href="https://pypi.python.org/pypi/tetgen">PyPI</a></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install tetgen
 </pre></div>
@@ -224,13 +260,12 @@ list of <a class="reference external" href="http://wias-berlin.de/software/tetge
 <p>From source at <a class="reference external" href="https://github.com/pyvista/tetgen">GitHub</a></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/pyvista/tetgen
 <span class="nb">cd</span> tetgen
-pip install -r requirements_build.txt
 pip install .
 </pre></div>
 </div>
-</div>
-<div class="section" id="basic-example">
-<h2>Basic Example<a class="headerlink" href="#basic-example" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="basic-example">
+<h2>Basic Example<a class="headerlink" href="#basic-example" title="Permalink to this headline">#</a></h2>
 <p>The features of the C++ TetGen software implemented in this module are
 primarily focused on the tetrahedralization a manifold triangular
 surface.  This basic example demonstrates how to tetrahedralize a
@@ -247,10 +282,12 @@ manifold surface and plot part of the mesh.</p>
 <span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="figure align-default" id="id1">
+<figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="https://github.com/pyvista/tetgen/raw/master/doc/images/sphere.png"><img alt="https://github.com/pyvista/tetgen/raw/master/doc/images/sphere.png" src="https://github.com/pyvista/tetgen/raw/master/doc/images/sphere.png" style="width: 300pt;" /></a>
-<p class="caption"><span class="caption-text">Tetrahedralized Sphere</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
-</div>
+<figcaption>
+<p><span class="caption-text">Tetrahedralized Sphere</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <p>Extract a portion of the sphere’s tetrahedral mesh below the xy plane and plot
 the mesh quality.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get cell centroids</span>
@@ -272,11 +309,10 @@ the mesh quality.</p>
 </pre></div>
 </div>
 <img alt="https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_subgrid.png" src="https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_subgrid.png" />
-<p>Here is the cell quality as computed according to the scaled jacobian.  This example uses the ansys.mapdl.reader library to compute the quality.</p>
+<p>Here is the cell quality as computed according to the minimum scaled jacobian.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Compute</span> <span class="n">cell</span> <span class="n">quality</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">ansys.mapdl.reader</span> <span class="kn">import</span> <span class="n">quality</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">cell_qual</span> <span class="o">=</span> <span class="n">quality</span><span class="p">(</span><span class="n">subgrid</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">compute_cell_quality</span><span class="p">()[</span><span class="s1">&#39;CellQuality&#39;</span><span class="p">]</span>
 
 <span class="n">Plot</span> <span class="n">quality</span>
 
@@ -285,9 +321,9 @@ the mesh quality.</p>
 </pre></div>
 </div>
 <img alt="https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_qual.png" src="https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_qual.png" />
-</div>
-<div class="section" id="acknowledgments">
-<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this headline">#</a></h2>
 <p>Software was originally created by Hang Si based on work published in
 <a class="reference external" href="https://dl.acm.org/citation.cfm?doid=2629697">TetGen, a Delaunay-Based Quality Tetrahedral Mesh Generator</a>.</p>
 <div class="toctree-wrapper compound">
@@ -296,37 +332,39 @@ the mesh quality.</p>
 </div>
 <div class="toctree-wrapper compound">
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
-              </div>
+              </article>
               
+
               
-          </main>
+          </div>
           
-
       </div>
     </div>
-  
-  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
 
-  <footer class="footer mt-5 mt-md-0">
-  <div class="container">
-    
-    <div class="footer-item">
-      <p class="copyright">
-    &copy; Copyright 2017-2021, The PyVista Developers.<br/>
+  
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/pydata-sphinx-theme.js?digest=92025949c220c2e29695"></script>
+
+<footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    <p class="copyright">
+    &copy; Copyright 2017-2022, The PyVista Developers.<br>
 </p>
-    </div>
-    
-    <div class="footer-item">
-      <p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br/>
-</p>
-    </div>
-    
   </div>
+  
+  <div class="footer-item">
+    <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.3.<br>
+</p>
+  </div>
+  
+</div>
 </footer>
   </body>
 </html>

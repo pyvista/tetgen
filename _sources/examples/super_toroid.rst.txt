@@ -21,9 +21,9 @@
 Super Toroid
 ~~~~~~~~~~~~
 
-Tetrahedralize a super toroid surface
+Tetrahedralize a super toroid surface.
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-12
+.. GENERATED FROM PYTHON SOURCE LINES 8-14
 
 .. code-block:: default
 
@@ -39,11 +39,19 @@ Tetrahedralize a super toroid surface
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-20
+
+.. GENERATED FROM PYTHON SOURCE LINES 15-18
+
+Create and tetrahedralize a super torid.
+
+We merge the points here to make sure that the surface is manifold.
+
+.. GENERATED FROM PYTHON SOURCE LINES 18-26
 
 .. code-block:: default
 
-    toroid = pv.ParametricSuperToroid()
+
+    toroid = pv.ParametricSuperToroid(u_res=50, v_res=50, w_res=50).clean(tolerance=1E-9)
     tet = tetgen.TetGen(toroid)
     tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     grid = tet.grid
@@ -62,7 +70,11 @@ Tetrahedralize a super toroid surface
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-39
+.. GENERATED FROM PYTHON SOURCE LINES 27-28
+
+Plot the tesselated mesh.
+
+.. GENERATED FROM PYTHON SOURCE LINES 28-46
 
 .. code-block:: default
 
@@ -96,19 +108,18 @@ Tetrahedralize a super toroid surface
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-41
+.. GENERATED FROM PYTHON SOURCE LINES 47-48
 
-Cell quality using pyansys
+Show the cell quality
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-47
+.. GENERATED FROM PYTHON SOURCE LINES 48-53
 
 .. code-block:: default
 
-    from ansys.mapdl.reader import quality
-    cell_qual = quality(subgrid)
 
-    # plot quality
-    subgrid.plot(scalars=cell_qual, stitle='quality', cmap='bwr',  clim=[0,1],
+    cell_qual = subgrid.compute_cell_quality()['CellQuality']
+    subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Cell Quality'},
+                 cmap='bwr',  clim=[0, 1],
                  flip_scalars=True, show_edges=True)
 
 
@@ -119,50 +130,29 @@ Cell quality using pyansys
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pyvista/plotting/plotting.py:1795: PyvistaDeprecationWarning: 
-    "stitle" is a depreciated keyword and will be removed in a future
-    release.
-
-    Use ``scalar_bar_args`` instead.  For example:
-
-    scalar_bar_args={'title': 'Scalar Bar Title'}
-
-      warnings.warn(USE_SCALAR_BAR_ARGS, PyvistaDeprecationWarning)
-
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.764 seconds)
+   **Total running time of the script:** ( 0 minutes  3.486 seconds)
 
 
 .. _sphx_glr_download_examples_super_toroid.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: super_toroid.py <super_toroid.py>`
 
-     :download:`Download Python source code: super_toroid.py <super_toroid.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: super_toroid.ipynb <super_toroid.ipynb>`
+      :download:`Download Jupyter notebook: super_toroid.ipynb <super_toroid.ipynb>`
 
 
 .. only:: html

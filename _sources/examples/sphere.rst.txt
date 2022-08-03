@@ -107,20 +107,15 @@ Use pyvista to plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 43-45
 
-Using ``ansys-mapdl-reader``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Use pyvista to compute cell quality.  This is the minimum scaled
+jacobian of each cell.
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-60
+.. GENERATED FROM PYTHON SOURCE LINES 45-55
 
 .. code-block:: default
 
 
-    # Use pyansys's `legacy reader <https://github.com/pyansys/reader>`_
-    # library to compute cell quality.  This is the minimum scaled
-    # jacobian of each cell.
-
-    from ansys.mapdl.reader import quality
-    cell_qual = quality(subgrid)
+    cell_qual = subgrid.compute_cell_quality()['CellQuality']
     print(f'Mean cell quality: {cell_qual.mean():.3}')
 
     # plot quality
@@ -140,16 +135,14 @@ Using ``ansys-mapdl-reader``
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
-    Mean cell quality: 0.561
+    Mean cell quality: 0.605
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-70
+.. GENERATED FROM PYTHON SOURCE LINES 56-65
 
 Using pyacvd
 ~~~~~~~~~~~~
@@ -161,7 +154,7 @@ and then tetrahedralize that.
 
 Here we re-run the above example, except using a more uniform surface
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-100
+.. GENERATED FROM PYTHON SOURCE LINES 65-81
 
 .. code-block:: default
 
@@ -175,11 +168,32 @@ Here we re-run the above example, except using a more uniform surface
     clustered.cluster(n_surf)
     uniform_surf = clustered.create_mesh()
 
-    # generate interior mesh
+    # generate interior mesh and plot the surface of it
     tet = tetgen.TetGen(uniform_surf)
     tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     uniform_grid = tet.grid
     uniform_grid.plot(show_edges=True)
+
+
+
+
+.. image-sg:: /examples/images/sphx_glr_sphere_004.png
+   :alt: sphere
+   :srcset: /examples/images/sphx_glr_sphere_004.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 82-83
+
+Plot the cross section of the tetrahedralization
+
+.. GENERATED FROM PYTHON SOURCE LINES 83-98
+
+.. code-block:: default
+
 
     cell_center = uniform_grid.cell_centers().points
 
@@ -188,7 +202,7 @@ Here we re-run the above example, except using a more uniform surface
     cell_ind = mask.nonzero()[0]
     subgrid = uniform_grid.extract_cells(cell_ind)
 
-    cell_qual = quality(subgrid)
+    cell_qual = subgrid.compute_cell_quality()['CellQuality']
     print(f'Mean cell quality: {cell_qual.mean():.3}')
 
     # plot quality
@@ -198,35 +212,17 @@ Here we re-run the above example, except using a more uniform surface
 
 
 
-.. rst-class:: sphx-glr-horizontal
-
-
-    *
-
-      .. image-sg:: /examples/images/sphx_glr_sphere_004.png
-          :alt: sphere
-          :srcset: /examples/images/sphx_glr_sphere_004.png
-          :class: sphx-glr-multi-img
-
-    *
-
-      .. image-sg:: /examples/images/sphx_glr_sphere_005.png
-          :alt: sphere
-          :srcset: /examples/images/sphx_glr_sphere_005.png
-          :class: sphx-glr-multi-img
+.. image-sg:: /examples/images/sphx_glr_sphere_005.png
+   :alt: sphere
+   :srcset: /examples/images/sphx_glr_sphere_005.png
+   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
 
- Out:
-
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1192: PyvistaDeprecationWarning: Use of `point_arrays` is deprecated. Use `point_data` instead.
-      warnings.warn(
-    /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/pyvista/core/dataset.py:1332: PyvistaDeprecationWarning: Use of `cell_arrays` is deprecated. Use `cell_data` instead.
-      warnings.warn(
-    Mean cell quality: 0.595
+    Mean cell quality: 0.646
 
 
 
@@ -234,28 +230,23 @@ Here we re-run the above example, except using a more uniform surface
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.598 seconds)
+   **Total running time of the script:** ( 0 minutes  5.414 seconds)
 
 
 .. _sphx_glr_download_examples_sphere.py:
 
+.. only:: html
 
-.. only :: html
-
- .. container:: sphx-glr-footer
-    :class: sphx-glr-footer-example
+  .. container:: sphx-glr-footer sphx-glr-footer-example
 
 
+    .. container:: sphx-glr-download sphx-glr-download-python
 
-  .. container:: sphx-glr-download sphx-glr-download-python
+      :download:`Download Python source code: sphere.py <sphere.py>`
 
-     :download:`Download Python source code: sphere.py <sphere.py>`
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
-
-  .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-     :download:`Download Jupyter notebook: sphere.ipynb <sphere.ipynb>`
+      :download:`Download Jupyter notebook: sphere.ipynb <sphere.ipynb>`
 
 
 .. only:: html
