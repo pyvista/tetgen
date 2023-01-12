@@ -1,20 +1,20 @@
 """Python module to interface with wrapped TetGen C++ code
 """
-import logging
 import ctypes
+import logging
 
 import numpy as np
 import pyvista as pv
 from pyvista._vtk import VTK9
-
 from tetgen import _tetgen
 
 LOG = logging.getLogger(__name__)
-LOG.setLevel('CRITICAL')
+LOG.setLevel("CRITICAL")
 
 
-invalid_input = TypeError('Invalid input.  Must be either a pyvista.PolyData\n' +
-                          'object or vertex and face arrays')
+invalid_input = TypeError(
+    "Invalid input.  Must be either a pyvista.PolyData\n" + "object or vertex and face arrays"
+)
 
 
 class TetGen:
@@ -54,10 +54,11 @@ class TetGen:
     >>> tgen = tetgen.TetGen(v, f)
     >>> nodes, elems = tgen.tetrahedralize()
     """
+
     _updated = None
 
     def __init__(self, *args):
-        """ initializes MeshFix using a mesh """
+        """initializes MeshFix using a mesh"""
         self.v = None
         self.f = None
         self.node = None
@@ -66,7 +67,7 @@ class TetGen:
 
         def parse_mesh(mesh):
             if not mesh.is_all_triangles:
-                raise RuntimeError('Invalid mesh.  Must be an all triangular mesh')
+                raise RuntimeError("Invalid mesh.  Must be an all triangular mesh")
 
             self.v = mesh.points
             faces = mesh.faces
@@ -96,21 +97,17 @@ class TetGen:
             try:
                 v = np.asarray(v, np.float)
                 if v.ndim != 2 and v.shape[1] != 3:
-                    raise Exception(
-                        'Invalid vertex format.  Shape should be (npoints, 3)')
+                    raise Exception("Invalid vertex format.  Shape should be (npoints, 3)")
             except BaseException:
-                raise Exception(
-                    'Unable to convert vertex input to valid numpy array')
+                raise Exception("Unable to convert vertex input to valid numpy array")
 
         if not isinstance(f, np.ndarray):
             try:
                 f = np.asarray(f, ctypes.c_int)
                 if f.ndim != 2 and f.shape[1] != 3:
-                    raise Exception(
-                        'Invalid face format.  Shape should be (nfaces, 3)')
+                    raise Exception("Invalid face format.  Shape should be (nfaces, 3)")
             except BaseException:
-                raise Exception(
-                    'Unable to convert face input to valid numpy array')
+                raise Exception("Unable to convert face input to valid numpy array")
 
         # Store to self
         self.v = v
@@ -130,8 +127,7 @@ class TetGen:
         try:
             import pymeshfix
         except ImportError:
-            raise ImportError('pymeshfix not installed.  Please run:\n'
-                              'pip install pymeshfix')
+            raise ImportError("pymeshfix not installed.  Please run:\n" "pip install pymeshfix")
 
         # Run meshfix
         meshfix = pymeshfix.MeshFix(self.v, self.f)
@@ -151,95 +147,95 @@ class TetGen:
     @property
     def mesh(self):
         """Return the surface mesh"""
-        triangles = np.empty((self.f.shape[0], 4), dtype='int')
+        triangles = np.empty((self.f.shape[0], 4), dtype="int")
         triangles[:, -3:] = self.f
         triangles[:, 0] = 3
         return pv.PolyData(self.v, triangles, deep=False)
 
     def tetrahedralize(
-            self,
-            plc=True,
-            psc=0.,
-            refine=0.,
-            quality=True,
-            nobisect=False,
-            cdt=0.,
-            cdtrefine=7.,
-            coarsen=0.,
-            weighted=0.,
-            brio_hilbert=1.,
-            flipinsert=0.,
-            metric=0.,
-            varvolume=0.,
-            fixedvolume=0.,
-            regionattrib=0.,
-            insertaddpoints=0.,
-            diagnose=0.,
-            convex=0.,
-            nomergefacet=0.,
-            nomergevertex=0.,
-            noexact=0.,
-            nostaticfilter=0.,
-            zeroindex=0.,
-            facesout=0.,
-            edgesout=0.,
-            neighout=0.,
-            voroout=0.,
-            meditview=0.,
-            vtkview=0.,
-            vtksurfview=0.,
-            nobound=0.,
-            nonodewritten=0.,
-            noelewritten=0.,
-            nofacewritten=0.,
-            noiterationnum=0.,
-            nojettison=0.,
-            docheck=0.,
-            quiet=0.,
-            nowarning=0.,
-            verbose=0.,
-            vertexperblock=4092.,
-            tetrahedraperblock=8188.,
-            shellfaceperblock=2044.,
-            supsteiner_level=2.,
-            addsteiner_algo=1.,
-            coarsen_param=0.,
-            weighted_param=0.,
-            fliplinklevel=-1.,
-            flipstarsize=-1.,
-            fliplinklevelinc=1.,
-            opt_max_flip_level=3.,
-            opt_scheme=7.,
-            opt_iterations=3.,
-            smooth_cirterion=1.,
-            smooth_maxiter=7.,
-            delmaxfliplevel=1.,
-            order=1.,
-            reversetetori=0.,
-            steinerleft=100000.,
-            unflip_queue_limit=1000.,
-            no_sort=0.,
-            hilbert_order=52.,
-            hilbert_limit=8.,
-            brio_threshold=64.,
-            brio_ratio=0.125,
-            epsilon=1.0e-8,
-            facet_separate_ang_tol=179.9,
-            collinear_ang_tol=179.9,
-            facet_small_ang_tol=15.0,
-            maxvolume=-1.0,
-            maxvolume_length=-1.0,
-            minratio=2.0,
-            opt_max_asp_ratio=1000.0,
-            opt_max_edge_ratio=100.0,
-            mindihedral=0.0,
-            optmaxdihedral=177.0,
-            metric_scale=1.0,
-            smooth_alpha=0.3,
-            coarsen_percent=1.0,
-            elem_growth_ratio=0.0,
-            refine_progress_ratio=0.333,
-            switches=None
+        self,
+        plc=True,
+        psc=0.0,
+        refine=0.0,
+        quality=True,
+        nobisect=False,
+        cdt=0.0,
+        cdtrefine=7.0,
+        coarsen=0.0,
+        weighted=0.0,
+        brio_hilbert=1.0,
+        flipinsert=0.0,
+        metric=0.0,
+        varvolume=0.0,
+        fixedvolume=0.0,
+        regionattrib=0.0,
+        insertaddpoints=0.0,
+        diagnose=0.0,
+        convex=0.0,
+        nomergefacet=0.0,
+        nomergevertex=0.0,
+        noexact=0.0,
+        nostaticfilter=0.0,
+        zeroindex=0.0,
+        facesout=0.0,
+        edgesout=0.0,
+        neighout=0.0,
+        voroout=0.0,
+        meditview=0.0,
+        vtkview=0.0,
+        vtksurfview=0.0,
+        nobound=0.0,
+        nonodewritten=0.0,
+        noelewritten=0.0,
+        nofacewritten=0.0,
+        noiterationnum=0.0,
+        nojettison=0.0,
+        docheck=0.0,
+        quiet=0.0,
+        nowarning=0.0,
+        verbose=0.0,
+        vertexperblock=4092.0,
+        tetrahedraperblock=8188.0,
+        shellfaceperblock=2044.0,
+        supsteiner_level=2.0,
+        addsteiner_algo=1.0,
+        coarsen_param=0.0,
+        weighted_param=0.0,
+        fliplinklevel=-1.0,
+        flipstarsize=-1.0,
+        fliplinklevelinc=1.0,
+        opt_max_flip_level=3.0,
+        opt_scheme=7.0,
+        opt_iterations=3.0,
+        smooth_cirterion=1.0,
+        smooth_maxiter=7.0,
+        delmaxfliplevel=1.0,
+        order=1.0,
+        reversetetori=0.0,
+        steinerleft=100000.0,
+        unflip_queue_limit=1000.0,
+        no_sort=0.0,
+        hilbert_order=52.0,
+        hilbert_limit=8.0,
+        brio_threshold=64.0,
+        brio_ratio=0.125,
+        epsilon=1.0e-8,
+        facet_separate_ang_tol=179.9,
+        collinear_ang_tol=179.9,
+        facet_small_ang_tol=15.0,
+        maxvolume=-1.0,
+        maxvolume_length=-1.0,
+        minratio=2.0,
+        opt_max_asp_ratio=1000.0,
+        opt_max_edge_ratio=100.0,
+        mindihedral=0.0,
+        optmaxdihedral=177.0,
+        metric_scale=1.0,
+        smooth_alpha=0.3,
+        coarsen_percent=1.0,
+        elem_growth_ratio=0.0,
+        refine_progress_ratio=0.333,
+        switches=None,
     ):
         """Generates tetrahedrals interior to the surface mesh
         described by the vertex and face arrays already loaded.
@@ -505,9 +501,9 @@ class TetGen:
 
         # format switches
         if switches is None:
-            switches_str = b''
+            switches_str = b""
         else:
-            switches_str = bytes(switches, 'utf-8')
+            switches_str = bytes(switches, "utf-8")
 
         # check verbose switch
         if verbose == 0:
@@ -603,33 +599,37 @@ class TetGen:
                 refine_progress_ratio,
             )
         except RuntimeError as e:
-            raise RuntimeError('Failed to tetrahedralize.\n' +
-                               'May need to repair surface by making it manifold:\n' +
-                               str(e))
+            raise RuntimeError(
+                "Failed to tetrahedralize.\n"
+                + "May need to repair surface by making it manifold:\n"
+                + str(e)
+            )
 
         # check if a mesh was generated
         if not np.any(self.node):
-            raise RuntimeError('Failed to tetrahedralize.\n' +
-                               'May need to repair surface by making it manifold')
+            raise RuntimeError(
+                "Failed to tetrahedralize.\n" + "May need to repair surface by making it manifold"
+            )
 
         # Return nodes and elements
-        LOG.info('Generated mesh with %d nodes and %d elements', self.node.shape[0],
-                 self.elem.shape[0])
+        LOG.info(
+            "Generated mesh with %d nodes and %d elements", self.node.shape[0], self.elem.shape[0]
+        )
         self._updated = True
 
         return self.node, self.elem
 
     @property
     def grid(self):
-        """ Returns a :class:`pyvista.UnstructuredGrid` """
+        """Returns a :class:`pyvista.UnstructuredGrid`"""
         if self.node is None:
-            raise RuntimeError('Run Tetrahedralize first')
+            raise RuntimeError("Run Tetrahedralize first")
 
         if self._grid is not None and not self._updated:
             return self._grid
 
         buf = np.empty((self.elem.shape[0], 1), pv.ID_TYPE)
-        cell_type = np.empty(self.elem.shape[0], dtype='uint8')
+        cell_type = np.empty(self.elem.shape[0], dtype="uint8")
         if self.elem.shape[1] == 4:  # linear
             buf[:] = 4
             cell_type[:] = 10
@@ -637,7 +637,7 @@ class TetGen:
             buf[:] = 10
             cell_type[:] = 24
         else:
-            raise Exception('Invalid element array shape %s' % str(self.elem.shape))
+            raise Exception("Invalid element array shape %s" % str(self.elem.shape))
 
         cells = np.hstack((buf, self.elem))
         if VTK9:

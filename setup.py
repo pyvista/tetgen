@@ -1,11 +1,10 @@
 """Setup for tetgen."""
-import os
-import sys
-import builtins
-from setuptools import setup, Extension
-from Cython.Build import cythonize
 from io import open as io_open
+import os
+
+from Cython.Build import cythonize
 import numpy as np
+from setuptools import Extension, setup
 
 # Version from file
 __version__ = None
