@@ -18,8 +18,7 @@ invalid_input = TypeError('Invalid input.  Must be either a pyvista.PolyData\n' 
 
 
 class TetGen:
-    """Input, clean, and tetrahedralize surface meshes using
-    TetGen
+    """Input, clean, and tetrahedralize surface meshes using TetGen.
 
     Parameters
     ----------
