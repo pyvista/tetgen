@@ -128,6 +128,10 @@ html_context = {
 html_theme_options = {
     "show_prev_next": False,
     "github_url": "https://github.com/pyvista/tetgen",
+    "logo": {
+        "image_light": "pyvista_logo_sm.png",
+        "image_dark": "pyvista_logo_sm.png",
+    },
 }
 
 # Theme options are theme-specific and customize the look and feel of a theme
