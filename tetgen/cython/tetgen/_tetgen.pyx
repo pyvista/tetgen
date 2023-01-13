@@ -306,13 +306,13 @@ def Tetrahedralize(
 
     # Check that inputs are valid
     if not v.flags['C_CONTIGUOUS']:
-        if v.dtype != np.float:
-            v = np.ascontiguousarray(v, dtype=np.float)
+        if v.dtype != np.float64:
+            v = np.ascontiguousarray(v, dtype=np.float64)
         else:
             v = np.ascontiguousarray(v)
 
-    elif v.dtype != np.float:
-        v = v.astype(np.float)
+    elif v.dtype != np.float64:
+        v = v.astype(np.float64)
 
     # Ensure inputs are of the right type
     if not f.flags['C_CONTIGUOUS']:

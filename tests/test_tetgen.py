@@ -1,9 +1,8 @@
 import os
 
+import numpy as np
 import pyvista as pv
 import tetgen
-import numpy as np
-
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -34,17 +33,35 @@ def test_tetrahedralize_swithces():
 
 
 def test_numpy_tetrahedralize(tmpdir):
-    v = np.array([[0, 0, 0], [1, 0, 0],
-                  [1, 1, 0], [0, 1, 0],
-                  [0, 0, 1], [1, 0, 1],
-                  [1, 1, 1], [0, 1, 1],])
+    v = np.array(
+        [
+            [0, 0, 0],
+            [1, 0, 0],
+            [1, 1, 0],
+            [0, 1, 0],
+            [0, 0, 1],
+            [1, 0, 1],
+            [1, 1, 1],
+            [0, 1, 1],
+        ]
+    )
 
-    f = np.vstack([[0, 1, 2], [2, 3, 0],
-                   [0, 1, 5], [5, 4, 0],
-                   [1, 2, 6], [6, 5, 1],
-                   [2, 3, 7], [7, 6, 2],
-                   [3, 0, 4], [4, 7, 3],
-                   [4, 5, 6], [6, 7, 4]])
+    f = np.vstack(
+        [
+            [0, 1, 2],
+            [2, 3, 0],
+            [0, 1, 5],
+            [5, 4, 0],
+            [1, 2, 6],
+            [6, 5, 1],
+            [2, 3, 7],
+            [7, 6, 2],
+            [3, 0, 4],
+            [4, 7, 3],
+            [4, 5, 6],
+            [6, 7, 4],
+        ]
+    )
 
     tgen = tetgen.TetGen(v, f)
 
@@ -58,7 +75,7 @@ def test_numpy_tetrahedralize(tmpdir):
 
 
 def test_mesh_repair():
-    cowfile = os.path.join(path, 'cow.ply')
+    cowfile = os.path.join(path, "cow.ply")
     tet = tetgen.TetGen(cowfile)
     tet.make_manifold()
     tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
@@ -81,21 +98,19 @@ def functional_tet_example():
     subgrid = grid.extract_cells(cell_ind)
 
     # plot this
-    subgrid.plot(scalars=subgrid.quality, stitle='quality', cmap='bwr',
-                 flip_scalars=True)
+    subgrid.plot(scalars=subgrid.quality, stitle="quality", cmap="bwr", flip_scalars=True)
 
     # advanced plotting
     plotter = pv.Plotter()
-    plotter.set_background('w')
-    plotter.add_mesh(subgrid, 'lightgrey', lighting=True)
-    plotter.add_mesh(grid, 'r', 'wireframe')
-    plotter.add_legend([[' Input Mesh ', 'r'],
-                       [' Tessellated Mesh ', 'black']])
+    plotter.set_background("w")
+    plotter.add_mesh(subgrid, "lightgrey", lighting=True)
+    plotter.add_mesh(grid, "r", "wireframe")
+    plotter.add_legend([[" Input Mesh ", "r"], [" Tessellated Mesh ", "black"]])
     plotter.show()
 
     plotter = pv.Plotter()
-    plotter.set_background('w')
-    plotter.add_mesh(grid, 'r', 'wireframe')
+    plotter.set_background("w")
+    plotter.add_mesh(grid, "r", "wireframe")
     plotter.plot(auto_close=False, interactive_update=True)
     for i in range(500):
         single_cell = grid.extract_cells([i])

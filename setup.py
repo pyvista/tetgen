@@ -1,11 +1,10 @@
 """Setup for tetgen."""
-import os
-import sys
-import builtins
-from setuptools import setup, Extension
-from Cython.Build import cythonize
 from io import open as io_open
+import os
+
+from Cython.Build import cythonize
 import numpy as np
+from setuptools import Extension, setup
 
 # Version from file
 __version__ = None
@@ -41,6 +40,7 @@ setup(
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
     ],
     # Build cython modules
     ext_modules=cythonize(
@@ -60,6 +60,7 @@ setup(
             ),
         ],
     ),
+    python_requires=">=3.7",
     keywords="TetGen",
     install_requires=["numpy>1.16.0", "pyvista>=0.31.0"],
 )
