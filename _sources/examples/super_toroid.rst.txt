@@ -23,14 +23,14 @@ Super Toroid
 
 Tetrahedralize a super toroid surface.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-14
+.. GENERATED FROM PYTHON SOURCE LINES 8-13
 
 .. code-block:: default
+
 
     # sphinx_gallery_thumbnail_number = 2
     import pyvista as pv
     import tetgen
-    import numpy as np
 
 
 
@@ -39,19 +39,18 @@ Tetrahedralize a super toroid surface.
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 15-18
+.. GENERATED FROM PYTHON SOURCE LINES 14-17
 
 Create and tetrahedralize a super torid.
 
 We merge the points here to make sure that the surface is manifold.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-26
+.. GENERATED FROM PYTHON SOURCE LINES 17-25
 
 .. code-block:: default
 
 
-    toroid = pv.ParametricSuperToroid(u_res=50, v_res=50, w_res=50).clean(tolerance=1E-9)
+    toroid = pv.ParametricSuperToroid(u_res=50, v_res=50, w_res=50).clean(tolerance=1e-9)
     tet = tetgen.TetGen(toroid)
     tet.tetrahedralize(order=1, mindihedral=20, minratio=1.5)
     grid = tet.grid
@@ -70,11 +69,11 @@ We merge the points here to make sure that the surface is manifold.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-28
+.. GENERATED FROM PYTHON SOURCE LINES 26-27
 
-Plot the tesselated mesh.
+Plot the tessellated mesh.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-46
+.. GENERATED FROM PYTHON SOURCE LINES 27-44
 
 .. code-block:: default
 
@@ -90,10 +89,9 @@ Plot the tesselated mesh.
 
     # advanced plotting
     plotter = pv.Plotter()
-    plotter.add_mesh(subgrid, color='lightgrey', lighting=True, show_edges=True)
-    plotter.add_mesh(toroid, color='r', style='wireframe')
-    plotter.add_legend([[' Input Mesh ', 'r'],
-                        [' Tessellated Mesh ', 'black']])
+    plotter.add_mesh(subgrid, color="lightgrey", lighting=True, show_edges=True)
+    plotter.add_mesh(toroid, color="r", style="wireframe")
+    plotter.add_legend([[" Input Mesh ", "r"], [" Tessellated Mesh ", "black"]])
     plotter.show()
 
 
@@ -108,19 +106,24 @@ Plot the tesselated mesh.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-48
+.. GENERATED FROM PYTHON SOURCE LINES 45-46
 
 Show the cell quality
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-53
+.. GENERATED FROM PYTHON SOURCE LINES 46-56
 
 .. code-block:: default
 
 
-    cell_qual = subgrid.compute_cell_quality()['CellQuality']
-    subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Cell Quality'},
-                 cmap='bwr',  clim=[0, 1],
-                 flip_scalars=True, show_edges=True)
+    cell_qual = subgrid.compute_cell_quality()["CellQuality"]
+    subgrid.plot(
+        scalars=cell_qual,
+        scalar_bar_args={"title": "Cell Quality"},
+        cmap="bwr",
+        clim=[0, 1],
+        flip_scalars=True,
+        show_edges=True,
+    )
 
 
 
@@ -136,7 +139,7 @@ Show the cell quality
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.273 seconds)
+   **Total running time of the script:** ( 0 minutes  2.179 seconds)
 
 
 .. _sphx_glr_download_examples_super_toroid.py:

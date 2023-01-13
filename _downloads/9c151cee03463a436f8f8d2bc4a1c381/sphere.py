@@ -4,10 +4,10 @@ Using external modules to create a mesh
 
 Tetrahedralize a sphere
 """
+
 # sphinx_gallery_thumbnail_number = 2
 import pyvista as pv
 import tetgen
-import numpy as np
 
 ###############################################################################
 # Using PyVista
@@ -33,23 +33,27 @@ subgrid = grid.extract_cells(cell_ind)
 
 # advanced plotting
 plotter = pv.Plotter()
-plotter.add_mesh(subgrid, 'lightgrey', lighting=True, show_edges=True)
-plotter.add_mesh(sphere, 'r', 'wireframe')
-plotter.add_legend([[' Input Mesh ', 'r'],
-                    [' Tessellated Mesh ', 'black']])
+plotter.add_mesh(subgrid, "lightgrey", lighting=True, show_edges=True)
+plotter.add_mesh(sphere, "r", "wireframe")
+plotter.add_legend([[" Input Mesh ", "r"], [" Tessellated Mesh ", "black"]])
 plotter.show()
 
 ###############################################################################
 # Use pyvista to compute cell quality.  This is the minimum scaled
 # jacobian of each cell.
 
-cell_qual = subgrid.compute_cell_quality()['CellQuality']
-print(f'Mean cell quality: {cell_qual.mean():.3}')
+cell_qual = subgrid.compute_cell_quality()["CellQuality"]
+print(f"Mean cell quality: {cell_qual.mean():.3}")
 
 # plot quality
-subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Quality'},
-             cmap='bwr', clim=[0, 1], flip_scalars=True,
-             show_edges=True,)
+subgrid.plot(
+    scalars=cell_qual,
+    scalar_bar_args={"title": "Quality"},
+    cmap="bwr",
+    clim=[0, 1],
+    flip_scalars=True,
+    show_edges=True,
+)
 
 
 ###############################################################################
@@ -88,10 +92,15 @@ mask = cell_center[:, 2] < 0
 cell_ind = mask.nonzero()[0]
 subgrid = uniform_grid.extract_cells(cell_ind)
 
-cell_qual = subgrid.compute_cell_quality()['CellQuality']
-print(f'Mean cell quality: {cell_qual.mean():.3}')
+cell_qual = subgrid.compute_cell_quality()["CellQuality"]
+print(f"Mean cell quality: {cell_qual.mean():.3}")
 
 # plot quality
-subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Quality'},
-             cmap='bwr', clim=[0, 1], flip_scalars=True,
-             show_edges=True,)
+subgrid.plot(
+    scalars=cell_qual,
+    scalar_bar_args={"title": "Quality"},
+    cmap="bwr",
+    clim=[0, 1],
+    flip_scalars=True,
+    show_edges=True,
+)

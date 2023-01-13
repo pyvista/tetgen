@@ -23,7 +23,7 @@ Cow
 
 Tetrahedralize a cow mesh
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-14
+.. GENERATED FROM PYTHON SOURCE LINES 7-13
 
 .. code-block:: default
 
@@ -32,7 +32,6 @@ Tetrahedralize a cow mesh
     import pyvista as pv
     from pyvista import examples
     import tetgen
-    import pymeshfix
 
 
 
@@ -41,20 +40,20 @@ Tetrahedralize a cow mesh
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-28
+.. GENERATED FROM PYTHON SOURCE LINES 14-27
 
 .. code-block:: default
 
 
     cow_mesh = examples.download_cow().triangulate()
 
-    cpos = [(13., 7.6, -13.85),
-            (0.44, -0.4, -0.37),
-            (-0.28, 0.9, 0.3)]
+    cpos = [(13.0, 7.6, -13.85), (0.44, -0.4, -0.37), (-0.28, 0.9, 0.3)]
 
-    cpos = [(15.87144235049248, 4.879216382405231, -12.14248864876951),
-            (1.1623113035352375, -0.7609060338348953, 0.3192320579894903),
-            (-0.19477922834083672, 0.9593375398915212, 0.20428542963665386)]
+    cpos = [
+        (15.87144235049248, 4.879216382405231, -12.14248864876951),
+        (1.1623113035352375, -0.7609060338348953, 0.3192320579894903),
+        (-0.19477922834083672, 0.9593375398915212, 0.20428542963665386),
+    ]
 
     cow_mesh.plot(cpos=cpos)
 
@@ -70,7 +69,7 @@ Tetrahedralize a cow mesh
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-36
+.. GENERATED FROM PYTHON SOURCE LINES 28-35
 
 .. code-block:: default
 
@@ -88,7 +87,7 @@ Tetrahedralize a cow mesh
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-42
+.. GENERATED FROM PYTHON SOURCE LINES 36-41
 
 .. code-block:: default
 
@@ -104,14 +103,14 @@ Tetrahedralize a cow mesh
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-50
+.. GENERATED FROM PYTHON SOURCE LINES 42-49
 
 .. code-block:: default
 
 
     plotter = pv.Plotter()
-    plotter.add_mesh(half_cow, color='w', show_edges=True)
-    plotter.add_mesh(cow_grid, color='r', style='wireframe', opacity=0.2)
+    plotter.add_mesh(half_cow, color="w", show_edges=True)
+    plotter.add_mesh(cow_grid, color="r", style="wireframe", opacity=0.2)
     plotter.camera_position = cpos
     plotter.show()
 
@@ -127,28 +126,28 @@ Tetrahedralize a cow mesh
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 50-51
 
 Make animation of the mesh construction
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-70
+.. GENERATED FROM PYTHON SOURCE LINES 51-69
 
 .. code-block:: default
 
 
     plotter = pv.Plotter(off_screen=True, window_size=[1000, 1000])
-    plotter.open_gif('cow.gif')
-    plotter.add_mesh(cow_grid, color='r', style='wireframe', opacity=0.2)
+    plotter.open_gif("cow.gif")
+    plotter.add_mesh(cow_grid, color="r", style="wireframe", opacity=0.2)
     plotter.camera_position = cpos
     plotter.write_frame()
 
     nframe = 36
     xb = np.array(cow_grid.bounds[0:2])
     step = xb.ptp() / nframe
-    for val in np.arange(xb[0]+step, xb[1]+step, step):
+    for val in np.arange(xb[0] + step, xb[1] + step, step):
         mask = np.argwhere(cow_grid.cell_centers().points[:, 0] < val)
         half_cow = cow_grid.extract_cells(mask)
-        plotter.add_mesh(half_cow, color='w', show_edges=True, name='building')
+        plotter.add_mesh(half_cow, color="w", show_edges=True, name="building")
         plotter.update()
         plotter.write_frame()
 
@@ -168,7 +167,7 @@ Make animation of the mesh construction
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  21.193 seconds)
+   **Total running time of the script:** ( 0 minutes  18.103 seconds)
 
 
 .. _sphx_glr_download_examples_cow.py:

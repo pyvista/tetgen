@@ -27,10 +27,10 @@ Tetrahedralize a sphere
 
 .. code-block:: default
 
+
     # sphinx_gallery_thumbnail_number = 2
     import pyvista as pv
     import tetgen
-    import numpy as np
 
 
 
@@ -72,7 +72,7 @@ Create a surface mesh using ``pyvista`` and then tetrahedralize it.
 
 Use pyvista to plot
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-42
+.. GENERATED FROM PYTHON SOURCE LINES 25-41
 
 .. code-block:: default
 
@@ -87,10 +87,9 @@ Use pyvista to plot
 
     # advanced plotting
     plotter = pv.Plotter()
-    plotter.add_mesh(subgrid, 'lightgrey', lighting=True, show_edges=True)
-    plotter.add_mesh(sphere, 'r', 'wireframe')
-    plotter.add_legend([[' Input Mesh ', 'r'],
-                        [' Tessellated Mesh ', 'black']])
+    plotter.add_mesh(subgrid, "lightgrey", lighting=True, show_edges=True)
+    plotter.add_mesh(sphere, "r", "wireframe")
+    plotter.add_legend([[" Input Mesh ", "r"], [" Tessellated Mesh ", "black"]])
     plotter.show()
 
 
@@ -105,23 +104,28 @@ Use pyvista to plot
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 42-44
 
 Use pyvista to compute cell quality.  This is the minimum scaled
 jacobian of each cell.
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-55
+.. GENERATED FROM PYTHON SOURCE LINES 44-59
 
 .. code-block:: default
 
 
-    cell_qual = subgrid.compute_cell_quality()['CellQuality']
-    print(f'Mean cell quality: {cell_qual.mean():.3}')
+    cell_qual = subgrid.compute_cell_quality()["CellQuality"]
+    print(f"Mean cell quality: {cell_qual.mean():.3}")
 
     # plot quality
-    subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Quality'},
-                 cmap='bwr', clim=[0, 1], flip_scalars=True,
-                 show_edges=True,)
+    subgrid.plot(
+        scalars=cell_qual,
+        scalar_bar_args={"title": "Quality"},
+        cmap="bwr",
+        clim=[0, 1],
+        flip_scalars=True,
+        show_edges=True,
+    )
 
 
 
@@ -142,7 +146,7 @@ jacobian of each cell.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-65
+.. GENERATED FROM PYTHON SOURCE LINES 60-69
 
 Using pyacvd
 ~~~~~~~~~~~~
@@ -154,7 +158,7 @@ and then tetrahedralize that.
 
 Here we re-run the above example, except using a more uniform surface
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-81
+.. GENERATED FROM PYTHON SOURCE LINES 69-85
 
 .. code-block:: default
 
@@ -186,11 +190,11 @@ Here we re-run the above example, except using a more uniform surface
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-83
+.. GENERATED FROM PYTHON SOURCE LINES 86-87
 
 Plot the cross section of the tetrahedralization
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-98
+.. GENERATED FROM PYTHON SOURCE LINES 87-107
 
 .. code-block:: default
 
@@ -202,13 +206,18 @@ Plot the cross section of the tetrahedralization
     cell_ind = mask.nonzero()[0]
     subgrid = uniform_grid.extract_cells(cell_ind)
 
-    cell_qual = subgrid.compute_cell_quality()['CellQuality']
-    print(f'Mean cell quality: {cell_qual.mean():.3}')
+    cell_qual = subgrid.compute_cell_quality()["CellQuality"]
+    print(f"Mean cell quality: {cell_qual.mean():.3}")
 
     # plot quality
-    subgrid.plot(scalars=cell_qual, scalar_bar_args={'title': 'Quality'},
-                 cmap='bwr', clim=[0, 1], flip_scalars=True,
-                 show_edges=True,)
+    subgrid.plot(
+        scalars=cell_qual,
+        scalar_bar_args={"title": "Quality"},
+        cmap="bwr",
+        clim=[0, 1],
+        flip_scalars=True,
+        show_edges=True,
+    )
 
 
 
@@ -230,7 +239,7 @@ Plot the cross section of the tetrahedralization
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.573 seconds)
+   **Total running time of the script:** ( 0 minutes  2.760 seconds)
 
 
 .. _sphx_glr_download_examples_sphere.py:
