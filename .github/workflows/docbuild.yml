@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     env:
-      PYANSYS_OFF_SCREEN: True
+      PYVISTA_OFF_SCREEN: True
 
     steps:
       - uses: actions/checkout@v3
