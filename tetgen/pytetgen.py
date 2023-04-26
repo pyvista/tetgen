@@ -660,14 +660,15 @@ class TetGen:
 
             - ``".vtk"`` will use the vtk legacy writer
             - ``".vtu"`` will select the VTK XML writer
-            - ``".cdb"`` will write an ANSYS APDL archive file
 
         binary : bool, optional
-            Writes as a binary file by default.  Set to False to write
-            ASCII.  Ignored when output is a cdb.
+            Writes as a binary file by default.  Set to ``False`` to write
+            ASCII.
 
         Examples
         --------
+        Write to a VTK file.
+
         >>> tgen.write('grid.vtk', binary=True)
 
         Notes
@@ -675,5 +676,8 @@ class TetGen:
         Binary files write much faster than ASCII, but binary files
         written on one system may not be readable on other systems.
         Binary can be used only with the legacy writer.
+        
+        You can use utilities like `meshio <https://github.com/nschloe/meshio>`_
+        to convert to other formats in order to import into FEA software.
         """
         self.grid.save(filename, binary)
