@@ -2,7 +2,7 @@
 Cow
 ~~~
 
-Tetrahedralize a cow mesh
+Tetrahedralize a cow mesh.
 """
 # sphinx_gallery_thumbnail_number = 3
 import numpy as np
