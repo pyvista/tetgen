@@ -10,7 +10,7 @@
     .. note::
         :class: sphx-glr-download-link-note
 
-        Click :ref:`here <sphx_glr_download_examples_cow.py>`
+        :ref:`Go to the end <sphx_glr_download_examples_cow.py>`
         to download the full example code
 
 .. rst-class:: sphx-glr-example-title
@@ -21,7 +21,7 @@
 Cow
 ~~~
 
-Tetrahedralize a cow mesh
+Tetrahedralize a cow mesh.
 
 .. GENERATED FROM PYTHON SOURCE LINES 7-13
 
@@ -167,7 +167,7 @@ Make animation of the mesh construction
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  18.103 seconds)
+   **Total running time of the script:** ( 0 minutes  15.470 seconds)
 
 
 .. _sphx_glr_download_examples_cow.py:
@@ -175,6 +175,8 @@ Make animation of the mesh construction
 .. only:: html
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
+
+
 
 
     .. container:: sphx-glr-download sphx-glr-download-python

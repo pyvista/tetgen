@@ -12,12 +12,12 @@ Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a cow mesh">
+    <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a cow mesh.">
 
 .. only:: html
 
   .. image:: /examples/images/thumb/sphx_glr_cow_thumb.png
-    :alt: Cow
+    :alt:
 
   :ref:`sphx_glr_examples_cow.py`
 
@@ -34,7 +34,7 @@ Examples
 .. only:: html
 
   .. image:: /examples/images/thumb/sphx_glr_sphere_thumb.png
-    :alt: Using external modules to create a mesh
+    :alt:
 
   :ref:`sphx_glr_examples_sphere.py`
 
@@ -51,7 +51,7 @@ Examples
 .. only:: html
 
   .. image:: /examples/images/thumb/sphx_glr_super_toroid_thumb.png
-    :alt: Super Toroid
+    :alt:
 
   :ref:`sphx_glr_examples_super_toroid.py`
 
