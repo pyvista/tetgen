@@ -1,4 +1,4 @@
-"""tetgen package version
+"""tetgen package version.
 
 On the ``master`` branch, use 'dev0' to denote a development version.
 For example:

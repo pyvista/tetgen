@@ -29,8 +29,8 @@ setup(
     description="Python interface to tetgen",
     long_description=open("README.rst").read(),
     long_description_content_type="text/x-rst",
-    author="Alex Kaszynski",
-    author_email="akascap@gmail.com",
+    author="PyVista Developers",
+    author_email="info@pyvista.org",
     url="https://github.com/pyvista/tetgen",
     classifiers=[
         "Intended Audience :: Science/Research",

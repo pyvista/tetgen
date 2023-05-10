@@ -1,9 +1,10 @@
 Sphinx<7.0
-pydata-sphinx-theme
+imageio
 matplotlib
-pyvista
-sphinx_gallery
-sphinx-notfound-page>=0.3.0
-sphinx-copybutton
-pymeshfix
 pyacvd
+pydata-sphinx-theme
+pymeshfix
+pyvista
+sphinx-copybutton
+sphinx-notfound-page>=0.3.0
+sphinx_gallery

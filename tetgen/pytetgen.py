@@ -1,11 +1,9 @@
-"""Python module to interface with wrapped TetGen C++ code
-"""
+"""Python module to interface with wrapped TetGen C++ code."""
 import ctypes
 import logging
 
 import numpy as np
 import pyvista as pv
-from pyvista._vtk import VTK9
 from tetgen import _tetgen
 
 LOG = logging.getLogger(__name__)
@@ -13,7 +11,7 @@ LOG.setLevel("CRITICAL")
 
 
 invalid_input = TypeError(
-    "Invalid input.  Must be either a pyvista.PolyData\n" + "object or vertex and face arrays"
+    "Invalid input. Must be either a pyvista.PolyData object or vertex and face arrays."
 )
 
 
@@ -22,13 +20,13 @@ class TetGen:
 
     Parameters
     ----------
-    args : str, :class:`pyvista.PolyData` or (``np.ndarray``, ``np.ndarray``)
+    args : str | pyvista.PolyData | numpy.ndarray
         Either a pyvista surface mesh or a ``n x 3`` vertex array and ``n x 3`` face
         array.
 
     Examples
     --------
-    Tetrahedralize a sphere using pyvista
+    Tetrahedralize a sphere using pyvista.
 
     >>> import pyvista
     >>> import tetgen
@@ -37,20 +35,38 @@ class TetGen:
     >>> nodes, elem = tgen.tetrahedralize()
     >>> tgen.grid.plot(show_edges=True)
 
-    Tetrahedralize a cube using numpy arrays
+    Tetrahedralize a cube using numpy arrays.
 
     >>> import numpy as np
     >>> import tetgen
-    >>> v = np.array([[0, 0, 0], [1, 0, 0],
-                      [1, 1, 0], [0, 1, 0],
-                      [0, 0, 1], [1, 0, 1],
-                      [1, 1, 1], [0, 1, 1],])
-    >>> f = np.vstack([[0, 1, 2], [2, 3, 0],
-                       [0, 1, 5], [5, 4, 0],
-                       [1, 2, 6], [6, 5, 1],
-                       [2, 3, 7], [7, 6, 2],
-                       [3, 0, 4], [4, 7, 3],
-                       [4, 5, 6], [6, 7, 4]])
+    >>> v = np.array(
+    ...     [
+    ...         [0, 0, 0],
+    ...         [1, 0, 0],
+    ...         [1, 1, 0],
+    ...         [0, 1, 0],
+    ...         [0, 0, 1],
+    ...         [1, 0, 1],
+    ...         [1, 1, 1],
+    ...         [0, 1, 1],
+    ...     ]
+    ... )
+    >>> f = np.vstack(
+    ...     [
+    ...         [0, 1, 2],
+    ...         [2, 3, 0],
+    ...         [0, 1, 5],
+    ...         [5, 4, 0],
+    ...         [1, 2, 6],
+    ...         [6, 5, 1],
+    ...         [2, 3, 7],
+    ...         [7, 6, 2],
+    ...         [3, 0, 4],
+    ...         [4, 7, 3],
+    ...         [4, 5, 6],
+    ...         [6, 7, 4],
+    ...     ]
+    ... )
     >>> tgen = tetgen.TetGen(v, f)
     >>> nodes, elems = tgen.tetrahedralize()
     """
@@ -58,7 +74,7 @@ class TetGen:
     _updated = None
 
     def __init__(self, *args):
-        """initializes MeshFix using a mesh"""
+        """Initialize MeshFix using a mesh or arrays."""
         self.v = None
         self.f = None
         self.node = None
@@ -86,7 +102,7 @@ class TetGen:
             raise invalid_input
 
     def _load_arrays(self, v, f):
-        """Loads triangular mesh from vertex and face arrays
+        """Load triangular mesh from vertex and face arrays.
 
         Face arrays/lists are v and f.  Both vertex and face arrays
         should be 2D arrays with each vertex containing XYZ data and
@@ -115,14 +131,26 @@ class TetGen:
 
     def make_manifold(self, verbose=False):
         """Reconstruct a manifold clean surface from input mesh.
+
         Updates mesh in-place.
 
-        Requires pymeshfix
+        Requires `pymeshfix <https://pypi.org/project/pymeshfix/>`_.
 
         Parameters
         ----------
-        verbose : bool, optional
-            Controls output printing.  Default False.
+        verbose : bool, default: False
+            Enable verbose output.
+
+        Examples
+        --------
+        Create a mesh and ensure it's manfold.
+
+        >>> import pyvista
+        >>> import tetgen
+        >>> sphere = pyvista.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tgen = tetgen.TetGen(sphere)
+        >>> tgen.make_manifold()
+
         """
         try:
             import pymeshfix
@@ -138,15 +166,52 @@ class TetGen:
         self.f = meshfix.f
 
     def plot(self, **kwargs):
-        """Displays input mesh
+        """Display the input mesh.
 
-        See help(:func:`pyvista.plot`) for available arguments.
+        See :func:`pyvista.plot` for available arguments.
+
+        Examples
+        --------
+        Plot the input mesh.
+
+        >>> import pyvista
+        >>> import tetgen
+        >>> sphere = pyvista.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tgen = tetgen.TetGen(sphere)
+        >>> tgen.plot()
+
         """
         self.mesh.plot(**kwargs)
 
     @property
     def mesh(self):
-        """Return the surface mesh"""
+        """Return the surface mesh.
+
+        Returns
+        -------
+        pyvista.PolyData
+            Input surface mesh.
+
+        Examples
+        --------
+        Generate a :class:`tetgen.TetGen` and return a :class:`pyvista.PolyData`.
+
+        >>> import pyvista
+        >>> import tetgen
+        >>> sphere = pyvista.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tgen = tetgen.TetGen(sphere)
+        >>> tgen.mesh
+        PolyData (0x7fa3c97138e0)
+          N Cells:    160
+          N Points:   82
+          N Strips:   0
+          X Bounds:   -4.924e-01, 4.924e-01
+          Y Bounds:   -4.683e-01, 4.683e-01
+          Z Bounds:   -5.000e-01, 5.000e-01
+          N Arrays:   0
+
+
+        """
         triangles = np.empty((self.f.shape[0], 4), dtype="int")
         triangles[:, -3:] = self.f
         triangles[:, 0] = 3
@@ -237,8 +302,8 @@ class TetGen:
         refine_progress_ratio=0.333,
         switches=None,
     ):
-        """Generates tetrahedrals interior to the surface mesh
-        described by the vertex and face arrays already loaded.
+        """Generate tetrahedrals interior to the surface mesh.
+
         Returns nodes and elements belonging to the all tetrahedral
         mesh.
 
@@ -258,50 +323,47 @@ class TetGen:
             Disable this to speed up mesh generation while sacrificing
             quality.  Default True.
 
-        minratio : double, optional.
+        minratio : double, default: 2.0
             Maximum allowable radius-edge ratio.  Must be greater than
             1.0 the closer to 1.0, the higher the quality of the mesh.
             Be sure to raise ``steinerleft`` to allow for the addition of
             points to improve the quality of the mesh.  Avoid overly
             restrictive requirements, otherwise, meshing will appear
-            to hang.  Default 2.0
+            to hang.
 
             Testing has showed that 1.1 is a reasonable input for a
             high quality mesh.
 
-        mindihedral : double, optional
+        mindihedral : double, default: 0.0
             Minimum allowable dihedral angle.  The larger this number,
             the higher the quality of the resulting mesh.  Be sure to
             raise ``steinerleft`` to allow for the addition of points to
             improve the quality of the mesh.  Avoid overly restrictive
             requirements, otherwise, meshing will appear to hang.
-            Default 0.0
 
             Testing has shown that 10 is a reasonable input
 
-        verbose : int, optional
+        verbose : int, default: 0
             Controls the underlying TetGen library to output text to
             console.  Users using iPython will not see this output.
             Setting to 1 enables some information about the mesh
             generation while setting verbose to 2 enables more debug
-            output.  Default 0, or no output.
+            output.  Default is no output
 
-        nobisect : bool, optional
+        nobisect : bool, default: False
             Controls if Steiner points are added to the input surface
             mesh.  When enabled, the surface mesh will be modified.
-            Default False.
 
             Testing has shown that if your input surface mesh is
             already well shaped, disabling this setting will improve
             meshing speed and mesh quality.
 
-        steinerleft : int, optional
+        steinerleft : int, default: 100000
             Steiner points are points added to the original surface
             mesh to create a valid tetrahedral mesh.  Settings this to
             -1 will allow tetgen to create an unlimited number of
             steiner points, but the program will likely hang if this
             is used in combination with narrow quality requirements.
-            Default 100000.
 
             The first type of Steiner points are used in creating an
             initial tetrahedralization of PLC. These Steiner points
@@ -314,21 +376,30 @@ class TetGen:
             improve the mesh quality or to conform the size of mesh
             elements.
 
-        order : int optional
+        order : int, default: 2
             Controls whether TetGen creates linear tetrahedrals or
             quadradic tetrahedrals.  Set order to 2 to output
-            quadradic tetrahedrals.  Default 2.
+            quadradic tetrahedrals.
+
+        Returns
+        -------
+        nodes : numpy.ndarray
+            Array of nodes representing the tetrahedral mesh.
+
+        elems : numpy.ndarray
+            Array of elements representing the tetrahedral mesh.
 
         Examples
         --------
         The following switches "pq1.1/10Y" would be:
 
-        >>> node, elem = tgen.tetrahedralize(nobisect=True, quality=True,
-                                             minratio=1.1, mindihedral=10)
+        >>> nodes, elems = tgen.tetrahedralize(
+        ...     nobisect=True, quality=True, minratio=1.1, mindihedral=10
+        ... )
 
         Using the switches option:
 
-        >>> node, elem = tgen.tetrahedralize(switches="pq1.1/10Y")
+        >>> nodes, elems = tgen.tetrahedralize(switches="pq1.1/10Y")
 
         Notes
         -----
@@ -498,7 +569,6 @@ class TetGen:
         +---------------------------+---------------+---------+
 
         """
-
         # format switches
         if switches is None:
             switches_str = b""
@@ -621,7 +691,7 @@ class TetGen:
 
     @property
     def grid(self):
-        """Returns a :class:`pyvista.UnstructuredGrid`"""
+        """Return a :class:`pyvista.UnstructuredGrid`."""
         if self.node is None:
             raise RuntimeError("Run Tetrahedralize first")
 
@@ -640,17 +710,13 @@ class TetGen:
             raise Exception("Invalid element array shape %s" % str(self.elem.shape))
 
         cells = np.hstack((buf, self.elem))
-        if VTK9:
-            self._grid = pv.UnstructuredGrid(cells, cell_type, self.node)
-        else:
-            offset = np.cumsum(buf + 1) - (buf[0] + 1)
-            self._grid = pv.UnstructuredGrid(offset, cells, cell_type, self.node)
+        self._grid = pv.UnstructuredGrid(cells, cell_type, self.node)
 
         self._updated = False
         return self._grid
 
     def write(self, filename, binary=False):
-        """Writes an unstructured grid to disk.
+        """Write an unstructured grid to disk.
 
         Parameters
         ----------
@@ -660,20 +726,24 @@ class TetGen:
 
             - ``".vtk"`` will use the vtk legacy writer
             - ``".vtu"`` will select the VTK XML writer
-            - ``".cdb"`` will write an ANSYS APDL archive file
 
-        binary : bool, optional
-            Writes as a binary file by default.  Set to False to write
-            ASCII.  Ignored when output is a cdb.
+        binary : bool, default: False
+            Writes as a binary file by default.  Set to ``False`` to write
+            ASCII.
 
         Examples
         --------
-        >>> tgen.write('grid.vtk', binary=True)
+        Write to a VTK file.
+
+        >>> tgen.write("grid.vtk", binary=True)
 
         Notes
         -----
         Binary files write much faster than ASCII, but binary files
         written on one system may not be readable on other systems.
         Binary can be used only with the legacy writer.
+
+        You can use utilities like `meshio <https://github.com/nschloe/meshio>`_
+        to convert to other formats in order to import into FEA software.
         """
         self.grid.save(filename, binary)
