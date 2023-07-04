@@ -1,6 +1,7 @@
 Sphinx<7.0
 imageio
 matplotlib
+trame
 pyacvd
 pydata-sphinx-theme
 pymeshfix
