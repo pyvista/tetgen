@@ -4,7 +4,7 @@ matplotlib
 pyacvd
 pydata-sphinx-theme
 pymeshfix
-pyvista
+pyvista[trame]
 sphinx-copybutton
 sphinx-notfound-page>=0.3.0
 sphinx_gallery
