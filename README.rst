@@ -31,7 +31,7 @@ License (AGPL)
 --------------
 
 The original `TetGen <https://github.com/ufz/tetgen>`__ software is under AGPL
-(see `LICENSE <https://github.com/pyvista/tetgen/blob/master/LICENSE>`_) and thus this
+(see `LICENSE <https://github.com/pyvista/tetgen/blob/main/LICENSE>`_) and thus this
 Python wrapper package must adopt that license as well.
 
 Please look into the terms of this license before creating a dynamic link to this software
@@ -78,7 +78,7 @@ manifold surface and plot part of the mesh.
     grid = tet.grid
     grid.plot(show_edges=True)
 
-.. figure:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere.png
+.. figure:: https://github.com/pyvista/tetgen/raw/main/doc/images/sphere.png
     :width: 300pt
 
     Tetrahedralized Sphere
@@ -105,7 +105,7 @@ the mesh quality.
                         [' Tessellated Mesh ', 'black']])
     plotter.show()
 
-.. image:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_subgrid.png
+.. image:: https://github.com/pyvista/tetgen/raw/main/doc/images/sphere_subgrid.png
 
 Here is the cell quality as computed according to the minimum scaled jacobian.
 
@@ -120,7 +120,7 @@ Here is the cell quality as computed according to the minimum scaled jacobian.
    >>> subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0, 1],
    ...              flip_scalars=True, show_edges=True)
 
-.. image:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_qual.png
+.. image:: https://github.com/pyvista/tetgen/raw/main/doc/images/sphere_qual.png
 
 
 Acknowledgments
