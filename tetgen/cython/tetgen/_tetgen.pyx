@@ -10,10 +10,11 @@ cimport numpy as np
 import ctypes
 from cython cimport view
 
+from libc.string cimport strcpy
+
 # # Numpy must be initialized. When using numpy from C or Cython you must
 # # _always_ do that, or you will have segfaults
 # np.import_array()
-
 
 """ Wrapped tetgen class """
 cdef extern from "tetgen_wrap.h":
@@ -31,17 +32,21 @@ cdef extern from "tetgen_wrap.h":
 
         # Loads Arrays directly to tetgenio object
         void LoadArray(int, double*, int, int*)
-        
+        # Loads MTR Arrays directly to tetgenio object
+        void LoadMTRArray(int, double*, int, int*, double*)
+        # Loads tetmesh from file
+        bint LoadTetMesh(char*, int)
+
 
 cdef extern from "tetgen.h":
-
     cdef cppclass tetrahedralize:
-        int tetrahedralize(char*, tetgenio_wrap*, tetgenio_wrap*)
+        int tetrahedralize(char*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*)
+
 
     cdef cppclass tetgenbehavior:
         void tetgenbehavior()
 
-        # Switches of TetGen. 
+        # Switches of TetGen.
         int plc
         int psc
         int refine
@@ -125,10 +130,15 @@ cdef extern from "tetgen.h":
         double coarsen_percent
         double elem_growth_ratio
         double refine_progress_ratio
+        char bgmeshfilename[1024]
 
     # Different calls depending on using settings input
-    cdef void tetrahedralize(tetgenbehavior*, tetgenio_wrap*, tetgenio_wrap*) except +
-    cdef void tetrahedralize(char*, tetgenio_wrap*, tetgenio_wrap*) except +
+    cdef void tetrahedralize(tetgenbehavior*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*) except +
+    cdef void tetrahedralize(char*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*) except +
+
+
+cdef extern from "tetgen.h" namespace "tetgenbehavior":
+    cdef enum objecttype: NODES, POLY, OFF, PLY, STL, MEDIT, VTK, MESH, NEU_MESH
 
 
 cdef class PyBehavior:
@@ -147,23 +157,23 @@ cdef class PyTetgenio:
 
 
     def ReturnNodes(self):
-        """ Returns nodes from tetgen """ 
-        
+        """ Returns nodes from tetgen """
+
         # Create python copy of array
         cdef int npoints  = self.c_tetio.numberofpoints*3
         cdef double [::1] nodes = np.empty(npoints)
-        
+
         cdef int i
         for i in range(npoints):
             nodes[i] = self.c_tetio.pointlist[i]
 
         return np.asarray(nodes).reshape((-1, 3))
-        
-        
+
+
     def ReturnTetrahedrals(self, order):
         """ Returns tetrahedrals from tetgen """
 
-        # Determine         
+        # Determine
         if order == 1:
             arrsz = self.c_tetio.numberoftetrahedra*4
         else:
@@ -171,7 +181,7 @@ cdef class PyTetgenio:
 
         # Create python copy of tetrahedral array
         cdef int [::1] tets = np.empty(arrsz, ctypes.c_int)
-        
+
         cdef int i
         cdef int arrsz_c = arrsz
         for i in range(arrsz_c):
@@ -188,7 +198,7 @@ cdef class PyTetgenio:
             """
             vtkQuadraticTetra
             The ordering of the ten points defining the cell is point ids
-            (0-3, 4-9) where ids 0-3 are the four tetra vertices, 
+            (0-3, 4-9) where ids 0-3 are the four tetra vertices,
             and point ids 4-9 are the midedge nodes between:
             (0,1), (1,2), (2,0), (0,3), (1,3), and (2,3)
             """
@@ -198,17 +208,29 @@ cdef class PyTetgenio:
             tetcopy[:, 7] = tetarr[:, 5]
             tetcopy[:, 8] = tetarr[:, 8]
             tetcopy[:, 9] = tetarr[:, 4]
-            
+
             return tetcopy
-            
-        
+
+
     def LoadMesh(self, double [::1] points, int [::1] faces):
         """ Loads points and faces into TetGen """
         npoints = points.size/3
         nfaces = faces.size/3
         self.c_tetio.LoadArray(npoints, &points[0], nfaces, &faces[0])
-    
-    
+
+
+    def LoadMTRMesh(self, double [::1] points, int [::1] tets, double [::1] mtr):
+        """ Loads points and tets into TetGen """
+        npoints = points.size/3
+        ntets = tets.size/4
+        self.c_tetio.LoadMTRArray(npoints, &points[0], ntets, &tets[0], &mtr[0])
+
+
+    def LoadTetMesh(self, char* filename, int order):
+        """ Loads tetmesh from file """
+        return self.c_tetio.LoadTetMesh(filename, order)
+
+
 def Tetrahedralize(
         v,
         f,
@@ -298,44 +320,57 @@ def Tetrahedralize(
         coarsen_percent=1.0,
         elem_growth_ratio=0.0,
         refine_progress_ratio=0.333,
+        bgmeshfilename='',
+        bgmesh_v=None,
+        bgmesh_tet=None,
+        bgmesh_mtr=None,
     ):
 
     """Tetgen function to interface with TetGen C++ program."""
     # convert switches to c object
     cdef char *cstring = switches
 
+    # convert bgmeshfilename to c object
+    cdef char bgmeshfilename_c[1024]
+    cdef bytes py_bgmeshfilename = bgmeshfilename.encode('utf-8')
+    cdef char* bgmeshfilename_py = py_bgmeshfilename
+    strcpy(bgmeshfilename_c, bgmeshfilename_py)
+
     # Check that inputs are valid
-    if not v.flags['C_CONTIGUOUS']:
-        if v.dtype != np.float64:
-            v = np.ascontiguousarray(v, dtype=np.float64)
-        else:
-            v = np.ascontiguousarray(v)
+    def cast_to_cint(x):
+        return np.ascontiguousarray(x, dtype=ctypes.c_int)
 
-    elif v.dtype != np.float64:
-        v = v.astype(np.float64)
+    def cast_to_cdouble(x):
+        return np.ascontiguousarray(x, dtype=np.float64)
 
-    # Ensure inputs are of the right type
-    if not f.flags['C_CONTIGUOUS']:
-        if f.dtype != ctypes.c_int:
-            f = np.ascontiguousarray(f, dtype=ctypes.c_int)
-        else:
-            f = np.ascontiguousarray(f)
+    v = cast_to_cdouble(v)
+    f = cast_to_cint(f)
 
-    elif f.dtype != ctypes.c_int:
-        f = f.astype(ctypes.c_int)
-    
+    if bgmesh_v is not None:
+        bgmesh_v = cast_to_cdouble(bgmesh_v)
+    if bgmesh_tet is not None:
+        bgmesh_tet = cast_to_cint(bgmesh_tet)
+    if bgmesh_mtr is not None:
+        bgmesh_mtr = cast_to_cdouble(bgmesh_mtr)
+
     # Create input class
     tetgenio_in = PyTetgenio()
     tetgenio_in.LoadMesh(v.ravel(), f.ravel())
-        
+
     # Create output class
-    tetgenio_out = PyTetgenio()        
-    
+    tetgenio_out = PyTetgenio()
+
+    tetgenio_bg = PyTetgenio()
+    if bgmesh_mtr is not None:
+        tetgenio_bg.LoadMTRMesh(bgmesh_v, bgmesh_tet, bgmesh_mtr)
+    if bgmeshfilename:
+        tetgenio_bg.LoadTetMesh(bgmeshfilename_c, <int>objecttype.NODES)
+
     if switches:
-        tetrahedralize(cstring, &tetgenio_in.c_tetio, &tetgenio_out.c_tetio)
+        tetrahedralize(cstring, &tetgenio_in.c_tetio, &tetgenio_out.c_tetio, NULL, &tetgenio_bg.c_tetio)
         if b'o2' in switches:
             order = 2
-    
+
     else: # set defaults or user input settings
         # Enable plc if checking for self intersections
         if diagnose:
@@ -345,7 +380,7 @@ def Tetrahedralize(
         if order != 1 and order != 2:
             raise Exception('Settings error: Order should be 1 or 2')
 
-        # Set behavior 
+        # Set behavior
         behavior = PyBehavior()
         behavior.c_behavior.plc = plc
         behavior.c_behavior.psc = psc
@@ -428,14 +463,14 @@ def Tetrahedralize(
         behavior.c_behavior.coarsen_percent = coarsen_percent
         behavior.c_behavior.elem_growth_ratio = elem_growth_ratio
         behavior.c_behavior.refine_progress_ratio = refine_progress_ratio
-    
+
         # Process from C++ side using behavior object
-        tetrahedralize(&behavior.c_behavior, &tetgenio_in.c_tetio, 
-                       &tetgenio_out.c_tetio)
+        tetrahedralize(&behavior.c_behavior, &tetgenio_in.c_tetio,
+                       &tetgenio_out.c_tetio, NULL, &tetgenio_bg.c_tetio)
+
 
     # Returns vertices and tetrahedrals of new mesh
     nodes = tetgenio_out.ReturnNodes()
     tets = tetgenio_out.ReturnTetrahedrals(order)
 
-    return nodes, tets  
-
+    return nodes, tets
