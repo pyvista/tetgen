@@ -302,7 +302,7 @@ class TetGen:
         elem_growth_ratio=0.0,
         refine_progress_ratio=0.333,
         switches=None,
-        bgmeshfilename='',
+        bgmeshfilename="",
         bgmesh=None,
     ):
         """Generate tetrahedrals interior to the surface mesh.
@@ -771,12 +771,12 @@ class TetGen:
     @staticmethod
     def _process_bgmesh(mesh):
         """Process a background mesh.
-        
+
         Parameters
         ----------
         bgmesh : pyvista.UnstructuredGrid
             Background mesh to be processed.
-        
+
         Returns
         -------
         bgmesh_v: numpy.ndarray
@@ -805,7 +805,7 @@ class TetGen:
             # Extract faces (triangles) from each tetrahedron
             tets.extend(cell_vertices)
             offset += n_vertices + 1
-        
+
         bgmesh_v = mesh.points.astype(np.float64, copy=True).ravel()
         # Tets structures is just [[v0, v1, v2, v3], [v1, v2, v3, v4], ...]] format.
         bgmesh_tet = np.array(tets).astype(np.int32, copy=True).ravel()

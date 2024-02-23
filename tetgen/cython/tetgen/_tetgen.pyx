@@ -5,11 +5,12 @@
 # cython nonecheck=False
 
 import numpy as np
+
 cimport numpy as np
 
 import ctypes
-from cython cimport view
 
+from cython cimport view
 from libc.string cimport strcpy
 
 # # Numpy must be initialized. When using numpy from C or Cython you must

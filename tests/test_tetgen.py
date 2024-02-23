@@ -1,7 +1,7 @@
 import os
-
 from pathlib import Path
 import tempfile
+
 import numpy as np
 import pyvista as pv
 import tetgen
@@ -120,7 +120,9 @@ def functional_tet_example():
         plotter.update()
     plotter.close()
 
+
 # Test the mesh resizing feature of tetgen with sizing function.
+
 
 def sizing_function(points):
     """Return the target size at a given point.
@@ -226,9 +228,9 @@ def mesh_resizing_with_pyvista_bgmesh(mesh, bgmesh, **kwargs):
     # plotter.show() # Uncomment for visualisation of resized mesh
     return grid
 
+
 def test_mesh_resizing():
-    """Test the mesh resizing feature of tetgen with sizing function.
-    """
+    """Test the mesh resizing feature of tetgen with sizing function."""
     sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
     tet_kwargs = dict(order=1, mindihedral=20, minratio=1.5)
 
