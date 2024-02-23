@@ -786,7 +786,6 @@ class TetGen:
         bgmesh_mtr: numpy.ndarray
             Target size array of the background mesh
         """
-
         if MTR_POINTDATA_KEY not in mesh.point_data:
             raise ValueError("Background mesh does not have target size information")
 
