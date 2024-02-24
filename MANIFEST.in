@@ -1,1 +1,2 @@
 include tetgen/cython/tetgen/*.h
+include tetgen/cython/tetgen/*.pyx
