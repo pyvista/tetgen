@@ -138,15 +138,12 @@ def generate_background_mesh(boundary_mesh, resolution=20):
 
     We will use this as a background mesh for the sizing function.
     """
-    bounds = boundary_mesh.bounds
-    (xmin, xmax, ymin, ymax, zmin, zmax) = bounds
+    xmin, xmax, ymin, ymax, zmin, zmax = boundary_mesh.bounds
     eps = 1e-6
     new_vertices = np.meshgrid(
-        *[
-            np.linspace(xmin - eps, xmax + eps, resolution),
-            np.linspace(ymin - eps, ymax + eps, resolution),
-            np.linspace(zmin - eps, zmax + eps, resolution),
-        ],
+        np.linspace(xmin - eps, xmax + eps, resolution),
+        np.linspace(ymin - eps, ymax + eps, resolution),
+        np.linspace(zmin - eps, zmax + eps, resolution),
         indexing="ij",
     )
 
@@ -179,53 +176,44 @@ def mesh_resizing_with_bgmeshfilename(mesh, bgmesh, **kwargs):
         tmpfile = Path(tmpdir).joinpath("bgmesh.b")
         write_background_mesh(bgmesh, tmpfile)
 
-        # NEW: pass the background mesh file to tetgen
+        # Pass the background mesh file to tetgen
         tet = tetgen.TetGen(mesh)
         tet.tetrahedralize(bgmeshfilename=str(tmpfile), metric=1, **kwargs)
         grid = tet.grid
 
-    cells = grid.cells.reshape(-1, 5)[:, 1:]
-    cell_center = grid.points[cells].mean(1)
-
     # extract cells below the 0 xy plane
-    mask = cell_center[:, 2] < 0
-    cell_ind = mask.nonzero()[0]
-    subgrid = grid.extract_cells(cell_ind)
+    # cell_center = grid.cell_centers().points
+    # subgrid = grid.extract_cells(cell_center[:, 2] < 0)
 
-    # plot this
-    plotter = pv.Plotter()
-    plotter.set_background("w")
-    plotter.add_mesh(subgrid, "lightgrey", lighting=True)
-    plotter.add_mesh(grid, "r", "wireframe")
-    plotter.add_legend([[" Input Mesh ", "r"], [" Tessellated Mesh ", "black"]])
-
+    # debug: plot this
+    # plotter = pv.Plotter()
+    # plotter.set_background("w")
+    # plotter.add_mesh(subgrid, "lightgrey", lighting=True)
+    # plotter.add_mesh(grid, "r", "wireframe")
+    # plotter.add_legend([[" Input Mesh ", "r"], [" Tessellated Mesh ", "black"]])
     # plotter.show() # Uncomment for visualisation of resized mesh
+
     return grid
 
 
 def mesh_resizing_with_pyvista_bgmesh(mesh, bgmesh, **kwargs):
     """Performs mesh resizing with a pyvista bgmesh."""
-    # NEW: Pass the background mesh to tetgen
+    # Pass the background mesh to tetgen
     tet = tetgen.TetGen(mesh)
     tet.tetrahedralize(bgmesh=bgmesh, metric=1, **kwargs)
     grid = tet.grid
 
-    cells = grid.cells.reshape(-1, 5)[:, 1:]
-    cell_center = grid.points[cells].mean(1)
-
     # Extract cells below the 0 xy plane
-    mask = cell_center[:, 2] < 0
-    cell_ind = mask.nonzero()[0]
-    subgrid = grid.extract_cells(cell_ind)
+    # cell_center = grid.cell_centers().points
+    # subgrid = grid.extract_cells(cell_center[:, 2] < 0)
 
-    # plot this
-    plotter = pv.Plotter()
-    plotter.set_background("w")
-    plotter.add_mesh(subgrid, "lightgrey", lighting=True)
-    plotter.add_mesh(grid, "r", "wireframe")
-    plotter.add_legend([[" Input Mesh ", "r"], [" Tessellated Mesh ", "black"]])
-
-    # plotter.show() # Uncomment for visualisation of resized mesh
+    # Debug: uncomment for visualisation of resized mesh
+    # plotter = pv.Plotter()
+    # plotter.set_background("w")
+    # plotter.add_mesh(subgrid, "lightgrey", lighting=True)
+    # plotter.add_mesh(grid, "r", "wireframe")
+    # plotter.add_legend([[" Input Mesh ", "r"], [" Tessellated Mesh ", "black"]])
+    # plotter.show()
     return grid
 
 
@@ -244,9 +232,9 @@ def test_mesh_resizing():
     bgmesh.point_data["target_size"] = sizing_function(bgmesh.points)
 
     resized_grid_file = mesh_resizing_with_bgmeshfilename(sphere, bgmesh, **tet_kwargs)
-    assert grid != resized_grid_file
+    assert resized_grid_file.n_points >= grid.n_points
 
     resized_grid_direct = mesh_resizing_with_pyvista_bgmesh(sphere, bgmesh, **tet_kwargs)
-    assert grid != resized_grid_direct
+    assert resized_grid_direct.n_points > grid.n_points
 
     assert resized_grid_file == resized_grid_direct
