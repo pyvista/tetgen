@@ -384,6 +384,13 @@ class TetGen:
             quadradic tetrahedrals.  Set order to 2 to output
             quadradic tetrahedrals.
 
+        bgmeshfilename : str, optional
+            Filename of the background mesh.
+
+        bgmesh : pv.UnstructuredGrid
+            Background mesh to be processed. Must be composed of only linear
+            tetra. Cannot specify both ``bgmeshfilename`` and ``bgmesh``.
+
         Returns
         -------
         nodes : numpy.ndarray
@@ -698,7 +705,7 @@ class TetGen:
         # check if a mesh was generated
         if not np.any(self.node):
             raise RuntimeError(
-                "Failed to tetrahedralize.\n" + "May need to repair surface by making it manifold"
+                "Failed to tetrahedralize.\nMay need to repair surface by making it manifold"
             )
 
         # Return nodes and elements
