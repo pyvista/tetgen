@@ -775,38 +775,25 @@ class TetGen:
         Parameters
         ----------
         bgmesh : pyvista.UnstructuredGrid
-            Background mesh to be processed.
+            Background mesh to be processed. Must be composed of only linear tetra,
 
         Returns
         -------
         bgmesh_v: numpy.ndarray
-            Vertex array of the background mesh
+            Vertex array of the background mesh.
         bgmesh_tet: numpy.ndarray
-            Tet array of the background mesh
+            Tet array of the background mesh.
         bgmesh_mtr: numpy.ndarray
-            Target size array of the background mesh
+            Target size array of the background mesh.
         """
         if MTR_POINTDATA_KEY not in mesh.point_data:
             raise ValueError("Background mesh does not have target size information")
 
-        # Extract tetrahedras
-        tets = []
-        cc = mesh.cells
-        offset = 0
-        for _ in range(mesh.n_cells):
-            # Number of vertices in the cell
-            n_vertices = cc[offset]
-            cell_vertices = cc[offset + 1 : offset + 1 + n_vertices]
-
-            if n_vertices != 4:
-                raise ValueError("Cell is not a tetrahedron")
-
-            # Extract faces (triangles) from each tetrahedron
-            tets.extend(cell_vertices)
-            offset += n_vertices + 1
+        # Celltype check
+        if not (mesh.celltypes == pv.CellType.TETRA).all():
+            raise ValueError("`mesh` must contain only tetrahedrons")
 
         bgmesh_v = mesh.points.astype(np.float64, copy=True).ravel()
-        # Tets structures is just [[v0, v1, v2, v3], [v1, v2, v3, v4], ...]] format.
-        bgmesh_tet = np.array(tets).astype(np.int32, copy=True).ravel()
+        bgmesh_tet = mesh.cell_connectivity.astype(np.int32, copy=True)
         bgmesh_mtr = mesh.point_data[MTR_POINTDATA_KEY].astype(np.float64, copy=True).ravel()
         return bgmesh_v, bgmesh_tet, bgmesh_mtr
