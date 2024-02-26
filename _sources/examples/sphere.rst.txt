@@ -25,7 +25,7 @@ Tetrahedralize a sphere
 
 .. GENERATED FROM PYTHON SOURCE LINES 7-12
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # sphinx_gallery_thumbnail_number = 2
@@ -47,7 +47,7 @@ Create a surface mesh using ``pyvista`` and then tetrahedralize it.
 
 .. GENERATED FROM PYTHON SOURCE LINES 16-23
 
-.. code-block:: default
+.. code-block:: Python
 
     sphere = pv.Sphere()
     tet = tetgen.TetGen(sphere)
@@ -74,7 +74,7 @@ Use pyvista to plot
 
 .. GENERATED FROM PYTHON SOURCE LINES 25-41
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # get cell centroids
@@ -111,7 +111,7 @@ jacobian of each cell.
 
 .. GENERATED FROM PYTHON SOURCE LINES 44-59
 
-.. code-block:: default
+.. code-block:: Python
 
 
     cell_qual = subgrid.compute_cell_quality()["CellQuality"]
@@ -141,7 +141,7 @@ jacobian of each cell.
 
  .. code-block:: none
 
-    Mean cell quality: 0.605
+    Mean cell quality: 0.616
 
 
 
@@ -160,7 +160,7 @@ Here we re-run the above example, except using a more uniform surface
 
 .. GENERATED FROM PYTHON SOURCE LINES 69-85
 
-.. code-block:: default
+.. code-block:: Python
 
 
     import pyacvd
@@ -196,7 +196,7 @@ Plot the cross section of the tetrahedralization
 
 .. GENERATED FROM PYTHON SOURCE LINES 87-107
 
-.. code-block:: default
+.. code-block:: Python
 
 
     cell_center = uniform_grid.cell_centers().points
@@ -231,7 +231,7 @@ Plot the cross section of the tetrahedralization
 
  .. code-block:: none
 
-    Mean cell quality: 0.646
+    Mean cell quality: 0.642
 
 
 
@@ -239,7 +239,7 @@ Plot the cross section of the tetrahedralization
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  3.155 seconds)
+   **Total running time of the script:** (0 minutes 3.761 seconds)
 
 
 .. _sphx_glr_download_examples_sphere.py:
@@ -248,16 +248,13 @@ Plot the cross section of the tetrahedralization
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: sphere.ipynb <sphere.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: sphere.py <sphere.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: sphere.ipynb <sphere.ipynb>`
 
 
 .. only:: html

@@ -25,7 +25,7 @@ Tetrahedralize a super toroid surface.
 
 .. GENERATED FROM PYTHON SOURCE LINES 8-13
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # sphinx_gallery_thumbnail_number = 2
@@ -47,7 +47,7 @@ We merge the points here to make sure that the surface is manifold.
 
 .. GENERATED FROM PYTHON SOURCE LINES 17-25
 
-.. code-block:: default
+.. code-block:: Python
 
 
     toroid = pv.ParametricSuperToroid(u_res=50, v_res=50, w_res=50).clean(tolerance=1e-9)
@@ -75,7 +75,7 @@ Plot the tessellated mesh.
 
 .. GENERATED FROM PYTHON SOURCE LINES 27-44
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # get cell centroids
@@ -112,7 +112,7 @@ Show the cell quality
 
 .. GENERATED FROM PYTHON SOURCE LINES 46-56
 
-.. code-block:: default
+.. code-block:: Python
 
 
     cell_qual = subgrid.compute_cell_quality()["CellQuality"]
@@ -139,7 +139,7 @@ Show the cell quality
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.285 seconds)
+   **Total running time of the script:** (0 minutes 2.459 seconds)
 
 
 .. _sphx_glr_download_examples_super_toroid.py:
@@ -148,16 +148,13 @@ Show the cell quality
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: super_toroid.ipynb <super_toroid.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: super_toroid.py <super_toroid.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: super_toroid.ipynb <super_toroid.ipynb>`
 
 
 .. only:: html

@@ -25,7 +25,7 @@ Tetrahedralize a cow mesh.
 
 .. GENERATED FROM PYTHON SOURCE LINES 7-13
 
-.. code-block:: default
+.. code-block:: Python
 
     # sphinx_gallery_thumbnail_number = 3
     import numpy as np
@@ -42,7 +42,7 @@ Tetrahedralize a cow mesh.
 
 .. GENERATED FROM PYTHON SOURCE LINES 14-27
 
-.. code-block:: default
+.. code-block:: Python
 
 
     cow_mesh = examples.download_cow().triangulate()
@@ -71,7 +71,7 @@ Tetrahedralize a cow mesh.
 
 .. GENERATED FROM PYTHON SOURCE LINES 28-35
 
-.. code-block:: default
+.. code-block:: Python
 
 
     tet = tetgen.TetGen(cow_mesh)
@@ -89,7 +89,7 @@ Tetrahedralize a cow mesh.
 
 .. GENERATED FROM PYTHON SOURCE LINES 36-41
 
-.. code-block:: default
+.. code-block:: Python
 
 
     # plot half the cow
@@ -105,7 +105,7 @@ Tetrahedralize a cow mesh.
 
 .. GENERATED FROM PYTHON SOURCE LINES 42-49
 
-.. code-block:: default
+.. code-block:: Python
 
 
     plotter = pv.Plotter()
@@ -132,7 +132,7 @@ Make animation of the mesh construction
 
 .. GENERATED FROM PYTHON SOURCE LINES 51-69
 
-.. code-block:: default
+.. code-block:: Python
 
 
     plotter = pv.Plotter(off_screen=True, window_size=[1000, 1000])
@@ -155,9 +155,9 @@ Make animation of the mesh construction
 
 
 
-.. image-sg:: /examples/images/sphx_glr_cow_003.png
+.. image-sg:: /examples/images/sphx_glr_cow_003.gif
    :alt: cow
-   :srcset: /examples/images/sphx_glr_cow_003.png
+   :srcset: /examples/images/sphx_glr_cow_003.gif
    :class: sphx-glr-single-img
 
 
@@ -167,7 +167,7 @@ Make animation of the mesh construction
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  15.470 seconds)
+   **Total running time of the script:** (0 minutes 14.395 seconds)
 
 
 .. _sphx_glr_download_examples_cow.py:
@@ -176,16 +176,13 @@ Make animation of the mesh construction
 
   .. container:: sphx-glr-footer sphx-glr-footer-example
 
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
-
+      :download:`Download Jupyter notebook: cow.ipynb <cow.ipynb>`
 
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: cow.py <cow.py>`
-
-    .. container:: sphx-glr-download sphx-glr-download-jupyter
-
-      :download:`Download Jupyter notebook: cow.ipynb <cow.ipynb>`
 
 
 .. only:: html

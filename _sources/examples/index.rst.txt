@@ -16,7 +16,7 @@ Examples
 
 .. only:: html
 
-  .. image:: /examples/images/thumb/sphx_glr_cow_thumb.png
+  .. image:: /examples/images/thumb/sphx_glr_cow_thumb.gif
     :alt:
 
   :ref:`sphx_glr_examples_cow.py`
