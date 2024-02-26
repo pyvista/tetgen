@@ -11,6 +11,8 @@ class tetgenio_wrap : public tetgenio
         facet *f;
         polygon *p;
         void LoadArray(int, double*, int, int*);
+        void LoadMTRArray(int, double*, int, int*, double*);
+        bool LoadTetMesh(char*, int);
 
         //destructor
 //        ~myRectangle();

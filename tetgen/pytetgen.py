@@ -9,6 +9,7 @@ from tetgen import _tetgen
 LOG = logging.getLogger(__name__)
 LOG.setLevel("CRITICAL")
 
+MTR_POINTDATA_KEY = "target_size"
 
 invalid_input = TypeError(
     "Invalid input. Must be either a pyvista.PolyData object or vertex and face arrays."
@@ -301,6 +302,8 @@ class TetGen:
         elem_growth_ratio=0.0,
         refine_progress_ratio=0.333,
         switches=None,
+        bgmeshfilename="",
+        bgmesh=None,
     ):
         """Generate tetrahedrals interior to the surface mesh.
 
@@ -380,6 +383,13 @@ class TetGen:
             Controls whether TetGen creates linear tetrahedrals or
             quadradic tetrahedrals.  Set order to 2 to output
             quadradic tetrahedrals.
+
+        bgmeshfilename : str, optional
+            Filename of the background mesh.
+
+        bgmesh : pv.UnstructuredGrid
+            Background mesh to be processed. Must be composed of only linear
+            tetra. Cannot specify both ``bgmeshfilename`` and ``bgmesh``.
 
         Returns
         -------
@@ -579,8 +589,21 @@ class TetGen:
         if verbose == 0:
             quiet = 1
 
+        # Validate background mesh parameters
+        if bgmesh and bgmeshfilename:
+            raise ValueError("Cannot specify both bgmesh and bgmeshfilename")
+        if bgmesh or bgmeshfilename:
+            # Passing a background mesh only makes sense with metric set to true
+            # (will be silently ignored otherwise)
+            metric = 1
+        if bgmesh:
+            bgmesh_v, bgmesh_tet, bgmesh_mtr = self._process_bgmesh(bgmesh)
+        else:
+            bgmesh_v, bgmesh_tet, bgmesh_mtr = None, None, None
+
         # Call library
         plc = True  # always true
+
         try:
             self.node, self.elem = _tetgen.Tetrahedralize(
                 self.v,
@@ -667,6 +690,10 @@ class TetGen:
                 coarsen_percent,
                 elem_growth_ratio,
                 refine_progress_ratio,
+                bgmeshfilename,
+                bgmesh_v,
+                bgmesh_tet,
+                bgmesh_mtr,
             )
         except RuntimeError as e:
             raise RuntimeError(
@@ -678,7 +705,7 @@ class TetGen:
         # check if a mesh was generated
         if not np.any(self.node):
             raise RuntimeError(
-                "Failed to tetrahedralize.\n" + "May need to repair surface by making it manifold"
+                "Failed to tetrahedralize.\nMay need to repair surface by making it manifold"
             )
 
         # Return nodes and elements
@@ -747,3 +774,33 @@ class TetGen:
         to convert to other formats in order to import into FEA software.
         """
         self.grid.save(filename, binary)
+
+    @staticmethod
+    def _process_bgmesh(mesh):
+        """Process a background mesh.
+
+        Parameters
+        ----------
+        bgmesh : pyvista.UnstructuredGrid
+            Background mesh to be processed. Must be composed of only linear tetra,
+
+        Returns
+        -------
+        bgmesh_v: numpy.ndarray
+            Vertex array of the background mesh.
+        bgmesh_tet: numpy.ndarray
+            Tet array of the background mesh.
+        bgmesh_mtr: numpy.ndarray
+            Target size array of the background mesh.
+        """
+        if MTR_POINTDATA_KEY not in mesh.point_data:
+            raise ValueError("Background mesh does not have target size information")
+
+        # Celltype check
+        if not (mesh.celltypes == pv.CellType.TETRA).all():
+            raise ValueError("`mesh` must contain only tetrahedrons")
+
+        bgmesh_v = mesh.points.astype(np.float64, copy=True).ravel()
+        bgmesh_tet = mesh.cell_connectivity.astype(np.int32, copy=True)
+        bgmesh_mtr = mesh.point_data[MTR_POINTDATA_KEY].astype(np.float64, copy=True).ravel()
+        return bgmesh_v, bgmesh_tet, bgmesh_mtr
