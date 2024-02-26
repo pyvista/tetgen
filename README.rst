@@ -31,7 +31,7 @@ License (AGPL)
 --------------
 
 The original `TetGen <https://github.com/ufz/tetgen>`__ software is under AGPL
-(see `LICENSE <https://github.com/pyvista/tetgen/blob/master/LICENSE>`_) and thus this
+(see `LICENSE <https://github.com/pyvista/tetgen/blob/main/LICENSE>`_) and thus this
 Python wrapper package must adopt that license as well.
 
 Please look into the terms of this license before creating a dynamic link to this software
@@ -78,7 +78,7 @@ manifold surface and plot part of the mesh.
     grid = tet.grid
     grid.plot(show_edges=True)
 
-.. figure:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere.png
+.. figure:: https://github.com/pyvista/tetgen/raw/main/doc/images/sphere.png
     :width: 300pt
 
     Tetrahedralized Sphere
@@ -105,7 +105,7 @@ the mesh quality.
                         [' Tessellated Mesh ', 'black']])
     plotter.show()
 
-.. image:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_subgrid.png
+.. image:: https://github.com/pyvista/tetgen/raw/main/doc/images/sphere_subgrid.png
 
 Here is the cell quality as computed according to the minimum scaled jacobian.
 
@@ -120,7 +120,114 @@ Here is the cell quality as computed according to the minimum scaled jacobian.
    >>> subgrid.plot(scalars=cell_qual, stitle='Quality', cmap='bwr', clim=[0, 1],
    ...              flip_scalars=True, show_edges=True)
 
-.. image:: https://github.com/pyvista/tetgen/raw/master/doc/images/sphere_qual.png
+.. image:: https://github.com/pyvista/tetgen/raw/main/doc/images/sphere_qual.png
+
+
+Using a Background Mesh
+-----------------------
+A background mesh in TetGen is used to define a mesh sizing function for
+adaptive mesh refinement. This function informs TetGen of the desired element
+size throughout the domain, allowing for detailed refinement in specific areas
+without unnecessary densification of the entire mesh. Here's how to utilize a
+background mesh in your TetGen workflow:
+
+1. **Generate the Background Mesh**: Create a tetrahedral mesh that spans the
+   entirety of your input piecewise linear complex (PLC) domain. This mesh will
+   serve as the basis for your sizing function.
+
+2. **Define the Sizing Function**: At the nodes of your background mesh, define
+   the desired mesh sizes. This can be based on geometric features, proximity
+   to areas of interest, or any criterion relevant to your simulation needs.
+
+3. **Optional: Export the Background Mesh and Sizing Function**: Save your
+   background mesh in the TetGen-readable `.node` and `.ele` formats, and the
+   sizing function values in a `.mtr` file. These files will be used by TetGen
+   to guide the mesh generation process.
+
+4. **Run TetGen with the Background Mesh**: Invoke TetGen, specifying the
+   background mesh. TetGen will adjust the mesh according to the provided
+   sizing function, refining the mesh where smaller elements are desired.
+
+**Full Example**
+
+To illustrate, consider a scenario where you want to refine a mesh around a
+specific region with increased detail. The following steps and code snippets
+demonstrate how to accomplish this with TetGen and PyVista:
+
+1. **Prepare Your PLC and Background Mesh**:
+
+   .. code-block:: python
+
+      import pyvista as pv
+      import tetgen
+      import numpy as np
+
+      # Load or create your PLC
+      sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+
+      # Generate a background mesh with desired resolution
+      def generate_background_mesh(bounds, resolution=20, eps=1e-6):
+          x_min, x_max, y_min, y_max, z_min, z_max = bounds
+          grid_x, grid_y, grid_z = np.meshgrid(
+              np.linspace(xmin - eps, xmax + eps, resolution),
+              np.linspace(ymin - eps, ymax + eps, resolution),
+              np.linspace(zmin - eps, zmax + eps, resolution),
+              indexing="ij",
+          )
+          return pv.StructuredGrid(grid_x, grid_y, grid_z).triangulate()
+
+      bg_mesh = generate_background_mesh(sphere.bounds)
+
+2. **Define the Sizing Function and Write to Disk**:
+
+   .. code-block:: python
+
+      # Define sizing function based on proximity to a point of interest
+      def sizing_function(points, focus_point=np.array([0, 0, 0]), max_size=1.0, min_size=0.1):
+          distances = np.linalg.norm(points - focus_point, axis=1)
+          return np.clip(max_size - distances, min_size, max_size)
+
+      bg_mesh.point_data['target_size'] = sizing_function(bg_mesh.points)
+
+      # Optionally write out the background mesh
+      def write_background_mesh(background_mesh, out_stem):
+          """Write a background mesh to a file.
+
+          This writes the mesh in tetgen format (X.b.node, X.b.ele) and a X.b.mtr file
+          containing the target size for each node in the background mesh.
+          """
+          mtr_content = [f"{background_mesh.n_points} 1"]
+          target_size = background_mesh.point_data["target_size"]
+          for i in range(background_mesh.n_points):
+              mtr_content.append(f"{target_size[i]:.8f}")
+
+      write_background_mesh(bg_mesh, 'bgmesh.b')
+
+3. **Use TetGen with the Background Mesh**:
+
+
+   Directly pass the background mesh from PyVista to ``tetgen``:
+
+   .. code-block:: python
+
+      tet_kwargs = dict(order=1, mindihedral=20, minratio=1.5)
+      tet = tetgen.TetGen(mesh)
+      tet.tetrahedralize(bgmesh=bgmesh, **tet_kwargs)
+      refined_mesh = tet.grid
+
+   Alternatively, use the background mesh files.
+
+   .. code-block:: python
+
+      tet = tetgen.TetGen(sphere)
+      tet.tetrahedralize(bgmeshfilename='bgmesh.b', **tet_kwargs)
+      refined_mesh = tet.grid
+
+
+This example demonstrates generating a background mesh, defining a spatially
+varying sizing function, and using this background mesh to guide TetGen in
+refining a PLC. By following these steps, you can achieve adaptive mesh
+refinement tailored to your specific simulation requirements.
 
 
 Acknowledgments

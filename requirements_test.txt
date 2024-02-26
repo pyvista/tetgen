@@ -1,3 +1,4 @@
+meshio
+pymeshfix>=0.13.4
 pytest
 pytest-cov
-pymeshfix>=0.13.4
