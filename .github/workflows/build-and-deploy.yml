@@ -29,7 +29,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: pymeshfix-wheels-${{ matrix.os }}
+          name: tetgen-wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
@@ -52,28 +52,32 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: pymeshfix-sdist
+          name: tetgen-sdist
           path: dist/*.tar.gz
 
-  upload_pypi:
+
+  release:
+    name: Release
+    if: github.event_name == 'push' && contains(github.ref, 'refs/tags')
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+    environment:
+      name: pypi
+      url: https://pypi.org/p/tetgen
+    permissions:
+      id-token: write  # this permission is mandatory for trusted publishing
     steps:
       - uses: actions/download-artifact@v4
-        with:
-          name: artifact
-          path: dist
-
-      # upload to PyPI
-      - uses: pypa/gh-action-pypi-publish@v1.8.11
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_TOKEN }}
-
-      - name: Release
+      - name: Flatten directory structure
+        run: |
+          mkdir -p dist/
+          find . -name '*.whl' -exec mv {} dist/ \;
+          find . -name '*.tar.gz' -exec mv {} dist/ \;
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           generate_release_notes: true
           files: |
-            ./dist/*.whl
+            ./**/*.whl
