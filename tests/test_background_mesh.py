@@ -1,4 +1,5 @@
 """Test the mesh resizing feature of tetgen with sizing function."""
+
 from pathlib import Path
 import tempfile
 
