@@ -201,6 +201,12 @@ demonstrate how to accomplish this with TetGen and PyVista:
           for i in range(background_mesh.n_points):
               mtr_content.append(f"{target_size[i]:.8f}")
 
+          pv.save_meshio(f"{out_stem}.node", background_mesh)
+          mtr_file = f"{out_stem}.mtr"
+
+          with open(mtr_file, "w") as f:
+              f.write("\n".join(mtr_content))
+
       write_background_mesh(bg_mesh, 'bgmesh.b')
 
 3. **Use TetGen with the Background Mesh**:
