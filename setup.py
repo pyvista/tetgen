@@ -1,4 +1,5 @@
 """Setup for tetgen."""
+
 from io import open as io_open
 import os
 
@@ -36,11 +37,10 @@ setup(
         "Intended Audience :: Science/Research",
         "License :: OSI Approved :: GNU Affero General Public License v3",
         "Development Status :: 4 - Beta",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
     # Build cython modules
     ext_modules=cythonize(
@@ -60,7 +60,7 @@ setup(
             ),
         ],
     ),
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     keywords="TetGen",
-    install_requires=["numpy>1.16.0", "pyvista>=0.31.0"],
+    install_requires=["numpy>=2,<3", "pyvista>=0.31.0"],
 )
