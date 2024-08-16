@@ -1,6 +1,6 @@
 git+git://github.com/pyvista/pyvista@master
 Sphinx<=2.0.0
-sphinx-autobuild>
+sphinx-autobuild
 sphinx-rtd-theme
 sphinxcontrib-napoleon
 sphinxcontrib-websupport
