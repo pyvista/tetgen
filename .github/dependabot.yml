@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    insecure-external-code-execution: allow
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 100
+    labels:
+      - "maintenance"
+      - "dependencies"
+    groups:
+      pip:
+        patterns:
+          - "*"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 100
+    labels:
+      - "maintenance"
+      - "dependencies"
+    groups:
+      actions:
+        patterns:
+          - "*"
