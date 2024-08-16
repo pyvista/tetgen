@@ -11,7 +11,7 @@
         :class: sphx-glr-download-link-note
 
         :ref:`Go to the end <sphx_glr_download_examples_sphere.py>`
-        to download the full example code
+        to download the full example code.
 
 .. rst-class:: sphx-glr-example-title
 
@@ -239,7 +239,7 @@ Plot the cross section of the tetrahedralization
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.782 seconds)
+   **Total running time of the script:** (0 minutes 3.606 seconds)
 
 
 .. _sphx_glr_download_examples_sphere.py:
@@ -255,6 +255,10 @@ Plot the cross section of the tetrahedralization
     .. container:: sphx-glr-download sphx-glr-download-python
 
       :download:`Download Python source code: sphere.py <sphere.py>`
+
+    .. container:: sphx-glr-download sphx-glr-download-zip
+
+      :download:`Download zipped: sphere.zip <sphere.zip>`
 
 
 .. only:: html

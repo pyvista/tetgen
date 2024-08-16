@@ -9,6 +9,7 @@ Examples
 
     <div class="sphx-glr-thumbnails">
 
+.. thumbnail-parent-div-open
 
 .. raw:: html
 
@@ -60,6 +61,8 @@ Examples
       <div class="sphx-glr-thumbnail-title">Super Toroid</div>
     </div>
 
+
+.. thumbnail-parent-div-close
 
 .. raw:: html
 
