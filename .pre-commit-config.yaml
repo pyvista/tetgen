@@ -53,6 +53,6 @@ repos:
     args: [--branch, main]
 
 - repo: https://github.com/python-jsonschema/check-jsonschema
-  rev: 0.29.3
+  rev: 0.30.0
   hooks:
     - id: check-github-workflows
