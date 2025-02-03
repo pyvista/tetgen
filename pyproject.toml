@@ -21,6 +21,8 @@ archs = ["auto"]
 skip = "pp* *musllinux* cp37-* cp38-* cp313-*"  # Build CPython 3.9 - 3.12
 before-test = "pip install -r requirements_test.txt"
 test-command = "pytest {project}/tests"
+manylinux-x86_64-image = "quay.io/pypa/manylinux_2_28_x86_64"
+manylinux-aarch64-image = "quay.io/pypa/manylinux_2_28_aarch64"
 
 [tool.cibuildwheel.macos]
 archs = ["native"]
