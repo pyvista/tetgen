@@ -62,5 +62,5 @@ setup(
     ),
     python_requires=">=3.9",
     keywords="TetGen",
-    install_requires=["numpy>=2,<3", "pyvista>=0.31.0"],
+    install_requires=["numpy>=1.26.4,<3", "pyvista>=0.31.0"],
 )
