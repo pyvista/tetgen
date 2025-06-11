@@ -14,22 +14,36 @@ concurrency:
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels on ${{ matrix.os }}-${{ matrix.arch }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-14, macos-13]
+        os: [ ubuntu-latest, macos-13, windows-latest ]
+        arch: [ x86_64 ]
+        include:
+          - os: ubuntu-24.04-arm
+            arch: aarch64
+          - os: ubuntu-22.04-arm
+            arch: aarch64
+          - os: macos-15
+            arch: arm64
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.23.3
+        uses: pypa/cibuildwheel@v3.0.0rc3
+        env:
+          # For Windows: Build only 64-bit wheels to avoid architecture mismatch with dependencies.
+          CIBW_ARCHS_WINDOWS: "AMD64"
+          # For Linux ARM64: Tell the C++ compiler to treat `char` as signed to fix pymeshfix compilation.
+          CIBW_TEST_ENVIRONMENT_LINUX: "CXXFLAGS='-fsigned-char'"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: tetgen-wheels-${{ matrix.os }}
+          # Include the architecture in the artifact name to prevent overwrites
+          name: tetgen-wheels-${{ matrix.os }}-${{ matrix.arch }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
@@ -50,7 +64,8 @@ jobs:
         run: pip install dist/*.tar.gz
 
       - name: Install test requirements
-        run: pip install -r requirements_test.txt
+        # On x86_64 this flag is harmless but good practice for ensuring sdist tests are robust
+        run: CXXFLAGS="-fsigned-char" pip install -r requirements_test.txt
 
       - name: Run tests
         run: pytest
@@ -74,11 +89,13 @@ jobs:
       contents: write  # required to create a release
     steps:
       - uses: actions/download-artifact@v4
+        with:
+          path: artifacts # Download all artifacts into a single directory
       - name: Flatten directory structure
         run: |
           mkdir -p dist/
-          find . -name '*.whl' -exec mv {} dist/ \;
-          find . -name '*.tar.gz' -exec mv {} dist/ \;
+          find artifacts -name '*.whl' -exec mv {} dist/ \;
+          find artifacts -name '*.tar.gz' -exec mv {} dist/ \;
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
       - name: Create GitHub Release
@@ -86,4 +103,5 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            ./**/*.whl
+            dist/*.whl
+            dist/*.tar.gz

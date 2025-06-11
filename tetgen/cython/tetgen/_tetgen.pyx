@@ -40,10 +40,6 @@ cdef extern from "tetgen_wrap.h":
 
 
 cdef extern from "tetgen.h":
-    cdef cppclass tetrahedralize:
-        int tetrahedralize(char*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*)
-
-
     cdef cppclass tetgenbehavior:
         void tetgenbehavior()
 
