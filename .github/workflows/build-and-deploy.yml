@@ -34,6 +34,11 @@ jobs:
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.0.0rc3
+        env:
+        # For Windows: Build only 64-bit wheels to avoid architecture mismatch with dependencies.
+          CIBW_ARCHS_WINDOWS: "AMD64"
+          # For Linux: Force char to be signed during the test phase to fix pymeshfix compilation on aarch64.
+          CIBW_TEST_ENVIRONMENT_LINUX: "CXXFLAGS=-fno-signed-char"
 
       - uses: actions/upload-artifact@v4
         with:
