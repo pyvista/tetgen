@@ -19,14 +19,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-13, windows-latest ] # Use standard runner labels
-        arch: [ x86_64 ] # Default arch for ubuntu and macos
+        os: [ ubuntu-latest, macos-13, windows-latest ]
+        arch: [ x86_64 ]
         include:
-          - os: ubuntu-24.04-arm # Build ARM64 on Ubuntu
+          - os: ubuntu-24.04-arm
             arch: aarch64
-          - os: ubuntu-22.04-arm # Build ARM64 on Ubuntu
+          - os: ubuntu-22.04-arm
             arch: aarch64
-          - os: macos-15 # Build ARM64 on macOS
+          - os: macos-15
             arch: arm64
 
     steps:
@@ -35,14 +35,15 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.0.0rc3
         env:
-        # For Windows: Build only 64-bit wheels to avoid architecture mismatch with dependencies.
+          # For Windows: Build only 64-bit wheels to avoid architecture mismatch with dependencies.
           CIBW_ARCHS_WINDOWS: "AMD64"
-          # For Linux: Force char to be signed during the test phase to fix pymeshfix compilation on aarch64.
-          CIBW_TEST_ENVIRONMENT_LINUX: "CXXFLAGS=-fno-signed-char"
+          # For Linux ARM64: Tell the C++ compiler to treat `char` as signed to fix pymeshfix compilation.
+          CIBW_TEST_ENVIRONMENT_LINUX: "CXXFLAGS='-fsigned-char'"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: tetgen-wheels-${{ matrix.os }}
+          # Include the architecture in the artifact name to prevent overwrites
+          name: tetgen-wheels-${{ matrix.os }}-${{ matrix.arch }}
           path: ./wheelhouse/*.whl
 
   build_sdist:
@@ -63,7 +64,8 @@ jobs:
         run: pip install dist/*.tar.gz
 
       - name: Install test requirements
-        run: pip install -r requirements_test.txt
+        # On x86_64 this flag is harmless but good practice for ensuring sdist tests are robust
+        run: CXXFLAGS="-fsigned-char" pip install -r requirements_test.txt
 
       - name: Run tests
         run: pytest
@@ -87,11 +89,13 @@ jobs:
       contents: write  # required to create a release
     steps:
       - uses: actions/download-artifact@v4
+        with:
+          path: artifacts # Download all artifacts into a single directory
       - name: Flatten directory structure
         run: |
           mkdir -p dist/
-          find . -name '*.whl' -exec mv {} dist/ \;
-          find . -name '*.tar.gz' -exec mv {} dist/ \;
+          find artifacts -name '*.whl' -exec mv {} dist/ \;
+          find artifacts -name '*.tar.gz' -exec mv {} dist/ \;
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
       - name: Create GitHub Release
@@ -99,4 +103,5 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            ./**/*.whl
+            dist/*.whl
+            dist/*.tar.gz
