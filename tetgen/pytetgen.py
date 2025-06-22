@@ -82,7 +82,10 @@ class TetGen:
         self.f = None
         self.node = None
         self.elem = None
+        self.attributes = None
         self._grid = None
+        
+        self.regions = {}
 
         def parse_mesh(mesh):
             if not mesh.is_all_triangles:
@@ -137,6 +140,23 @@ class TetGen:
         self.v = v
         self.f = f
 
+
+    def addRegion(self, id, pointInRegion, maxVol=0.0):
+        """Add a region to the mesh.
+        
+        Parameters
+        ----------
+        id : int
+            Unique identifier for the region.
+        pointInRegion : tuple, list, np.array of float
+            A point inside the region, specified as (x, y, z).
+        maxVol : float, optional
+            Maximum volume for the region. If not specified, defaults to 0.0.
+        """
+        pointInRegion = np.asarray(pointInRegion, dtype=float)
+        self.regions[id] = (*pointInRegion, maxVol)
+        
+        
     def make_manifold(self, verbose=False):
         """Reconstruct a manifold clean surface from input mesh.
 
@@ -610,11 +630,16 @@ class TetGen:
 
         # Call library
         plc = True  # always true
-
+        
+        # Convert regions to the format expected by TetGen
+        # regions should be a list of lists, each containing [x, y, z, id, maxVol]
+        regions = [[*values[0:3], id, values[3]] for id, values in self.regions.items()]
+        
         try:
-            self.node, self.elem = _tetgen.Tetrahedralize(
+            self.node, self.elem, self.attributes = _tetgen.Tetrahedralize(
                 self.v,
                 self.f,
+                regions,
                 switches_str,
                 plc,
                 psc,
@@ -723,7 +748,7 @@ class TetGen:
         )
         self._updated = True
 
-        return self.node, self.elem
+        return self.node, self.elem, self.attributes
 
     @property
     def grid(self):
