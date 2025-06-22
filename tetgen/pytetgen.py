@@ -84,7 +84,7 @@ class TetGen:
         self.elem = None
         self.attributes = None
         self._grid = None
-        
+
         self.regions = {}
 
         def parse_mesh(mesh):
@@ -140,10 +140,9 @@ class TetGen:
         self.v = v
         self.f = f
 
-
     def addRegion(self, id, pointInRegion, maxVol=0.0):
         """Add a region to the mesh.
-        
+
         Parameters
         ----------
         id : int
@@ -155,8 +154,7 @@ class TetGen:
         """
         pointInRegion = np.asarray(pointInRegion, dtype=float)
         self.regions[id] = (*pointInRegion, maxVol)
-        
-        
+
     def make_manifold(self, verbose=False):
         """Reconstruct a manifold clean surface from input mesh.
 
@@ -630,11 +628,11 @@ class TetGen:
 
         # Call library
         plc = True  # always true
-        
+
         # Convert regions to the format expected by TetGen
         # regions should be a list of lists, each containing [x, y, z, id, maxVol]
         regions = [[*values[0:3], id, values[3]] for id, values in self.regions.items()]
-        
+
         try:
             self.node, self.elem, self.attributes = _tetgen.Tetrahedralize(
                 self.v,
