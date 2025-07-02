@@ -137,9 +137,14 @@ cdef extern from "tetgen.h":
         double refine_progress_ratio
         char bgmeshfilename[1024]
 
+
+
     # Different calls depending on using settings input
-    cdef void tetrahedralize(tetgenbehavior*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*) except +
-    cdef void tetrahedralize(char*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*) except +
+    void tetrahedralize_with_switches "tetrahedralize" (char*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*) except +
+    void tetrahedralize_with_behavior "tetrahedralize" (tetgenbehavior*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*) except +
+
+    # cdef void tetrahedralize(tetgenbehavior*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*) except +
+    # cdef void tetrahedralize(char*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*) except +
 
 
 cdef extern from "tetgen.h" namespace "tetgenbehavior":
@@ -398,7 +403,7 @@ def Tetrahedralize(
         tetgenio_bg.LoadTetMesh(bgmeshfilename_c, <int>objecttype.NODES)
 
     if switches:
-        tetrahedralize(cstring, &tetgenio_in.c_tetio, &tetgenio_out.c_tetio, NULL, &tetgenio_bg.c_tetio)
+        tetrahedralize_with_switches(cstring, &tetgenio_in.c_tetio, &tetgenio_out.c_tetio, NULL, &tetgenio_bg.c_tetio)
         if b'o2' in switches:
             order = 2
 
@@ -496,7 +501,7 @@ def Tetrahedralize(
         behavior.c_behavior.refine_progress_ratio = refine_progress_ratio
 
         # Process from C++ side using behavior object
-        tetrahedralize(&behavior.c_behavior, &tetgenio_in.c_tetio,
+        tetrahedralize_with_behavior(&behavior.c_behavior, &tetgenio_in.c_tetio,
                        &tetgenio_out.c_tetio, NULL, &tetgenio_bg.c_tetio)
 
 
