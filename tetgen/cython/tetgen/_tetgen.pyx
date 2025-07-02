@@ -31,18 +31,22 @@ cdef extern from "tetgen_wrap.h":
         int numberoftetrahedra
         int* tetrahedronlist
 
+        double *tetrahedronattributelist;
+        int numberoftetrahedronattributes;
+
         # Loads Arrays directly to tetgenio object
         void LoadArray(int, double*, int, int*)
         # Loads MTR Arrays directly to tetgenio object
         void LoadMTRArray(int, double*, int, int*, double*)
         # Loads tetmesh from file
         bint LoadTetMesh(char*, int)
-
+        # Loads Regions directly to tetgenio object
+        void LoadRegions(int, double*)
 
 cdef extern from "tetgen.h":
     cdef cppclass tetrahedralize:
         int tetrahedralize(char*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*)
-
+        int tetrahedralize(tetgenbehavior*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*, tetgenio_wrap*)
 
     cdef cppclass tetgenbehavior:
         void tetgenbehavior()
@@ -175,6 +179,22 @@ cdef class PyTetgenio:
 
         return np.asarray(nodes).reshape((-1, 3))
 
+    def ReturnTetrahedronAttributes(self):
+        arrsz = self.c_tetio.numberoftetrahedra * self.c_tetio.numberoftetrahedronattributes
+        # Create python copy of tetrahedral attributes array
+        cdef double [::1] attrib = np.empty(arrsz)
+
+        cdef int i
+        cdef int j
+        cdef int arrsz_c = arrsz
+
+        if arrsz_c < 1:
+            return None
+
+        for i in range(arrsz_c):
+                attrib[i] = self.c_tetio.tetrahedronattributelist[i]
+
+        return np.asarray(attrib).astype(int).reshape((-1, self.c_tetio.numberoftetrahedronattributes))
 
     def ReturnTetrahedrals(self, order):
         """ Returns tetrahedrals from tetgen """
@@ -224,6 +244,9 @@ cdef class PyTetgenio:
         nfaces = faces.size/3
         self.c_tetio.LoadArray(npoints, &points[0], nfaces, &faces[0])
 
+    def LoadRegions(self, double [::1] regions):
+        nregions = regions.size / 5
+        self.c_tetio.LoadRegions(nregions, &regions[0])
 
     def LoadMTRMesh(self, double [::1] points, int [::1] tets, double [::1] mtr):
         """ Loads points and tets into TetGen """
@@ -240,6 +263,7 @@ cdef class PyTetgenio:
 def Tetrahedralize(
         v,
         f,
+        regions=None,
         switches='',
 
         # Switches of TetGen
@@ -352,6 +376,9 @@ def Tetrahedralize(
     v = cast_to_cdouble(v)
     f = cast_to_cint(f)
 
+    if regions is not None:
+        regions = cast_to_cdouble(regions)
+
     if bgmesh_v is not None:
         bgmesh_v = cast_to_cdouble(bgmesh_v)
     if bgmesh_tet is not None:
@@ -362,6 +389,9 @@ def Tetrahedralize(
     # Create input class
     tetgenio_in = PyTetgenio()
     tetgenio_in.LoadMesh(v.ravel(), f.ravel())
+
+    if regions is not None:
+        tetgenio_in.LoadRegions(regions.ravel())
 
     # Create output class
     tetgenio_out = PyTetgenio()
@@ -478,5 +508,6 @@ def Tetrahedralize(
     # Returns vertices and tetrahedrals of new mesh
     nodes = tetgenio_out.ReturnNodes()
     tets = tetgenio_out.ReturnTetrahedrals(order)
+    attributes = tetgenio_out.ReturnTetrahedronAttributes()
 
-    return nodes, tets
+    return nodes, tets, attributes

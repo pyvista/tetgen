@@ -5,6 +5,20 @@
 tetgenio_wrap::tetgenio_wrap(){}
 
 
+
+void tetgenio_wrap::LoadRegions(int nregions, double* regions)
+{
+  int i;
+
+  // Allocate memory for regions and store them
+  numberofregions = nregions;
+  regionlist = new double[nregions*5];
+
+  for(i = 0; i < nregions*5; i++) {
+    regionlist[i] = regions[i];
+  }
+}
+
 void tetgenio_wrap::LoadArray(int npoints, double* points, int nfaces,
                              int* facearr)
 {

@@ -82,7 +82,10 @@ class TetGen:
         self.f = None
         self.node = None
         self.elem = None
+        self.attributes = None
         self._grid = None
+
+        self.regions = {}
 
         def parse_mesh(mesh):
             if not mesh.is_all_triangles:
@@ -136,6 +139,54 @@ class TetGen:
         # Store to self
         self.v = v
         self.f = f
+
+    def add_region(
+        self, id: int, point_in_region: tuple[float, float, float], max_vol: float = 0.0
+    ):
+        """Add a region to the mesh.
+
+        Parameters
+        ----------
+        id : int
+            Unique identifier for the region.
+        point_in_region : tuple, list, np.array of float
+            A single point inside the region, specified as (x, y, z).
+        max_vol : float, default: 0.0
+            Maximum volume for the region.
+
+        Examples
+        --------
+        Create a sphere in a cube in PyVista and mesh the region in the sphere
+        at a higher density.
+
+        >>> import pyvista as pv
+        >>> import tetgen
+        >>> cube = pv.Cube().triangulate()
+        >>> sphere = pv.Sphere(theta_resolution=16, phi_resolution=16, radius=0.25)
+        >>> mesh = pv.merge([sphere, cube])
+        >>> tgen = tetgen.TetGen(mesh)
+        >>> tgen.add_region(1, (0.0, 0.0, 0.0), 8e-6)  # sphere
+        >>> tgen.add_region(2, [0.99, 0.0, 0.0], 4e-4)  # cube
+        >>> nodes, elem, attrib = tgen.tetrahedralize(switches="pzq1.4Aa")
+        >>> grid = tgen.grid
+        >>> grid
+        UnstructuredGrid (0x7cc05412bb80)
+          N Cells:    23768
+          N Points:   3964
+          X Bounds:   -5.000e-01, 5.000e-01
+          Y Bounds:   -5.000e-01, 5.000e-01
+          Z Bounds:   -5.000e-01, 5.000e-01
+          N Arrays:   1
+
+        Supply the region info to the grid and then plot a slice through the
+        grid.
+
+        >>> grid["regions"] = attrib.ravel()
+        >>> grid.slice().plot(show_edges=True, cpos="zy")
+
+        """
+        point_in_region_arr = np.asarray(point_in_region, dtype=float)
+        self.regions[id] = (*point_in_region_arr, max_vol)
 
     def make_manifold(self, verbose=False):
         """Reconstruct a manifold clean surface from input mesh.
@@ -611,10 +662,15 @@ class TetGen:
         # Call library
         plc = True  # always true
 
+        # Convert regions to the format expected by TetGen
+        # regions should be a list of lists, each containing [x, y, z, id, maxVol]
+        regions = [[*values[0:3], id, values[3]] for id, values in self.regions.items()]
+
         try:
-            self.node, self.elem = _tetgen.Tetrahedralize(
+            self.node, self.elem, self.attributes = _tetgen.Tetrahedralize(
                 self.v,
                 self.f,
+                regions,
                 switches_str,
                 plc,
                 psc,
@@ -722,6 +778,10 @@ class TetGen:
             self.elem.shape[0],
         )
         self._updated = True
+
+        # return with attributes if they exist
+        if self.attributes is not None:
+            return self.node, self.elem, self.attributes
 
         return self.node, self.elem
 
