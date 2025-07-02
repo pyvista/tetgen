@@ -207,7 +207,7 @@ bool tetgenio::load_node(char* filebasename)
     printf("  Cannot access file %s.\n", innodefilename);
     return false;
   }
-  printf("Opening %s.\n", innodefilename); 
+  // printf("Opening %s.\n", innodefilename); 
 
   // Set initial flags.
   mesh_dim = 3;
@@ -280,7 +280,7 @@ bool tetgenio::load_edge(char* filebasename)
 
   infile = fopen(inedgefilename, "r");
   if (infile != (FILE *) NULL) {
-    printf("Opening %s.\n", inedgefilename);
+    // printf("Opening %s.\n", inedgefilename);
   } else {
     //printf("  Cannot access file %s.\n", inedgefilename);
     return false;
@@ -362,7 +362,7 @@ bool tetgenio::load_face(char* filebasename)
 
   infile = fopen(infilename, "r");
   if (infile != (FILE *) NULL) {
-    printf("Opening %s.\n", infilename);
+    // printf("Opening %s.\n", infilename);
   } else {
     return false;
   }
@@ -458,7 +458,7 @@ bool tetgenio::load_tet(char* filebasename)
 
   infile = fopen(infilename, "r");
   if (infile != (FILE *) NULL) {
-    printf("Opening %s.\n", infilename);
+    // printf("Opening %s.\n", infilename);
   } else {
     return false;
   }
@@ -565,7 +565,7 @@ bool tetgenio::load_vol(char* filebasename)
 
   infile = fopen(infilename, "r");
   if (infile != (FILE *) NULL) {
-    printf("Opening %s.\n", infilename);
+    // printf("Opening %s.\n", infilename);
   } else {
     return false;
   }
@@ -625,7 +625,7 @@ bool tetgenio::load_var(char* filebasename)
   strcat(varfilename, ".var");
   infile = fopen(varfilename, "r");
   if (infile != (FILE *) NULL) {
-    printf("Opening %s.\n", varfilename);
+    // printf("Opening %s.\n", varfilename);
   } else {
     return false;
   }
@@ -747,7 +747,7 @@ bool tetgenio::load_mtr(char* filebasename)
   strcat(mtrfilename, ".mtr");
   infile = fopen(mtrfilename, "r");
   if (infile != (FILE *) NULL) {
-    printf("Opening %s.\n", mtrfilename);
+    // printf("Opening %s.\n", mtrfilename);
   } else {
     return false;
   }
@@ -817,7 +817,7 @@ bool tetgenio::load_elem(char* filebasename)
   // Try to open a .elem file.
   infile = fopen(inelemfilename, "r");
   if (infile != (FILE *) NULL) {
-    printf("Opening %s.\n", inelemfilename);
+    // printf("Opening %s.\n", inelemfilename);
   } else {
     return false;
   }
@@ -881,12 +881,12 @@ bool tetgenio::load_poly(char* filebasename)
              inpolyfilename, insmeshfilename);
       return false;
     } else {
-      printf("Opening %s.\n", insmeshfilename);
+      // printf("Opening %s.\n", insmeshfilename);
       infilename = insmeshfilename;
     }
     smesh = 1;
   } else {
-    printf("Opening %s.\n", inpolyfilename);
+    // printf("Opening %s.\n", inpolyfilename);
     infilename = inpolyfilename;
   }
 
@@ -1288,7 +1288,7 @@ bool tetgenio::load_off(char* filebasename)
     printf("  Unable to open file %s\n", infilename);
     return false;
   }
-  printf("Opening %s.\n", infilename);
+  // printf("Opening %s.\n", infilename);
 
   while ((bufferp = readline(buffer, fp, &line_count)) != NULL) {
     // Check section
@@ -1449,7 +1449,7 @@ bool tetgenio::load_ply(char* filebasename)
     printf("Error:  Unable to open file %s\n", infilename);
     return false;
   }
-  printf("Opening %s.\n", infilename);
+  // printf("Opening %s.\n", infilename);
 
   while ((bufferp = readline(buffer, fp, &line_count)) != NULL) {
     if (!endheader) {
@@ -1676,7 +1676,7 @@ bool tetgenio::load_stl(char* filebasename)
     printf("Error:  Unable to open file %s\n", infilename);
     return false;
   }
-  printf("Opening %s.\n", infilename);
+  // printf("Opening %s.\n", infilename);
 
   // "solid", or binary data header
   if(!fgets(buffer, sizeof(buffer), fp)){ fclose(fp); return 0; }
@@ -1854,7 +1854,7 @@ bool tetgenio::load_medit(char* filebasename, int istetmesh)
     //printf("Error:  Unable to open file %s\n", infilename);
     return false;
   }
-  printf("Opening %s.\n", infilename);
+  // printf("Opening %s.\n", infilename);
 
   while ((bufferp = readline(buffer, fp, &line_count)) != NULL) {
     if (*bufferp == '#') continue;  // A comment line is skipped.
@@ -2212,7 +2212,7 @@ bool tetgenio::load_vtk(char* filebasename)
     printf("Error:  Unable to open file %s\n", infilename);
     return false;
   }
-  printf("Opening %s.\n", infilename);
+  // printf("Opening %s.\n", infilename);
 
   // Default uses the index starts from '0'.
   firstnumber = 0;
