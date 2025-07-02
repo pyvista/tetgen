@@ -39,9 +39,9 @@ tgen = tetgen.TetGen(mesh)
 
 # add regions to the TetGen object
 V_sphere = 4 / 3 * np.pi * r**3
-tgen.addRegion(100, [-L / 2, 0, 0], V_sphere / 5000)  # sphere 1
-tgen.addRegion(200, [L / 2, 0, 0], V_sphere / 5000)  # sphere 2
-tgen.addRegion(300, [L * 1.5, 0, 0], V_sphere / 100)  # airbox
+tgen.add_region(100, [-L / 2, 0, 0], V_sphere / 5000)  # sphere 1
+tgen.add_region(200, [L / 2, 0, 0], V_sphere / 5000)  # sphere 2
+tgen.add_region(300, [L * 1.5, 0, 0], V_sphere / 100)  # airbox
 
 # tetrahedralize the mesh with specified switches
 nodes, elem, attrib = tgen.tetrahedralize(switches="pzq1.4Aa")

@@ -140,20 +140,53 @@ class TetGen:
         self.v = v
         self.f = f
 
-    def addRegion(self, id, pointInRegion, maxVol=0.0):
+    def add_region(
+        self, id: int, point_in_region: tuple[float, float, float], max_vol: float = 0.0
+    ):
         """Add a region to the mesh.
 
         Parameters
         ----------
         id : int
             Unique identifier for the region.
-        pointInRegion : tuple, list, np.array of float
-            A point inside the region, specified as (x, y, z).
-        maxVol : float, optional
-            Maximum volume for the region. If not specified, defaults to 0.0.
+        point_in_region : tuple, list, np.array of float
+            A single point inside the region, specified as (x, y, z).
+        max_vol : float, default: 0.0
+            Maximum volume for the region.
+
+        Examples
+        --------
+        Create a sphere in a cube in PyVista and mesh the region in the sphere
+        at a higher density.
+
+        >>> import pyvista as pv
+        >>> import tetgen
+        >>> cube = pv.Cube().triangulate()
+        >>> sphere = pv.Sphere(theta_resolution=16, phi_resolution=16, radius=0.25)
+        >>> mesh = pv.merge([sphere, cube])
+        >>> tgen = tetgen.TetGen(mesh)
+        >>> tgen.add_region(1, (0.0, 0.0, 0.0), 8e-6)  # sphere
+        >>> tgen.add_region(2, [0.99, 0.0, 0.0], 4e-4)  # cube
+        >>> nodes, elem, attrib = tgen.tetrahedralize(switches="pzq1.4Aa")
+        >>> grid = tgen.grid
+        >>> grid
+        UnstructuredGrid (0x7cc05412bb80)
+          N Cells:    23768
+          N Points:   3964
+          X Bounds:   -5.000e-01, 5.000e-01
+          Y Bounds:   -5.000e-01, 5.000e-01
+          Z Bounds:   -5.000e-01, 5.000e-01
+          N Arrays:   1
+
+        Supply the region info to the grid and then plot a slice through the
+        grid.
+
+        >>> grid["regions"] = attrib.ravel()
+        >>> grid.slice().plot(show_edges=True, cpos="zy")
+
         """
-        pointInRegion = np.asarray(pointInRegion, dtype=float)
-        self.regions[id] = (*pointInRegion, maxVol)
+        point_in_region_arr = np.asarray(point_in_region, dtype=float)
+        self.regions[id] = (*point_in_region_arr, max_vol)
 
     def make_manifold(self, verbose=False):
         """Reconstruct a manifold clean surface from input mesh.
