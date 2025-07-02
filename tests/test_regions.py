@@ -21,9 +21,9 @@ def test_tetrahedralize_regions():
 
     assert ret is not None
     assert len(ret) == 3
-    
+
     attrib = ret[2]
-    
+
     # get all the region IDs assigned from tetgen
     regions = np.unique(attrib[:, 0])
 
