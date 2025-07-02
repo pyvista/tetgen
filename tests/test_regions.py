@@ -17,11 +17,14 @@ def test_tetrahedralize_regions():
     tgen.addRegion(200, [0.25 / 2, 0, 0], V_sphere / 5000)  # sphere 2
     tgen.addRegion(300, [1.5, 0, 0], V_sphere / 100)  # airbox
 
-    _, elem, attrib = tgen.tetrahedralize(switches="pzq1.4Aa")
+    ret = tgen.tetrahedralize(switches="pzq1.4Aa")
 
-    assert attrib is not None
-    assert len(attrib) == len(elem)
-
+    assert ret is not None
+    assert len(ret) == 3
+    
+    attrib = ret[2]
+    
+    # get all the region IDs assigned from tetgen
     regions = np.unique(attrib[:, 0])
 
     assert len(regions) == 3

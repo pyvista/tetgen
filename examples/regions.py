@@ -1,4 +1,10 @@
-# Example of using TetGen to create a tetrahedral mesh with regions
+"""
+Regions
+~~~~~~~~~~~~
+
+Example of using TetGen to create a tetrahedral mesh with regions.
+
+"""
 
 import numpy as np
 import pyvista as pv
