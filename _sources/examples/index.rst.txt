@@ -30,6 +30,23 @@ Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Example of using TetGen to create a tetrahedral mesh with regions.">
+
+.. only:: html
+
+  .. image:: /examples/images/thumb/sphx_glr_regions_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_regions.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Regions</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Tetrahedralize a sphere">
 
 .. only:: html
@@ -73,6 +90,7 @@ Examples
    :hidden:
 
    /examples/cow
+   /examples/regions
    /examples/sphere
    /examples/super_toroid
 

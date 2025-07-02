@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API Reference &#8212; tetgen 0.6.5 documentation</title>
+    <title>API Reference &#8212; tetgen 0.6.6 documentation</title>
   
   
   
@@ -18,17 +18,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
@@ -37,10 +39,11 @@
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
   
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/doctools.js"></script>
@@ -54,6 +57,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.6.6" />
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
@@ -75,19 +79,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="search.html"
       method="get">
@@ -95,7 +88,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search the docs ..."
          aria-label="Search the docs ..."
          autocomplete="off"
@@ -103,8 +95,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -137,8 +129,8 @@
       
     
     
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.6.5 documentation - Home"/>
-    <script>document.write(`<img src="_static/pyvista_logo_sm.png" class="logo__image only-dark" alt="tetgen 0.6.5 documentation - Home"/>`);</script>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.6.6 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.6.6 documentation - Home"/>
   
   
 </a></div>
@@ -184,29 +176,21 @@
         <div class="navbar-item navbar-persistent--container">
           
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
       
       
         <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -231,15 +215,11 @@ document.write(`
   
     <div class="navbar-persistent--mobile">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
     </div>
   
 
@@ -258,7 +238,8 @@ document.write(`
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -305,15 +286,11 @@ document.write(`
         
           <div class="navbar-item">
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script></div>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
     aria-label="Icon Links">
@@ -346,9 +323,14 @@ document.write(`
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
@@ -366,8 +348,6 @@ document.write(`
       
         <div class="header-article-item">
 
-
-
 <nav aria-label="Breadcrumb" class="d-print-none">
   <ul class="bd-breadcrumbs">
     
@@ -376,7 +356,7 @@ document.write(`
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">API Reference</li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">API Reference</span></li>
   </ul>
 </nav>
 </div>
@@ -409,8 +389,8 @@ array.</p>
 </dl>
 <p class="rubric">Examples</p>
 <p>Tetrahedralize a sphere using pyvista.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyvista</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tetgen</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
@@ -418,8 +398,8 @@ array.</p>
 </pre></div>
 </div>
 <p>Tetrahedralize a cube using numpy arrays.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tetgen</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">[</span>
 <span class="gp">... </span>        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
@@ -452,6 +432,50 @@ array.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elems</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
 </pre></div>
 </div>
+<dl class="py method">
+<dt class="sig sig-object py" id="tetgen.TetGen.add_region">
+<span class="sig-name descname"><span class="pre">add_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_in_region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_vol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.add_region" title="Permalink to this definition">#</a></dt>
+<dd><p>Add a region to the mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>int</em>) – Unique identifier for the region.</p></li>
+<li><p><strong>point_in_region</strong> (<em>tuple</em><em>, </em><em>list</em><em>, </em><em>np.array</em><em> of </em><em>float</em>) – A single point inside the region, specified as (x, y, z).</p></li>
+<li><p><strong>max_vol</strong> (<em>float</em><em>, </em><em>default: 0.0</em>) – Maximum volume for the region.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>Create a sphere in a cube in PyVista and mesh the region in the sphere
+at a higher density.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cube</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Cube</span><span class="p">()</span><span class="o">.</span><span class="n">triangulate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">merge</span><span class="p">([</span><span class="n">sphere</span><span class="p">,</span> <span class="n">cube</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">8e-6</span><span class="p">)</span>  <span class="c1"># sphere</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.99</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="mf">4e-4</span><span class="p">)</span>  <span class="c1"># cube</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">attrib</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pzq1.4Aa&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span>
+<span class="go">UnstructuredGrid (0x7cc05412bb80)</span>
+<span class="go">  N Cells:    23768</span>
+<span class="go">  N Points:   3964</span>
+<span class="go">  X Bounds:   -5.000e-01, 5.000e-01</span>
+<span class="go">  Y Bounds:   -5.000e-01, 5.000e-01</span>
+<span class="go">  Z Bounds:   -5.000e-01, 5.000e-01</span>
+<span class="go">  N Arrays:   1</span>
+</pre></div>
+</div>
+<p>Supply the region info to the grid and then plot a slice through the
+grid.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span><span class="p">[</span><span class="s2">&quot;regions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrib</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span><span class="o">.</span><span class="n">slice</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cpos</span><span class="o">=</span><span class="s2">&quot;zy&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="tetgen.TetGen.grid">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid</span></span><a class="headerlink" href="#tetgen.TetGen.grid" title="Permalink to this definition">#</a></dt>
@@ -471,8 +495,8 @@ array.</p>
 </dl>
 <p class="rubric">Examples</p>
 <p>Create a mesh and ensure it’s manfold.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyvista</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tetgen</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span><span class="o">.</span><span class="n">make_manifold</span><span class="p">()</span>
@@ -494,8 +518,8 @@ array.</p>
 </dl>
 <p class="rubric">Examples</p>
 <p>Generate a <a class="reference internal" href="#tetgen.TetGen" title="tetgen.TetGen"><code class="xref py py-class docutils literal notranslate"><span class="pre">tetgen.TetGen</span></code></a> and return a <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.PolyData</span></code>.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyvista</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tetgen</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span><span class="o">.</span><span class="n">mesh</span>
@@ -518,8 +542,8 @@ array.</p>
 <p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">pyvista.plot()</span></code> for available arguments.</p>
 <p class="rubric">Examples</p>
 <p>Plot the input mesh.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pyvista</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">tetgen</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
@@ -543,38 +567,38 @@ inputting switches.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>quality</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables mesh improvement.  Enabled by default.
+<li><p><strong>quality</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables mesh improvement. Enabled by default.
 Disable this to speed up mesh generation while sacrificing
-quality.  Default True.</p></li>
+quality. Default True.</p></li>
 <li><p><strong>minratio</strong> (<em>double</em><em>, </em><em>default: 2.0</em>) – <p>Maximum allowable radius-edge ratio.  Must be greater than
 1.0 the closer to 1.0, the higher the quality of the mesh.
 Be sure to raise <code class="docutils literal notranslate"><span class="pre">steinerleft</span></code> to allow for the addition of
-points to improve the quality of the mesh.  Avoid overly
+points to improve the quality of the mesh. Avoid overly
 restrictive requirements, otherwise, meshing will appear
 to hang.</p>
 <p>Testing has showed that 1.1 is a reasonable input for a
 high quality mesh.</p>
 </p></li>
-<li><p><strong>mindihedral</strong> (<em>double</em><em>, </em><em>default: 0.0</em>) – <p>Minimum allowable dihedral angle.  The larger this number,
-the higher the quality of the resulting mesh.  Be sure to
+<li><p><strong>mindihedral</strong> (<em>double</em><em>, </em><em>default: 0.0</em>) – <p>Minimum allowable dihedral angle. The larger this number,
+the higher the quality of the resulting mesh. Be sure to
 raise <code class="docutils literal notranslate"><span class="pre">steinerleft</span></code> to allow for the addition of points to
-improve the quality of the mesh.  Avoid overly restrictive
+improve the quality of the mesh. Avoid overly restrictive
 requirements, otherwise, meshing will appear to hang.</p>
 <p>Testing has shown that 10 is a reasonable input</p>
 </p></li>
 <li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>default: 0</em>) – Controls the underlying TetGen library to output text to
-console.  Users using iPython will not see this output.
+console. Users using iPython will not see this output.
 Setting to 1 enables some information about the mesh
 generation while setting verbose to 2 enables more debug
-output.  Default is no output</p></li>
+output. Default is no output</p></li>
 <li><p><strong>nobisect</strong> (<em>bool</em><em>, </em><em>default: False</em>) – <p>Controls if Steiner points are added to the input surface
-mesh.  When enabled, the surface mesh will be modified.</p>
+mesh. When enabled, the surface mesh will be modified.</p>
 <p>Testing has shown that if your input surface mesh is
 already well shaped, disabling this setting will improve
 meshing speed and mesh quality.</p>
 </p></li>
 <li><p><strong>steinerleft</strong> (<em>int</em><em>, </em><em>default: 100000</em>) – <p>Steiner points are points added to the original surface
-mesh to create a valid tetrahedral mesh.  Settings this to
+mesh to create a valid tetrahedral mesh. Settings this to
 -1 will allow tetgen to create an unlimited number of
 steiner points, but the program will likely hang if this
 is used in combination with narrow quality requirements.</p>
@@ -589,7 +613,7 @@ improve the mesh quality or to conform the size of mesh
 elements.</p>
 </p></li>
 <li><p><strong>order</strong> (<em>int</em><em>, </em><em>default: 2</em>) – Controls whether TetGen creates linear tetrahedrals or
-quadradic tetrahedrals.  Set order to 2 to output
+quadradic tetrahedrals. Set order to 2 to output
 quadradic tetrahedrals.</p></li>
 <li><p><strong>bgmeshfilename</strong> (<em>str</em><em>, </em><em>optional</em>) – Filename of the background mesh.</p></li>
 <li><p><strong>bgmesh</strong> (<em>pv.UnstructuredGrid</em>) – Background mesh to be processed. Must be composed of only linear
@@ -1122,14 +1146,14 @@ and python optional inputs:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – <p>Filename of grid to be written.  The file extension will
+<li><p><strong>filename</strong> (<em>str</em>) – <p>Filename of grid to be written. The file extension will
 select the type of writer to use.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;.vtk&quot;</span></code> will use the vtk legacy writer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;.vtu&quot;</span></code> will select the VTK XML writer</p></li>
 </ul>
 </p></li>
-<li><p><strong>binary</strong> (<em>bool</em><em>, </em><em>default: False</em>) – Writes as a binary file by default.  Set to <code class="docutils literal notranslate"><span class="pre">False</span></code> to write
+<li><p><strong>binary</strong> (<em>bool</em><em>, </em><em>default: False</em>) – Writes as a binary file by default. Set to <code class="docutils literal notranslate"><span class="pre">False</span></code> to write
 ASCII.</p></li>
 </ul>
 </dd>
@@ -1162,7 +1186,8 @@ to convert to other formats in order to import into FEA software.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
   <div class="sidebar-secondary-item">
@@ -1174,6 +1199,7 @@ to convert to other formats in order to import into FEA software.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen"><code class="docutils literal notranslate"><span class="pre">TetGen</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.add_region"><code class="docutils literal notranslate"><span class="pre">TetGen.add_region()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.grid"><code class="docutils literal notranslate"><span class="pre">TetGen.grid</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.make_manifold"><code class="docutils literal notranslate"><span class="pre">TetGen.make_manifold()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.mesh"><code class="docutils literal notranslate"><span class="pre">TetGen.mesh</span></code></a></li>
@@ -1186,13 +1212,13 @@ to convert to other formats in order to import into FEA software.</p>
   </nav></div>
 
   <div class="sidebar-secondary-item">
-
-  <div class="tocsection sourcelink">
-    <a href="_sources/api.rst.txt">
-      <i class="fa-solid fa-file-lines"></i> Show Source
-    </a>
-  </div>
-</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
 
 </div></div>
               
@@ -1207,8 +1233,8 @@ to convert to other formats in order to import into FEA software.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1219,7 +1245,7 @@ to convert to other formats in order to import into FEA software.</p>
 
   <p class="copyright">
     
-      © Copyright 2017-2024, The PyVista Developers.
+      © Copyright 2017-2025, The PyVista Developers.
       <br/>
     
   </p>
@@ -1241,7 +1267,8 @@ to convert to other formats in order to import into FEA software.</p>
       
         <div class="footer-item">
 <p class="theme-version">
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.4.
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
 </p></div>
       
     </div>
