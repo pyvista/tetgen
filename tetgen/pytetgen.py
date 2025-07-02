@@ -749,7 +749,7 @@ class TetGen:
         # return with attributes if they exist
         if self.attributes is not None:
             return self.node, self.elem, self.attributes
-        
+
         return self.node, self.elem
 
     @property
