@@ -1,7 +1,4 @@
-import os
-
 import numpy as np
-import pytest
 import pyvista as pv
 import tetgen
 
