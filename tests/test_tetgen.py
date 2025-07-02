@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+import pytest
 import pyvista as pv
 import tetgen
 
@@ -12,6 +13,15 @@ def test_load_arrays():
     v = sphere.points
     f = sphere.faces.reshape(-1, 4)[:, 1:]
     tet = tetgen.TetGen(v, f)
+    assert np.allclose(tet.mesh.points, v)
+    assert np.allclose(tet.mesh.faces, sphere.faces)
+
+
+def test_raise_on_too_few_points():
+    points = np.array([[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]])
+    faces = np.array([[0, 1, 2]])
+    with pytest.raises(ValueError, match="The vertex array should contain"):
+        tetgen.TetGen(points, faces)
 
 
 def test_vtk_tetrahedralize():

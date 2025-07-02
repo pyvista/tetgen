@@ -1,6 +1,8 @@
 """Python module to interface with wrapped TetGen C++ code."""
+
 import ctypes
 import logging
+from pathlib import Path
 
 import numpy as np
 import pyvista as pv
@@ -80,11 +82,14 @@ class TetGen:
         self.f = None
         self.node = None
         self.elem = None
+        self.attributes = None
         self._grid = None
+
+        self.regions = {}
 
         def parse_mesh(mesh):
             if not mesh.is_all_triangles:
-                raise RuntimeError("Invalid mesh.  Must be an all triangular mesh")
+                raise RuntimeError("Invalid mesh. Must be an all triangular mesh")
 
             self.v = mesh.points
             faces = mesh.faces
@@ -96,7 +101,7 @@ class TetGen:
             parse_mesh(args[0])
         elif isinstance(args[0], (np.ndarray, list)):
             self._load_arrays(args[0], args[1])
-        elif isinstance(args[0], str):
+        elif isinstance(args[0], (str, Path)):
             mesh = pv.read(args[0])
             parse_mesh(mesh)
         else:
@@ -105,7 +110,7 @@ class TetGen:
     def _load_arrays(self, v, f):
         """Load triangular mesh from vertex and face arrays.
 
-        Face arrays/lists are v and f.  Both vertex and face arrays
+        Face arrays/lists are v and f. Both vertex and face arrays
         should be 2D arrays with each vertex containing XYZ data and
         each face containing three points.
         """
@@ -114,7 +119,7 @@ class TetGen:
             try:
                 v = np.asarray(v, np.float)
                 if v.ndim != 2 and v.shape[1] != 3:
-                    raise Exception("Invalid vertex format.  Shape should be (npoints, 3)")
+                    raise Exception("Invalid vertex format. Shape should be (npoints, 3)")
             except BaseException:
                 raise Exception("Unable to convert vertex input to valid numpy array")
 
@@ -122,13 +127,66 @@ class TetGen:
             try:
                 f = np.asarray(f, ctypes.c_int)
                 if f.ndim != 2 and f.shape[1] != 3:
-                    raise Exception("Invalid face format.  Shape should be (nfaces, 3)")
+                    raise Exception("Invalid face format. Shape should be (nfaces, 3)")
             except BaseException:
                 raise Exception("Unable to convert face input to valid numpy array")
+
+        if v.shape[0] < 4:
+            raise ValueError(
+                f"The vertex array should contain at least 4 points. Found {v.shape[0]}."
+            )
 
         # Store to self
         self.v = v
         self.f = f
+
+    def add_region(
+        self, id: int, point_in_region: tuple[float, float, float], max_vol: float = 0.0
+    ):
+        """Add a region to the mesh.
+
+        Parameters
+        ----------
+        id : int
+            Unique identifier for the region.
+        point_in_region : tuple, list, np.array of float
+            A single point inside the region, specified as (x, y, z).
+        max_vol : float, default: 0.0
+            Maximum volume for the region.
+
+        Examples
+        --------
+        Create a sphere in a cube in PyVista and mesh the region in the sphere
+        at a higher density.
+
+        >>> import pyvista as pv
+        >>> import tetgen
+        >>> cube = pv.Cube().triangulate()
+        >>> sphere = pv.Sphere(theta_resolution=16, phi_resolution=16, radius=0.25)
+        >>> mesh = pv.merge([sphere, cube])
+        >>> tgen = tetgen.TetGen(mesh)
+        >>> tgen.add_region(1, (0.0, 0.0, 0.0), 8e-6)  # sphere
+        >>> tgen.add_region(2, [0.99, 0.0, 0.0], 4e-4)  # cube
+        >>> nodes, elem, attrib = tgen.tetrahedralize(switches="pzq1.4Aa")
+        >>> grid = tgen.grid
+        >>> grid
+        UnstructuredGrid (0x7cc05412bb80)
+          N Cells:    23768
+          N Points:   3964
+          X Bounds:   -5.000e-01, 5.000e-01
+          Y Bounds:   -5.000e-01, 5.000e-01
+          Z Bounds:   -5.000e-01, 5.000e-01
+          N Arrays:   1
+
+        Supply the region info to the grid and then plot a slice through the
+        grid.
+
+        >>> grid["regions"] = attrib.ravel()
+        >>> grid.slice().plot(show_edges=True, cpos="zy")
+
+        """
+        point_in_region_arr = np.asarray(point_in_region, dtype=float)
+        self.regions[id] = (*point_in_region_arr, max_vol)
 
     def make_manifold(self, verbose=False):
         """Reconstruct a manifold clean surface from input mesh.
@@ -156,7 +214,7 @@ class TetGen:
         try:
             import pymeshfix
         except ImportError:
-            raise ImportError("pymeshfix not installed.  Please run:\n" "pip install pymeshfix")
+            raise ImportError("pymeshfix not installed. Please run:\npip install pymeshfix")
 
         # Run meshfix
         meshfix = pymeshfix.MeshFix(self.v, self.f)
@@ -322,15 +380,15 @@ class TetGen:
         Parameters
         ----------
         quality : bool, optional
-            Enables/disables mesh improvement.  Enabled by default.
+            Enables/disables mesh improvement. Enabled by default.
             Disable this to speed up mesh generation while sacrificing
-            quality.  Default True.
+            quality. Default True.
 
         minratio : double, default: 2.0
             Maximum allowable radius-edge ratio.  Must be greater than
             1.0 the closer to 1.0, the higher the quality of the mesh.
             Be sure to raise ``steinerleft`` to allow for the addition of
-            points to improve the quality of the mesh.  Avoid overly
+            points to improve the quality of the mesh. Avoid overly
             restrictive requirements, otherwise, meshing will appear
             to hang.
 
@@ -338,24 +396,24 @@ class TetGen:
             high quality mesh.
 
         mindihedral : double, default: 0.0
-            Minimum allowable dihedral angle.  The larger this number,
-            the higher the quality of the resulting mesh.  Be sure to
+            Minimum allowable dihedral angle. The larger this number,
+            the higher the quality of the resulting mesh. Be sure to
             raise ``steinerleft`` to allow for the addition of points to
-            improve the quality of the mesh.  Avoid overly restrictive
+            improve the quality of the mesh. Avoid overly restrictive
             requirements, otherwise, meshing will appear to hang.
 
             Testing has shown that 10 is a reasonable input
 
         verbose : int, default: 0
             Controls the underlying TetGen library to output text to
-            console.  Users using iPython will not see this output.
+            console. Users using iPython will not see this output.
             Setting to 1 enables some information about the mesh
             generation while setting verbose to 2 enables more debug
-            output.  Default is no output
+            output. Default is no output
 
         nobisect : bool, default: False
             Controls if Steiner points are added to the input surface
-            mesh.  When enabled, the surface mesh will be modified.
+            mesh. When enabled, the surface mesh will be modified.
 
             Testing has shown that if your input surface mesh is
             already well shaped, disabling this setting will improve
@@ -363,7 +421,7 @@ class TetGen:
 
         steinerleft : int, default: 100000
             Steiner points are points added to the original surface
-            mesh to create a valid tetrahedral mesh.  Settings this to
+            mesh to create a valid tetrahedral mesh. Settings this to
             -1 will allow tetgen to create an unlimited number of
             steiner points, but the program will likely hang if this
             is used in combination with narrow quality requirements.
@@ -381,7 +439,7 @@ class TetGen:
 
         order : int, default: 2
             Controls whether TetGen creates linear tetrahedrals or
-            quadradic tetrahedrals.  Set order to 2 to output
+            quadradic tetrahedrals. Set order to 2 to output
             quadradic tetrahedrals.
 
         bgmeshfilename : str, optional
@@ -604,10 +662,15 @@ class TetGen:
         # Call library
         plc = True  # always true
 
+        # Convert regions to the format expected by TetGen
+        # regions should be a list of lists, each containing [x, y, z, id, maxVol]
+        regions = [[*values[0:3], id, values[3]] for id, values in self.regions.items()]
+
         try:
-            self.node, self.elem = _tetgen.Tetrahedralize(
+            self.node, self.elem, self.attributes = _tetgen.Tetrahedralize(
                 self.v,
                 self.f,
+                regions,
                 switches_str,
                 plc,
                 psc,
@@ -710,9 +773,15 @@ class TetGen:
 
         # Return nodes and elements
         LOG.info(
-            "Generated mesh with %d nodes and %d elements", self.node.shape[0], self.elem.shape[0]
+            "Generated mesh with %d nodes and %d elements",
+            self.node.shape[0],
+            self.elem.shape[0],
         )
         self._updated = True
+
+        # return with attributes if they exist
+        if self.attributes is not None:
+            return self.node, self.elem, self.attributes
 
         return self.node, self.elem
 
@@ -748,14 +817,14 @@ class TetGen:
         Parameters
         ----------
         filename : str
-            Filename of grid to be written.  The file extension will
+            Filename of grid to be written. The file extension will
             select the type of writer to use.
 
             - ``".vtk"`` will use the vtk legacy writer
             - ``".vtu"`` will select the VTK XML writer
 
         binary : bool, default: False
-            Writes as a binary file by default.  Set to ``False`` to write
+            Writes as a binary file by default. Set to ``False`` to write
             ASCII.
 
         Examples

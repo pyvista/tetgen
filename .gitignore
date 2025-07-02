@@ -31,10 +31,13 @@ TODO
 test.sh
 .pytest_cache/
 
+# docs
 doc/errors.txt
 doc/_build
 doc/examples
-
+doc/sg_execution_times.rst
+examples/tetgen-tmpfile_skipped.face
+examples/tetgen-tmpfile_skipped.node
 
 # MISC
 .mypy_cache
