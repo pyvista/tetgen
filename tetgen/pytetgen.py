@@ -748,7 +748,11 @@ class TetGen:
         )
         self._updated = True
 
-        return self.node, self.elem, self.attributes
+        # return with attributes if they exist
+        if self.attributes is not None:
+            return self.node, self.elem, self.attributes
+        
+        return self.node, self.elem
 
     @property
     def grid(self):
