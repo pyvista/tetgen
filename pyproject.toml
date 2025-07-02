@@ -2,7 +2,7 @@
 requires = [
     "setuptools>=42",
     "wheel>=0.33.0",
-    "cython>=3.0.0",
+    "cython>=3.0.0,<=3.1.2",
     "numpy>=2,<3",
 ]
 
@@ -18,7 +18,7 @@ filterwarnings = [
 
 [tool.cibuildwheel]
 archs = ["auto64"]  # 64-bit only
-skip = "pp* *musllinux* cp37-* cp38-* cp313-*"  # Build CPython 3.9 - 3.12
+skip = "pp* *musllinux* cp38-* cp314-*"  # Build CPython 3.9 - 3.13
 before-test = "pip install -r requirements_test.txt"
 test-command = "pytest {project}/tests"
 
