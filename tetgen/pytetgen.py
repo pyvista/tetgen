@@ -200,7 +200,7 @@ class TetGen:
         Examples
         --------
         Create a sphere as a hole in a cube in PyVista
-                
+
         >>> import pyvista as pv
         >>> import tetgen
         >>> cube = pv.Cube().triangulate()
@@ -218,7 +218,7 @@ class TetGen:
         Y Bounds:   -5.000e-01, 5.000e-01
         Z Bounds:   -5.000e-01, 5.000e-01
         N Arrays:   0
-        >>> grid.slice(normal='z').plot(show_edges=True, cpos="xy")
+        >>> grid.slice(normal="z").plot(show_edges=True, cpos="xy")
 
         """
         point_in_hole_arr = np.asarray(point_in_hole, dtype=float)
