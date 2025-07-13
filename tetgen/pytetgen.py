@@ -202,7 +202,26 @@ class TetGen:
 
         Examples
         --------
-
+        Create a sphere as a hole in a cube in PyVista
+                
+        >>> import pyvista as pv
+        >>> import tetgen
+        >>> cube = pv.Cube().triangulate()
+        >>> sphere = pv.Sphere(theta_resolution=16, phi_resolution=16, radius=0.25)
+        >>> mesh = pv.merge([sphere, cube])
+        >>> tgen = tetgen.TetGen(mesh)
+        >>> tgen.add_hole([0.0, 0.0, 0.0])
+        >>> nodes, elem = tgen.tetrahedralize(switches="pzq1.4")
+        >>> grid = tgen.grid
+        >>> grid
+        UnstructuredGrid (0x28233f6d420)
+        N Cells:    3533
+        N Points:   781
+        X Bounds:   -5.000e-01, 5.000e-01
+        Y Bounds:   -5.000e-01, 5.000e-01
+        Z Bounds:   -5.000e-01, 5.000e-01
+        N Arrays:   0
+        >>> grid.slice(normal='z').plot(show_edges=True, cpos="xy")
 
         """
         point_in_hole_arr = np.asarray(point_in_hole, dtype=float)
