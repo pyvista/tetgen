@@ -16,11 +16,10 @@ mesh = pv.merge([cube, sphere1, sphere2])
 tgen = tetgen.TetGen(mesh)
 
 # add the center of the spheres as holes
-tgen.add_hole([-0.5, 0.0, 0.0]) 
-tgen.add_hole([0.5, 0.0, 0.0]) 
+tgen.add_hole([-0.5, 0.0, 0.0])
+tgen.add_hole([0.5, 0.0, 0.0])
 
 nodes, elem = tgen.tetrahedralize(switches="pzq1.4")
 grid = tgen.grid
 
-grid.slice(normal='z').plot(show_edges=True, cpos="xy")
-        
+grid.slice(normal="z").plot(show_edges=True, cpos="xy")

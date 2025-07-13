@@ -189,10 +189,7 @@ class TetGen:
         point_in_region_arr = np.asarray(point_in_region, dtype=float)
         self.regions[id] = (*point_in_region_arr, max_vol)
 
-
-    def add_hole(
-        self, point_in_hole: tuple[float, float, float]
-    ):
+    def add_hole(self, point_in_hole: tuple[float, float, float]):
         """Add a hole to the mesh.
 
         Parameters
@@ -226,7 +223,7 @@ class TetGen:
         """
         point_in_hole_arr = np.asarray(point_in_hole, dtype=float)
         self.holes.append(point_in_hole_arr)
-        
+
     def make_manifold(self, verbose=False):
         """Reconstruct a manifold clean surface from input mesh.
 
