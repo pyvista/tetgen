@@ -15,6 +15,7 @@ class tetgenio_wrap : public tetgenio
         void LoadMTRArray(int, double*, int, int*, double*);
         bool LoadTetMesh(char*, int);
         void LoadRegions(int nregions, double* regions);
+        void LoadHoles(int nholes, double* holes);
 
         //destructor
 //        ~myRectangle();
