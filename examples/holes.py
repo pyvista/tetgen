@@ -28,4 +28,4 @@ nodes, elem = tgen.tetrahedralize(switches="pzq1.4")
 grid = tgen.grid
 
 # plot a slice to see the holes
-grid.slice(normal="z").plot(show_edges=True, cpos="xy")
+grid.clip(normal="z").plot(show_edges=True)
