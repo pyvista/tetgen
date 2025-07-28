@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>tetgen &#8212; tetgen 0.6.6 documentation</title>
+    <title>tetgen &#8212; tetgen 0.6.7 documentation</title>
   
   
   
@@ -57,7 +57,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.6" />
+  <meta name="docsearch:version" content="0.6.7" />
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
@@ -129,8 +129,8 @@
       
     
     
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.6.6 documentation - Home"/>
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.6.6 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.6.7 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.6.7 documentation - Home"/>
   
   
 </a></div>
@@ -436,7 +436,7 @@ the mesh quality.</p>
 <p>Here is the cell quality as computed according to the minimum scaled jacobian.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Compute</span> <span class="n">cell</span> <span class="n">quality</span>
 
-<span class="o">&gt;&gt;&gt;</span> <span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">compute_cell_quality</span><span class="p">()[</span><span class="s1">&#39;CellQuality&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">cell_quality</span><span class="p">()[</span><span class="s1">&#39;scaled_jacobian&#39;</span><span class="p">]</span>
 
 <span class="n">Plot</span> <span class="n">quality</span>
 

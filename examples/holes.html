@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Super Toroid &#8212; tetgen 0.6.7 documentation</title>
+    <title>Holes &#8212; tetgen 0.6.7 documentation</title>
   
   
   
@@ -50,11 +50,11 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/super_toroid';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/holes';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API Reference" href="../api.html" />
-    <link rel="prev" title="Using external modules to create a mesh" href="sphere.html" />
+    <link rel="next" title="Regions" href="regions.html" />
+    <link rel="prev" title="Cow" href="cow.html" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -320,12 +320,12 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="cow.html">Cow</a></li>
-<li class="toctree-l1"><a class="reference internal" href="holes.html">Holes</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Holes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="regions.html">Regions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphere.html">Using external modules to create a mesh</a></li>
 
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Super Toroid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="super_toroid.html">Super Toroid</a></li>
 </ul>
 </div>
 </nav></div>
@@ -369,7 +369,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Examples</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Super Toroid</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Holes</span></li>
   </ul>
 </nav>
 </div>
@@ -388,66 +388,47 @@
                   
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#sphx-glr-download-examples-super-toroid-py"><span class="std std-ref">Go to the end</span></a>
+<p><a class="reference internal" href="#sphx-glr-download-examples-holes-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="super-toroid">
-<span id="sphx-glr-examples-super-toroid-py"></span><h1>Super Toroid<a class="headerlink" href="#super-toroid" title="Permalink to this heading">#</a></h1>
-<p>Tetrahedralize a super toroid surface.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 2</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+<section class="sphx-glr-example-title" id="holes">
+<span id="sphx-glr-examples-holes-py"></span><h1>Holes<a class="headerlink" href="#holes" title="Permalink to this heading">#</a></h1>
+<p>Example of using TetGen to create a tetrahedral mesh with holes.</p>
+<img src="../_images/sphx_glr_holes_001.png" srcset="../_images/sphx_glr_holes_001.png" alt="holes" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
-</pre></div>
-</div>
-<p>Create and tetrahedralize a super torid.</p>
-<p>We merge the points here to make sure that the surface is manifold.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">toroid</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">ParametricSuperToroid</span><span class="p">(</span><span class="n">u_res</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">v_res</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">w_res</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
-<span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">toroid</span><span class="p">)</span>
-<span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mindihedral</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">minratio</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
-<span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
-</pre></div>
-</div>
-<img src="../_images/sphx_glr_super_toroid_001.png" srcset="../_images/sphx_glr_super_toroid_001.png" alt="super toroid" class = "sphx-glr-single-img"/><p>Plot the tessellated mesh.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get cell centroids</span>
-<span class="n">cells</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">:]</span>
-<span class="n">cell_center</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">cells</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># extract cells below the 0 xy plane</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">cell_center</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span>
-<span class="n">cell_ind</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">subgrid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">extract_cells</span><span class="p">(</span><span class="n">cell_ind</span><span class="p">)</span>
+<span class="c1"># create a cube with two spheres inside it</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Cube</span><span class="p">(</span><span class="n">x_length</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">triangulate</span><span class="p">()</span>
+<span class="n">sphere1</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">theta_resolution</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">sphere2</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">theta_resolution</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
-<span class="c1"># advanced plotting</span>
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">subgrid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;lightgrey&quot;</span><span class="p">,</span> <span class="n">lighting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">toroid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;wireframe&quot;</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">add_legend</span><span class="p">([[</span><span class="s2">&quot; Input Mesh &quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot; Tessellated Mesh &quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="p">]])</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># merge the geometries</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">merge</span><span class="p">([</span><span class="n">cube</span><span class="p">,</span> <span class="n">sphere1</span><span class="p">,</span> <span class="n">sphere2</span><span class="p">])</span>
+
+<span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
+
+<span class="c1"># add the center of the spheres as holes</span>
+<span class="n">tgen</span><span class="o">.</span><span class="n">add_hole</span><span class="p">([</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="n">tgen</span><span class="o">.</span><span class="n">add_hole</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+
+<span class="c1"># tetrahedralize the mesh using TetGen</span>
+<span class="n">nodes</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pzq1.4&quot;</span><span class="p">)</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">grid</span>
+
+<span class="c1"># plot a slice to see the holes</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">normal</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_super_toroid_002.png" srcset="../_images/sphx_glr_super_toroid_002.png" alt="super toroid" class = "sphx-glr-single-img"/><p>Show the cell quality</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">cell_quality</span><span class="p">()[</span><span class="s2">&quot;scaled_jacobian&quot;</span><span class="p">]</span>
-<span class="n">subgrid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="n">scalars</span><span class="o">=</span><span class="n">cell_qual</span><span class="p">,</span>
-    <span class="n">scalar_bar_args</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="s2">&quot;Cell Quality&quot;</span><span class="p">},</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;bwr&quot;</span><span class="p">,</span>
-    <span class="n">clim</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">flip_scalars</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-<img src="../_images/sphx_glr_super_toroid_003.png" srcset="../_images/sphx_glr_super_toroid_003.png" alt="super toroid" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.873 seconds)</p>
-<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-super-toroid-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.756 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-holes-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/780a3618cd1653085901502b97a4079b/super_toroid.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">super_toroid.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/f5bced0046a856ebe0fb3192c8938ce1/holes.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">holes.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/3267e74c35bd22f4d7d3f4cbd53c2ebf/super_toroid.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">super_toroid.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/8364993bc5839b4bd813fb8b1749dca0/holes.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">holes.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-zip docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/b6d82989c5b90b8386ec60de60e684c8/super_toroid.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">super_toroid.zip</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/01089eeeb39170cf1738b479c167f933/holes.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">holes.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -472,7 +453,7 @@ to download the full example code.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/examples/super_toroid.rst.txt"
+      <li><a href="../_sources/examples/holes.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

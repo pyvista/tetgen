@@ -114,7 +114,7 @@ jacobian of each cell.
 .. code-block:: Python
 
 
-    cell_qual = subgrid.compute_cell_quality()["CellQuality"]
+    cell_qual = subgrid.cell_quality()["scaled_jacobian"]
     print(f"Mean cell quality: {cell_qual.mean():.3}")
 
     # plot quality
@@ -141,9 +141,6 @@ jacobian of each cell.
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/pyvista/core/filters/data_set.py:5393: PyVistaDeprecationWarning: This filter is deprecated. Use `cell_quality` instead. Note that this
-    new filter does not include an array named ``'CellQuality'`
-      warnings.warn(msg, PyVistaDeprecationWarning)
     Mean cell quality: 0.616
 
 
@@ -245,7 +242,7 @@ Plot the cross section of the tetrahedralization
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.214 seconds)
+   **Total running time of the script:** (0 minutes 4.424 seconds)
 
 
 .. _sphx_glr_download_examples_sphere.py:
