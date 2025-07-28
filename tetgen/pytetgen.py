@@ -86,6 +86,7 @@ class TetGen:
         self._grid = None
 
         self.regions = {}
+        self.holes = []
 
         def parse_mesh(mesh):
             if not mesh.is_all_triangles:
@@ -187,6 +188,41 @@ class TetGen:
         """
         point_in_region_arr = np.asarray(point_in_region, dtype=float)
         self.regions[id] = (*point_in_region_arr, max_vol)
+
+    def add_hole(self, point_in_hole: tuple[float, float, float]):
+        """Add a hole to the mesh.
+
+        Parameters
+        ----------
+        point_in_hole : tuple, list, np.array of float
+            A single point inside the hole, specified as (x, y, z).
+
+        Examples
+        --------
+        Create a sphere as a hole in a cube in PyVista
+
+        >>> import pyvista as pv
+        >>> import tetgen
+        >>> cube = pv.Cube().triangulate()
+        >>> sphere = pv.Sphere(theta_resolution=16, phi_resolution=16, radius=0.25)
+        >>> mesh = pv.merge([sphere, cube])
+        >>> tgen = tetgen.TetGen(mesh)
+        >>> tgen.add_hole([0.0, 0.0, 0.0])
+        >>> nodes, elem = tgen.tetrahedralize(switches="pzq1.4")
+        >>> grid = tgen.grid
+        >>> grid
+        UnstructuredGrid (0x28233f6d420)
+        N Cells:    3533
+        N Points:   781
+        X Bounds:   -5.000e-01, 5.000e-01
+        Y Bounds:   -5.000e-01, 5.000e-01
+        Z Bounds:   -5.000e-01, 5.000e-01
+        N Arrays:   0
+        >>> grid.slice(normal="z").plot(show_edges=True, cpos="xy")
+
+        """
+        point_in_hole_arr = np.asarray(point_in_hole, dtype=float)
+        self.holes.append(point_in_hole_arr)
 
     def make_manifold(self, verbose=False):
         """Reconstruct a manifold clean surface from input mesh.
@@ -671,6 +707,7 @@ class TetGen:
                 self.v,
                 self.f,
                 regions,
+                self.holes,
                 switches_str,
                 plc,
                 psc,
