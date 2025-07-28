@@ -19,6 +19,19 @@ void tetgenio_wrap::LoadRegions(int nregions, double* regions)
   }
 }
 
+void tetgenio_wrap::LoadHoles(int nholes, double* holes)
+{
+  int i;
+
+  // Allocate memory for holes and store them
+  numberofholes = nholes;
+  holelist = new double[nholes*3];
+
+  for(i = 0; i < nholes*3; i++) {
+    holelist[i] = holes[i];
+  }
+}
+
 void tetgenio_wrap::LoadArray(int npoints, double* points, int nfaces,
                              int* facearr)
 {

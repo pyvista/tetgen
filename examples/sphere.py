@@ -42,7 +42,7 @@ plotter.show()
 # Use pyvista to compute cell quality.  This is the minimum scaled
 # jacobian of each cell.
 
-cell_qual = subgrid.compute_cell_quality()["CellQuality"]
+cell_qual = subgrid.cell_quality()["scaled_jacobian"]
 print(f"Mean cell quality: {cell_qual.mean():.3}")
 
 # plot quality
