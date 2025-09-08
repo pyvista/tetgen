@@ -34,8 +34,22 @@ cdef extern from "tetgen_wrap.h":
         double *tetrahedronattributelist;
         int numberoftetrahedronattributes;
 
+        # Triangle face arrays
+        int* trifacelist
+        int numberoftrifaces
+        int* trifacemarkerlist
+
+        # Face to tet connectivity (2 ints per face)
+        int* face2tetlist
+
+        # Edge arrays
+        int numberofedges
+        int* edgelist
+        int* edgemarkerlist
+
         # Loads Arrays directly to tetgenio object
         void LoadArray(int, double*, int, int*)
+        void LoadArrayWithMarkers(int, double*, int, int*, int*)
         # Loads MTR Arrays directly to tetgenio object
         void LoadMTRArray(int, double*, int, int*, double*)
         # Loads tetmesh from file
@@ -198,6 +212,93 @@ cdef class PyTetgenio:
 
         return np.asarray(attrib).astype(int).reshape((-1, self.c_tetio.numberoftetrahedronattributes))
 
+    def ReturnTriFaceMarkers(self):
+        """ Returns triangular face markers from tetgen """
+
+        # Create python copy of trifacemarkerlist array
+        cdef int nfaces = self.c_tetio.numberoftrifaces
+        cdef int [::1] markers = np.empty(nfaces, ctypes.c_int)
+
+        cdef int i
+        for i in range(nfaces):
+            markers[i] = self.c_tetio.trifacemarkerlist[i]
+
+        return np.asarray(markers)
+
+    def ReturnTriFaces(self):
+        """Returns triangular face connectivity (N x 3)."""
+
+        cdef int nfaces = self.c_tetio.numberoftrifaces
+        if nfaces <= 0:
+            return None
+
+        cdef int [::1] faces = np.empty(nfaces * 3, ctypes.c_int)
+        cdef int i
+        for i in range(nfaces * 3):
+            faces[i] = self.c_tetio.trifacelist[i]
+
+        npfaces = np.asarray(faces).reshape((-1, 3))
+        # Normalize to 0-based indexing if TetGen returned 1-based
+        if npfaces.size > 0:
+            npts = self.c_tetio.numberofpoints
+            if npfaces.max() >= npts:  # 1-based indices reach npts
+                npfaces = npfaces - 1
+        return npfaces
+
+    def ReturnFace2Tet(self):
+        """Returns face-to-tetrahedra mapping (N x 2)."""
+
+        cdef int nfaces = self.c_tetio.numberoftrifaces
+        if nfaces <= 0 or self.c_tetio.face2tetlist == NULL:
+            return None
+
+        cdef int [::1] f2t = np.empty(nfaces * 2, ctypes.c_int)
+        cdef int i
+        for i in range(nfaces * 2):
+            f2t[i] = self.c_tetio.face2tetlist[i]
+
+        npf2t = np.asarray(f2t).reshape((-1, 2))
+        # Keep -1 as boundary; if 1-based, values > numberoftetrahedra need -1 shift
+        if npf2t.size > 0:
+            nt = self.c_tetio.numberoftetrahedra
+            if npf2t.max() > nt - 1:
+                # subtract 1 only for positive entries
+                npf2t = np.where(npf2t >= 1, npf2t - 1, npf2t)
+        return npf2t
+
+    def ReturnEdges(self):
+        """Returns edge connectivity (E x 2)."""
+
+        cdef int nedges = self.c_tetio.numberofedges
+        if nedges <= 0:
+            return None
+
+        cdef int [::1] edges = np.empty(nedges * 2, ctypes.c_int)
+        cdef int i
+        for i in range(nedges * 2):
+            edges[i] = self.c_tetio.edgelist[i]
+
+        npedges = np.asarray(edges).reshape((-1, 2))
+        if npedges.size > 0:
+            npts = self.c_tetio.numberofpoints
+            if npedges.max() >= npts:
+                npedges = npedges - 1
+        return npedges
+
+    def ReturnEdgeMarkers(self):
+        """Returns edge markers (E,)."""
+
+        cdef int nedges = self.c_tetio.numberofedges
+        if nedges <= 0 or self.c_tetio.edgemarkerlist == NULL:
+            return None
+
+        cdef int [::1] markers = np.empty(nedges, ctypes.c_int)
+        cdef int i
+        for i in range(nedges):
+            markers[i] = self.c_tetio.edgemarkerlist[i]
+
+        return np.asarray(markers)
+
     def ReturnTetrahedrals(self, order):
         """ Returns tetrahedrals from tetgen """
 
@@ -246,6 +347,12 @@ cdef class PyTetgenio:
         nfaces = faces.size/3
         self.c_tetio.LoadArray(npoints, &points[0], nfaces, &faces[0])
 
+    def LoadMeshWithMarkers(self, double [::1] points, int [::1] faces, int [::1] markers):
+        """ Loads points, faces and per-face markers into TetGen """
+        npoints = points.size/3
+        nfaces = faces.size/3
+        self.c_tetio.LoadArrayWithMarkers(npoints, &points[0], nfaces, &faces[0], &markers[0])
+
     def LoadRegions(self, double [::1] regions):
         nregions = regions.size / 5
         self.c_tetio.LoadRegions(nregions, &regions[0])
@@ -269,6 +376,7 @@ cdef class PyTetgenio:
 def Tetrahedralize(
         v,
         f,
+        fmarkers=None,
         regions=None,
         holes=None,
         switches='',
@@ -361,6 +469,8 @@ def Tetrahedralize(
         bgmesh_v=None,
         bgmesh_tet=None,
         bgmesh_mtr=None,
+        return_surface_data=False,
+        return_edge_data=False,
     ):
 
     """Tetgen function to interface with TetGen C++ program."""
@@ -398,7 +508,11 @@ def Tetrahedralize(
 
     # Create input class
     tetgenio_in = PyTetgenio()
-    tetgenio_in.LoadMesh(v.ravel(), f.ravel())
+    if fmarkers is not None:
+        fmarkers = cast_to_cint(fmarkers)
+        tetgenio_in.LoadMeshWithMarkers(v.ravel(), f.ravel(), fmarkers.ravel())
+    else:
+        tetgenio_in.LoadMesh(v.ravel(), f.ravel())
 
     if regions is not None:
         tetgenio_in.LoadRegions(regions.ravel())
@@ -416,6 +530,12 @@ def Tetrahedralize(
         tetgenio_bg.LoadTetMesh(bgmeshfilename_c, <int>objecttype.NODES)
 
     if switches:
+        # Ensure faces/edges are requested if user wants surface/edge data
+        if return_surface_data and (b'f' not in switches):
+            switches = switches + b'f'
+        if return_edge_data and (b'e' not in switches):
+            switches = switches + b'e'
+        cstring = switches
         tetrahedralize_with_switches(cstring, &tetgenio_in.c_tetio, &tetgenio_out.c_tetio, NULL, &tetgenio_bg.c_tetio)
         if b'o2' in switches:
             order = 2
@@ -454,8 +574,9 @@ def Tetrahedralize(
         behavior.c_behavior.noexact = noexact
         behavior.c_behavior.nostaticfilter = nostaticfilter
         behavior.c_behavior.zeroindex = zeroindex
-        behavior.c_behavior.facesout = facesout
-        behavior.c_behavior.edgesout = edgesout
+        # Force faces/edges output if requested
+        behavior.c_behavior.facesout = 1 if return_surface_data or facesout else facesout
+        behavior.c_behavior.edgesout = 1 if return_edge_data or edgesout else edgesout
         behavior.c_behavior.neighout = neighout
         behavior.c_behavior.voroout = voroout
         behavior.c_behavior.meditview = meditview
@@ -522,5 +643,13 @@ def Tetrahedralize(
     nodes = tetgenio_out.ReturnNodes()
     tets = tetgenio_out.ReturnTetrahedrals(order)
     attributes = tetgenio_out.ReturnTetrahedronAttributes()
+    triface_markers = tetgenio_out.ReturnTriFaceMarkers()
 
-    return nodes, tets, attributes
+    if return_surface_data or return_edge_data:
+        trifaces = tetgenio_out.ReturnTriFaces()
+        face2tet = tetgenio_out.ReturnFace2Tet()
+        edges = tetgenio_out.ReturnEdges() if return_edge_data else None
+        edgemarkers = tetgenio_out.ReturnEdgeMarkers() if return_edge_data else None
+        return nodes, tets, attributes, triface_markers, trifaces, face2tet, edges, edgemarkers
+
+    return nodes, tets, attributes, triface_markers

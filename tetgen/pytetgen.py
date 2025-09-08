@@ -83,6 +83,11 @@ class TetGen:
         self.node = None
         self.elem = None
         self.attributes = None
+        self.triface_markers = None
+        self.trifaces = None
+        self.face2tet = None
+        self.edgelist = None
+        self.edgemarkers = None
         self._grid = None
 
         self.regions = {}
@@ -101,14 +106,17 @@ class TetGen:
         elif isinstance(args[0], pv.PolyData):
             parse_mesh(args[0])
         elif isinstance(args[0], (np.ndarray, list)):
-            self._load_arrays(args[0], args[1])
+            if len(args) >= 3:
+                self._load_arrays(args[0], args[1], args[2])
+            else:
+                self._load_arrays(args[0], args[1])
         elif isinstance(args[0], (str, Path)):
             mesh = pv.read(args[0])
             parse_mesh(mesh)
         else:
             raise invalid_input
 
-    def _load_arrays(self, v, f):
+    def _load_arrays(self, v, f, fmarkers=None):
         """Load triangular mesh from vertex and face arrays.
 
         Face arrays/lists are v and f. Both vertex and face arrays
@@ -137,9 +145,16 @@ class TetGen:
                 f"The vertex array should contain at least 4 points. Found {v.shape[0]}."
             )
 
+        # Optional face markers
+        if fmarkers is not None:
+            fmarkers = np.asarray(fmarkers, dtype=ctypes.c_int)
+            if fmarkers.ndim != 1 or fmarkers.shape[0] != f.shape[0]:
+                raise Exception("Invalid face marker format. Shape should be (nfaces,)")
+
         # Store to self
         self.v = v
         self.f = f
+        self.fmarkers = fmarkers
 
     def add_region(
         self, id: int, point_in_region: tuple[float, float, float], max_vol: float = 0.0
@@ -703,9 +718,10 @@ class TetGen:
         regions = [[*values[0:3], id, values[3]] for id, values in self.regions.items()]
 
         try:
-            self.node, self.elem, self.attributes = _tetgen.Tetrahedralize(
+            result = _tetgen.Tetrahedralize(
                 self.v,
                 self.f,
+                self.fmarkers if hasattr(self, 'fmarkers') else None,
                 regions,
                 self.holes,
                 switches_str,
@@ -794,6 +810,8 @@ class TetGen:
                 bgmesh_v,
                 bgmesh_tet,
                 bgmesh_mtr,
+                return_surface_data=True,
+                return_edge_data=True,
             )
         except RuntimeError as e:
             raise RuntimeError(
@@ -801,6 +819,27 @@ class TetGen:
                 + "May need to repair surface by making it manifold:\n"
                 + str(e)
             )
+
+        # Unpack results (backwards compatible)
+        if len(result) >= 8:
+            (self.node, self.elem, self.attributes, self.triface_markers,
+             self.trifaces, self.face2tet, self.edgelist, self.edgemarkers) = result
+            # Convenience aliases for downstream consumers (GUI expects these names)
+            self.points = self.node
+            self.faces = self.trifaces
+            self.triface_list = self.trifaces
+            self.f = self.trifaces
+            self.face_markers = self.triface_markers
+            self.trifacemarkers = self.triface_markers
+            self.facetmarkerlist = self.triface_markers
+            self.face_marker_list = self.triface_markers
+            self.shell_face_markers = self.triface_markers
+            # Edge aliases
+            self.edges = self.edgelist
+            self.edge_markers = self.edgemarkers
+        else:
+            self.node, self.elem, self.attributes, self.triface_markers = result
+            self.points = self.node
 
         # check if a mesh was generated
         if not np.any(self.node):
@@ -818,9 +857,9 @@ class TetGen:
 
         # return with attributes if they exist
         if self.attributes is not None:
-            return self.node, self.elem, self.attributes
+            return self.node, self.elem, self.attributes, self.triface_markers
 
-        return self.node, self.elem
+        return self.node, self.elem, None, self.triface_markers
 
     @property
     def grid(self):
