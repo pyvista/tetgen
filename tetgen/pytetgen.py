@@ -721,7 +721,7 @@ class TetGen:
             result = _tetgen.Tetrahedralize(
                 self.v,
                 self.f,
-                self.fmarkers if hasattr(self, 'fmarkers') else None,
+                self.fmarkers if hasattr(self, "fmarkers") else None,
                 regions,
                 self.holes,
                 switches_str,
@@ -822,8 +822,16 @@ class TetGen:
 
         # Unpack results (backwards compatible)
         if len(result) >= 8:
-            (self.node, self.elem, self.attributes, self.triface_markers,
-             self.trifaces, self.face2tet, self.edgelist, self.edgemarkers) = result
+            (
+                self.node,
+                self.elem,
+                self.attributes,
+                self.triface_markers,
+                self.trifaces,
+                self.face2tet,
+                self.edgelist,
+                self.edgemarkers,
+            ) = result
             # Convenience aliases for downstream consumers (GUI expects these names)
             self.points = self.node
             self.faces = self.trifaces

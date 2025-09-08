@@ -4,8 +4,9 @@ Test script to verify triface marker extraction from TetGen
 """
 
 import numpy as np
-import tetgen
 import pyvista as pv
+import tetgen
+
 
 def test_triface_extraction():
     """Test triface marker extraction"""
@@ -26,7 +27,9 @@ def test_triface_extraction():
     print(f"Nodes shape: {nodes.shape}")
     print(f"Elements shape: {elems.shape}")
     print(f"Attributes shape: {attributes.shape if attributes is not None else 'None'}")
-    print(f"Triface markers shape: {triface_markers.shape if triface_markers is not None else 'None'}")
+    print(
+        f"Triface markers shape: {triface_markers.shape if triface_markers is not None else 'None'}"
+    )
 
     if triface_markers is not None:
         print(f"Triface markers: {triface_markers}")
@@ -38,6 +41,7 @@ def test_triface_extraction():
         print(f"Internal faces: {np.sum(triface_markers > 0)}")
 
     return nodes, elems, attributes, triface_markers
+
 
 if __name__ == "__main__":
     test_triface_extraction()
