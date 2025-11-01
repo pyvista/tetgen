@@ -22,12 +22,12 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-14, macos-13]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.0.0
+        uses: pypa/cibuildwheel@v3.2.1
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: tetgen-wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
@@ -36,10 +36,10 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
 
@@ -55,7 +55,7 @@ jobs:
       - name: Run tests
         run: pytest
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: tetgen-sdist
           path: dist/*.tar.gz
@@ -73,7 +73,7 @@ jobs:
       id-token: write  # this permission is mandatory for trusted publishing
       contents: write  # required to create a release
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
       - name: Flatten directory structure
         run: |
           mkdir -p dist/
