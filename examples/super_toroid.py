@@ -44,7 +44,7 @@ plotter.show()
 ###############################################################################
 # Show the cell quality
 
-cell_qual = subgrid.compute_cell_quality()["CellQuality"]
+cell_qual = subgrid.cell_quality()["scaled_jacobian"]
 subgrid.plot(
     scalars=cell_qual,
     scalar_bar_args={"title": "Cell Quality"},

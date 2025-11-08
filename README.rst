@@ -113,7 +113,7 @@ Here is the cell quality as computed according to the minimum scaled jacobian.
 
    Compute cell quality
 
-   >>> cell_qual = subgrid.compute_cell_quality()['CellQuality']
+   >>> cell_qual = subgrid.cell_quality()['scaled_jacobian']
 
    Plot quality
 

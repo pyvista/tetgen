@@ -42,6 +42,8 @@ cdef extern from "tetgen_wrap.h":
         bint LoadTetMesh(char*, int)
         # Loads Regions directly to tetgenio object
         void LoadRegions(int, double*)
+        # Loads Holes directly to tetgenio object
+        void LoadHoles(int, double*)        
 
 cdef extern from "tetgen.h":
     cdef cppclass tetrahedralize:
@@ -248,6 +250,10 @@ cdef class PyTetgenio:
         nregions = regions.size / 5
         self.c_tetio.LoadRegions(nregions, &regions[0])
 
+    def LoadHoles(self, double [::1] holes):
+        nholes = holes.size / 3
+        self.c_tetio.LoadHoles(nholes, &holes[0])        
+
     def LoadMTRMesh(self, double [::1] points, int [::1] tets, double [::1] mtr):
         """ Loads points and tets into TetGen """
         npoints = points.size/3
@@ -264,6 +270,7 @@ def Tetrahedralize(
         v,
         f,
         regions=None,
+        holes=None,
         switches='',
 
         # Switches of TetGen
@@ -379,6 +386,9 @@ def Tetrahedralize(
     if regions is not None:
         regions = cast_to_cdouble(regions)
 
+    if holes is not None:
+        holes = cast_to_cdouble(holes)        
+
     if bgmesh_v is not None:
         bgmesh_v = cast_to_cdouble(bgmesh_v)
     if bgmesh_tet is not None:
@@ -392,6 +402,9 @@ def Tetrahedralize(
 
     if regions is not None:
         tetgenio_in.LoadRegions(regions.ravel())
+
+    if holes is not None:
+        tetgenio_in.LoadHoles(holes.ravel())
 
     # Create output class
     tetgenio_out = PyTetgenio()
