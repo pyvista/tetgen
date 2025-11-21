@@ -19,7 +19,7 @@ def test_tetrahedralize_regions():
     ret = tgen.tetrahedralize(switches="pzq1.4Aa")
 
     assert ret is not None
-    assert len(ret) == 3
+    assert len(ret) == 4
 
     attrib = ret[2]
 
