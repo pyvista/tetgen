@@ -55,6 +55,5 @@ def test_triface_with_surface_data():
     assert len(triface_markers) > 0, "Should have triface markers"
 
     # Verify the TetGen object has the surface data attributes
-    assert hasattr(tgen, 'triface_markers'), "TetGen object should have triface_markers attribute"
+    assert hasattr(tgen, "triface_markers"), "TetGen object should have triface_markers attribute"
     assert tgen.triface_markers is not None, "TetGen.triface_markers should not be None"
-
