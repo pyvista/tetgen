@@ -75,7 +75,7 @@ def test_numpy_tetrahedralize(tmpdir):
 
     tgen = tetgen.TetGen(v, f)
 
-    nodes, elems = tgen.tetrahedralize()
+    nodes, elems, _, _ = tgen.tetrahedralize()
     assert np.any(nodes)
     assert np.any(elems)
 
