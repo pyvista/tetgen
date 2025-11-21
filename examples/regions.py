@@ -44,7 +44,7 @@ tgen.add_region(200, [L / 2, 0, 0], V_sphere / 5000)  # sphere 2
 tgen.add_region(300, [L * 1.5, 0, 0], V_sphere / 100)  # airbox
 
 # tetrahedralize the mesh with specified switches
-nodes, elem, attrib = tgen.tetrahedralize(switches="pzq1.4Aa")
+nodes, elem, attrib, _ = tgen.tetrahedralize(switches="pzq1.4Aa")
 
 grid = tgen.grid
 
