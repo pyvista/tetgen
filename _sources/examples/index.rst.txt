@@ -1,7 +1,9 @@
 :orphan:
 
 Examples
---------
+========
+
+Here are several complex ``tetgen`` examples.
 
 
 
@@ -96,6 +98,23 @@ Examples
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the usage of several attributes of tetgen.TetGen.">
+
+.. only:: html
+
+  .. image:: /examples/images/thumb/sphx_glr_trifaces_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_examples_trifaces.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Face Markers and Surface Data</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -111,6 +130,7 @@ Examples
    /examples/regions
    /examples/sphere
    /examples/super_toroid
+   /examples/trifaces
 
 
 

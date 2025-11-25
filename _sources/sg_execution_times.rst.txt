@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:27.380** total execution time for 5 files **from all galleries**:
+**00:45.102** total execution time for 6 files **from all galleries**:
 
 .. container::
 
@@ -32,18 +32,21 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_examples_trifaces.py` (``../examples/trifaces.py``)
+     - 00:20.295
+     - 0.0
    * - :ref:`sphx_glr_examples_cow.py` (``../examples/cow.py``)
-     - 00:17.428
+     - 00:15.503
      - 0.0
    * - :ref:`sphx_glr_examples_sphere.py` (``../examples/sphere.py``)
-     - 00:04.424
+     - 00:04.351
      - 0.0
    * - :ref:`sphx_glr_examples_super_toroid.py` (``../examples/super_toroid.py``)
-     - 00:02.873
+     - 00:02.665
      - 0.0
    * - :ref:`sphx_glr_examples_regions.py` (``../examples/regions.py``)
-     - 00:01.898
+     - 00:01.552
      - 0.0
    * - :ref:`sphx_glr_examples_holes.py` (``../examples/holes.py``)
-     - 00:00.756
+     - 00:00.736
      - 0.0

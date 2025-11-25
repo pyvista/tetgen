@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>API Reference &#8212; tetgen 0.6.7 documentation</title>
+    <title>API Reference &#8212; tetgen 0.7.0 documentation</title>
   
   
   
@@ -53,11 +53,11 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Super Toroid" href="examples/super_toroid.html" />
+    <link rel="prev" title="Face Markers and Surface Data" href="examples/trifaces.html" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.7" />
+  <meta name="docsearch:version" content="0.7.0" />
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
@@ -129,8 +129,8 @@
       
     
     
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.6.7 documentation - Home"/>
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.6.7 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.7.0 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.7.0 documentation - Home"/>
   
   
 </a></div>
@@ -393,7 +393,7 @@ array.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pyvista</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">triface_markers</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -429,7 +429,7 @@ array.</p>
 <span class="gp">... </span>    <span class="p">]</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tgen</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elems</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span> <span class="n">elems</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">triface_markers</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -510,14 +510,115 @@ grid.</p>
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="tetgen.TetGen.edge_markers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edge_markers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">int32</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tetgen.TetGen.edge_markers" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">)</span></code> array of edge markers denoting if an edge is internal.</p>
+<p>Interior edges are 0 and exterior edges are -1.</p>
+<p>This attribute is only available after running
+<a class="reference internal" href="#tetgen.TetGen.tetrahedralize" title="tetgen.TetGen.tetrahedralize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TetGen.tetrahedralize()</span></code></a>.</p>
+<p class="rubric">Examples</p>
+<p>Tetrahedralize a sphere and create a mask of internal edges, <code class="docutils literal notranslate"><span class="pre">is_internal</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pq1.1/10YQ&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_internal</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">edge_markers</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_internal</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">array([ True,  True, False, False,  True, False,  True,  True, False,</span>
+<span class="go">       False])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tetgen.TetGen.edges">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">edges</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">int32</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tetgen.TetGen.edges" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">2)</span></code> array of edges composing the tetrahedralized grid.</p>
+<p>This attribute is only available after running
+<a class="reference internal" href="#tetgen.TetGen.tetrahedralize" title="tetgen.TetGen.tetrahedralize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TetGen.tetrahedralize()</span></code></a>.</p>
+<p class="rubric">Examples</p>
+<p>Tetrahedralize a sphere and the first 10 edges composing the tetrahedralized
+grid.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pq1.1/10YQ&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">edges</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">array([[46, 47],</span>
+<span class="go">       [46, 40],</span>
+<span class="go">       [38, 40],</span>
+<span class="go">       [38, 47],</span>
+<span class="go">       [38, 46],</span>
+<span class="go">       [40, 47],</span>
+<span class="go">       [11,  4],</span>
+<span class="go">       [11,  2],</span>
+<span class="go">       [ 3,  2],</span>
+<span class="go">       [ 3,  4]], dtype=int32)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tetgen.TetGen.elem">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">elem</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tetgen.TetGen.elem" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">4)</span></code> or <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">10)</span></code> array of elements composing the grid.</p>
+<p>This attribute is only available after running
+<a class="reference internal" href="#tetgen.TetGen.tetrahedralize" title="tetgen.TetGen.tetrahedralize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TetGen.tetrahedralize()</span></code></a>.</p>
+<p class="rubric">Examples</p>
+<p>Tetrahedralize a sphere and return the first five elements.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pq1.1/10YQ&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">elem</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">array([[ 81,   9,   1, 107],</span>
+<span class="go">       [ 58,  50,   0,  98],</span>
+<span class="go">       [  0, 104,  58,  98],</span>
+<span class="go">       [ 98, 105,  90,  87],</span>
+<span class="go">       [ 82,  91,  92, 102]], dtype=int32)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tetgen.TetGen.face2tet">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">face2tet</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarT</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tetgen.TetGen.face2tet" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the mapping between each triface and the tetrahedral elements.</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="tetgen.TetGen.grid">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid</span></span><a class="headerlink" href="#tetgen.TetGen.grid" title="Permalink to this definition">#</a></dt>
-<dd><p>Return a <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.UnstructuredGrid</span></code>.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">grid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">UnstructuredGrid</span></em><a class="headerlink" href="#tetgen.TetGen.grid" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.UnstructuredGrid</span></code> of the tetrahedralized surface.</p>
+<p>This attribute is only available after running
+<a class="reference internal" href="#tetgen.TetGen.tetrahedralize" title="tetgen.TetGen.tetrahedralize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TetGen.tetrahedralize()</span></code></a>.</p>
+<p class="rubric">Examples</p>
+<p>Tetrahedralize a <code class="docutils literal notranslate"><span class="pre">pyvista.PolyData</span></code> surface mesh into a
+<code class="docutils literal notranslate"><span class="pre">pyvista.UnstructuredGrid</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pq1.1/10YQ&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span>
+<span class="go">UnstructuredGrid (...)</span>
+<span class="go">  N Cells:    367</span>
+<span class="go">  N Points:   110</span>
+<span class="go">  X Bounds:   -4.924e-01, 4.924e-01</span>
+<span class="go">  Y Bounds:   -4.683e-01, 4.683e-01</span>
+<span class="go">  Z Bounds:   -5.000e-01, 5.000e-01</span>
+<span class="go">  N Arrays:   0</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tetgen.TetGen.make_manifold">
-<span class="sig-name descname"><span class="pre">make_manifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.make_manifold" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">make_manifold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#tetgen.TetGen.make_manifold" title="Permalink to this definition">#</a></dt>
 <dd><p>Reconstruct a manifold clean surface from input mesh.</p>
 <p>Updates mesh in-place.</p>
 <p>Requires <a class="reference external" href="https://pypi.org/project/pymeshfix/">pymeshfix</a>.</p>
@@ -539,8 +640,8 @@ grid.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="tetgen.TetGen.mesh">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mesh</span></span><a class="headerlink" href="#tetgen.TetGen.mesh" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the surface mesh.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mesh</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">PolyData</span></em><a class="headerlink" href="#tetgen.TetGen.mesh" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the input surface mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Input surface mesh.</p>
@@ -568,9 +669,30 @@ grid.</p>
 </div>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="tetgen.TetGen.node">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">node</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tetgen.TetGen.node" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">3)</span></code> array of nodes composing the tetrahedralized surface.</p>
+<p>This attribute is only available after running
+<a class="reference internal" href="#tetgen.TetGen.tetrahedralize" title="tetgen.TetGen.tetrahedralize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TetGen.tetrahedralize()</span></code></a>.</p>
+<p class="rubric">Examples</p>
+<p>Tetrahedralize a sphere and return the first three nodes.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pq1.1/10YQ&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">node</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">array([[ 0.        ,  0.        ,  0.5       ],</span>
+<span class="go">       [ 0.        ,  0.        , -0.5       ],</span>
+<span class="go">       [ 0.17101008,  0.        ,  0.46984631]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="tetgen.TetGen.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.plot" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#tetgen.TetGen.plot" title="Permalink to this definition">#</a></dt>
 <dd><p>Display the input mesh.</p>
 <p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">pyvista.plot()</span></code> for available arguments.</p>
 <p class="rubric">Examples</p>
@@ -586,77 +708,75 @@ grid.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tetgen.TetGen.tetrahedralize">
-<span class="sig-name descname"><span class="pre">tetrahedralize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobisect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdtrefine</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_hilbert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipinsert</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixedvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regionattrib</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertaddpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergefacet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergevertex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noexact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nostaticfilter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeroindex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facesout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgesout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voroout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meditview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vtkview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vtksurfview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobound</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonodewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noelewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nofacewritten</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noiterationnum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nojettison</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nowarning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertexperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4092.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tetrahedraperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8188.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shellfaceperblock</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2044.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supsteiner_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addsteiner_algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipstarsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevelinc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_max_flip_level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_scheme</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_cirterion</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_maxiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delmaxfliplevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversetetori</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steinerleft</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unflip_queue_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">52.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_separate_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collinear_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">179.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_small_ang_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxvolume</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxvolume_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_max_asp_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_max_edge_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mindihedral</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optmaxdihedral</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">177.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elem_growth_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine_progress_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.333</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switches</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bgmeshfilename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bgmesh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.tetrahedralize" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">tetrahedralize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">psc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quality</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobisect</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_hilbert</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipinsert</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">varvolume</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixedvolume</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regionattrib</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">insertaddpoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergefacet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nomergevertex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noexact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nostaticfilter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zeroindex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facesout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edgesout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">neighout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voroout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meditview</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vtkview</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vtksurfview</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nobound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nonodewritten</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noelewritten</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nofacewritten</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noiterationnum</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nojettison</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">docheck</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quiet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nowarning</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cdtrefine</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertexperblock</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4092</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tetrahedraperblock</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8188</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shellfaceperblock</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2044</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supsteiner_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">addsteiner_algo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weighted_param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flipstarsize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fliplinklevelinc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_max_flip_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_scheme</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_iterations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_cirterion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_maxiter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delmaxfliplevel</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reversetetori</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steinerleft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unflip_queue_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">no_sort</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">52</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hilbert_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_threshold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">brio_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.125</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_separate_ang_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">179.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collinear_ang_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">179.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_small_ang_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">15.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxvolume</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxvolume_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_max_asp_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_max_edge_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mindihedral</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optmaxdihedral</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">177.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth_alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coarsen_percent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elem_growth_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refine_progress_ratio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.333</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">switches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bgmeshfilename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bgmesh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UnstructuredGrid</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.tetrahedralize" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate tetrahedrals interior to the surface mesh.</p>
-<p>Returns nodes and elements belonging to the all tetrahedral
-mesh.</p>
-<p>The tetrahedral generator uses the C++ library TetGen and can
-be configured by either using a string of <code class="docutils literal notranslate"><span class="pre">switches</span></code> or by
-changing the underlying behavior using optional inputs.</p>
-<p>Should the user desire more control over the mesh
-tetrahedralization or wish to control the tetrahedralization
-in a more pythonic manner, use the optional inputs rather than
-inputting switches.</p>
+<p>Returns nodes and elements belonging to the all tetrahedral mesh.</p>
+<p>The tetrahedral generator uses the C++ library TetGen and can be
+configured by either using a string of <code class="docutils literal notranslate"><span class="pre">switches</span></code> or by changing the
+underlying behavior using optional inputs.</p>
+<p>Should the user desire more control over the mesh tetrahedralization or
+wish to control the tetrahedralization in a more pythonic manner, use
+the optional inputs rather than inputting switches.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>quality</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables mesh improvement. Enabled by default.
-Disable this to speed up mesh generation while sacrificing
-quality. Default True.</p></li>
-<li><p><strong>minratio</strong> (<em>double</em><em>, </em><em>default: 2.0</em>) – <p>Maximum allowable radius-edge ratio.  Must be greater than
-1.0 the closer to 1.0, the higher the quality of the mesh.
-Be sure to raise <code class="docutils literal notranslate"><span class="pre">steinerleft</span></code> to allow for the addition of
-points to improve the quality of the mesh. Avoid overly
-restrictive requirements, otherwise, meshing will appear
-to hang.</p>
-<p>Testing has showed that 1.1 is a reasonable input for a
-high quality mesh.</p>
-</p></li>
-<li><p><strong>mindihedral</strong> (<em>double</em><em>, </em><em>default: 0.0</em>) – <p>Minimum allowable dihedral angle. The larger this number,
-the higher the quality of the resulting mesh. Be sure to
+<li><p><strong>quality</strong> (<em>bool</em><em>, </em><em>optional</em>) – Enables/disables mesh improvement. Enabled by default. Disable
+this to speed up mesh generation while sacrificing quality. Default
+True.</p></li>
+<li><p><strong>minratio</strong> (<em>double</em><em>, </em><em>default: 2.0</em>) – <p>Maximum allowable radius-edge ratio. Must be greater than 1.0 the
+closer to 1.0, the higher the quality of the mesh. Be sure to
 raise <code class="docutils literal notranslate"><span class="pre">steinerleft</span></code> to allow for the addition of points to
 improve the quality of the mesh. Avoid overly restrictive
 requirements, otherwise, meshing will appear to hang.</p>
-<p>Testing has shown that 10 is a reasonable input</p>
+<p>Testing has showed that 1.1 is a reasonable input for a high
+quality mesh.</p>
 </p></li>
-<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>default: 0</em>) – Controls the underlying TetGen library to output text to
-console. Users using iPython will not see this output.
-Setting to 1 enables some information about the mesh
-generation while setting verbose to 2 enables more debug
-output. Default is no output</p></li>
+<li><p><strong>mindihedral</strong> (<em>double</em><em>, </em><em>default: 0.0</em>) – <p>Minimum allowable dihedral angle. The larger this number, the
+higher the quality of the resulting mesh. Be sure to raise
+<code class="docutils literal notranslate"><span class="pre">steinerleft</span></code> to allow for the addition of points to improve the
+quality of the mesh. Avoid overly restrictive requirements,
+otherwise, meshing will appear to hang.</p>
+<p>Testing has shown that 10.0 is a reasonable input.</p>
+</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>default: False</em>) – Controls the underlying TetGen library to output text to
+console. Users using <code class="docutils literal notranslate"><span class="pre">ipython</span></code> will not see this output. Setting
+to 1 enables some information about the mesh generation while
+setting verbose to 2 enables more debug output. Default is no
+output</p></li>
 <li><p><strong>nobisect</strong> (<em>bool</em><em>, </em><em>default: False</em>) – <p>Controls if Steiner points are added to the input surface
 mesh. When enabled, the surface mesh will be modified.</p>
-<p>Testing has shown that if your input surface mesh is
-already well shaped, disabling this setting will improve
-meshing speed and mesh quality.</p>
+<p>Testing has shown that if your input surface mesh is already well
+shaped, disabling this setting will improve meshing speed and mesh
+quality.</p>
 </p></li>
-<li><p><strong>steinerleft</strong> (<em>int</em><em>, </em><em>default: 100000</em>) – <p>Steiner points are points added to the original surface
-mesh to create a valid tetrahedral mesh. Settings this to
--1 will allow tetgen to create an unlimited number of
-steiner points, but the program will likely hang if this
-is used in combination with narrow quality requirements.</p>
-<p>The first type of Steiner points are used in creating an
-initial tetrahedralization of PLC. These Steiner points
-are mandatory in order to create a valid
-tetrahedralization</p>
-<p>The second type of Steiner points are used in creating
-quality tetra- hedral meshes of PLCs. These Steiner points
-are optional, while they may be necessary in order to
-improve the mesh quality or to conform the size of mesh
-elements.</p>
+<li><p><strong>steinerleft</strong> (<em>int</em><em>, </em><em>default: 100000</em>) – <p>Steiner points are points added to the original surface mesh to
+create a valid tetrahedral mesh. Settings this to -1 will allow
+tetgen to create an unlimited number of steiner points, but the
+program will likely hang if this is used in combination with narrow
+quality requirements.</p>
+<p>The first type of Steiner points are used in creating an initial
+tetrahedralization of PLC. These Steiner points are mandatory in
+order to create a valid tetrahedralization</p>
+<p>The second type of Steiner points are used in creating quality
+tetra- hedral meshes of PLCs. These Steiner points are optional,
+while they may be necessary in order to improve the mesh quality or
+to conform the size of mesh elements.</p>
 </p></li>
-<li><p><strong>order</strong> (<em>int</em><em>, </em><em>default: 2</em>) – Controls whether TetGen creates linear tetrahedrals or
-quadradic tetrahedrals. Set order to 2 to output
-quadradic tetrahedrals.</p></li>
+<li><p><strong>order</strong> (<em>int</em><em>, </em><em>default: 1</em>) – Controls whether TetGen creates linear tetrahedrals or quadradic
+tetrahedrals. Set order to 2 to output quadradic tetrahedrals.</p></li>
 <li><p><strong>bgmeshfilename</strong> (<em>str</em><em>, </em><em>optional</em>) – Filename of the background mesh.</p></li>
+<li><p><strong>regionattrib</strong> (<em>bool</em><em>, </em><em>default: False</em>) – Return region attributes.</p></li>
 <li><p><strong>bgmesh</strong> (<em>pv.UnstructuredGrid</em>) – Background mesh to be processed. Must be composed of only linear
 tetra. Cannot specify both <code class="docutils literal notranslate"><span class="pre">bgmeshfilename</span></code> and <code class="docutils literal notranslate"><span class="pre">bgmesh</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><strong>nodes</strong> (<em>numpy.ndarray</em>) – Array of nodes representing the tetrahedral mesh.</p></li>
-<li><p><strong>elems</strong> (<em>numpy.ndarray</em>) – Array of elements representing the tetrahedral mesh.</p></li>
+<li><p><strong>nodes</strong> (<em>np.ndarray[np.float64]</em>) – Array of nodes representing the tetrahedral mesh.</p></li>
+<li><p><strong>elems</strong> (<em>np.ndarray[np.int32]</em>) – Array of elements representing the tetrahedral mesh.</p></li>
+<li><p><strong>attr</strong> (<em>np.ndarray[np.int64] | None</em>) – Region attributes. <code class="docutils literal notranslate"><span class="pre">None</span></code> unless <code class="docutils literal notranslate"><span class="pre">regionattrib=True</span></code> or the
+tetgen flag <code class="docutils literal notranslate"><span class="pre">A</span></code> is passed.</p></li>
+<li><p><strong>triface_markers</strong> (<em>np.ndarray[np.int32]</em>) – Marker for each face in <code class="xref py py-attr docutils literal notranslate"><span class="pre">TetGen.triface_list</span></code>.</p></li>
 </ul>
 </p>
 </dd>
@@ -673,11 +793,10 @@ tetra. Cannot specify both <code class="docutils literal notranslate"><span clas
 </pre></div>
 </div>
 <p class="rubric">Notes</p>
-<p>There are many other options and the TetGen documentation
-contains descriptions only for the switches of the original
-C++ program.  This is the relationship between tetgen switches
-and python optional inputs:</p>
-<p>Switches of TetGen.</p>
+<p>There are many other options and the TetGen documentation contains
+descriptions only for the switches of the original C++ program. This is
+the relationship between tetgen switches and python optional inputs:</p>
+<p>Switches of TetGen:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>Option</p></td>
@@ -686,484 +805,307 @@ and python optional inputs:</p>
 </tr>
 <tr class="row-even"><td><p>plc</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-p'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
 <tr class="row-odd"><td><p>psc</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
 <tr class="row-even"><td><p>refine</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-r'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
 <tr class="row-odd"><td><p>quality</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-q'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
 <tr class="row-even"><td><p>nobisect</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-Y'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
 <tr class="row-odd"><td><p>cdt</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-D'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>cdtrefine</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-D#'</span></code></p></td>
-<td><ol class="arabic simple" start="7">
-<li></li>
-</ol>
-</td>
-</tr>
-<tr class="row-odd"><td><p>coarsen</p></td>
+<tr class="row-even"><td><p>coarsen</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-R'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>weighted</p></td>
+<tr class="row-odd"><td><p>weighted</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-w'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>brio_hilbert</p></td>
+<tr class="row-even"><td><p>brio_hilbert</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-b'</span></code></p></td>
-<td><ol class="arabic simple">
-<li></li>
-</ol>
-</td>
+<td><p>True</p></td>
 </tr>
-<tr class="row-even"><td><p>flipinsert</p></td>
+<tr class="row-odd"><td><p>flipinsert</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-L'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>metric</p></td>
+<tr class="row-even"><td><p>metric</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-m'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>varvolume</p></td>
+<tr class="row-odd"><td><p>varvolume</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>fixedvolume</p></td>
+<tr class="row-even"><td><p>fixedvolume</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>regionattrib</p></td>
+<tr class="row-odd"><td><p>regionattrib</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-A'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>insertaddpoints</p></td>
+<tr class="row-even"><td><p>insertaddpoints</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-i'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>diagnose</p></td>
+<tr class="row-odd"><td><p>diagnose</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-d'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>convex</p></td>
+<tr class="row-even"><td><p>convex</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-c'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>nomergefacet</p></td>
+<tr class="row-odd"><td><p>nomergefacet</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-M'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>nomergevertex</p></td>
+<tr class="row-even"><td><p>nomergevertex</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-M'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>noexact</p></td>
+<tr class="row-odd"><td><p>noexact</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-X'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>nostaticfilter</p></td>
+<tr class="row-even"><td><p>nostaticfilter</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-X'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>zeroindex</p></td>
+<tr class="row-odd"><td><p>zeroindex</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-z'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>facesout</p></td>
+<tr class="row-even"><td><p>facesout</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-f'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>edgesout</p></td>
+<tr class="row-odd"><td><p>edgesout</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-e'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>neighout</p></td>
+<tr class="row-even"><td><p>neighout</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-n'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>voroout</p></td>
+<tr class="row-odd"><td><p>voroout</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-v'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>meditview</p></td>
+<tr class="row-even"><td><p>meditview</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-g'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>vtkview</p></td>
+<tr class="row-odd"><td><p>vtkview</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-k'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>vtksurfview</p></td>
+<tr class="row-even"><td><p>vtksurfview</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-k'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>nobound</p></td>
+<tr class="row-odd"><td><p>nobound</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-B'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>nonodewritten</p></td>
+<tr class="row-even"><td><p>nonodewritten</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-N'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>noelewritten</p></td>
+<tr class="row-odd"><td><p>noelewritten</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-E'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>nofacewritten</p></td>
+<tr class="row-even"><td><p>nofacewritten</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-F'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>noiterationnum</p></td>
+<tr class="row-odd"><td><p>noiterationnum</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-I'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>nojettison</p></td>
+<tr class="row-even"><td><p>nojettison</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-J'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>docheck</p></td>
+<tr class="row-odd"><td><p>docheck</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-C'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>quiet</p></td>
+<tr class="row-even"><td><p>quiet</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-Q'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>nowarning</p></td>
+<tr class="row-odd"><td><p>nowarning</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-W'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>verbose</p></td>
+<tr class="row-even"><td><p>verbose</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-V'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>False</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Parameters of TetGen.</p>
+<p>Parameters of TetGen:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <tbody>
 <tr class="row-odd"><td><p>Option</p></td>
 <td><p>Switch</p></td>
 <td><p>Default</p></td>
 </tr>
-<tr class="row-even"><td><p>vertexperblock</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'-x'</span></code></p></td>
-<td><ol class="arabic simple" start="4092">
-<li></li>
-</ol>
-</td>
+<tr class="row-even"><td><p>cdtrefine</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'-D#'</span></code></p></td>
+<td><p>7</p></td>
 </tr>
-<tr class="row-odd"><td><p>tetrahedraperblock</p></td>
+<tr class="row-odd"><td><p>vertexperblock</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-x'</span></code></p></td>
-<td><ol class="arabic simple" start="8188">
-<li></li>
-</ol>
-</td>
+<td><p>4092</p></td>
 </tr>
-<tr class="row-even"><td><p>shellfaceperblock</p></td>
+<tr class="row-even"><td><p>tetrahedraperblock</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-x'</span></code></p></td>
-<td><ol class="arabic simple" start="2044">
-<li></li>
-</ol>
-</td>
+<td><p>8188</p></td>
 </tr>
-<tr class="row-odd"><td><p>supsteiner_level</p></td>
+<tr class="row-odd"><td><p>shellfaceperblock</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'-x'</span></code></p></td>
+<td><p>2044</p></td>
+</tr>
+<tr class="row-even"><td><p>supsteiner_level</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-Y/'</span></code></p></td>
-<td><ol class="arabic simple" start="2">
-<li></li>
-</ol>
-</td>
+<td><p>2</p></td>
 </tr>
-<tr class="row-even"><td><p>addsteiner_algo</p></td>
+<tr class="row-odd"><td><p>addsteiner_algo</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-Y//'</span></code></p></td>
-<td><ol class="arabic simple">
-<li></li>
-</ol>
-</td>
+<td><p>1</p></td>
 </tr>
-<tr class="row-odd"><td><p>coarsen_param</p></td>
+<tr class="row-even"><td><p>coarsen_param</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-R'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td><p>weighted_param</p></td>
+<tr class="row-odd"><td><p>weighted_param</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-w'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-odd"><td><p>opt_max_flip_level</p></td>
+<tr class="row-even"><td><p>opt_max_flip_level</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-O'</span></code></p></td>
-<td><ol class="arabic simple" start="3">
-<li></li>
-</ol>
-</td>
+<td><p>3</p></td>
 </tr>
-<tr class="row-even"><td><p>opt_scheme</p></td>
+<tr class="row-odd"><td><p>opt_scheme</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-O/#'</span></code></p></td>
-<td><ol class="arabic simple" start="7">
-<li></li>
-</ol>
-</td>
+<td><p>7</p></td>
 </tr>
-<tr class="row-odd"><td><p>opt_iterations</p></td>
+<tr class="row-even"><td><p>opt_iterations</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-O//#'</span></code></p></td>
-<td><ol class="arabic simple" start="3">
-<li></li>
-</ol>
-</td>
+<td><p>3</p></td>
 </tr>
-<tr class="row-even"><td><p>smooth_cirterion</p></td>
+<tr class="row-odd"><td><p>smooth_cirterion</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></td>
-<td><ol class="arabic simple">
-<li></li>
-</ol>
-</td>
+<td><p>1</p></td>
 </tr>
-<tr class="row-odd"><td><p>smooth_maxiter</p></td>
+<tr class="row-even"><td><p>smooth_maxiter</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></td>
-<td><ol class="arabic simple" start="7">
-<li></li>
-</ol>
-</td>
+<td><p>7</p></td>
 </tr>
-<tr class="row-even"><td><p>order</p></td>
+<tr class="row-odd"><td><p>order</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-o'</span></code></p></td>
-<td><ol class="arabic simple">
-<li></li>
-</ol>
-</td>
+<td><p>1</p></td>
 </tr>
-<tr class="row-odd"><td><p>reversetetori</p></td>
+<tr class="row-even"><td><p>reversetetori</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-o/'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>0</p></td>
 </tr>
-<tr class="row-even"><td><p>steinerleft</p></td>
+<tr class="row-odd"><td><p>steinerleft</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-S'</span></code></p></td>
-<td><ol class="arabic simple" start="0">
-<li></li>
-</ol>
-</td>
+<td><p>100000</p></td>
 </tr>
-<tr class="row-odd"><td><p>unflip_queue_limit</p></td>
+<tr class="row-even"><td><p>unflip_queue_limit</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-U#'</span></code></p></td>
-<td><ol class="arabic simple" start="1000">
-<li></li>
-</ol>
-</td>
+<td><p>1000</p></td>
 </tr>
-<tr class="row-even"><td><p>hilbert_order</p></td>
+<tr class="row-odd"><td><p>hilbert_order</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-b///'</span></code></p></td>
-<td><ol class="arabic simple" start="52">
-<li></li>
-</ol>
-</td>
+<td><p>52</p></td>
 </tr>
-<tr class="row-odd"><td><p>hilbert_limit</p></td>
+<tr class="row-even"><td><p>hilbert_limit</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-b//'</span></code></p></td>
-<td><ol class="arabic simple" start="8">
-<li></li>
-</ol>
-</td>
+<td><p>8</p></td>
 </tr>
-<tr class="row-even"><td><p>brio_threshold</p></td>
+<tr class="row-odd"><td><p>brio_threshold</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-b'</span></code></p></td>
-<td><ol class="arabic simple" start="64">
-<li></li>
-</ol>
-</td>
+<td><p>64</p></td>
 </tr>
-<tr class="row-odd"><td><p>brio_ratio</p></td>
+<tr class="row-even"><td><p>brio_ratio</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-b/'</span></code></p></td>
 <td><p>0.125.</p></td>
 </tr>
-<tr class="row-even"><td><p>epsilon</p></td>
+<tr class="row-odd"><td><p>epsilon</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-T'</span></code></p></td>
 <td><p>1.0e-8.</p></td>
 </tr>
-<tr class="row-odd"><td><p>facet_separate_ang_tol</p></td>
+<tr class="row-even"><td><p>facet_separate_ang_tol</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-p'</span></code></p></td>
 <td><p>179.9.</p></td>
 </tr>
-<tr class="row-even"><td><p>collinear_ang_tol</p></td>
+<tr class="row-odd"><td><p>collinear_ang_tol</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-p/'</span></code></p></td>
 <td><p>179.9.</p></td>
 </tr>
-<tr class="row-odd"><td><p>facet_small_ang_tol</p></td>
+<tr class="row-even"><td><p>facet_small_ang_tol</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-p//'</span></code></p></td>
 <td><p>15.0.</p></td>
 </tr>
-<tr class="row-even"><td><p>maxvolume</p></td>
+<tr class="row-odd"><td><p>maxvolume</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></td>
 <td><p>-1.0.</p></td>
 </tr>
-<tr class="row-odd"><td><p>maxvolume_length</p></td>
+<tr class="row-even"><td><p>maxvolume_length</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-a'</span></code></p></td>
 <td><p>-1.0.</p></td>
 </tr>
-<tr class="row-even"><td><p>minratio</p></td>
+<tr class="row-odd"><td><p>minratio</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-q'</span></code></p></td>
 <td><p>0.0.</p></td>
 </tr>
-<tr class="row-odd"><td><p>mindihedral</p></td>
+<tr class="row-even"><td><p>mindihedral</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-q'</span></code></p></td>
 <td><p>5.0.</p></td>
 </tr>
-<tr class="row-even"><td><p>optmaxdihedral</p></td>
+<tr class="row-odd"><td><p>optmaxdihedral</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-o/#'</span></code></p></td>
 <td><p>177.0.</p></td>
 </tr>
-<tr class="row-odd"><td><p>metric_scale</p></td>
+<tr class="row-even"><td><p>metric_scale</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-m#'</span></code></p></td>
 <td><p>1.0.</p></td>
 </tr>
-<tr class="row-even"><td><p>smooth_alpha</p></td>
+<tr class="row-odd"><td><p>smooth_alpha</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-s'</span></code></p></td>
 <td><p>0.3.</p></td>
 </tr>
-<tr class="row-odd"><td><p>coarsen_percent</p></td>
+<tr class="row-even"><td><p>coarsen_percent</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-R1/#'</span></code></p></td>
 <td><p>1.0.</p></td>
 </tr>
-<tr class="row-even"><td><p>elem_growth_ratio</p></td>
+<tr class="row-odd"><td><p>elem_growth_ratio</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-r#'</span></code></p></td>
 <td><p>0.0.</p></td>
 </tr>
-<tr class="row-odd"><td><p>refine_progress_ratio</p></td>
+<tr class="row-even"><td><p>refine_progress_ratio</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">'-r/#'</span></code></p></td>
 <td><p>0.333.</p></td>
 </tr>
@@ -1172,21 +1114,71 @@ and python optional inputs:</p>
 </div>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="tetgen.TetGen.triface_markers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">triface_markers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">int32</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tetgen.TetGen.triface_markers" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">)</span></code> array of markers for each triangular face in <a class="reference internal" href="#tetgen.TetGen.trifaces" title="tetgen.TetGen.trifaces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TetGen.trifaces</span></code></a>.</p>
+<p>Interior faces are denoted with 0 and exterior faces are marked as -1.</p>
+<p>This attribute is only available after running
+<a class="reference internal" href="#tetgen.TetGen.tetrahedralize" title="tetgen.TetGen.tetrahedralize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TetGen.tetrahedralize()</span></code></a>.</p>
+<p class="rubric">Examples</p>
+<p>Tetrahedralize a sphere and return the array of the triangular faces
+that compose the tetrahedralized grid.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pq1.1/10YQ&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_interior</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">triface_markers</span> <span class="o">==</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_interior</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">array([ True,  True,  True, False,  True,  True,  True, False,  True,</span>
+<span class="go">        True])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="tetgen.TetGen.trifaces">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trifaces</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">int32</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#tetgen.TetGen.trifaces" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">3)</span></code> array of triangular faces composing the tetrahedral mesh.</p>
+<p>The indices of these faces correspond to a node in <a class="reference internal" href="#tetgen.TetGen.node" title="tetgen.TetGen.node"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TetGen.node</span></code></a>.</p>
+<p>This attribute is only available after running
+<a class="reference internal" href="#tetgen.TetGen.tetrahedralize" title="tetgen.TetGen.tetrahedralize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TetGen.tetrahedralize()</span></code></a>.</p>
+<p class="rubric">Examples</p>
+<p>Tetrahedralize a sphere and return the array of the triangular faces
+that compose the tetrahedralized grid.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pq1.1/10YQ&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tet</span><span class="o">.</span><span class="n">trifaces</span>
+<span class="go">array([[107,   1,   9],</span>
+<span class="go">       [107,  81,   1],</span>
+<span class="go">       [  9,  81, 107],</span>
+<span class="go">       ...,</span>
+<span class="go">       [ 15,   6, 109],</span>
+<span class="go">       [ 15,   7,   6],</span>
+<span class="go">       [ 15,   6,  14]], shape=(814, 3), dtype=int32)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="tetgen.TetGen.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#tetgen.TetGen.write" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#tetgen.TetGen.write" title="Permalink to this definition">#</a></dt>
 <dd><p>Write an unstructured grid to disk.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) – <p>Filename of grid to be written. The file extension will
+<li><p><strong>filename</strong> (<em>str</em><em> | </em><em>pathlib.Path</em>) – <p>Filename of grid to be written. The file extension will
 select the type of writer to use.</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;.vtk&quot;</span></code> will use the vtk legacy writer</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;.vtu&quot;</span></code> will select the VTK XML writer</p></li>
 </ul>
 </p></li>
-<li><p><strong>binary</strong> (<em>bool</em><em>, </em><em>default: False</em>) – Writes as a binary file by default. Set to <code class="docutils literal notranslate"><span class="pre">False</span></code> to write
+<li><p><strong>binary</strong> (<em>bool</em><em>, </em><em>default: True</em>) – Writes as a binary file by default. Set to <code class="docutils literal notranslate"><span class="pre">False</span></code> to write
 ASCII.</p></li>
 </ul>
 </dd>
@@ -1234,11 +1226,18 @@ to convert to other formats in order to import into FEA software.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen"><code class="docutils literal notranslate"><span class="pre">TetGen</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.add_hole"><code class="docutils literal notranslate"><span class="pre">TetGen.add_hole()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.add_region"><code class="docutils literal notranslate"><span class="pre">TetGen.add_region()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.edge_markers"><code class="docutils literal notranslate"><span class="pre">TetGen.edge_markers</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.edges"><code class="docutils literal notranslate"><span class="pre">TetGen.edges</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.elem"><code class="docutils literal notranslate"><span class="pre">TetGen.elem</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.face2tet"><code class="docutils literal notranslate"><span class="pre">TetGen.face2tet</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.grid"><code class="docutils literal notranslate"><span class="pre">TetGen.grid</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.make_manifold"><code class="docutils literal notranslate"><span class="pre">TetGen.make_manifold()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.mesh"><code class="docutils literal notranslate"><span class="pre">TetGen.mesh</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.node"><code class="docutils literal notranslate"><span class="pre">TetGen.node</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.plot"><code class="docutils literal notranslate"><span class="pre">TetGen.plot()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.tetrahedralize"><code class="docutils literal notranslate"><span class="pre">TetGen.tetrahedralize()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.triface_markers"><code class="docutils literal notranslate"><span class="pre">TetGen.triface_markers</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.trifaces"><code class="docutils literal notranslate"><span class="pre">TetGen.trifaces</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tetgen.TetGen.write"><code class="docutils literal notranslate"><span class="pre">TetGen.write()</span></code></a></li>
 </ul>
 </li>

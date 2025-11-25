@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Cow &#8212; tetgen 0.7.0 documentation</title>
+    <title>Face Markers and Surface Data &#8212; tetgen 0.7.0 documentation</title>
   
   
   
@@ -50,11 +50,11 @@
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/cow';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/trifaces';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Holes" href="holes.html" />
-    <link rel="prev" title="Examples" href="index.html" />
+    <link rel="next" title="API Reference" href="../api.html" />
+    <link rel="prev" title="Super Toroid" href="super_toroid.html" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -319,14 +319,14 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Cow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cow.html">Cow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="holes.html">Holes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="regions.html">Regions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sphere.html">Using external modules to create a mesh</a></li>
 
 
 <li class="toctree-l1"><a class="reference internal" href="super_toroid.html">Super Toroid</a></li>
-<li class="toctree-l1"><a class="reference internal" href="trifaces.html">Face Markers and Surface Data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Face Markers and Surface Data</a></li>
 </ul>
 </div>
 </nav></div>
@@ -370,7 +370,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Examples</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Cow</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Face Markers and Surface Data</span></li>
   </ul>
 </nav>
 </div>
@@ -389,81 +389,151 @@
                   
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#sphx-glr-download-examples-cow-py"><span class="std std-ref">Go to the end</span></a>
+<p><a class="reference internal" href="#sphx-glr-download-examples-trifaces-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="cow">
-<span id="sphx-glr-examples-cow-py"></span><h1>Cow<a class="headerlink" href="#cow" title="Permalink to this heading">#</a></h1>
-<p>Tetrahedralize a cow mesh.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 3</span>
+<section class="sphx-glr-example-title" id="face-markers-and-surface-data">
+<span id="sphx-glr-examples-trifaces-py"></span><h1>Face Markers and Surface Data<a class="headerlink" href="#face-markers-and-surface-data" title="Permalink to this heading">#</a></h1>
+<p>Demonstrate the usage of several attributes of <a class="reference internal" href="../api.html#tetgen.TetGen" title="tetgen.TetGen"><code class="xref py py-class docutils literal notranslate"><span class="pre">tetgen.TetGen</span></code></a>.</p>
+<p>You can access faces and edges from an instance of <a class="reference internal" href="../api.html#tetgen.TetGen" title="tetgen.TetGen"><code class="xref py py-class docutils literal notranslate"><span class="pre">tetgen.TetGen</span></code></a> from
+the <a class="reference internal" href="../api.html#tetgen.TetGen.trifaces" title="tetgen.TetGen.trifaces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tetgen.TetGen.trifaces</span></code></a> and <a class="reference internal" href="../api.html#tetgen.TetGen.edges" title="tetgen.TetGen.edges"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tetgen.TetGen.edges</span></code></a> attributes.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 1</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="kn">import</span> <span class="n">examples</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
 </pre></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">cow_mesh</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">download_cow</span><span class="p">()</span><span class="o">.</span><span class="n">triangulate</span><span class="p">()</span>
-
-<span class="n">cpos</span> <span class="o">=</span> <span class="p">[(</span><span class="mf">13.0</span><span class="p">,</span> <span class="mf">7.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.85</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.44</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.37</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.28</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)]</span>
-
-<span class="n">cpos</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="mf">15.87144235049248</span><span class="p">,</span> <span class="mf">4.879216382405231</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.14248864876951</span><span class="p">),</span>
-    <span class="p">(</span><span class="mf">1.1623113035352375</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.7609060338348953</span><span class="p">,</span> <span class="mf">0.3192320579894903</span><span class="p">),</span>
-    <span class="p">(</span><span class="o">-</span><span class="mf">0.19477922834083672</span><span class="p">,</span> <span class="mf">0.9593375398915212</span><span class="p">,</span> <span class="mf">0.20428542963665386</span><span class="p">),</span>
-<span class="p">]</span>
-
-<span class="n">cow_mesh</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cpos</span><span class="o">=</span><span class="n">cpos</span><span class="p">)</span>
+<p>First, let’s tetrahedralize a sphere.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Icosphere</span><span class="p">(</span><span class="n">nsub</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
+<span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mindihedral</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">minratio</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">regionattrib</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_cow_001.png" srcset="../_images/sphx_glr_cow_001.png" alt="cow" class = "sphx-glr-single-img"/><div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">cow_mesh</span><span class="p">)</span>
-<span class="n">tet</span><span class="o">.</span><span class="n">make_manifold</span><span class="p">()</span>
-<span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">()</span>
+<div class="output_subarea output_html rendered_html output_result">
 
-<span class="n">cow_grid</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
+<table style='width: 100%;'>
+<tr><th>UnstructuredGrid</th><th>Information</th></tr>
+<tr><td>N Cells</td><td>80</td></tr>
+<tr><td>N Points</td><td>43</td></tr>
+<tr><td>X Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
+<tr><td>Y Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
+<tr><td>Z Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
+<tr><td>N Arrays</td><td>0</td></tr>
+</table>
+
+
+</div>
+<br />
+<br /><p>Next, let’s construct a <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.PolyData</span></code> from the triangular faces,
+accessible from the <a class="reference internal" href="../api.html#tetgen.TetGen.trifaces" title="tetgen.TetGen.trifaces"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tetgen.TetGen.trifaces</span></code></a> attribute.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># mesh containing both exterior and interior elements</span>
+<span class="n">trimesh</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="o">.</span><span class="n">from_regular_faces</span><span class="p">(</span><span class="n">tet</span><span class="o">.</span><span class="n">node</span><span class="p">,</span> <span class="n">tet</span><span class="o">.</span><span class="n">trifaces</span><span class="p">)</span>
+<span class="n">trimesh</span>
 </pre></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot half the cow</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">cow_grid</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">)</span>
-<span class="n">half_cow</span> <span class="o">=</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">extract_points</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
-</pre></div>
+<div class="output_subarea output_html rendered_html output_result">
+
+<table style='width: 100%;'>
+<tr><th>PolyData</th><th>Information</th></tr>
+<tr><td>N Cells</td><td>200</td></tr>
+<tr><td>N Points</td><td>43</td></tr>
+<tr><td>N Strips</td><td>0</td></tr>
+<tr><td>X Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
+<tr><td>Y Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
+<tr><td>Z Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
+<tr><td>N Arrays</td><td>0</td></tr>
+</table>
+
+
 </div>
+<br />
+<br /><p>Interior faces are marked by the <a class="reference internal" href="../api.html#tetgen.TetGen.triface_markers" title="tetgen.TetGen.triface_markers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tetgen.TetGen.triface_markers</span></code></a> attribute.
+We can plot this using PyVista.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">()</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">half_cow</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">cow_grid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;wireframe&quot;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="n">cpos</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span>
+    <span class="n">trimesh</span><span class="o">.</span><span class="n">explode</span><span class="p">(</span><span class="mf">0.3</span><span class="p">),</span>
+    <span class="n">scalars</span><span class="o">=</span><span class="n">tet</span><span class="o">.</span><span class="n">triface_markers</span><span class="p">,</span>
+    <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">enable_ssao</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">enable_anti_aliasing</span><span class="p">(</span><span class="s2">&quot;ssaa&quot;</span><span class="p">)</span>
+<span class="n">pl</span><span class="o">.</span><span class="n">camera</span><span class="o">.</span><span class="n">zoom</span><span class="p">(</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">pl</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_cow_002.png" srcset="../_images/sphx_glr_cow_002.png" alt="cow" class = "sphx-glr-single-img"/><p>Make animation of the mesh construction</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">pl</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Plotter</span><span class="p">(</span><span class="n">off_screen</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="p">[</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">open_gif</span><span class="p">(</span><span class="s2">&quot;cow.gif&quot;</span><span class="p">)</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">cow_grid</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;wireframe&quot;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">camera_position</span> <span class="o">=</span> <span class="n">cpos</span>
-<span class="n">pl</span><span class="o">.</span><span class="n">write_frame</span><span class="p">()</span>
-
-<span class="n">nframe</span> <span class="o">=</span> <span class="mi">36</span>
-<span class="n">xb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cow_grid</span><span class="o">.</span><span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
-<span class="n">step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span> <span class="o">/</span> <span class="n">nframe</span>
-<span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">step</span><span class="p">,</span> <span class="n">xb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">step</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
-    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">cow_grid</span><span class="o">.</span><span class="n">cell_centers</span><span class="p">()</span><span class="o">.</span><span class="n">points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">val</span><span class="p">)</span>
-    <span class="n">half_cow</span> <span class="o">=</span> <span class="n">cow_grid</span><span class="o">.</span><span class="n">extract_cells</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
-    <span class="n">pl</span><span class="o">.</span><span class="n">add_mesh</span><span class="p">(</span><span class="n">half_cow</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">show_edges</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;building&quot;</span><span class="p">)</span>
-    <span class="n">pl</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
-    <span class="n">pl</span><span class="o">.</span><span class="n">write_frame</span><span class="p">()</span>
-
-<span class="n">pl</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<img src="../_images/sphx_glr_trifaces_001.png" srcset="../_images/sphx_glr_trifaces_001.png" alt="trifaces" class = "sphx-glr-single-img"/><p>Interior faces are denoted with 0 and exterior faces are marked as -1 within
+the <a class="reference internal" href="../api.html#tetgen.TetGen.triface_markers" title="tetgen.TetGen.triface_markers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tetgen.TetGen.triface_markers</span></code></a> array.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">tet</span><span class="o">.</span><span class="n">triface_markers</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_cow_003.gif" srcset="../_images/sphx_glr_cow_003.gif" alt="cow" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 15.503 seconds)</p>
-<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-cow-py">
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>array([ 0,  0,  0, -1,  0,  0,  0, -1,  0,  0,  0, -1,  0,  0,  0, -1,  0,
+        0,  0, -1,  0,  0,  0, -1,  0,  0, -1, -1,  0,  0, -1,  0,  0, -1,
+       -1,  0,  0, -1, -1,  0, -1,  0,  0, -1,  0,  0, -1,  0, -1,  0, -1,
+        0,  0, -1,  0,  0, -1,  0,  0, -1,  0, -1,  0,  0, -1,  0, -1,  0,
+        0,  0, -1,  0,  0, -1,  0, -1,  0, -1,  0,  0, -1,  0, -1,  0, -1,
+        0,  0, -1,  0, -1,  0, -1,  0,  0, -1,  0,  0, -1,  0, -1,  0,  0,
+       -1,  0,  0, -1,  0,  0, -1,  0, -1,  0,  0,  0, -1,  0,  0,  0, -1,
+        0, -1,  0, -1,  0, -1,  0, -1,  0,  0, -1,  0,  0,  0, -1,  0, -1,
+        0, -1,  0,  0, -1,  0,  0, -1, -1,  0,  0, -1,  0,  0, -1,  0, -1,
+        0,  0,  0, -1, -1,  0,  0, -1,  0, -1,  0, -1,  0, -1,  0,  0, -1,
+        0, -1, -1,  0,  0, -1,  0, -1,  0, -1,  0,  0, -1, -1,  0,  0, -1,
+        0, -1, -1,  0, -1,  0, -1,  0, -1, -1,  0, -1, -1], dtype=int32)
+</pre></div>
+</div>
+<p>Finally, create an edges <code class="xref py py-class docutils literal notranslate"><span class="pre">pyvista.PolyData</span></code> from the
+<a class="reference internal" href="../api.html#tetgen.TetGen.edges" title="tetgen.TetGen.edges"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tetgen.TetGen.edges</span></code></a> attribute.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct a VTK style edges array</span>
+<span class="n">n_edges</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_edges</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">edges</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">edges</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">edges</span>
+
+<span class="c1"># mesh containing both exterior and interior elements</span>
+<span class="n">edgemesh</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">PolyData</span><span class="p">()</span>
+<span class="n">edgemesh</span><span class="o">.</span><span class="n">points</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">node</span>
+<span class="n">edgemesh</span><span class="o">.</span><span class="n">lines</span> <span class="o">=</span> <span class="n">edges</span>
+<span class="n">edgemesh</span>
+</pre></div>
+</div>
+<div class="output_subarea output_html rendered_html output_result">
+
+<table style='width: 100%;'>
+<tr><th>PolyData</th><th>Information</th></tr>
+<tr><td>N Cells</td><td>162</td></tr>
+<tr><td>N Points</td><td>43</td></tr>
+<tr><td>N Strips</td><td>0</td></tr>
+<tr><td>X Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
+<tr><td>Y Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
+<tr><td>Z Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
+<tr><td>N Arrays</td><td>0</td></tr>
+</table>
+
+
+</div>
+<br />
+<br /><p>Plot the edges with <code class="docutils literal notranslate"><span class="pre">pyvista</span></code> and color the interior and exterior edges.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">edgemesh</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">scalars</span><span class="o">=</span><span class="n">tet</span><span class="o">.</span><span class="n">edge_markers</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;bwr&quot;</span><span class="p">,</span>
+    <span class="n">line_width</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">render_lines_as_tubes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">show_scalar_bar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">zoom</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_trifaces_002.png" srcset="../_images/sphx_glr_trifaces_002.png" alt="trifaces" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 20.295 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-trifaces-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/a765c73a2265f8a59b388228b14b1937/cow.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">cow.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/14d6c93ab7b1532feb0a5e35660ecdaa/trifaces.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">trifaces.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/571b56e4f032d3d1ce8260347be71ecd/cow.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cow.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/9f3abbb5c639c7330b3ca9b38dd3195e/trifaces.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">trifaces.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-zip docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/324170f9c4ea1f5759cc2be68cfd1c2b/cow.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">cow.zip</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/827671bec62e62f899a099c5f7c064e1/trifaces.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">trifaces.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -488,7 +558,7 @@ to download the full example code.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/examples/cow.rst.txt"
+      <li><a href="../_sources/examples/trifaces.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

@@ -77,7 +77,7 @@ Example of using TetGen to create a tetrahedral mesh with regions.
     tgen.add_region(300, [L * 1.5, 0, 0], V_sphere / 100)  # airbox
 
     # tetrahedralize the mesh with specified switches
-    nodes, elem, attrib = tgen.tetrahedralize(switches="pzq1.4Aa")
+    nodes, elem, attrib, _ = tgen.tetrahedralize(switches="pzq1.4Aa")
 
     grid = tgen.grid
 
@@ -114,7 +114,7 @@ Example of using TetGen to create a tetrahedral mesh with regions.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.898 seconds)
+   **Total running time of the script:** (0 minutes 1.552 seconds)
 
 
 .. _sphx_glr_download_examples_regions.py:

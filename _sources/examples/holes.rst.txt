@@ -57,7 +57,7 @@ Example of using TetGen to create a tetrahedral mesh with holes.
     tgen.add_hole([0.5, 0.0, 0.0])
 
     # tetrahedralize the mesh using TetGen
-    nodes, elem = tgen.tetrahedralize(switches="pzq1.4")
+    nodes, elem, _, _ = tgen.tetrahedralize(switches="pzq1.4")
     grid = tgen.grid
 
     # plot a slice to see the holes
@@ -66,7 +66,7 @@ Example of using TetGen to create a tetrahedral mesh with holes.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.756 seconds)
+   **Total running time of the script:** (0 minutes 0.736 seconds)
 
 
 .. _sphx_glr_download_examples_holes.py:

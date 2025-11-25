@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Regions &#8212; tetgen 0.6.7 documentation</title>
+    <title>Regions &#8212; tetgen 0.7.0 documentation</title>
   
   
   
@@ -58,7 +58,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.7" />
+  <meta name="docsearch:version" content="0.7.0" />
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
@@ -130,8 +130,8 @@
       
     
     
-    <img src="../_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.6.7 documentation - Home"/>
-    <img src="../_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.6.7 documentation - Home"/>
+    <img src="../_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.7.0 documentation - Home"/>
+    <img src="../_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.7.0 documentation - Home"/>
   
   
 </a></div>
@@ -326,6 +326,7 @@
 
 
 <li class="toctree-l1"><a class="reference internal" href="super_toroid.html">Super Toroid</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trifaces.html">Face Markers and Surface Data</a></li>
 </ul>
 </div>
 </nav></div>
@@ -432,7 +433,7 @@ to download the full example code.</p>
 <span class="n">tgen</span><span class="o">.</span><span class="n">add_region</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="p">[</span><span class="n">L</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">V_sphere</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># airbox</span>
 
 <span class="c1"># tetrahedralize the mesh with specified switches</span>
-<span class="n">nodes</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">attrib</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pzq1.4Aa&quot;</span><span class="p">)</span>
+<span class="n">nodes</span><span class="p">,</span> <span class="n">elem</span><span class="p">,</span> <span class="n">attrib</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">switches</span><span class="o">=</span><span class="s2">&quot;pzq1.4Aa&quot;</span><span class="p">)</span>
 
 <span class="n">grid</span> <span class="o">=</span> <span class="n">tgen</span><span class="o">.</span><span class="n">grid</span>
 
@@ -467,7 +468,7 @@ to download the full example code.</p>
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.898 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.552 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-regions-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/e535253a998de6c19751555bbe1b308d/regions.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">regions.ipynb</span></code></a></p>
