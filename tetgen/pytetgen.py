@@ -3,9 +3,12 @@
 import ctypes
 import logging
 from pathlib import Path
+from typing import Any
 
 import numpy as np
-import pyvista as pv
+from numpy.typing import NDArray
+import pyvista.core as pv
+from pyvista.core.pointset import PolyData, UnstructuredGrid
 from tetgen import _tetgen
 
 LOG = logging.getLogger(__name__)
@@ -18,8 +21,17 @@ invalid_input = TypeError(
 )
 
 
+class MeshNotTetrahedralizedError(RuntimeError):
+    """RuntimeError raise raised when :class:`tetgen.Tetgen` has not been tetrahedralized."""
+
+    def __init__(self, msg: str = "Tetrahedralize the surface mesh first with `tetrahedralize`."):
+        """Initialize the error."""
+        super().__init__(msg)
+
+
 class TetGen:
-    """Input, clean, and tetrahedralize surface meshes using TetGen.
+    """
+    Input, clean, and tetrahedralize surface meshes using TetGen.
 
     Parameters
     ----------
@@ -35,7 +47,7 @@ class TetGen:
     >>> import tetgen
     >>> sphere = pyvista.Sphere(theta_resolution=10, phi_resolution=10)
     >>> tgen = tetgen.TetGen(sphere)
-    >>> nodes, elem = tgen.tetrahedralize()
+    >>> nodes, elem, attr, triface_markers = tgen.tetrahedralize()
     >>> tgen.grid.plot(show_edges=True)
 
     Tetrahedralize a cube using numpy arrays.
@@ -71,7 +83,8 @@ class TetGen:
     ...     ]
     ... )
     >>> tgen = tetgen.TetGen(v, f)
-    >>> nodes, elems = tgen.tetrahedralize()
+    >>> nodes, elems, attr, triface_markers = tgen.tetrahedralize()
+
     """
 
     _updated = None
@@ -80,14 +93,14 @@ class TetGen:
         """Initialize MeshFix using a mesh or arrays."""
         self.v = None
         self.f = None
-        self.node = None
-        self.elem = None
-        self.attributes = None
-        self.triface_markers = None
-        self.trifaces = None
-        self.face2tet = None
-        self.edgelist = None
-        self.edgemarkers = None
+        self._node: None | NDArray[np.float64] = None
+        self._elem: None | NDArray[np.int64] = None
+        self._attributes: None | NDArray[np.int64] = None
+        self._triface_markers: None | NDArray[np.int32] = None
+        self._trifaces: None | NDArray[np.int32] = None
+        self._face2tet = None
+        self._edges: None | NDArray[np.int32] = None
+        self._edge_markers: None | NDArray[np.int32] = None
         self._grid = None
 
         self.regions = {}
@@ -103,7 +116,7 @@ class TetGen:
 
         if not args:
             raise invalid_input
-        elif isinstance(args[0], pv.PolyData):
+        elif isinstance(args[0], PolyData):
             parse_mesh(args[0])
         elif isinstance(args[0], (np.ndarray, list)):
             if len(args) >= 3:
@@ -159,7 +172,8 @@ class TetGen:
     def add_region(
         self, id: int, point_in_region: tuple[float, float, float], max_vol: float = 0.0
     ):
-        """Add a region to the mesh.
+        """
+        Add a region to the mesh.
 
         Parameters
         ----------
@@ -205,7 +219,8 @@ class TetGen:
         self.regions[id] = (*point_in_region_arr, max_vol)
 
     def add_hole(self, point_in_hole: tuple[float, float, float]):
-        """Add a hole to the mesh.
+        """
+        Add a hole to the mesh.
 
         Parameters
         ----------
@@ -239,8 +254,9 @@ class TetGen:
         point_in_hole_arr = np.asarray(point_in_hole, dtype=float)
         self.holes.append(point_in_hole_arr)
 
-    def make_manifold(self, verbose=False):
-        """Reconstruct a manifold clean surface from input mesh.
+    def make_manifold(self, verbose: bool = False) -> None:
+        """
+        Reconstruct a manifold clean surface from input mesh.
 
         Updates mesh in-place.
 
@@ -275,7 +291,7 @@ class TetGen:
         self.v = meshfix.v
         self.f = meshfix.f
 
-    def plot(self, **kwargs):
+    def plot(self, **kwargs: Any) -> Any:
         """Display the input mesh.
 
         See :func:`pyvista.plot` for available arguments.
@@ -291,11 +307,12 @@ class TetGen:
         >>> tgen.plot()
 
         """
-        self.mesh.plot(**kwargs)
+        return self.mesh.plot(**kwargs)
 
     @property
-    def mesh(self):
-        """Return the surface mesh.
+    def mesh(self) -> PolyData:
+        """
+        Return the input surface mesh.
 
         Returns
         -------
@@ -320,181 +337,178 @@ class TetGen:
           Z Bounds:   -5.000e-01, 5.000e-01
           N Arrays:   0
 
-
         """
         triangles = np.empty((self.f.shape[0], 4), dtype="int")
         triangles[:, -3:] = self.f
         triangles[:, 0] = 3
-        return pv.PolyData(self.v, triangles, deep=False)
+        return PolyData(self.v, triangles, deep=False)
 
     def tetrahedralize(
         self,
-        plc=True,
-        psc=0.0,
-        refine=0.0,
-        quality=True,
-        nobisect=False,
-        cdt=0.0,
-        cdtrefine=7.0,
-        coarsen=0.0,
-        weighted=0.0,
-        brio_hilbert=1.0,
-        flipinsert=0.0,
-        metric=0.0,
-        varvolume=0.0,
-        fixedvolume=0.0,
-        regionattrib=0.0,
-        insertaddpoints=0.0,
-        diagnose=0.0,
-        convex=0.0,
-        nomergefacet=0.0,
-        nomergevertex=0.0,
-        noexact=0.0,
-        nostaticfilter=0.0,
-        zeroindex=0.0,
-        facesout=0.0,
-        edgesout=0.0,
-        neighout=0.0,
-        voroout=0.0,
-        meditview=0.0,
-        vtkview=0.0,
-        vtksurfview=0.0,
-        nobound=0.0,
-        nonodewritten=0.0,
-        noelewritten=0.0,
-        nofacewritten=0.0,
-        noiterationnum=0.0,
-        nojettison=0.0,
-        docheck=0.0,
-        quiet=0.0,
-        nowarning=0.0,
-        verbose=0.0,
-        vertexperblock=4092.0,
-        tetrahedraperblock=8188.0,
-        shellfaceperblock=2044.0,
-        supsteiner_level=2.0,
-        addsteiner_algo=1.0,
-        coarsen_param=0.0,
-        weighted_param=0.0,
-        fliplinklevel=-1.0,
-        flipstarsize=-1.0,
-        fliplinklevelinc=1.0,
-        opt_max_flip_level=3.0,
-        opt_scheme=7.0,
-        opt_iterations=3.0,
-        smooth_cirterion=1.0,
-        smooth_maxiter=7.0,
-        delmaxfliplevel=1.0,
-        order=1.0,
-        reversetetori=0.0,
-        steinerleft=100000.0,
-        unflip_queue_limit=1000.0,
-        no_sort=0.0,
-        hilbert_order=52.0,
-        hilbert_limit=8.0,
-        brio_threshold=64.0,
-        brio_ratio=0.125,
-        epsilon=1.0e-8,
-        facet_separate_ang_tol=179.9,
-        collinear_ang_tol=179.9,
-        facet_small_ang_tol=15.0,
-        maxvolume=-1.0,
-        maxvolume_length=-1.0,
-        minratio=2.0,
-        opt_max_asp_ratio=1000.0,
-        opt_max_edge_ratio=100.0,
-        mindihedral=0.0,
-        optmaxdihedral=177.0,
-        metric_scale=1.0,
-        smooth_alpha=0.3,
-        coarsen_percent=1.0,
-        elem_growth_ratio=0.0,
-        refine_progress_ratio=0.333,
-        switches=None,
-        bgmeshfilename="",
-        bgmesh=None,
+        plc: bool = True,
+        psc: bool = False,
+        refine: bool = False,
+        quality: bool = True,
+        nobisect: bool = False,
+        cdt: bool = False,
+        coarsen: bool = False,
+        weighted: bool = False,
+        brio_hilbert: bool = True,
+        flipinsert: bool = False,
+        metric: bool = False,
+        varvolume: bool = False,
+        fixedvolume: bool = False,
+        regionattrib: bool = False,
+        insertaddpoints: bool = False,
+        diagnose: bool = False,
+        convex: bool = False,
+        nomergefacet: bool = False,
+        nomergevertex: bool = False,
+        noexact: bool = False,
+        nostaticfilter: bool = False,
+        zeroindex: bool = False,
+        facesout: bool = False,
+        edgesout: bool = False,
+        neighout: bool = False,
+        voroout: bool = False,
+        meditview: bool = False,
+        vtkview: bool = False,
+        vtksurfview: bool = False,
+        nobound: bool = False,
+        nonodewritten: bool = False,
+        noelewritten: bool = False,
+        nofacewritten: bool = False,
+        noiterationnum: bool = False,
+        nojettison: bool = False,
+        docheck: bool = False,
+        quiet: bool = False,
+        nowarning: bool = False,
+        verbose: bool = 0.0,
+        cdtrefine: float = 7.0,
+        vertexperblock: int = 4092,
+        tetrahedraperblock: int = 8188,
+        shellfaceperblock: int = 2044,
+        supsteiner_level: int = 2,
+        addsteiner_algo: int = 1,
+        coarsen_param: int = 0,
+        weighted_param: int = 0,
+        fliplinklevel: int = -1,
+        flipstarsize: int = -1,
+        fliplinklevelinc: int = 1,
+        opt_max_flip_level: int = 3,
+        opt_scheme: int = 7,
+        opt_iterations: int = 3,
+        smooth_cirterion: int = 1,
+        smooth_maxiter: int = 7,
+        delmaxfliplevel: int = 1,
+        order: int = 1,
+        reversetetori: int = 0,
+        steinerleft: int = 100000,
+        unflip_queue_limit: int = 1000,
+        no_sort: bool = False,
+        hilbert_order: int = 52,
+        hilbert_limit: int = 8,
+        brio_threshold: int = 64,
+        brio_ratio: float = 0.125,
+        epsilon: float = 1.0e-8,
+        facet_separate_ang_tol: float = 179.9,
+        collinear_ang_tol: float = 179.9,
+        facet_small_ang_tol: float = 15.0,
+        maxvolume: float = -1.0,
+        maxvolume_length: float = -1.0,
+        minratio: float = 2.0,
+        opt_max_asp_ratio: float = 1000.0,
+        opt_max_edge_ratio: float = 100.0,
+        mindihedral: float = 0.0,
+        optmaxdihedral: float = 177.0,
+        metric_scale: float = 1.0,
+        smooth_alpha: float = 0.3,
+        coarsen_percent: float = 1.0,
+        elem_growth_ratio: float = 0.0,
+        refine_progress_ratio: float = 0.333,
+        switches: str | None = None,
+        bgmeshfilename: str = "",
+        bgmesh: UnstructuredGrid | None = None,
     ):
-        """Generate tetrahedrals interior to the surface mesh.
+        """
+        Generate tetrahedrals interior to the surface mesh.
 
-        Returns nodes and elements belonging to the all tetrahedral
-        mesh.
+        Returns nodes and elements belonging to the all tetrahedral mesh.
 
-        The tetrahedral generator uses the C++ library TetGen and can
-        be configured by either using a string of ``switches`` or by
-        changing the underlying behavior using optional inputs.
+        The tetrahedral generator uses the C++ library TetGen and can be
+        configured by either using a string of ``switches`` or by changing the
+        underlying behavior using optional inputs.
 
-        Should the user desire more control over the mesh
-        tetrahedralization or wish to control the tetrahedralization
-        in a more pythonic manner, use the optional inputs rather than
-        inputting switches.
+        Should the user desire more control over the mesh tetrahedralization or
+        wish to control the tetrahedralization in a more pythonic manner, use
+        the optional inputs rather than inputting switches.
 
         Parameters
         ----------
         quality : bool, optional
-            Enables/disables mesh improvement. Enabled by default.
-            Disable this to speed up mesh generation while sacrificing
-            quality. Default True.
+            Enables/disables mesh improvement. Enabled by default. Disable
+            this to speed up mesh generation while sacrificing quality. Default
+            True.
 
         minratio : double, default: 2.0
-            Maximum allowable radius-edge ratio.  Must be greater than
-            1.0 the closer to 1.0, the higher the quality of the mesh.
-            Be sure to raise ``steinerleft`` to allow for the addition of
-            points to improve the quality of the mesh. Avoid overly
-            restrictive requirements, otherwise, meshing will appear
-            to hang.
-
-            Testing has showed that 1.1 is a reasonable input for a
-            high quality mesh.
-
-        mindihedral : double, default: 0.0
-            Minimum allowable dihedral angle. The larger this number,
-            the higher the quality of the resulting mesh. Be sure to
+            Maximum allowable radius-edge ratio. Must be greater than 1.0 the
+            closer to 1.0, the higher the quality of the mesh. Be sure to
             raise ``steinerleft`` to allow for the addition of points to
             improve the quality of the mesh. Avoid overly restrictive
             requirements, otherwise, meshing will appear to hang.
 
-            Testing has shown that 10 is a reasonable input
+            Testing has showed that 1.1 is a reasonable input for a high
+            quality mesh.
 
-        verbose : int, default: 0
+        mindihedral : double, default: 0.0
+            Minimum allowable dihedral angle. The larger this number, the
+            higher the quality of the resulting mesh. Be sure to raise
+            ``steinerleft`` to allow for the addition of points to improve the
+            quality of the mesh. Avoid overly restrictive requirements,
+            otherwise, meshing will appear to hang.
+
+            Testing has shown that 10.0 is a reasonable input.
+
+        verbose : bool, default: False
             Controls the underlying TetGen library to output text to
-            console. Users using iPython will not see this output.
-            Setting to 1 enables some information about the mesh
-            generation while setting verbose to 2 enables more debug
-            output. Default is no output
+            console. Users using ``ipython`` will not see this output. Setting
+            to 1 enables some information about the mesh generation while
+            setting verbose to 2 enables more debug output. Default is no
+            output
 
         nobisect : bool, default: False
             Controls if Steiner points are added to the input surface
             mesh. When enabled, the surface mesh will be modified.
 
-            Testing has shown that if your input surface mesh is
-            already well shaped, disabling this setting will improve
-            meshing speed and mesh quality.
+            Testing has shown that if your input surface mesh is already well
+            shaped, disabling this setting will improve meshing speed and mesh
+            quality.
 
         steinerleft : int, default: 100000
-            Steiner points are points added to the original surface
-            mesh to create a valid tetrahedral mesh. Settings this to
-            -1 will allow tetgen to create an unlimited number of
-            steiner points, but the program will likely hang if this
-            is used in combination with narrow quality requirements.
+            Steiner points are points added to the original surface mesh to
+            create a valid tetrahedral mesh. Settings this to -1 will allow
+            tetgen to create an unlimited number of steiner points, but the
+            program will likely hang if this is used in combination with narrow
+            quality requirements.
 
-            The first type of Steiner points are used in creating an
-            initial tetrahedralization of PLC. These Steiner points
-            are mandatory in order to create a valid
-            tetrahedralization
+            The first type of Steiner points are used in creating an initial
+            tetrahedralization of PLC. These Steiner points are mandatory in
+            order to create a valid tetrahedralization
 
-            The second type of Steiner points are used in creating
-            quality tetra- hedral meshes of PLCs. These Steiner points
-            are optional, while they may be necessary in order to
-            improve the mesh quality or to conform the size of mesh
-            elements.
+            The second type of Steiner points are used in creating quality
+            tetra- hedral meshes of PLCs. These Steiner points are optional,
+            while they may be necessary in order to improve the mesh quality or
+            to conform the size of mesh elements.
 
-        order : int, default: 2
-            Controls whether TetGen creates linear tetrahedrals or
-            quadradic tetrahedrals. Set order to 2 to output
-            quadradic tetrahedrals.
+        order : int, default: 1
+            Controls whether TetGen creates linear tetrahedrals or quadradic
+            tetrahedrals. Set order to 2 to output quadradic tetrahedrals.
 
         bgmeshfilename : str, optional
             Filename of the background mesh.
+
+        regionattrib : bool, default: False
+            Return region attributes.
 
         bgmesh : pv.UnstructuredGrid
             Background mesh to be processed. Must be composed of only linear
@@ -502,11 +516,18 @@ class TetGen:
 
         Returns
         -------
-        nodes : numpy.ndarray
+        nodes : np.ndarray[np.float64]
             Array of nodes representing the tetrahedral mesh.
 
-        elems : numpy.ndarray
+        elems : np.ndarray[np.int32]
             Array of elements representing the tetrahedral mesh.
+
+        attr : np.ndarray[np.int64] | None
+            Region attributes. ``None`` unless ``regionattrib=True`` or the
+            tetgen flag ``A`` is passed.
+
+        triface_markers : np.ndarray[np.int32]
+            Marker for each face in :attr:`TetGen.triface_list`.
 
         Examples
         --------
@@ -522,139 +543,138 @@ class TetGen:
 
         Notes
         -----
-        There are many other options and the TetGen documentation
-        contains descriptions only for the switches of the original
-        C++ program.  This is the relationship between tetgen switches
-        and python optional inputs:
+        There are many other options and the TetGen documentation contains
+        descriptions only for the switches of the original C++ program. This is
+        the relationship between tetgen switches and python optional inputs:
 
-        Switches of TetGen.
-
-        +---------------------------+---------------+---------+
-        | Option                    | Switch        | Default |
-        +---------------------------+---------------+---------+
-        | plc                       | ``'-p'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | psc                       | ``'-s'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | refine                    | ``'-r'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | quality                   | ``'-q'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | nobisect                  | ``'-Y'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | cdt                       | ``'-D'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | cdtrefine                 | ``'-D#'``     | 7.      |
-        +---------------------------+---------------+---------+
-        | coarsen                   | ``'-R'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | weighted                  | ``'-w'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | brio_hilbert              | ``'-b'``      | 1.      |
-        +---------------------------+---------------+---------+
-        | flipinsert                | ``'-L'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | metric                    | ``'-m'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | varvolume                 | ``'-a'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | fixedvolume               | ``'-a'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | regionattrib              | ``'-A'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | insertaddpoints           | ``'-i'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | diagnose                  | ``'-d'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | convex                    | ``'-c'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | nomergefacet              | ``'-M'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | nomergevertex             | ``'-M'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | noexact                   | ``'-X'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | nostaticfilter            | ``'-X'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | zeroindex                 | ``'-z'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | facesout                  | ``'-f'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | edgesout                  | ``'-e'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | neighout                  | ``'-n'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | voroout                   | ``'-v'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | meditview                 | ``'-g'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | vtkview                   | ``'-k'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | vtksurfview               | ``'-k'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | nobound                   | ``'-B'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | nonodewritten             | ``'-N'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | noelewritten              | ``'-E'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | nofacewritten             | ``'-F'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | noiterationnum            | ``'-I'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | nojettison                | ``'-J'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | docheck                   | ``'-C'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | quiet                     | ``'-Q'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | nowarning                 | ``'-W'``      | 0.      |
-        +---------------------------+---------------+---------+
-        | verbose                   | ``'-V'``      | 0.      |
-        +---------------------------+---------------+---------+
-
-        Parameters of TetGen.
+        Switches of TetGen:
 
         +---------------------------+---------------+---------+
         | Option                    | Switch        | Default |
         +---------------------------+---------------+---------+
-        | vertexperblock            | ``'-x'``      | 4092.   |
+        | plc                       | ``'-p'``      | False   |
         +---------------------------+---------------+---------+
-        | tetrahedraperblock        | ``'-x'``      | 8188.   |
+        | psc                       | ``'-s'``      | False   |
         +---------------------------+---------------+---------+
-        | shellfaceperblock         | ``'-x'``      | 2044.   |
+        | refine                    | ``'-r'``      | False   |
         +---------------------------+---------------+---------+
-        | supsteiner_level          | ``'-Y/'``     | 2.      |
+        | quality                   | ``'-q'``      | False   |
         +---------------------------+---------------+---------+
-        | addsteiner_algo           | ``'-Y//'``    | 1.      |
+        | nobisect                  | ``'-Y'``      | False   |
         +---------------------------+---------------+---------+
-        | coarsen_param             | ``'-R'``      | 0.      |
+        | cdt                       | ``'-D'``      | False   |
         +---------------------------+---------------+---------+
-        | weighted_param            | ``'-w'``      | 0.      |
+        | coarsen                   | ``'-R'``      | False   |
         +---------------------------+---------------+---------+
-        | opt_max_flip_level        | ``'-O'``      | 3.      |
+        | weighted                  | ``'-w'``      | False   |
         +---------------------------+---------------+---------+
-        | opt_scheme                | ``'-O/#'``    | 7.      |
+        | brio_hilbert              | ``'-b'``      | True    |
         +---------------------------+---------------+---------+
-        | opt_iterations            | ``'-O//#'``   | 3.      |
+        | flipinsert                | ``'-L'``      | False   |
         +---------------------------+---------------+---------+
-        | smooth_cirterion          | ``'-s'``      | 1.      |
+        | metric                    | ``'-m'``      | False   |
         +---------------------------+---------------+---------+
-        | smooth_maxiter            | ``'-s'``      | 7.      |
+        | varvolume                 | ``'-a'``      | False   |
         +---------------------------+---------------+---------+
-        | order                     | ``'-o'``      | 1.      |
+        | fixedvolume               | ``'-a'``      | False   |
         +---------------------------+---------------+---------+
-        | reversetetori             | ``'-o/'``     | 0.      |
+        | regionattrib              | ``'-A'``      | False   |
         +---------------------------+---------------+---------+
-        | steinerleft               | ``'-S'``      | 0.      |
+        | insertaddpoints           | ``'-i'``      | False   |
         +---------------------------+---------------+---------+
-        | unflip_queue_limit        | ``'-U#'``     | 1000.   |
+        | diagnose                  | ``'-d'``      | False   |
         +---------------------------+---------------+---------+
-        | hilbert_order             | ``'-b///'``   | 52.     |
+        | convex                    | ``'-c'``      | False   |
         +---------------------------+---------------+---------+
-        | hilbert_limit             | ``'-b//'``    |  8.     |
+        | nomergefacet              | ``'-M'``      | False   |
         +---------------------------+---------------+---------+
-        | brio_threshold            | ``'-b'``      | 64.     |
+        | nomergevertex             | ``'-M'``      | False   |
+        +---------------------------+---------------+---------+
+        | noexact                   | ``'-X'``      | False   |
+        +---------------------------+---------------+---------+
+        | nostaticfilter            | ``'-X'``      | False   |
+        +---------------------------+---------------+---------+
+        | zeroindex                 | ``'-z'``      | False   |
+        +---------------------------+---------------+---------+
+        | facesout                  | ``'-f'``      | False   |
+        +---------------------------+---------------+---------+
+        | edgesout                  | ``'-e'``      | False   |
+        +---------------------------+---------------+---------+
+        | neighout                  | ``'-n'``      | False   |
+        +---------------------------+---------------+---------+
+        | voroout                   | ``'-v'``      | False   |
+        +---------------------------+---------------+---------+
+        | meditview                 | ``'-g'``      | False   |
+        +---------------------------+---------------+---------+
+        | vtkview                   | ``'-k'``      | False   |
+        +---------------------------+---------------+---------+
+        | vtksurfview               | ``'-k'``      | False   |
+        +---------------------------+---------------+---------+
+        | nobound                   | ``'-B'``      | False   |
+        +---------------------------+---------------+---------+
+        | nonodewritten             | ``'-N'``      | False   |
+        +---------------------------+---------------+---------+
+        | noelewritten              | ``'-E'``      | False   |
+        +---------------------------+---------------+---------+
+        | nofacewritten             | ``'-F'``      | False   |
+        +---------------------------+---------------+---------+
+        | noiterationnum            | ``'-I'``      | False   |
+        +---------------------------+---------------+---------+
+        | nojettison                | ``'-J'``      | False   |
+        +---------------------------+---------------+---------+
+        | docheck                   | ``'-C'``      | False   |
+        +---------------------------+---------------+---------+
+        | quiet                     | ``'-Q'``      | False   |
+        +---------------------------+---------------+---------+
+        | nowarning                 | ``'-W'``      | False   |
+        +---------------------------+---------------+---------+
+        | verbose                   | ``'-V'``      | False   |
+        +---------------------------+---------------+---------+
+
+        Parameters of TetGen:
+
+        +---------------------------+---------------+---------+
+        | Option                    | Switch        | Default |
+        +---------------------------+---------------+---------+
+        | cdtrefine                 | ``'-D#'``     | 7       |
+        +---------------------------+---------------+---------+
+        | vertexperblock            | ``'-x'``      | 4092    |
+        +---------------------------+---------------+---------+
+        | tetrahedraperblock        | ``'-x'``      | 8188    |
+        +---------------------------+---------------+---------+
+        | shellfaceperblock         | ``'-x'``      | 2044    |
+        +---------------------------+---------------+---------+
+        | supsteiner_level          | ``'-Y/'``     | 2       |
+        +---------------------------+---------------+---------+
+        | addsteiner_algo           | ``'-Y//'``    | 1       |
+        +---------------------------+---------------+---------+
+        | coarsen_param             | ``'-R'``      | 0       |
+        +---------------------------+---------------+---------+
+        | weighted_param            | ``'-w'``      | 0       |
+        +---------------------------+---------------+---------+
+        | opt_max_flip_level        | ``'-O'``      | 3       |
+        +---------------------------+---------------+---------+
+        | opt_scheme                | ``'-O/#'``    | 7       |
+        +---------------------------+---------------+---------+
+        | opt_iterations            | ``'-O//#'``   | 3       |
+        +---------------------------+---------------+---------+
+        | smooth_cirterion          | ``'-s'``      | 1       |
+        +---------------------------+---------------+---------+
+        | smooth_maxiter            | ``'-s'``      | 7       |
+        +---------------------------+---------------+---------+
+        | order                     | ``'-o'``      | 1       |
+        +---------------------------+---------------+---------+
+        | reversetetori             | ``'-o/'``     | 0       |
+        +---------------------------+---------------+---------+
+        | steinerleft               | ``'-S'``      | 100000  |
+        +---------------------------+---------------+---------+
+        | unflip_queue_limit        | ``'-U#'``     | 1000    |
+        +---------------------------+---------------+---------+
+        | hilbert_order             | ``'-b///'``   | 52      |
+        +---------------------------+---------------+---------+
+        | hilbert_limit             | ``'-b//'``    | 8       |
+        +---------------------------+---------------+---------+
+        | brio_threshold            | ``'-b'``      | 64      |
         +---------------------------+---------------+---------+
         | brio_ratio                | ``'-b/'``     |0.125.   |
         +---------------------------+---------------+---------+
@@ -700,7 +720,7 @@ class TetGen:
 
         # Validate background mesh parameters
         if bgmesh and bgmeshfilename:
-            raise ValueError("Cannot specify both bgmesh and bgmeshfilename")
+            raise ValueError("Cannot specify both `bgmesh` and `bgmeshfilename`")
         if bgmesh or bgmeshfilename:
             # Passing a background mesh only makes sense with metric set to true
             # (will be silently ignored otherwise)
@@ -816,98 +836,299 @@ class TetGen:
         except RuntimeError as e:
             raise RuntimeError(
                 "Failed to tetrahedralize.\n"
-                + "May need to repair surface by making it manifold:\n"
-                + str(e)
+                f"May need to repair surface by making it manifold:\n{str(e)}"
             )
 
         # Unpack results (backwards compatible)
         if len(result) >= 8:
             (
-                self.node,
-                self.elem,
-                self.attributes,
-                self.triface_markers,
-                self.trifaces,
-                self.face2tet,
-                self.edgelist,
-                self.edgemarkers,
+                self._node,
+                self._elem,
+                self._attributes,
+                self._triface_markers,
+                self._trifaces,
+                self._face2tet,
+                self._edges,
+                self._edge_markers,
             ) = result
-            # Convenience aliases for downstream consumers (GUI expects these names)
-            self.points = self.node
-            self.faces = self.trifaces
-            self.triface_list = self.trifaces
-            self.f = self.trifaces
-            self.face_markers = self.triface_markers
-            self.trifacemarkers = self.triface_markers
-            self.facetmarkerlist = self.triface_markers
-            self.face_marker_list = self.triface_markers
-            self.shell_face_markers = self.triface_markers
-            # Edge aliases
-            self.edges = self.edgelist
-            self.edge_markers = self.edgemarkers
         else:
-            self.node, self.elem, self.attributes, self.triface_markers = result
-            self.points = self.node
+            self._node, self._elem, self._attributes, self._triface_markers = result
 
         # check if a mesh was generated
-        if not np.any(self.node):
+        if not np.any(self._node):
             raise RuntimeError(
                 "Failed to tetrahedralize.\nMay need to repair surface by making it manifold"
             )
 
-        # Return nodes and elements
         LOG.info(
             "Generated mesh with %d nodes and %d elements",
-            self.node.shape[0],
-            self.elem.shape[0],
+            self._node.shape[0],
+            self._elem.shape[0],
         )
         self._updated = True
 
         # return with attributes if they exist
-        if self.attributes is not None:
-            return self.node, self.elem, self.attributes, self.triface_markers
+        if self._attributes is not None:
+            return self._node, self._elem, self._attributes, self._triface_markers
 
-        return self.node, self.elem, None, self.triface_markers
+        return self._node, self._elem, None, self._triface_markers
 
     @property
-    def grid(self):
-        """Return a :class:`pyvista.UnstructuredGrid`."""
-        if self.node is None:
-            raise RuntimeError("Run Tetrahedralize first")
+    def face2tet(self) -> NDArray:
+        """Return the mapping between each triface and the tetrahedral elements."""
+        return self._face2tet
+
+    @property
+    def edges(self) -> NDArray[np.int32]:
+        """
+        Return the ``(n, 2)`` array of edges composing the tetrahedralized grid.
+
+        This attribute is only available after running
+        :meth:`TetGen.tetrahedralize`.
+
+        Examples
+        --------
+        Tetrahedralize a sphere and the first 10 edges composing the tetrahedralized
+        grid.
+
+        >>> import tetgen
+        >>> import pyvista as pv
+        >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tet = tetgen.TetGen(sphere)
+        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> tet.edges[:10]
+        array([[46, 47],
+               [46, 40],
+               [38, 40],
+               [38, 47],
+               [38, 46],
+               [40, 47],
+               [11,  4],
+               [11,  2],
+               [ 3,  2],
+               [ 3,  4]], dtype=int32)
+
+        """
+        if self._edges is None:
+            raise MeshNotTetrahedralizedError
+        return self._edges
+
+    @property
+    def edge_markers(self) -> NDArray[np.int32]:
+        """
+        Return the ``(n, )`` array of edge markers denoting if an edge is internal.
+
+        Interior edges are 0 and exterior edges are -1.
+
+        This attribute is only available after running
+        :meth:`TetGen.tetrahedralize`.
+
+        Examples
+        --------
+        Tetrahedralize a sphere and create a mask of internal edges, ``is_internal``.
+
+        >>> import tetgen
+        >>> import pyvista as pv
+        >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tet = tetgen.TetGen(sphere)
+        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> is_internal = tet.edge_markers == 0
+        >>> is_internal[:10]
+        array([ True,  True, False, False,  True, False,  True,  True, False,
+               False])
+
+        """
+        if self._edge_markers is None:
+            raise MeshNotTetrahedralizedError
+        return self._edge_markers
+
+    @property
+    def triface_markers(self) -> NDArray[np.int32]:
+        """
+        Return the ``(n, )`` array of markers for each triangular face in :attr:`TetGen.trifaces`.
+
+        Interior faces are denoted with 0 and exterior faces are marked as -1.
+
+        This attribute is only available after running
+        :meth:`TetGen.tetrahedralize`.
+
+        Examples
+        --------
+        Tetrahedralize a sphere and return the array of the triangular faces
+        that compose the tetrahedralized grid.
+
+        >>> import tetgen
+        >>> import pyvista as pv
+        >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tet = tetgen.TetGen(sphere)
+        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> is_interior = tet.triface_markers == 0
+        >>> is_interior[:10]
+        array([ True,  True,  True, False,  True,  True,  True, False,  True,
+                True])
+
+        """
+        if self._triface_markers is None:
+            raise MeshNotTetrahedralizedError
+        return self._triface_markers
+
+    @property
+    def trifaces(self) -> NDArray[np.int32]:
+        """
+        Return the ``(n, 3)`` array of triangular faces composing the tetrahedral mesh.
+
+        The indices of these faces correspond to a node in :attr:`TetGen.node`.
+
+        This attribute is only available after running
+        :meth:`TetGen.tetrahedralize`.
+
+        Examples
+        --------
+        Tetrahedralize a sphere and return the array of the triangular faces
+        that compose the tetrahedralized grid.
+
+        >>> import tetgen
+        >>> import pyvista as pv
+        >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tet = tetgen.TetGen(sphere)
+        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> tet.trifaces
+        array([[107,   1,   9],
+               [107,  81,   1],
+               [  9,  81, 107],
+               ...,
+               [ 15,   6, 109],
+               [ 15,   7,   6],
+               [ 15,   6,  14]], shape=(814, 3), dtype=int32)
+
+        """
+        if self._trifaces is None:
+            raise MeshNotTetrahedralizedError
+        return self._trifaces
+
+    @property
+    def node(self) -> NDArray[np.float64]:
+        """
+        Return an ``(n, 3)`` array of nodes composing the tetrahedralized surface.
+
+        This attribute is only available after running
+        :meth:`TetGen.tetrahedralize`.
+
+        Examples
+        --------
+        Tetrahedralize a sphere and return the first three nodes.
+
+        >>> import tetgen
+        >>> import pyvista as pv
+        >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tet = tetgen.TetGen(sphere)
+        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> tet.node[:3]
+        array([[ 0.        ,  0.        ,  0.5       ],
+               [ 0.        ,  0.        , -0.5       ],
+               [ 0.17101008,  0.        ,  0.46984631]])
+
+        """
+        if self._node is None:
+            raise MeshNotTetrahedralizedError
+        return self._node
+
+    @property
+    def elem(self) -> NDArray[np.float64]:
+        """
+        Return an ``(n, 4)`` or ``(n, 10)`` array of elements composing the grid.
+
+        This attribute is only available after running
+        :meth:`TetGen.tetrahedralize`.
+
+        Examples
+        --------
+        Tetrahedralize a sphere and return the first five elements.
+
+        >>> import tetgen
+        >>> import pyvista as pv
+        >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tet = tetgen.TetGen(sphere)
+        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> tet.elem[:5]
+        array([[ 81,   9,   1, 107],
+               [ 58,  50,   0,  98],
+               [  0, 104,  58,  98],
+               [ 98, 105,  90,  87],
+               [ 82,  91,  92, 102]], dtype=int32)
+
+        """
+        if self._elem is None:
+            raise MeshNotTetrahedralizedError
+        return self._elem
+
+    @property
+    def grid(self) -> UnstructuredGrid:
+        """
+        Return a :class:`pyvista.UnstructuredGrid` of the tetrahedralized surface.
+
+        This attribute is only available after running
+        :meth:`TetGen.tetrahedralize`.
+
+        Examples
+        --------
+        Tetrahedralize a ``pyvista.PolyData`` surface mesh into a
+        ``pyvista.UnstructuredGrid``.
+
+        >>> import tetgen
+        >>> import pyvista as pv
+        >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+        >>> tet = tetgen.TetGen(sphere)
+        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> grid = tet.grid
+        >>> grid
+        UnstructuredGrid (...)
+          N Cells:    367
+          N Points:   110
+          X Bounds:   -4.924e-01, 4.924e-01
+          Y Bounds:   -4.683e-01, 4.683e-01
+          Z Bounds:   -5.000e-01, 5.000e-01
+          N Arrays:   0
+
+        """
+        if self._node is None:
+            raise MeshNotTetrahedralizedError
+        if self._elem is None:
+            raise MeshNotTetrahedralizedError
 
         if self._grid is not None and not self._updated:
             return self._grid
 
-        buf = np.empty((self.elem.shape[0], 1), pv.ID_TYPE)
-        cell_type = np.empty(self.elem.shape[0], dtype="uint8")
-        if self.elem.shape[1] == 4:  # linear
+        buf = np.empty((self._elem.shape[0], 1), dtype=np.int32)
+        cell_type = np.empty(self._elem.shape[0], dtype="uint8")
+        if self._elem.shape[1] == 4:  # linear
             buf[:] = 4
             cell_type[:] = 10
-        elif self.elem.shape[1] == 10:  # quadradic
+        elif self._elem.shape[1] == 10:  # quadradic
             buf[:] = 10
             cell_type[:] = 24
         else:
-            raise Exception("Invalid element array shape %s" % str(self.elem.shape))
+            raise RuntimeError(f"Invalid element array shape {self._elem.shape}")
 
-        cells = np.hstack((buf, self.elem))
-        self._grid = pv.UnstructuredGrid(cells, cell_type, self.node)
+        cells = np.hstack((buf, self._elem))
+        self._grid = UnstructuredGrid(cells, cell_type, self._node)
 
         self._updated = False
         return self._grid
 
-    def write(self, filename, binary=False):
+    def write(self, filename: str | Path, binary: bool = True) -> None:
         """Write an unstructured grid to disk.
 
         Parameters
         ----------
-        filename : str
+        filename : str | pathlib.Path
             Filename of grid to be written. The file extension will
             select the type of writer to use.
 
             - ``".vtk"`` will use the vtk legacy writer
             - ``".vtu"`` will select the VTK XML writer
 
-        binary : bool, default: False
+        binary : bool, default: True
             Writes as a binary file by default. Set to ``False`` to write
             ASCII.
 
