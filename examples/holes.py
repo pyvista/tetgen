@@ -24,7 +24,7 @@ tgen.add_hole([-0.5, 0.0, 0.0])
 tgen.add_hole([0.5, 0.0, 0.0])
 
 # tetrahedralize the mesh using TetGen
-nodes, elem = tgen.tetrahedralize(switches="pzq1.4")
+nodes, elem, _, _ = tgen.tetrahedralize(switches="pzq1.4")
 grid = tgen.grid
 
 # plot a slice to see the holes

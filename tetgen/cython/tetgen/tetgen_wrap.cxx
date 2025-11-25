@@ -74,6 +74,52 @@ void tetgenio_wrap::LoadArray(int npoints, double* points, int nfaces,
   }
 }
 
+// Optional variant allowing per-facet markers (parallel array of length nfaces)
+void tetgenio_wrap::LoadArrayWithMarkers(int npoints, double* points, int nfaces,
+                             int* facearr, int* facemarkers)
+{
+  facet *f;
+  polygon *p;
+  int i, j;
+  int count = 0;
+
+  // Allocate memory for points and store them
+  numberofpoints = npoints;
+  pointlist = new double[npoints*3];
+
+  for(i = 0; i < npoints*3; i++) {
+    pointlist[i] = points[i];
+  }
+
+  // Store the number of faces and allocate memory
+  numberoffacets = nfaces;
+  facetlist = new tetgenio::facet[nfaces];
+  facetmarkerlist = new int[nfaces];
+
+  // Load in faces as facets
+  for (i = 0; i < nfaces; i++) {
+    // Initialize a face
+    f = &facetlist[i];
+    init(f);
+
+    // Each facet has one polygon, no hole, and each polygon has three vertices
+    f->numberofpolygons = 1;
+    f->polygonlist = new tetgenio::polygon[1];
+
+    p = &f->polygonlist[0];
+    init(p);
+    p->numberofvertices = 3;
+    p->vertexlist = new int[3];
+    for (j = 0; j < 3; j++) {
+      p->vertexlist[j] = facearr[count];
+      count++;
+    }
+
+    // Set facet marker if provided
+    facetmarkerlist[i] = (facemarkers != NULL) ? facemarkers[i] : 0;
+  }
+}
+
 void tetgenio_wrap::LoadMTRArray(int npoints, double* points, int ntets,
                                  int* tetarr, double* mtrpoints)
 {

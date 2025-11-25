@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 import pyvista as pv
 import tetgen
+from tetgen.pytetgen import MeshNotTetrahedralizedError
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -42,6 +43,36 @@ def test_tetrahedralize_swithces():
     assert grid.n_points
 
 
+def test_attributes() -> None:
+    sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
+    tet = tetgen.TetGen(sphere)
+
+    with pytest.raises(MeshNotTetrahedralizedError):
+        tet.grid
+    with pytest.raises(MeshNotTetrahedralizedError):
+        tet.triface_markers
+    with pytest.raises(MeshNotTetrahedralizedError):
+        tet.trifaces
+    with pytest.raises(MeshNotTetrahedralizedError):
+        tet.node
+    with pytest.raises(MeshNotTetrahedralizedError):
+        tet.elem
+    with pytest.raises(MeshNotTetrahedralizedError):
+        tet.edge_markers
+    with pytest.raises(MeshNotTetrahedralizedError):
+        tet.edges
+
+    tet.tetrahedralize(switches="pq1.1/10YQ")
+
+    assert isinstance(tet.grid, pv.UnstructuredGrid)
+    assert isinstance(tet.node, np.ndarray)
+    assert isinstance(tet.elem, np.ndarray)
+    assert isinstance(tet.triface_markers, np.ndarray)
+    assert isinstance(tet.trifaces, np.ndarray)
+    assert isinstance(tet.edge_markers, np.ndarray)
+    assert isinstance(tet.edges, np.ndarray)
+
+
 def test_numpy_tetrahedralize(tmpdir):
     v = np.array(
         [
@@ -75,7 +106,7 @@ def test_numpy_tetrahedralize(tmpdir):
 
     tgen = tetgen.TetGen(v, f)
 
-    nodes, elems = tgen.tetrahedralize()
+    nodes, elems, _, _ = tgen.tetrahedralize()
     assert np.any(nodes)
     assert np.any(elems)
 
