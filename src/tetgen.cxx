@@ -117,20 +117,20 @@ bool tetgenio::load_node_call(FILE* infile, int markers, int uvflag,
       stringptr = findnextnumber(stringptr);
     } // if (useindex)
     if (*stringptr == '\0') {
-      printf("Error:  Point %d has no x coordinate.\n", firstnumber + i);
+        std::cerr << "Error:  Point " << firstnumber + i << " has no x coordinate." << std::endl;
       break;
     }
     x = (REAL) strtod(stringptr, &stringptr);
     stringptr = findnextnumber(stringptr);
     if (*stringptr == '\0') {
-      printf("Error:  Point %d has no y coordinate.\n", firstnumber + i);
+      std::cerr << "Error:  Point " << firstnumber + i << " has no y coordinate." << std::endl;
       break;
     }
     y = (REAL) strtod(stringptr, &stringptr);
     if (mesh_dim == 3) {
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        printf("Error:  Point %d has no z coordinate.\n", firstnumber + i);
+        std::cerr << "Error:  Point " << firstnumber + i << " has no z coordinate." << std::endl;
         break;
       }
       z = (REAL) strtod(stringptr, &stringptr);
@@ -206,7 +206,7 @@ bool tetgenio::load_node(char* filebasename)
   // Try to open a .node file.
   infile = fopen(innodefilename, "r");
   if (infile == (FILE *) NULL) {
-    printf("  Cannot access file %s.\n", innodefilename);
+    std::cerr << "  Cannot access file " << innodefilename << "." << std::endl;
     return false;
   }
   // printf("Opening %s.\n", innodefilename);
@@ -315,14 +315,12 @@ bool tetgenio::load_edge(char* filebasename)
     for (j = 0; j < 2; j++) {
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        printf("Error:  Edge %d is missing vertex %d in %s.\n",
-               i + firstnumber, j + 1, inedgefilename);
+        std::cerr << "Error:  Edge " << i + firstnumber << " is missing vertex " << j + 1 << " in " << inedgefilename << "." << std::endl;
         terminatetetgen(NULL, 1);
       }
       corner = (int) strtol(stringptr, &stringptr, 0);
       if (corner < firstnumber || corner >= numberofpoints + firstnumber) {
-        printf("Error:  Edge %d has an invalid vertex index.\n",
-               i + firstnumber);
+        std::cerr << "Error:  Edge " << i + firstnumber << " has an invalid vertex index." << std::endl;
         terminatetetgen(NULL, 1);
       }
       edgelist[index++] = corner;
@@ -403,14 +401,12 @@ bool tetgenio::load_face(char* filebasename)
     for (j = 0; j < 3; j++) {
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        printf("Error:  Face %d is missing vertex %d in %s.\n",
-               i + firstnumber, j + 1, infilename);
+        std::cerr << "Error:  Face " << i + firstnumber << " is missing vertex " << j + 1 << " in " << infilename << std::endl;
         terminatetetgen(NULL, 1);
       }
       corner = (int) strtol(stringptr, &stringptr, 0);
       if (corner < firstnumber || corner >= numberofpoints + firstnumber) {
-        printf("Error:  Face %d has an invalid vertex index.\n",
-               i + firstnumber);
+        std::cerr << "Error:  Face " << i + firstnumber << " has an invalid vertex index." << std::endl;
         terminatetetgen(NULL, 1);
       }
       trifacelist[index++] = corner;
@@ -470,7 +466,7 @@ bool tetgenio::load_tet(char* filebasename)
   stringptr = readnumberline(inputline, infile, infilename);
   numberoftetrahedra = (int) strtol (stringptr, &stringptr, 0);
   if (numberoftetrahedra <= 0) {
-    printf("Error:  Invalid number of tetrahedra.\n");
+    std::cerr << "Error:  Invalid number of tetrahedra." << std::endl;
     fclose(infile);
     return false;
   }
@@ -487,8 +483,7 @@ bool tetgenio::load_tet(char* filebasename)
     numberoftetrahedronattributes = (int) strtol(stringptr, &stringptr, 0);
   }
   if (numberofcorners != 4 && numberofcorners != 10) {
-    printf("Error:  Wrong number of corners %d (should be 4 or 10).\n",
-           numberofcorners);
+    std::cerr << "Error:  Wrong number of corners " << numberofcorners << " (should be 4 or 10)." << std::endl;
     fclose(infile);
     return false;
   }
@@ -516,14 +511,12 @@ bool tetgenio::load_tet(char* filebasename)
     for (j = 0; j < numberofcorners; j++) {
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        printf("Error:  Tetrahedron %d is missing vertex %d in %s.\n",
-               i + firstnumber, j + 1, infilename);
+        std::cerr << "Error:  Tetrahedron " << (i + firstnumber) << " is missing vertex " << (j + 1) << " in " << infilename << std::endl;
         terminatetetgen(NULL, 1);
       }
       corner = (int) strtol(stringptr, &stringptr, 0);
       if (corner < firstnumber || corner >= numberofpoints + firstnumber) {
-        printf("Error:  Tetrahedron %d has an invalid vertex index.\n",
-               i + firstnumber);
+        std::cerr << "Error:  Tetrahedron " << (i + firstnumber) << " has an invalid vertex index." << std::endl;
         terminatetetgen(NULL, 1);
       }
       tetrahedronlist[index++] = corner;
@@ -578,8 +571,7 @@ bool tetgenio::load_vol(char* filebasename)
   if (volelements != numberoftetrahedra) {
     strcpy(inelefilename, filebasename);
     strcat(infilename, ".ele");
-    printf("Warning:  %s and %s disagree on number of tetrahedra.\n",
-           inelefilename, infilename);
+    std::cerr << "Warning:  " << inelefilename << " and " << infilename << " disagree on number of tetrahedra." << std::endl;
     fclose(infile);
     return false;
   }
@@ -652,16 +644,14 @@ bool tetgenio::load_var(char* filebasename)
       stringptr = readnumberline(inputline, infile, varfilename);
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        printf("Error:  facet constraint %d has no facet marker.\n",
-               firstnumber + i);
+        std::cerr << "Error:  facet constraint " << firstnumber + i << " has no facet marker." << std::endl;
         break;
       } else {
         facetconstraintlist[index++] = (REAL) strtod(stringptr, &stringptr);
       }
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        printf("Error:  facet constraint %d has no maximum area bound.\n",
-               firstnumber + i);
+        std::cerr << "Error:  facet constraint " << firstnumber + i << " has no maximum area bound." << std::endl;
         break;
       } else {
         facetconstraintlist[index++] = (REAL) strtod(stringptr, &stringptr);
@@ -694,24 +684,21 @@ bool tetgenio::load_var(char* filebasename)
       stringptr = readnumberline(inputline, infile, varfilename);
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        printf("Error:  segment constraint %d has no frist endpoint.\n",
-               firstnumber + i);
+        std::cerr << "Error:  segment constraint " << firstnumber + i << " has no first endpoint." << std::endl;
         break;
       } else {
         segmentconstraintlist[index++] = (REAL) strtod(stringptr, &stringptr);
       }
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        printf("Error:  segment constraint %d has no second endpoint.\n",
-               firstnumber + i);
+        std::cerr << "Error:  segment constraint " << firstnumber + i << " has no second endpoint." << std::endl;
         break;
       } else {
         segmentconstraintlist[index++] = (REAL) strtod(stringptr, &stringptr);
       }
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        printf("Error:  segment constraint %d has no maximum length bound.\n",
-               firstnumber + i);
+        std::cerr << "Error:  segment constraint " << firstnumber + i << " has no maximum length bound." << std::endl;
         break;
       } else {
         segmentconstraintlist[index++] = (REAL) strtod(stringptr, &stringptr);
@@ -758,7 +745,7 @@ bool tetgenio::load_mtr(char* filebasename)
   stringptr = readnumberline(inputline, infile, mtrfilename);
   ptnum = (int) strtol (stringptr, &stringptr, 0);
   if (ptnum != numberofpoints) {
-    printf("  !! Point numbers are not equal. Ignored.\n");
+    std::cerr << "Error:  Point numbers are not equal. Ignored." << std::endl;
     fclose(infile);
     return false;
   }
@@ -771,7 +758,7 @@ bool tetgenio::load_mtr(char* filebasename)
       (numberofpointmtrs != 6)) {
     // Column number doesn't match.
     numberofpointmtrs = 0;
-    printf("  !! Metric size does not match (1, 3, or 6). Ignored.\n");
+    std::cerr << ("Error: Metric size does not match (1, 3, or 6). Ignored.") << std::endl;
     fclose(infile);
     return false;
   }
@@ -787,8 +774,7 @@ bool tetgenio::load_mtr(char* filebasename)
     stringptr = readnumberline(inputline, infile, mtrfilename);
     for (j = 0; j < numberofpointmtrs; j++) {
       if (*stringptr == '\0') {
-        printf("Error:  Metric %d is missing value #%d in %s.\n",
-               i + firstnumber, j + 1, mtrfilename);
+        std::cerr << "Error:  Metric " << i + firstnumber << " is missing value #" << j + 1 << " in " << mtrfilename << "." << std::endl;
         terminatetetgen(NULL, 1);
       }
       mtr = (REAL) strtod(stringptr, &stringptr);
@@ -879,8 +865,7 @@ bool tetgenio::load_poly(char* filebasename)
     // .poly doesn't exist! Try to open a .smesh file.
     infile = fopen(insmeshfilename, "r");
     if (infile == (FILE *) NULL) {
-      printf("  Cannot access file %s and %s.\n",
-             inpolyfilename, insmeshfilename);
+      std::cerr << "  Cannot access file " << inpolyfilename << " and " << insmeshfilename << "." << std::endl;
       return false;
     } else {
       // printf("Opening %s.\n", insmeshfilename);
@@ -934,12 +919,12 @@ bool tetgenio::load_poly(char* filebasename)
   }
 
   if ((mesh_dim != 3) && (mesh_dim != 2)) {
-    printf("Input error:  TetGen only works for 2D & 3D point sets.\n");
+    std::cerr << "Input error:  TetGen only works for 2D & 3D point sets." << std::endl;
     fclose(infile);
     return false;
   }
   if (numberofpoints < (mesh_dim + 1)) {
-    printf("Input error:  TetGen needs at least %d points.\n", mesh_dim + 1);
+    std::cerr << "Input error:  TetGen needs at least %d " << mesh_dim + 1 << "points." <<std::endl;
     fclose(infile);
     return false;
   }
@@ -1002,7 +987,7 @@ bool tetgenio::load_poly(char* filebasename)
         }
         // Each facet should has at least one polygon.
         if (f->numberofpolygons <= 0) {
-          printf("Error:  Wrong number of polygon in %d facet.\n", i);
+          std::cerr << "Error:  Wrong number of polygon in " << i << " facet." << std::endl;
           break;
         }
         // Initialize the 'f->polygonlist'.
@@ -1015,7 +1000,7 @@ bool tetgenio::load_poly(char* filebasename)
           stringptr = readnumberline(inputline, infile, infilename);
           p->numberofvertices = (int) strtol(stringptr, &stringptr, 0);
           if (p->numberofvertices < 1) {
-            printf("Error:  Wrong polygon %d in facet %d\n", j, i);
+            std::cerr << "Error:  Wrong polygon " << j << " in facet " << i << std::endl;
             break;
           }
           // Initialize 'p->vertexlist'.
@@ -1028,8 +1013,7 @@ bool tetgenio::load_poly(char* filebasename)
               //   rest of vertices.
               stringptr = readnumberline(inputline, infile, infilename);
               if (*stringptr == '\0') {
-                printf("Error: Missing %d endpoints of polygon %d in facet %d",
-                       p->numberofvertices - k, j, i);
+                std::cerr << "Error: Missing " << (p->numberofvertices - k) << " endpoints of polygon " << j << " in facet " << i << std::endl;
                 break;
               }
             }
@@ -1059,7 +1043,7 @@ bool tetgenio::load_poly(char* filebasename)
             for (k = 1; k <= 3; k++) {
               stringptr = findnextnumber(stringptr);
               if (*stringptr == '\0') {
-                printf("Error:  Hole %d in facet %d has no coordinates", j, i);
+                std::cerr << "Error:  Hole " << j << " in facet " << i << " has no coordinates" << std::endl;
                 break;
               }
               f->holelist[index++] = (REAL) strtod (stringptr, &stringptr);
@@ -1096,7 +1080,7 @@ bool tetgenio::load_poly(char* filebasename)
         stringptr = readnumberline(inputline, infile, insmeshfilename);
         p->numberofvertices = (int) strtol (stringptr, &stringptr, 0);
         if (p->numberofvertices < 1) {
-          printf("Error:  Wrong number of vertex in facet %d\n", i);
+          std::cerr << "Error:  Wrong number of vertex in facet " << i << std::endl;
           break;
         }
         // Initialize 'p->vertexlist'.
@@ -1108,8 +1092,7 @@ bool tetgenio::load_poly(char* filebasename)
             //   rest of vertices.
             stringptr = readnumberline(inputline, infile, infilename);
             if (*stringptr == '\0') {
-              printf("Error:  Missing %d endpoints in facet %d",
-                     p->numberofvertices - k, i);
+              std::cerr << "Error:  Missing " << (p->numberofvertices - k) << " endpoints in facet " << i << std::endl;
               break;
             }
           }
@@ -1157,21 +1140,21 @@ bool tetgenio::load_poly(char* filebasename)
         stringptr = readnumberline(inputline, infile, infilename);
         stringptr = findnextnumber(stringptr);
         if (*stringptr == '\0') {
-          printf("Error:  Hole %d has no x coord.\n", firstnumber + (i / 3));
+          std::cerr << "Error:  Hole " << firstnumber + (i / 3) << " has no x coord." << std::endl;
           break;
         } else {
           holelist[i] = (REAL) strtod(stringptr, &stringptr);
         }
         stringptr = findnextnumber(stringptr);
         if (*stringptr == '\0') {
-          printf("Error:  Hole %d has no y coord.\n", firstnumber + (i / 3));
+          std::cerr << "Error:  Hole " << firstnumber + (i / 3) << " has no y coord." << std::endl;
           break;
         } else {
           holelist[i + 1] = (REAL) strtod(stringptr, &stringptr);
         }
         stringptr = findnextnumber(stringptr);
         if (*stringptr == '\0') {
-          printf("Error:  Hole %d has no z coord.\n", firstnumber + (i / 3));
+          std::cerr << "Error:  Hole " << firstnumber + (i / 3) << " has no z coord." << std::endl;
           break;
         } else {
           holelist[i + 2] = (REAL) strtod(stringptr, &stringptr);
@@ -1200,28 +1183,28 @@ bool tetgenio::load_poly(char* filebasename)
         stringptr = readnumberline(inputline, infile, infilename);
         stringptr = findnextnumber(stringptr);
         if (*stringptr == '\0') {
-          printf("Error:  Region %d has no x coordinate.\n", firstnumber + i);
+          std::cerr << "Error:  Region " << firstnumber + i << " has no x coordinate." << std::endl;
           break;
         } else {
           regionlist[index++] = (REAL) strtod(stringptr, &stringptr);
         }
         stringptr = findnextnumber(stringptr);
         if (*stringptr == '\0') {
-          printf("Error:  Region %d has no y coordinate.\n", firstnumber + i);
+          std::cerr << "Error:  Region " << firstnumber + i << " has no y coordinate." << std::endl;
           break;
         } else {
           regionlist[index++] = (REAL) strtod(stringptr, &stringptr);
         }
         stringptr = findnextnumber(stringptr);
         if (*stringptr == '\0') {
-          printf("Error:  Region %d has no z coordinate.\n", firstnumber + i);
+          std::cerr << "Error:  Region " << firstnumber + i << " has no z coordinate." << std::endl;
           break;
         } else {
           regionlist[index++] = (REAL) strtod(stringptr, &stringptr);
         }
         stringptr = findnextnumber(stringptr);
         if (*stringptr == '\0') {
-          printf("Error:  Region %d has no region attrib.\n", firstnumber + i);
+          std::cerr << "Error:  Region " << firstnumber + i << " has no region attrib." << std::endl;
           break;
         } else {
           regionlist[index++] = (REAL) strtod(stringptr, &stringptr);
@@ -1279,7 +1262,7 @@ bool tetgenio::load_off(char* filebasename)
   strncpy(infilename, filebasename, 1024 - 1);
   infilename[FILENAMESIZE - 1] = '\0';
   if (infilename[0] == '\0') {
-    printf("Error:  No filename.\n");
+    std::cerr << "Error:  No filename." << std::endl;
     return false;
   }
   if (strcmp(&infilename[strlen(infilename) - 4], ".off") != 0) {
@@ -1287,7 +1270,7 @@ bool tetgenio::load_off(char* filebasename)
   }
 
   if (!(fp = fopen(infilename, "r"))) {
-    printf("  Unable to open file %s\n", infilename);
+      std::cerr <<"Error: Unable to open file " << infilename << std::endl;
     return false;
   }
   // printf("Opening %s.\n", infilename);
@@ -1306,8 +1289,7 @@ bool tetgenio::load_off(char* filebasename)
         }
         if ((sscanf(bufferp, "%d%d%d", &nverts, &nfaces, &nedges) != 3)
             || (nverts == 0)) {
-          printf("Syntax error reading header on line %d in file %s\n",
-                 line_count, infilename);
+          std::cerr << "Syntax error reading header on line " << line_count << " in file " << infilename << std::endl;
           fclose(fp);
           return false;
         }
@@ -1327,8 +1309,7 @@ bool tetgenio::load_off(char* filebasename)
       coord = &pointlist[iverts * 3];
       for (i = 0; i < 3; i++) {
         if (*bufferp == '\0') {
-          printf("Syntax error reading vertex coords on line %d in file %s\n",
-                 line_count, infilename);
+          std::cerr << "Syntax error reading vertex coords on line " << line_count << " in file " << infilename << std::endl;
           fclose(fp);
           return false;
         }
@@ -1348,8 +1329,7 @@ bool tetgenio::load_off(char* filebasename)
       // Read the number of vertices, it should be greater than 0.
       p->numberofvertices = (int) strtol(bufferp, &bufferp, 0);
       if (p->numberofvertices == 0) {
-        printf("Syntax error reading polygon on line %d in file %s\n",
-               line_count, infilename);
+        std::cerr << "Syntax error reading polygon on line " << line_count << " in file " << infilename << std::endl;
         fclose(fp);
         return false;
       }
@@ -33207,27 +33187,28 @@ void tetgenmesh::statistics()
     if (meshhulledges > 0l) {
       std::cout << "  Mesh edges on exterior boundary: " << meshhulledges << std::endl;
     }
-    printf("  Mesh faces on input facets: %ld\n", subfaces->items);
-    printf("  Mesh edges on input segments: %ld\n", subsegs->items);
+    std::cout << "  Mesh faces on input facets: " << subfaces->items << std::endl;
+    std::cout << "  Mesh edges on input segments: " << subsegs->items << std::endl;
+
     if (st_facref_count > 0l) {
-      printf("  Steiner points on input facets:  %ld\n", st_facref_count);
+      std::cout << "  Steiner points on input facets:  " << st_facref_count << std::endl;
     }
     if (st_segref_count > 0l) {
-      printf("  Steiner points on input segments:  %ld\n", st_segref_count);
+      std::cout << "  Steiner points on input segments:  " << st_segref_count << std::endl;
     }
     if (st_volref_count > 0l) {
-      printf("  Steiner points inside domain: %ld\n", st_volref_count);
+      std::cout << "  Steiner points inside domain: " << st_volref_count << std::endl;
     }
   } else {
-    printf("  Convex hull faces: %ld\n", hullsize);
+    std::cout << "  Convex hull faces: " << hullsize << std::endl;
     if (meshhulledges > 0l) {
-      printf("  Convex hull edges: %ld\n", meshhulledges);
+      std::cout << "  Convex hull edges: " << meshhulledges << std::endl;
     }
   }
   if (b->weighted) { // -w option
-    printf("  Skipped non-regular points: %ld\n", nonregularcount);
+    std::cout << "  Skipped non-regular points: " << nonregularcount << std::endl;
   }
-  printf("\n");
+  std::cout << std::endl;
 
 
   if (b->verbose > 0) {
@@ -35833,11 +35814,11 @@ void tetgenmesh::outmesh2vtk(char* ofilename, int mesh_idx)
   }
 
   if (!b->quiet) {
-    printf("Writing %s.\n", vtkfilename);
+      std::cout << "Writing " << vtkfilename << std::endl;
   }
   outfile = fopen(vtkfilename, "w");
   if (outfile == (FILE *) NULL) {
-    printf("File I/O Error:  Cannot create file %s.\n", vtkfilename);
+      std::cerr << "File I/O Error:  Cannot create file " << vtkfilename << std::endl;
     return;
   }
 
@@ -35924,7 +35905,7 @@ void tetgenmesh::out_surfmesh_vtk(char* ofilename, int mesh_idx)
   int t1ver;
 
   if (b->order == 2) {
-    printf("  Write VTK not implemented for order 2 elements \n");
+    std::cerr << "  Write VTK not implemented for order 2 elements." << std::endl;
     return;
   }
 
@@ -35942,11 +35923,11 @@ void tetgenmesh::out_surfmesh_vtk(char* ofilename, int mesh_idx)
   }
 
   if (!b->quiet) {
-    printf("Writing %s.\n", vtkfilename);
+    std::cout << "Writing " << vtkfilename << "." << std::endl;
   }
   outfile = fopen(vtkfilename, "w");
   if (outfile == (FILE *) NULL) {
-    printf("File I/O Error:  Cannot create file %s.\n", vtkfilename);
+    std::cerr << "File I/O Error:  Cannot create file " << vtkfilename << std::endl;
     return;
   }
 
@@ -36059,7 +36040,7 @@ void tetgenmesh::out_intersected_facets()
   FILE *fout = fopen(FileName, "w");
 
   if (!b->quiet) {
-    printf("Writing %s\n", FileName);
+    std::cout << "Writing " << FileName << std::endl;
   }
 
   // Determine the first index (0 or 1).
@@ -36156,12 +36137,11 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
   if (!b->quiet) {
     if (b->refine) {
-      printf("Mesh reconstruction seconds:  %g\n", ((REAL)(tv[2]-tv[1])) / cps);
+      std::cout << "Mesh reconstruction seconds:  " << ((REAL)(tv[2]-tv[1])) / cps << std::endl;
     } else {
-      printf("Delaunay seconds:  %g\n", ((REAL)(tv[2]-tv[1])) / cps);
+      std::cout << "Delaunay seconds:  " << ((REAL)(tv[2]-tv[1])) / cps << std::endl;
       if (b->verbose) {
-        printf("  Point sorting seconds:  %g\n", ((REAL)(ts[0]-tv[1])) / cps);
-
+        std::cout << "  Point sorting seconds:  " << ((REAL)(ts[0]-tv[1])) / cps << std::endl;
       }
     }
   }
@@ -36172,7 +36152,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
     ts[0] = clock();
 
     if (!b->quiet) {
-      printf("Surface mesh seconds:  %g\n", ((REAL)(ts[0]-tv[2])) / cps);
+      std::cout << "Surface mesh seconds:  " << ((REAL)(ts[0]-tv[2])) / cps << std::endl;
     }
   }
 
@@ -36187,8 +36167,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
     ts[0] = clock();
 
     if (!b->quiet) {
-      printf("Background mesh reconstruct seconds:  %g\n",
-             ((REAL)(ts[0] - tv[3])) / cps);
+      std::cout << "Background mesh reconstruct seconds:  " << ((REAL)(ts[0] - tv[3])) / cps << std::endl;
     }
 
     if (b->metric) { // -m
@@ -36197,7 +36176,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
       ts[1] = clock();
 
       if (!b->quiet) {
-        printf("Size interpolating seconds:  %g\n",((REAL)(ts[1]-ts[0])) / cps);
+        std::cout << "Size interpolating seconds:  " << ((REAL)(ts[1]-ts[0])) / cps << std::endl;
       }
     }
   }
@@ -36215,21 +36194,20 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
     if (!b->quiet) {
       if (!b->cdt) { // no -D
-        printf("Boundary recovery ");
+        std::cout << "Boundary recovery ";
       } else {
-        printf("Constrained Delaunay ");
+        std::cout << "Constrained Delaunay ";
       }
-      printf("seconds:  %g\n", ((REAL)(ts[1] - tv[4])) / cps);
+      std::cout << "seconds:  " << ((REAL)(ts[1] - tv[4])) / cps << std::endl;
       if (b->verbose) {
-        printf("  Segment recovery seconds:  %g\n",((REAL)(ts[0]-tv[4]))/ cps);
-        printf("  Facet recovery seconds:  %g\n", ((REAL)(ts[1]-ts[0])) / cps);
+        std::cout << "  Segment recovery seconds:  " << ((REAL)(ts[0]-tv[4])) / cps << std::endl;
+        std::cout << "  Facet recovery seconds:  " << ((REAL)(ts[1]-ts[0])) / cps << std::endl;
       }
     }
 
     if (m.skipped_facet_list != NULL) {
       if (!b->quiet) {
-        printf("\n!!! %ld input triangles are skipped due to self-intersections.\n",
-               m.skipped_facet_list->objects);
+        std::cerr << "Error: " << m.skipped_facet_list->objects << " input triangles are skipped due to self-intersections." << std::endl;
       }
 
       if (!b->nofacewritten) m.out_intersected_facets();
@@ -36246,7 +36224,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
     if (b->diagnose) { // -d
       if (!b->quiet) {
-        printf("\nThe input surface mesh is correct.\n");
+        std::cout << "\nThe input surface mesh is correct." << std::endl;
       }
       return;
     }
@@ -36256,7 +36234,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
     ts[2] = clock();
 
     if (!b->quiet) {
-      printf("Exterior tets removal seconds:  %g\n",((REAL)(ts[2]-ts[1]))/cps);
+      std::cout << "Exterior tets removal seconds:  " << ((REAL)(ts[2]-ts[1]))/cps << std::endl;
     }
 
     ts[3] = clock();
@@ -36265,7 +36243,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
       if (m.subvertstack->objects > 0l) {
         m.suppresssteinerpoints();
         if (!b->quiet) {
-          printf("Steiner suppression seconds:  %g\n", ((REAL)(ts[3]-ts[2]))/cps);
+          std::cout << "Steiner suppression seconds:  " << ((REAL)(ts[3]-ts[2]))/cps << std::endl;
         }
       }
     }
@@ -36276,7 +36254,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
         if (!b->noelewritten)  m.outelements(out);
         if (!b->nofacewritten) m.outsubfaces(out);
         if (!b->nofacewritten) m.outsubsegments(out);
-        printf("!! Boundary contains Steiner points (-YY option). Program stopped.\n");
+        std::cerr << "Error: Boundary contains Steiner points (-YY option). Program stopped." << std::endl;
         terminatetetgen(&m, 200);
       }
     }
@@ -36292,13 +36270,13 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
   if (!b->quiet) {
     if (b->metric || b->coarsen) {
-      printf("Mesh coarsening seconds:  %g\n", ((REAL)(tv[6] - tv[5])) / cps);
+      std::cout << "Mesh coarsening seconds:  " << ((REAL)(tv[6] - tv[5])) / cps << std::endl;
     }
   }
 
   if (b->plc || (b->refine && b->quality && (in->refine_elem_list == NULL))) {
     if (!b->quiet) {
-      printf("Recovering Delaunayness...\n");
+      std::cout << "Recovering Delaunayness..." << std::endl;
     }
     m.recoverdelaunay();
   }
@@ -36307,7 +36285,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
   if (b->plc || (b->refine && b->quality && (in->refine_elem_list == NULL))) {
     if (!b->quiet) {
-      printf("Delaunay recovery seconds:  %g\n", ((REAL)(tv[7] - tv[6]))/cps);
+      std::cout << "Delaunay recovery seconds:  " << ((REAL)(tv[7] - tv[6]))/cps << std::endl;
     }
   }
 
@@ -36322,7 +36300,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
   if (!b->quiet) {
     if ((b->plc || b->refine) && b->insertaddpoints) { // -i
       if ((addin != NULL) && (addin->numberofpoints > 0)) {
-        printf("Constrained points seconds:  %g\n", ((REAL)(tv[8]-tv[7]))/cps);
+        std::cout << "Constrained points seconds:  " << ((REAL)(tv[8]-tv[7]))/cps << std::endl;
       }
     }
   }
@@ -36334,7 +36312,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
   if (!b->quiet) {
     if (b->quality) {
-      printf("Refinement seconds:  %g\n", ((REAL)(tv[9] - tv[8])) / cps);
+      std::cout << "Refinement seconds:  " << ((REAL)(tv[9] - tv[8])) / cps << std::endl;
     }
   }
 
@@ -36350,7 +36328,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
     if ((b->plc || b->quality) &&
         (b->smooth_maxiter > 0) &&
         ((m.st_volref_count > 0) || (m.st_facref_count > 0))) {
-      printf("Mesh smoothing seconds:  %g\n", ((REAL)(tv[10] - tv[9])) / cps);
+      std::cout << "Mesh smoothing seconds:  " << ((REAL)(tv[10] - tv[9])) / cps << std::endl;
     }
   }
 
@@ -36362,7 +36340,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
   if (!b->quiet) {
     if (b->plc || b->quality) {
-      printf("Mesh improvement seconds:  %g\n", ((REAL)(tv[11] - tv[10])) / cps);
+      std::cout << "Mesh improvement seconds:  " << ((REAL)(tv[11] - tv[10])) / cps << std::endl;
     }
   }
 
@@ -36377,7 +36355,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
   }
 
   if (!b->quiet) {
-    printf("\n");
+      std::cout << std::endl;
   }
 
   if (out != (tetgenio *) NULL) {
@@ -36387,7 +36365,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
   if (b->nonodewritten || b->noiterationnum) {
     if (!b->quiet) {
-      printf("NOT writing a .node file.\n");
+      std::cout << "NOT writing a .node file." << std::endl;
     }
   } else {
     m.outnodes(out);
@@ -36395,7 +36373,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
   if (b->noelewritten) {
     if (!b->quiet) {
-      printf("NOT writing an .ele file.\n");
+      std::cout << "NOT writing an .ele file." << std::endl;
     }
     m.indexelements();
   } else {
@@ -36406,7 +36384,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
   if (b->nofacewritten) {
     if (!b->quiet) {
-      printf("NOT writing an .face file.\n");
+      std::cout << "NOT writing an .face file." << std::endl;
     }
   } else {
     if (b->facesout) {
@@ -36429,7 +36407,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
 
   if (b->nofacewritten) {
     if (!b->quiet) {
-      printf("NOT writing an .edge file.\n");
+      std::cout << "NOT writing an .edge file." << std::endl;
     }
   } else {
     if (b->edgesout) { // -e
@@ -36477,8 +36455,8 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
   tv[12] = clock();
 
   if (!b->quiet) {
-    printf("\nOutput seconds:  %g\n", ((REAL)(tv[12] - tv[11])) / cps);
-    printf("Total running seconds:  %g\n", ((REAL)(tv[12] - tv[0])) / cps);
+    std::cout << "\nOutput seconds:  " << ((REAL)(tv[12] - tv[11])) / cps << std::endl;
+    std::cout << "Total running seconds:  " << ((REAL)(tv[12] - tv[0])) / cps << std::endl;
   }
 
   if (b->docheck) {
