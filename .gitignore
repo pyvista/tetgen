@@ -20,7 +20,14 @@ tetgen.egg-info/
 build/
 dist/
 
-# MISC
+# Cmake
+CMakeFiles/
+Makefile
+cmake_install.cmake
+compile_commands.json
+
+# local dev
+.clang
 *.bat
 
 # Testing

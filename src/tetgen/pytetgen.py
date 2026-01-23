@@ -24,7 +24,9 @@ invalid_input = TypeError(
 class MeshNotTetrahedralizedError(RuntimeError):
     """RuntimeError raise raised when :class:`tetgen.Tetgen` has not been tetrahedralized."""
 
-    def __init__(self, msg: str = "Tetrahedralize the surface mesh first with `tetrahedralize`."):
+    def __init__(
+        self, msg: str = "Tetrahedralize the surface mesh first with `tetrahedralize`."
+    ):
         """Initialize the error."""
         super().__init__(msg)
 
@@ -141,7 +143,9 @@ class TetGen:
             try:
                 v = np.asarray(v, np.float)
                 if v.ndim != 2 and v.shape[1] != 3:
-                    raise Exception("Invalid vertex format. Shape should be (npoints, 3)")
+                    raise Exception(
+                        "Invalid vertex format. Shape should be (npoints, 3)"
+                    )
             except BaseException:
                 raise Exception("Unable to convert vertex input to valid numpy array")
 
@@ -281,7 +285,9 @@ class TetGen:
         try:
             import pymeshfix
         except ImportError:
-            raise ImportError("pymeshfix not installed. Please run:\npip install pymeshfix")
+            raise ImportError(
+                "pymeshfix not installed. Please run:\npip install pymeshfix"
+            )
 
         # Run meshfix
         meshfix = pymeshfix.MeshFix(self.v, self.f)
@@ -1176,5 +1182,7 @@ class TetGen:
 
         bgmesh_v = mesh.points.astype(np.float64, copy=True).ravel()
         bgmesh_tet = mesh.cell_connectivity.astype(np.int32, copy=True)
-        bgmesh_mtr = mesh.point_data[MTR_POINTDATA_KEY].astype(np.float64, copy=True).ravel()
+        bgmesh_mtr = (
+            mesh.point_data[MTR_POINTDATA_KEY].astype(np.float64, copy=True).ravel()
+        )
         return bgmesh_v, bgmesh_tet, bgmesh_mtr

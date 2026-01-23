@@ -1,25 +1,41 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel>=0.33.0",
-    "cython>=3.0.0,<=3.1.2",
-    "numpy>=2,<3",
-]
+build-backend = "scikit_build_core.build"
+requires = ["scikit-build-core >=0.4.3", "nanobind >=1.3.2"]
 
-build-backend = "setuptools.build_meta"
-
-[tool.pytest.ini_options]
-junit_family= "legacy"
-filterwarnings = [
-    # bogus numpy ABI warning (see numpy/#432)
-    "ignore:.*numpy.dtype size changed.*:RuntimeWarning",
-    "ignore:.*numpy.ufunc size changed.*:RuntimeWarning"
+[project]
+authors = [
+  {name = "PyVista Developers", email = "info@pyvista.org"}
 ]
+classifiers = [
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14"
+]
+dependencies = [
+  "numpy"
+]
+description = "Python interface to tetgen"
+name = "tetgen"
+readme = "README.rst"
+requires-python = ">=3.10"
+version = "0.8.dev0"
+
+[project.urls]
+'Bug Reports' = 'https://github.com/pyvista/tetgen/issues'
+Documentation = 'https://tetgen.pyvista.org/'
+Homepage = 'https://github.com/pyvista/tetgen'
+'Source Code' = 'https://github.com/pyvista/tetgen'
 
 [tool.cibuildwheel]
 archs = ["auto64"]  # 64-bit only
-skip = "pp* *musllinux* cp38-* cp39-* cp314-*"  # Build CPython 3.10 - 3.13
 before-test = "pip install -r requirements_test.txt"
+skip = "pp* *musllinux* cp38-* cp39-* cp314-*"  # Build CPython 3.10 - 3.13
 test-command = "pytest {project}/tests"
 
 [tool.cibuildwheel.macos]
@@ -27,12 +43,15 @@ archs = ["native"]
 
 [tool.codespell]
 ignore-words-list = ['THIRDPARTY']
-skip = '*.cxx,*.h,*.gif,*.png,*.jpg,*.js,*.html,*.doctree,*.ttf,*.woff,*.woff2,*.eot,*.mp4,*.inv,*.pickle,*.ipynb,flycheck*,./.git/*,./.hypothesis/*,*.yml,./doc/build/*,./doc/images/*,./dist/*,*~,.hypothesis*,./doc/source/examples/*,*cover,*.dat,*.mac,build,./docker/mapdl/v*,./factory/*,PKG-INFO,*.mypy_cache/*'
 quiet-level = 3
+skip = '*.cxx,*.h,*.gif,*.png,*.jpg,*.js,*.html,*.doctree,*.ttf,*.woff,*.woff2,*.eot,*.mp4,*.inv,*.pickle,*.ipynb,flycheck*,./.git/*,./.hypothesis/*,*.yml,./doc/build/*,./doc/images/*,./dist/*,*~,.hypothesis*,./doc/source/examples/*,*cover,*.dat,*.mac,build,./docker/mapdl/v*,./factory/*,PKG-INFO,*.mypy_cache/*'
 
 [tool.isort]
-profile = "black"
-force_sort_within_sections = true
 default_section = "THIRDPARTY"
+force_sort_within_sections = true
+profile = "black"
 skip_glob = ["__init__.py"]
 src_paths = ["doc", "src", "tests"]
+
+[tool.pytest.ini_options]
+junit_family = "legacy"

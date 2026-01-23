@@ -57,7 +57,7 @@ cdef extern from "tetgen_wrap.h":
         # Loads Regions directly to tetgenio object
         void LoadRegions(int, double*)
         # Loads Holes directly to tetgenio object
-        void LoadHoles(int, double*)        
+        void LoadHoles(int, double*)
 
 cdef extern from "tetgen.h":
     cdef cppclass tetrahedralize:
@@ -359,7 +359,7 @@ cdef class PyTetgenio:
 
     def LoadHoles(self, double [::1] holes):
         nholes = holes.size / 3
-        self.c_tetio.LoadHoles(nholes, &holes[0])        
+        self.c_tetio.LoadHoles(nholes, &holes[0])
 
     def LoadMTRMesh(self, double [::1] points, int [::1] tets, double [::1] mtr):
         """ Loads points and tets into TetGen """
@@ -497,7 +497,7 @@ def Tetrahedralize(
         regions = cast_to_cdouble(regions)
 
     if holes is not None:
-        holes = cast_to_cdouble(holes)        
+        holes = cast_to_cdouble(holes)
 
     if bgmesh_v is not None:
         bgmesh_v = cast_to_cdouble(bgmesh_v)
