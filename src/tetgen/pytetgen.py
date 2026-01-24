@@ -10,6 +10,13 @@ from numpy.typing import NDArray
 import pyvista.core as pv
 from pyvista.core.pointset import PolyData, UnstructuredGrid
 from tetgen import _tetgen
+from vtkmodules.util.numpy_support import numpy_to_vtk
+from vtkmodules.vtkCommonDataModel import vtkCellArray
+from vtkmodules.vtkCommonCore import vtkTypeInt32Array
+
+VTK_UNSIGNED_CHAR = 3
+VTK_TETRA = 10
+VTK_QUADRATIC_TETRA = 24
 
 LOG = logging.getLogger(__name__)
 LOG.setLevel("CRITICAL")
@@ -19,6 +26,30 @@ MTR_POINTDATA_KEY = "target_size"
 invalid_input = TypeError(
     "Invalid input. Must be either a pyvista.PolyData object or vertex and face arrays."
 )
+
+
+def _to_ugrid(
+    points: NDArray[np.float64], cells: NDArray[np.int32]
+) -> UnstructuredGrid:
+    """No copy unstructured grid creation."""
+    n_cells, node_per_cell = cells.shape
+    cell_type = VTK_TETRA if node_per_cell == 4 else VTK_QUADRATIC_TETRA
+    vtk_dtype = vtkTypeInt32Array().GetDataType()
+    offsets = np.arange(0, node_per_cell * n_cells, node_per_cell, dtype=np.int32)
+
+    offsets_vtk = numpy_to_vtk(offsets, deep=False, array_type=vtk_dtype)
+    conn_vtk = numpy_to_vtk(cells.ravel(), deep=False, array_type=vtk_dtype)
+
+    cell_array = vtkCellArray()
+    cell_array.SetData(offsets_vtk, conn_vtk)
+
+    cell_types_vtk = numpy_to_vtk(
+        np.full(n_cells, cell_type), deep=False, array_type=VTK_UNSIGNED_CHAR
+    )
+    ugrid = UnstructuredGrid()
+    ugrid.SetCells(cell_types_vtk, cell_array)
+    ugrid.points = points
+    return ugrid
 
 
 class MeshNotTetrahedralizedError(RuntimeError):
@@ -357,6 +388,7 @@ class TetGen:
         quality: bool = True,
         nobisect: bool = False,
         cdt: bool = False,
+        cdtrefine: int = 7,
         coarsen: bool = False,
         weighted: bool = False,
         brio_hilbert: bool = True,
@@ -389,8 +421,7 @@ class TetGen:
         docheck: bool = False,
         quiet: bool = False,
         nowarning: bool = False,
-        verbose: bool = 0.0,
-        cdtrefine: float = 7.0,
+        verbose: int = 0,
         vertexperblock: int = 4092,
         tetrahedraperblock: int = 8188,
         shellfaceperblock: int = 2044,
@@ -475,12 +506,12 @@ class TetGen:
 
             Testing has shown that 10.0 is a reasonable input.
 
-        verbose : bool, default: False
+        verbose : int, default: 0
             Controls the underlying TetGen library to output text to
-            console. Users using ``ipython`` will not see this output. Setting
+            console. Users using ``ipython`` may not see this output. Setting
             to 1 enables some information about the mesh generation while
-            setting verbose to 2 enables more debug output. Default is no
-            output
+            setting verbose to 2 enables more debug output. Default (``0``) is
+            no output.
 
         nobisect : bool, default: False
             Controls if Steiner points are added to the input surface
@@ -716,13 +747,7 @@ class TetGen:
         """
         # format switches
         if switches is None:
-            switches_str = b""
-        else:
-            switches_str = bytes(switches, "utf-8")
-
-        # check verbose switch
-        if verbose == 0:
-            quiet = 1
+            switches = ""
 
         # Validate background mesh parameters
         if bgmesh and bgmeshfilename:
@@ -730,7 +755,7 @@ class TetGen:
         if bgmesh or bgmeshfilename:
             # Passing a background mesh only makes sense with metric set to true
             # (will be silently ignored otherwise)
-            metric = 1
+            metric = True
         if bgmesh:
             bgmesh_v, bgmesh_tet, bgmesh_mtr = self._process_bgmesh(bgmesh)
         else:
