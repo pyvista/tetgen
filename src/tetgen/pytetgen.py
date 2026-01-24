@@ -69,8 +69,8 @@ class TetGen:
     Parameters
     ----------
     args : str | pyvista.PolyData | numpy.ndarray
-        Either a pyvista surface mesh or a ``n x 3`` vertex array and ``n x 3`` face
-        array.
+        Either a pyvista surface mesh or a ``(n, 3)`` vertex array and ``(m,
+        3)`` face array.
 
     Examples
     --------
@@ -124,33 +124,34 @@ class TetGen:
 
     def __init__(self, *args):
         """Initialize MeshFix using a mesh or arrays."""
-        self.v = None
-        self.f = None
-        self._node: None | NDArray[np.float64] = None
-        self._elem: None | NDArray[np.int64] = None
-        self._attributes: None | NDArray[np.int64] = None
-        self._triface_markers: None | NDArray[np.int32] = None
-        self._trifaces: None | NDArray[np.int32] = None
-        self._face2tet = None
-        self._edges: None | NDArray[np.int32] = None
-        self._edge_markers: None | NDArray[np.int32] = None
-        self._grid = None
+        self._tetgen = _tetgen.PyTetgen()
+        # self.v = None
+        # self.f = None
+        # self._node: None | NDArray[np.float64] = None
+        # self._elem: None | NDArray[np.int64] = None
+        # self._attributes: None | NDArray[np.int64] = None
+        # self._triface_markers: None | NDArray[np.int32] = None
+        # self._trifaces: None | NDArray[np.int32] = None
+        # self._face2tet = None
+        # self._edges: None | NDArray[np.int32] = None
+        # self._edge_markers: None | NDArray[np.int32] = None
+        # self._grid = None
 
-        self.regions = {}
-        self.holes = []
+        # self.regions = {}
+        # self.holes = []
 
-        def parse_mesh(mesh):
+        def store_mesh(mesh: PolyData) -> None:
             if not mesh.is_all_triangles:
-                raise RuntimeError("Invalid mesh. Must be an all triangular mesh")
+                raise RuntimeError("Invalid mesh. Must be an all triangular mesh.")
 
-            self.v = mesh.points
-            faces = mesh.faces
-            self.f = np.ascontiguousarray(faces.reshape(-1, 4)[:, 1:])
+            points = mesh.points.astype(np.float64, copy=False)
+            faces = mesh._connectivity_array.reshape(-1, 3).astype(np.int32)
+            self._tetgen.load_mesh(points, faces)
 
         if not args:
             raise invalid_input
         elif isinstance(args[0], PolyData):
-            parse_mesh(args[0])
+            mesh = args[0]
         elif isinstance(args[0], (np.ndarray, list)):
             if len(args) >= 3:
                 self._load_arrays(args[0], args[1], args[2])
@@ -158,21 +159,28 @@ class TetGen:
                 self._load_arrays(args[0], args[1])
         elif isinstance(args[0], (str, Path)):
             mesh = pv.read(args[0])
-            parse_mesh(mesh)
+            if not isinstance(mesh, PolyData):
+                raise RuntimeError(
+                    "Loaded surface is not readable by pyvista as a "
+                    f"surface. Expected `pyvista.PolyData`, got `{type(mesh)}`"
+                )
+            store_mesh(mesh)
         else:
             raise invalid_input
 
-    def _load_arrays(self, v, f, fmarkers=None):
-        """Load triangular mesh from vertex and face arrays.
+    def _load_arrays(self, v: NDArray[np.float64], f: NDArray[np.int32], fmarkers=None):
+        """
+        Load triangular mesh from vertex and face arrays.
 
         Face arrays/lists are v and f. Both vertex and face arrays
         should be 2D arrays with each vertex containing XYZ data and
         each face containing three points.
+
         """
         # Check inputs
         if not isinstance(v, np.ndarray):
             try:
-                v = np.asarray(v, np.float)
+                v = np.asarray(v, np.float64)
                 if v.ndim != 2 and v.shape[1] != 3:
                     raise Exception(
                         "Invalid vertex format. Shape should be (npoints, 3)"
@@ -200,8 +208,11 @@ class TetGen:
                 raise Exception("Invalid face marker format. Shape should be (nfaces,)")
 
         # Store to self
-        self.v = v
-        self.f = f
+        self._tetgen.load_mesh(
+            v.astype(np.float64, copy=False),
+            f.astype(np.int32, copy=False),
+        )
+
         self.fmarkers = fmarkers
 
     def add_region(

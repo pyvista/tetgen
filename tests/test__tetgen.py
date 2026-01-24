@@ -21,15 +21,24 @@ def sphere() -> PolyData:
     return mesh
 
 
-def test_init() -> None:
+def test_init(sphere: PolyData) -> None:
     tgen = PyTetgen()
     assert not tgen.n_cells
     points_out = tgen.return_nodes()
-
-    # ensure no memory errors
-    del tgen
-    gc.collect()
     assert points_out.shape == (0, 3)
+    assert not tgen.n_faces
+
+    with pytest.raises(RuntimeError, match="Facet marker count does not match"):
+        facet_markers_in = np.ones(sphere.n_cells, dtype=np.int32)
+        tgen.load_facet_markers(facet_markers_in)
+
+    faces = sphere._connectivity_array.reshape(-1, 3).astype(np.int32)
+    tgen.load_mesh(sphere.points, faces)
+    assert tgen.n_faces == sphere.n_cells
+    tgen.load_facet_markers(np.ones(sphere.n_cells, dtype=np.int32))
+
+    facet_markers = tgen.return_facet_markers()
+    assert (facet_markers == 1).all()
 
 
 def test_tetrahedralize_switches(
@@ -70,6 +79,7 @@ def test_tetrahedralize(sphere: PolyData, capfd: pytest.CaptureFixture[str]) -> 
     assert qual["scaled_jacobian"].mean() > 0.2
     assert (ugrid.celltypes == VTK_TETRA).all()
 
+    # quadratic order appears to be broken in tetgen
     # tgen = PyTetgen()
     # tgen.load_mesh(sphere.points, faces)
     # tgen.tetrahedralize(minratio=1.5, mindihedral=60.0, order=2)  # segfault here
