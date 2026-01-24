@@ -3149,7 +3149,7 @@ bool tetgenbehavior::parse_commandline(int argc, char **argv)
       } else if (argv[i][j] == 'Y') {
         nobisect++;
         if (cdt > 0) {
-          printf("Warning:  switch -D is omitted.\n");
+            std::cerr << "Warning: switch -D is omitted." << std::endl;
           cdt = 0;
         }
         if ((argv[i][j + 1] == '/') || (argv[i][j + 1] == ',')) {
@@ -3612,7 +3612,7 @@ bool tetgenbehavior::parse_commandline(int argc, char **argv)
                  (argv[i][j] == '?')) {
         usage();
       } else {
-        printf("Warning:  Unknown switch -%c.\n", argv[i][j]);
+          std::cerr << "Warning:  Unknown switch -" << argv[i][j] << std::endl;
       }
     }
   }
@@ -3692,7 +3692,7 @@ bool tetgenbehavior::parse_commandline(int argc, char **argv)
 
   // Detect improper combinations of switches.
   if ((refine || plc) && weighted) {
-    printf("Error:  Switches -w cannot use together with -p or -r.\n");
+      std::cerr << "Error:  Switches -w cannot be used together with -p or -r." << std::endl;
     return false;
   }
 
@@ -4407,7 +4407,7 @@ void tetgenmesh::makeindex2pointmap(point*& idx2verlist)
   int idx;
 
   if (b->verbose > 1) {
-    printf("  Constructing mapping from indices to points.\n");
+      std::cout << "  Constructing mapping from indices to points." << std::endl;
   }
 
   idx2verlist = new point[points->items + 1];
@@ -4442,7 +4442,7 @@ void tetgenmesh::makepoint2submap(memorypool* pool, int*& idx2faclist,
   int i, j, k;
 
   if (b->verbose > 1) {
-    printf("  Making a map from points to subfaces.\n");
+      std::cout << "  Making a map from points to subfaces." << std::endl;
   }
 
   // Initialize 'idx2faclist'.

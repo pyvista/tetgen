@@ -125,8 +125,7 @@ class TetGen:
     def __init__(self, *args):
         """Initialize MeshFix using a mesh or arrays."""
         self._tetgen = _tetgen.PyTetgen()
-        # self.v = None
-        # self.f = None
+
         # self._node: None | NDArray[np.float64] = None
         # self._elem: None | NDArray[np.int64] = None
         # self._attributes: None | NDArray[np.int64] = None
@@ -168,13 +167,20 @@ class TetGen:
         else:
             raise invalid_input
 
-    def _load_arrays(self, v: NDArray[np.float64], f: NDArray[np.int32], fmarkers=None):
+    def _load_arrays(
+        self,
+        v: NDArray[np.float64],
+        f: NDArray[np.int32],
+        fmarkers: NDArray[np.int32] | None = None,
+    ):
         """
         Load triangular mesh from vertex and face arrays.
 
         Face arrays/lists are v and f. Both vertex and face arrays
         should be 2D arrays with each vertex containing XYZ data and
         each face containing three points.
+
+        Optionally include faces markers
 
         """
         # Check inputs
@@ -183,7 +189,7 @@ class TetGen:
                 v = np.asarray(v, np.float64)
                 if v.ndim != 2 and v.shape[1] != 3:
                     raise Exception(
-                        "Invalid vertex format. Shape should be (npoints, 3)"
+                        "Invalid vertex format. Shape should be `(npoints, 3)`"
                     )
             except BaseException:
                 raise Exception("Unable to convert vertex input to valid numpy array")
@@ -201,19 +207,17 @@ class TetGen:
                 f"The vertex array should contain at least 4 points. Found {v.shape[0]}."
             )
 
-        # Optional face markers
-        if fmarkers is not None:
-            fmarkers = np.asarray(fmarkers, dtype=ctypes.c_int)
-            if fmarkers.ndim != 1 or fmarkers.shape[0] != f.shape[0]:
-                raise Exception("Invalid face marker format. Shape should be (nfaces,)")
-
-        # Store to self
         self._tetgen.load_mesh(
             v.astype(np.float64, copy=False),
             f.astype(np.int32, copy=False),
         )
 
-        self.fmarkers = fmarkers
+        # Optional face markers
+        if fmarkers is not None:
+            fmarkers = np.asarray(fmarkers, dtype=ctypes.c_int)
+            if fmarkers.ndim != 1 or fmarkers.shape[0] != f.shape[0]:
+                raise Exception("Invalid face marker format. Shape should be (nfaces,)")
+            self._tetgen.load_facet_markers(fmarkers)
 
     def add_region(
         self, id: int, point_in_region: tuple[float, float, float], max_vol: float = 0.0
@@ -225,7 +229,7 @@ class TetGen:
         ----------
         id : int
             Unique identifier for the region.
-        point_in_region : tuple, list, np.array of float
+        point_in_region : tuple[float, float, float], list, np.array[np.float64]
             A single point inside the region, specified as (x, y, z).
         max_vol : float, default: 0.0
             Maximum volume for the region.
@@ -261,10 +265,15 @@ class TetGen:
         >>> grid.slice().plot(show_edges=True, cpos="zy")
 
         """
-        point_in_region_arr = np.asarray(point_in_region, dtype=float)
-        self.regions[id] = (*point_in_region_arr, max_vol)
+        pt = pt = [float(item) for item in point_in_region]
+        if len(pt) != 3:
+            raise ValueError("Expected point to be a sequence of three floats")
 
-    def add_hole(self, point_in_hole: tuple[float, float, float]):
+        # regions must contain [x, y, z, id, maxVol]
+        region = pt + [float(id)] + [max_vol]
+        self._tetgen.load_region(region)
+
+    def add_hole(self, point_in_hole: tuple[float, float, float]) -> None:
         """
         Add a hole to the mesh.
 
@@ -297,8 +306,10 @@ class TetGen:
         >>> grid.slice(normal="z").plot(show_edges=True, cpos="xy")
 
         """
-        point_in_hole_arr = np.asarray(point_in_hole, dtype=float)
-        self.holes.append(point_in_hole_arr)
+        pt = [float(item) for item in point_in_hole]
+        if len(pt) != 3:
+            raise ValueError("Expected point to be a sequence of three floats")
+        self._tetgen.add_hole(pt)
 
     def make_manifold(self, verbose: bool = False) -> None:
         """
@@ -775,111 +786,105 @@ class TetGen:
         # Call library
         plc = True  # always true
 
-        # Convert regions to the format expected by TetGen
-        # regions should be a list of lists, each containing [x, y, z, id, maxVol]
-        regions = [[*values[0:3], id, values[3]] for id, values in self.regions.items()]
+        # self.fmarkers if hasattr(self, "fmarkers") else None,
+        # regions,
+        # self.holes,
+        # switches_str,
 
-        try:
-            result = _tetgen.Tetrahedralize(
-                self.v,
-                self.f,
-                self.fmarkers if hasattr(self, "fmarkers") else None,
-                regions,
-                self.holes,
-                switches_str,
-                plc,
-                psc,
-                refine,
-                quality,
-                nobisect,
-                cdt,
-                cdtrefine,
-                coarsen,
-                weighted,
-                brio_hilbert,
-                flipinsert,
-                metric,
-                varvolume,
-                fixedvolume,
-                regionattrib,
-                insertaddpoints,
-                diagnose,
-                convex,
-                nomergefacet,
-                nomergevertex,
-                noexact,
-                nostaticfilter,
-                zeroindex,
-                facesout,
-                edgesout,
-                neighout,
-                voroout,
-                meditview,
-                vtkview,
-                vtksurfview,
-                nobound,
-                nonodewritten,
-                noelewritten,
-                nofacewritten,
-                noiterationnum,
-                nojettison,
-                docheck,
-                quiet,
-                nowarning,
-                verbose,
-                vertexperblock,
-                tetrahedraperblock,
-                shellfaceperblock,
-                supsteiner_level,
-                addsteiner_algo,
-                coarsen_param,
-                weighted_param,
-                fliplinklevel,
-                flipstarsize,
-                fliplinklevelinc,
-                opt_max_flip_level,
-                opt_scheme,
-                opt_iterations,
-                smooth_cirterion,
-                smooth_maxiter,
-                delmaxfliplevel,
-                order,
-                reversetetori,
-                steinerleft,
-                unflip_queue_limit,
-                no_sort,
-                hilbert_order,
-                hilbert_limit,
-                brio_threshold,
-                brio_ratio,
-                epsilon,
-                facet_separate_ang_tol,
-                collinear_ang_tol,
-                facet_small_ang_tol,
-                maxvolume,
-                maxvolume_length,
-                minratio,
-                opt_max_asp_ratio,
-                opt_max_edge_ratio,
-                mindihedral,
-                optmaxdihedral,
-                metric_scale,
-                smooth_alpha,
-                coarsen_percent,
-                elem_growth_ratio,
-                refine_progress_ratio,
-                bgmeshfilename,
-                bgmesh_v,
-                bgmesh_tet,
-                bgmesh_mtr,
-                return_surface_data=True,
-                return_edge_data=True,
-            )
-        except RuntimeError as e:
-            raise RuntimeError(
-                "Failed to tetrahedralize.\n"
-                f"May need to repair surface by making it manifold:\n{str(e)}"
-            )
+        result = self._tetgen.tetrahedralize(
+            plc,
+            psc,
+            refine,
+            quality,
+            nobisect,
+            cdt,
+            cdtrefine,
+            coarsen,
+            weighted,
+            brio_hilbert,
+            flipinsert,
+            metric,
+            varvolume,
+            fixedvolume,
+            regionattrib,
+            insertaddpoints,
+            diagnose,
+            convex,
+            nomergefacet,
+            nomergevertex,
+            noexact,
+            nostaticfilter,
+            zeroindex,
+            facesout,
+            edgesout,
+            neighout,
+            voroout,
+            meditview,
+            vtkview,
+            vtksurfview,
+            nobound,
+            nonodewritten,
+            noelewritten,
+            nofacewritten,
+            noiterationnum,
+            nojettison,
+            docheck,
+            quiet,
+            nowarning,
+            verbose,
+            vertexperblock,
+            tetrahedraperblock,
+            shellfaceperblock,
+            supsteiner_level,
+            addsteiner_algo,
+            coarsen_param,
+            weighted_param,
+            fliplinklevel,
+            flipstarsize,
+            fliplinklevelinc,
+            opt_max_flip_level,
+            opt_scheme,
+            opt_iterations,
+            smooth_cirterion,
+            smooth_maxiter,
+            delmaxfliplevel,
+            order,
+            reversetetori,
+            steinerleft,
+            unflip_queue_limit,
+            no_sort,
+            hilbert_order,
+            hilbert_limit,
+            brio_threshold,
+            brio_ratio,
+            epsilon,
+            facet_separate_ang_tol,
+            collinear_ang_tol,
+            facet_small_ang_tol,
+            maxvolume,
+            maxvolume_length,
+            minratio,
+            opt_max_asp_ratio,
+            opt_max_edge_ratio,
+            mindihedral,
+            optmaxdihedral,
+            metric_scale,
+            smooth_alpha,
+            coarsen_percent,
+            elem_growth_ratio,
+            refine_progress_ratio,
+            bgmeshfilename,
+            bgmesh_v,
+            bgmesh_tet,
+            bgmesh_mtr,
+            return_surface_data=True,
+            return_edge_data=True,
+        )
+        # except RuntimeError as e:
+        #     raise RuntimeError(
+        #         "Failed to tetrahedralize.\n"
+        #         f"May need to repair surface by making it manifold:\n{str(e)}"
+        #     )
 
         # Unpack results (backwards compatible)
         if len(result) >= 8:

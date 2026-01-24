@@ -48,7 +48,13 @@ def test_tetrahedralize_switches(
     tgen = PyTetgen()
     tgen.load_mesh(sphere.points, faces)
 
-    tgen.tetrahedralize_switches("p")
+    with pytest.raises(RuntimeError, match="Unable to parse switches"):
+        tgen.tetrahedralize(switches_str="npa;slkdjf;aldsjfwp")
+
+    out, err = capfd.readouterr()
+    assert err
+
+    tgen.tetrahedralize(switches_str="p")
     out, err = capfd.readouterr()
     assert not err
 
@@ -89,3 +95,18 @@ def test_tetrahedralize(sphere: PolyData, capfd: pytest.CaptureFixture[str]) -> 
     # qual = ugrid.cell_quality()
     # assert qual["scaled_jacobian"].mean() > 0.2
     # assert (ugrid.celltypes == VTK_QUADRATIC_TETRA).all()
+
+
+def test_load_region():
+    tgen = PyTetgen()
+    assert tgen.n_regions == 0
+
+    with pytest.raises(RuntimeError, match="Region must be of size 5"):
+        tgen.load_region([])
+    assert tgen.n_regions == 0
+
+    tgen.load_region([1.0, 0.0, 0.0, 0.0, 0.0])
+    assert tgen.n_regions == 1
+
+    tgen.load_region([2.0, 0.0, 0.0, 0.0, 0.0])
+    assert tgen.n_regions == 2
