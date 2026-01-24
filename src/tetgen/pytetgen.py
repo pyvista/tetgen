@@ -1,18 +1,17 @@
 """Python module to interface with wrapped TetGen C++ code."""
 
+from importlib.util import find_spec
 import ctypes
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence, TYPE_CHECKING, Optional
 
 import numpy as np
 from numpy.typing import NDArray
-import pyvista.core as pv
-from pyvista.core.pointset import PolyData, UnstructuredGrid
 from tetgen import _tetgen
-from vtkmodules.util.numpy_support import numpy_to_vtk
-from vtkmodules.vtkCommonDataModel import vtkCellArray
-from vtkmodules.vtkCommonCore import vtkTypeInt32Array
+
+if TYPE_CHECKING:
+    from pyvista.core.pointset import PolyData, UnstructuredGrid
 
 VTK_UNSIGNED_CHAR = 3
 VTK_TETRA = 10
@@ -24,18 +23,73 @@ LOG.setLevel("CRITICAL")
 MTR_POINTDATA_KEY = "target_size"
 
 invalid_input = TypeError(
-    "Invalid input. Must be either a pyvista.PolyData object or vertex and face arrays."
+    "Invalid input. First argument must be either a pyvista.PolyData object or vertex array, followed by a face arrays and optionally a face marker array."
 )
 
 
-def _to_ugrid(
-    points: NDArray[np.float64], cells: NDArray[np.int32]
-) -> UnstructuredGrid:
+def _polydata_from_faces(points: NDArray[np.float64], faces: NDArray[np.int32]) -> "PolyData":
+    """
+    Generate a polydata from a faces array containing no padding and all triangles.
+
+    Parameters
+    ----------
+    points : np.ndarray
+        Points array.
+    faces : np.ndarray
+        ``(n, 3)`` faces array.
+
+    Returns
+    -------
+    PolyData
+        New mesh.
+
+    """
+    if find_spec("pyvista.core") is None:
+        raise ModuleNotFoundError(
+            "To use this feature install pyvista with:\n\n    `pip install pyvista"
+        )
+
+    from pyvista.core.pointset import PolyData
+    from vtkmodules.util.numpy_support import numpy_to_vtk
+    from vtkmodules.vtkCommonDataModel import vtkCellArray
+    from vtkmodules.vtkCommonCore import vtkTypeInt32Array
+
+    if faces.ndim != 2:
+        raise ValueError("Expected a two dimensional face array.")
+
+    pdata = PolyData()
+    pdata.points = points
+
+    # convert to vtk arrays without copying
+    vtk_dtype = vtkTypeInt32Array().GetDataType()
+
+    offset = np.arange(0, faces.size + 1, faces.shape[1], dtype=np.int32)
+    offset_vtk = numpy_to_vtk(offset, deep=False, array_type=vtk_dtype)
+    faces_vtk = numpy_to_vtk(faces.ravel(), deep=False, array_type=vtk_dtype)
+
+    carr = vtkCellArray()
+    carr.SetData(offset_vtk, faces_vtk)
+
+    pdata.SetPolys(carr)
+    return pdata
+
+
+def _to_ugrid(points: NDArray[np.float64], cells: NDArray[np.int32]) -> "UnstructuredGrid":
     """No copy unstructured grid creation."""
+    if find_spec("pyvista.core") is None:
+        raise ModuleNotFoundError(
+            "To use this feature install pyvista with:\n\n    `pip install pyvista"
+        )
+
+    from pyvista.core.pointset import UnstructuredGrid
+    from vtkmodules.util.numpy_support import numpy_to_vtk
+    from vtkmodules.vtkCommonDataModel import vtkCellArray
+    from vtkmodules.vtkCommonCore import vtkTypeInt32Array
+
     n_cells, node_per_cell = cells.shape
     cell_type = VTK_TETRA if node_per_cell == 4 else VTK_QUADRATIC_TETRA
     vtk_dtype = vtkTypeInt32Array().GetDataType()
-    offsets = np.arange(0, node_per_cell * n_cells, node_per_cell, dtype=np.int32)
+    offsets = np.arange(0, node_per_cell * (n_cells + 1), node_per_cell, dtype=np.int32)
 
     offsets_vtk = numpy_to_vtk(offsets, deep=False, array_type=vtk_dtype)
     conn_vtk = numpy_to_vtk(cells.ravel(), deep=False, array_type=vtk_dtype)
@@ -55,9 +109,7 @@ def _to_ugrid(
 class MeshNotTetrahedralizedError(RuntimeError):
     """RuntimeError raise raised when :class:`tetgen.Tetgen` has not been tetrahedralized."""
 
-    def __init__(
-        self, msg: str = "Tetrahedralize the surface mesh first with `tetrahedralize`."
-    ):
+    def __init__(self, msg: str = "Tetrahedralize the surface mesh first with `tetrahedralize`."):
         """Initialize the error."""
         super().__init__(msg)
 
@@ -120,44 +172,53 @@ class TetGen:
 
     """
 
-    _updated = None
-
-    def __init__(self, *args):
+    def __init__(
+        self,
+        arg0: "PolyData | NDArray[np.float64] | str | Path",
+        arg1: NDArray[np.int32] | None = None,
+        arg2: NDArray[np.int32] | None = None,
+    ) -> None:
         """Initialize MeshFix using a mesh or arrays."""
         self._tetgen = _tetgen.PyTetgen()
 
-        # self._node: None | NDArray[np.float64] = None
-        # self._elem: None | NDArray[np.int64] = None
-        # self._attributes: None | NDArray[np.int64] = None
-        # self._triface_markers: None | NDArray[np.int32] = None
-        # self._trifaces: None | NDArray[np.int32] = None
-        # self._face2tet = None
         # self._edges: None | NDArray[np.int32] = None
         # self._edge_markers: None | NDArray[np.int32] = None
-        # self._grid = None
+        self._grid: UnstructuredGrid | None = None
 
-        # self.regions = {}
-        # self.holes = []
-
-        def store_mesh(mesh: PolyData) -> None:
+        def store_mesh(mesh: "PolyData") -> None:
             if not mesh.is_all_triangles:
                 raise RuntimeError("Invalid mesh. Must be an all triangular mesh.")
 
             points = mesh.points.astype(np.float64, copy=False)
-            faces = mesh._connectivity_array.reshape(-1, 3).astype(np.int32)
+            faces = mesh._connectivity_array.reshape(-1, 3).astype(np.int32, copy=False)
             self._tetgen.load_mesh(points, faces)
 
-        if not args:
-            raise invalid_input
-        elif isinstance(args[0], PolyData):
-            mesh = args[0]
-        elif isinstance(args[0], (np.ndarray, list)):
-            if len(args) >= 3:
-                self._load_arrays(args[0], args[1], args[2])
+        if "PolyData" in str(type(arg0)):  # check without importing
+            from pyvista.core.pointset import PolyData
+
+            if not isinstance(arg0, PolyData):
+                raise TypeError(f"Unknown type {type(arg0)}. Expected a `pyvista.PolyData`.")
+            mesh: PolyData = arg0
+
+            store_mesh(mesh)
+        elif isinstance(arg0, (np.ndarray, list)):
+            points = np.asarray(arg0, dtype=np.float64)
+            if isinstance(arg1, (np.ndarray, list)) and isinstance(arg2, (np.ndarray, list)):
+                self._load_arrays(points, arg1, arg2)
+            elif isinstance(arg1, (np.ndarray, list)):
+                self._load_arrays(points, arg1)
             else:
-                self._load_arrays(args[0], args[1])
-        elif isinstance(args[0], (str, Path)):
-            mesh = pv.read(args[0])
+                raise invalid_input
+        elif isinstance(arg0, (str, Path)):
+            try:
+                import pyvista.core as pv
+                from pyvista.core.pointset import PolyData
+            except ModuleNotFoundError:
+                raise ModuleNotFoundError(
+                    "To load from a filename install pyvista with:\n\n    `pip install pyvista"
+                )
+
+            mesh = pv.read(arg0)
             if not isinstance(mesh, PolyData):
                 raise RuntimeError(
                     "Loaded surface is not readable by pyvista as a "
@@ -166,6 +227,10 @@ class TetGen:
             store_mesh(mesh)
         else:
             raise invalid_input
+
+        # nasty segfault on tetgen if there are no input faces
+        if not self._tetgen.n_faces:
+            raise RuntimeError("Failed to load input faces.")
 
     def _load_arrays(
         self,
@@ -180,7 +245,7 @@ class TetGen:
         should be 2D arrays with each vertex containing XYZ data and
         each face containing three points.
 
-        Optionally include faces markers
+        Optionally include faces markers.
 
         """
         # Check inputs
@@ -188,9 +253,7 @@ class TetGen:
             try:
                 v = np.asarray(v, np.float64)
                 if v.ndim != 2 and v.shape[1] != 3:
-                    raise Exception(
-                        "Invalid vertex format. Shape should be `(npoints, 3)`"
-                    )
+                    raise Exception("Invalid vertex format. Shape should be `(npoints, 3)`")
             except BaseException:
                 raise Exception("Unable to convert vertex input to valid numpy array")
 
@@ -214,14 +277,14 @@ class TetGen:
 
         # Optional face markers
         if fmarkers is not None:
-            fmarkers = np.asarray(fmarkers, dtype=ctypes.c_int)
+            fmarkers = np.asarray(fmarkers, dtype=np.int32)
             if fmarkers.ndim != 1 or fmarkers.shape[0] != f.shape[0]:
-                raise Exception("Invalid face marker format. Shape should be (nfaces,)")
+                raise ValueError(
+                    f"Invalid face marker array. Shape should match the number of faces {f.shape[0]}"
+                )
             self._tetgen.load_facet_markers(fmarkers)
 
-    def add_region(
-        self, id: int, point_in_region: tuple[float, float, float], max_vol: float = 0.0
-    ):
+    def add_region(self, id: int, point_in_region: Sequence[float], max_vol: float = 0.0):
         """
         Add a region to the mesh.
 
@@ -273,7 +336,7 @@ class TetGen:
         region = pt + [float(id)] + [max_vol]
         self._tetgen.load_region(region)
 
-    def add_hole(self, point_in_hole: tuple[float, float, float]) -> None:
+    def add_hole(self, point_in_hole: Sequence[float]) -> None:
         """
         Add a hole to the mesh.
 
@@ -309,7 +372,7 @@ class TetGen:
         pt = [float(item) for item in point_in_hole]
         if len(pt) != 3:
             raise ValueError("Expected point to be a sequence of three floats")
-        self._tetgen.add_hole(pt)
+        self._tetgen.load_hole(pt)
 
     def make_manifold(self, verbose: bool = False) -> None:
         """
@@ -337,18 +400,19 @@ class TetGen:
         """
         try:
             import pymeshfix
-        except ImportError:
-            raise ImportError(
-                "pymeshfix not installed. Please run:\npip install pymeshfix"
+        except ModuleNotFoundError:
+            raise ModuleNotFoundError(
+                "`pymeshfix` is not installed. Install it with:\npip install pymeshfix"
             )
 
         # Run meshfix
-        meshfix = pymeshfix.MeshFix(self.v, self.f)
+        meshfix = pymeshfix.MeshFix(
+            self._tetgen.return_input_points(), self._tetgen.return_input_faces()
+        )
         meshfix.repair(verbose)
 
-        # overwrite this object with cleaned mesh
-        self.v = meshfix.v
-        self.f = meshfix.f
+        # overwrite the loaded arrays object with the cleaned mesh
+        self._tetgen.load_mesh(meshfix.v, meshfix.f)
 
     def plot(self, **kwargs: Any) -> Any:
         """Display the input mesh.
@@ -369,7 +433,7 @@ class TetGen:
         return self.mesh.plot(**kwargs)
 
     @property
-    def mesh(self) -> PolyData:
+    def mesh(self) -> "PolyData":
         """
         Return the input surface mesh.
 
@@ -397,10 +461,9 @@ class TetGen:
           N Arrays:   0
 
         """
-        triangles = np.empty((self.f.shape[0], 4), dtype="int")
-        triangles[:, -3:] = self.f
-        triangles[:, 0] = 3
-        return PolyData(self.v, triangles, deep=False)
+        return _polydata_from_faces(
+            self._tetgen.return_input_points(), self._tetgen.return_input_faces()
+        )
 
     def tetrahedralize(
         self,
@@ -441,7 +504,7 @@ class TetGen:
         noiterationnum: bool = False,
         nojettison: bool = False,
         docheck: bool = False,
-        quiet: bool = False,
+        quiet: bool = True,
         nowarning: bool = False,
         verbose: int = 0,
         vertexperblock: int = 4092,
@@ -485,9 +548,9 @@ class TetGen:
         coarsen_percent: float = 1.0,
         elem_growth_ratio: float = 0.0,
         refine_progress_ratio: float = 0.333,
-        switches: str | None = None,
+        switches: str = "",
         bgmeshfilename: str = "",
-        bgmesh: UnstructuredGrid | None = None,
+        bgmesh: Optional["UnstructuredGrid"] = None,
     ):
         """
         Generate tetrahedrals interior to the surface mesh.
@@ -528,12 +591,15 @@ class TetGen:
 
             Testing has shown that 10.0 is a reasonable input.
 
+        quiet : bool, default: True
+            Generate no output to stdout.
+
         verbose : int, default: 0
             Controls the underlying TetGen library to output text to
             console. Users using ``ipython`` may not see this output. Setting
             to 1 enables some information about the mesh generation while
             setting verbose to 2 enables more debug output. Default (``0``) is
-            no output.
+            minimal output.
 
         nobisect : bool, default: False
             Controls if Steiner points are added to the input surface
@@ -559,6 +625,9 @@ class TetGen:
             while they may be necessary in order to improve the mesh quality or
             to conform the size of mesh elements.
 
+        facesout : bool, default: False
+            Build the faces to edge array.
+
         order : int, default: 1
             Controls whether TetGen creates linear tetrahedrals or quadradic
             tetrahedrals. Set order to 2 to output quadradic tetrahedrals.
@@ -573,30 +642,30 @@ class TetGen:
             Background mesh to be processed. Must be composed of only linear
             tetra. Cannot specify both ``bgmeshfilename`` and ``bgmesh``.
 
+        switches : str, default: ""
+            String of switches. When passed, overrides all keyword arguments.
+
         Returns
         -------
         nodes : np.ndarray[np.float64]
             Array of nodes representing the tetrahedral mesh.
-
         elems : np.ndarray[np.int32]
             Array of elements representing the tetrahedral mesh.
-
-        attr : np.ndarray[np.int64] | None
-            Region attributes. ``None`` unless ``regionattrib=True`` or the
-            tetgen flag ``A`` is passed.
-
+        attr : np.ndarray[np.float64]
+            Region attributes. Empty unless ``regionattrib=True`` or the tetgen
+            flag ``"A"`` is passed.
         triface_markers : np.ndarray[np.int32]
             Marker for each face in :attr:`TetGen.triface_list`.
 
         Examples
         --------
-        The following switches "pq1.1/10Y" would be:
+        The following switches ``"pq1.1/10Y"`` would be:
 
         >>> nodes, elems = tgen.tetrahedralize(
         ...     nobisect=True, quality=True, minratio=1.1, mindihedral=10
         ... )
 
-        Using the switches option:
+        Using the switches input:
 
         >>> nodes, elems = tgen.tetrahedralize(switches="pq1.1/10Y")
 
@@ -767,31 +836,30 @@ class TetGen:
         +---------------------------+---------------+---------+
 
         """
-        # format switches
-        if switches is None:
-            switches = ""
+        plc = True  # must be always true
 
-        # Validate background mesh parameters
-        if bgmesh and bgmeshfilename:
-            raise ValueError("Cannot specify both `bgmesh` and `bgmeshfilename`")
-        if bgmesh or bgmeshfilename:
-            # Passing a background mesh only makes sense with metric set to true
-            # (will be silently ignored otherwise)
-            metric = True
-        if bgmesh:
-            bgmesh_v, bgmesh_tet, bgmesh_mtr = self._process_bgmesh(bgmesh)
-        else:
-            bgmesh_v, bgmesh_tet, bgmesh_mtr = None, None, None
-
-        # Call library
-        plc = True  # always true
+        # # Validate background mesh parameters
+        # if bgmesh and bgmeshfilename:
+        #     raise ValueError("Cannot specify both `bgmesh` and `bgmeshfilename`")
+        # if bgmesh or bgmeshfilename:
+        #     # Passing a background mesh only makes sense with metric set to true
+        #     # (will be silently ignored otherwise)
+        #     metric = True
+        # if bgmesh:
+        #     bgmesh_v, bgmesh_tet, bgmesh_mtr = self._process_bgmesh(bgmesh)
+        # else:
+        #     bgmesh_v, bgmesh_tet, bgmesh_mtr = None, None, None
 
         # self.fmarkers if hasattr(self, "fmarkers") else None,
         # regions,
         # self.holes,
-        # switches_str,
+        # bgmesh_v,
+        # bgmesh_tet,
+        # bgmesh_mtr,
+        # return_surface_data=True,
+        # return_edge_data=True,
 
-        result = self._tetgen.tetrahedralize(
+        self._tetgen.tetrahedralize(
             plc,
             psc,
             refine,
@@ -874,11 +942,7 @@ class TetGen:
             elem_growth_ratio,
             refine_progress_ratio,
             bgmeshfilename,
-            bgmesh_v,
-            bgmesh_tet,
-            bgmesh_mtr,
-            return_surface_data=True,
-            return_edge_data=True,
+            switches,
         )
         # except RuntimeError as e:
         #     raise RuntimeError(
@@ -886,39 +950,55 @@ class TetGen:
         #         f"May need to repair surface by making it manifold:\n{str(e)}"
         #     )
 
-        # Unpack results (backwards compatible)
-        if len(result) >= 8:
-            (
-                self._node,
-                self._elem,
-                self._attributes,
-                self._triface_markers,
-                self._trifaces,
-                self._face2tet,
-                self._edges,
-                self._edge_markers,
-            ) = result
-        else:
-            self._node, self._elem, self._attributes, self._triface_markers = result
+        # # Unpack results (backwards compatible)
+        # if len(result) >= 8:
+        #     (
+        #         self._node,
+        #         self._elem,
+        #         self._attributes,
+        #         self._triface_markers,
+        #         self._trifaces,
+        #         self._face2tet,
+        #         self._edges,
+        #         self._edge_markers,
+        #     ) = result
+        # else:
+        #     self._node, self._elem, self._attributes, self._triface_markers = result
 
-        # check if a mesh was generated
-        if not np.any(self._node):
-            raise RuntimeError(
-                "Failed to tetrahedralize.\nMay need to repair surface by making it manifold"
-            )
+        # # check if a mesh was generated
+        # if not np.any(self._node):
+        #     raise RuntimeError(
+        #         "Failed to tetrahedralize.\nMay need to repair surface by making it manifold"
+        #     )
 
-        LOG.info(
-            "Generated mesh with %d nodes and %d elements",
-            self._node.shape[0],
-            self._elem.shape[0],
-        )
-        self._updated = True
+        # LOG.info(
+        #     "Generated mesh with %d nodes and %d elements",
+        #     self._node.shape[0],
+        #     self._elem.shape[0],
+        # )
 
-        # return with attributes if they exist
-        if self._attributes is not None:
-            return self._node, self._elem, self._attributes, self._triface_markers
+        self._grid = None  # reset the cached grid
+        return self._node, self._elem, self._attributes, self._triface_markers
 
-        return self._node, self._elem, None, self._triface_markers
+    @property
+    def _triface_markers(self) -> NDArray[np.int32]:
+        return self._tetgen.return_triface_markers()
+
+    @property
+    def _attributes(self) -> NDArray[np.float64]:
+        return self._tetgen.return_tetrahedron_attributes()
+
+    @property
+    def _node(self) -> NDArray[np.float64]:
+        return self._tetgen.return_nodes()
+
+    @property
+    def _elem(self) -> NDArray[np.int32]:
+        return self._tetgen.return_tets()
+
+    @property
+    def _trifaces(self) -> NDArray[np.int32]:
+        return self._tetgen.return_trifaces()
 
     @property
     def face2tet(self) -> NDArray:
@@ -1015,7 +1095,7 @@ class TetGen:
                 True])
 
         """
-        if self._triface_markers is None:
+        if not self._tetgen.n_cells:
             raise MeshNotTetrahedralizedError
         return self._triface_markers
 
@@ -1081,9 +1161,9 @@ class TetGen:
         return self._node
 
     @property
-    def elem(self) -> NDArray[np.float64]:
+    def elem(self) -> NDArray[np.int32]:
         """
-        Return an ``(n, 4)`` or ``(n, 10)`` array of elements composing the grid.
+        Return the ``(n, 4)`` or ``(n, 10)`` array of elements composing the grid.
 
         This attribute is only available after running
         :meth:`TetGen.tetrahedralize`.
@@ -1110,7 +1190,7 @@ class TetGen:
         return self._elem
 
     @property
-    def grid(self) -> UnstructuredGrid:
+    def grid(self) -> "UnstructuredGrid":
         """
         Return a :class:`pyvista.UnstructuredGrid` of the tetrahedralized surface.
 
@@ -1138,33 +1218,16 @@ class TetGen:
           N Arrays:   0
 
         """
-        if self._node is None:
-            raise MeshNotTetrahedralizedError
-        if self._elem is None:
+        if not self._tetgen.n_nodes or not self._tetgen.n_cells:
             raise MeshNotTetrahedralizedError
 
-        if self._grid is not None and not self._updated:
-            return self._grid
-
-        buf = np.empty((self._elem.shape[0], 1), dtype=np.int32)
-        cell_type = np.empty(self._elem.shape[0], dtype="uint8")
-        if self._elem.shape[1] == 4:  # linear
-            buf[:] = 4
-            cell_type[:] = 10
-        elif self._elem.shape[1] == 10:  # quadradic
-            buf[:] = 10
-            cell_type[:] = 24
-        else:
-            raise RuntimeError(f"Invalid element array shape {self._elem.shape}")
-
-        cells = np.hstack((buf, self._elem))
-        self._grid = UnstructuredGrid(cells, cell_type, self._node)
-
-        self._updated = False
+        if self._grid is None:
+            self._grid = _to_ugrid(self._node, self._elem)
         return self._grid
 
     def write(self, filename: str | Path, binary: bool = True) -> None:
-        """Write an unstructured grid to disk.
+        """
+        Write an unstructured grid to disk.
 
         Parameters
         ----------
@@ -1197,25 +1260,33 @@ class TetGen:
         self.grid.save(filename, binary)
 
     @staticmethod
-    def _process_bgmesh(mesh):
-        """Process a background mesh.
+    def _process_bgmesh(
+        mesh: "UnstructuredGrid",
+    ) -> tuple[NDArray[np.float64], NDArray[np.int32], NDArray[np.float64]]:
+        """
+        Process a background mesh.
 
         Parameters
         ----------
         bgmesh : pyvista.UnstructuredGrid
-            Background mesh to be processed. Must be composed of only linear tetra,
+            Background mesh to be processed. Must be composed of only linear
+            tetrahedra.
 
         Returns
         -------
-        bgmesh_v: numpy.ndarray
+        bgmesh_v: np.ndarray[np.float64]
             Vertex array of the background mesh.
-        bgmesh_tet: numpy.ndarray
+        bgmesh_tet: np.ndarray[np.int32]
             Tet array of the background mesh.
-        bgmesh_mtr: numpy.ndarray
+        bgmesh_mtr: np.ndarray[np.float64]
             Target size array of the background mesh.
         """
+        import pyvista.core as pv
+
         if MTR_POINTDATA_KEY not in mesh.point_data:
-            raise ValueError("Background mesh does not have target size information")
+            raise ValueError(
+                f"Background mesh does not have target size information in key '{MTR_POINTDATA_KEY}'"
+            )
 
         # Celltype check
         if not (mesh.celltypes == pv.CellType.TETRA).all():
@@ -1223,7 +1294,5 @@ class TetGen:
 
         bgmesh_v = mesh.points.astype(np.float64, copy=True).ravel()
         bgmesh_tet = mesh.cell_connectivity.astype(np.int32, copy=True)
-        bgmesh_mtr = (
-            mesh.point_data[MTR_POINTDATA_KEY].astype(np.float64, copy=True).ravel()
-        )
+        bgmesh_mtr = mesh.point_data[MTR_POINTDATA_KEY].astype(np.float64, copy=True).ravel()
         return bgmesh_v, bgmesh_tet, bgmesh_mtr

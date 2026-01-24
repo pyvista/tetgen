@@ -12,18 +12,12 @@ def test_tetrahedralize_regions():
     tgen = tetgen.TetGen(mesh)
 
     V_sphere = 4 / 3 * 3.1415 * 0.1**3
-    tgen.add_region(100, [-0.25, 0, 0], V_sphere / 500)  # sphere 1
-    tgen.add_region(200, [0.25 / 2, 0, 0], V_sphere / 500)  # sphere 2
+    tgen.add_region(100, [-0.25, 0, 0], V_sphere / 100)  # sphere 1
+    tgen.add_region(200, [0.25 / 2, 0, 0], V_sphere / 100)  # sphere 2
     tgen.add_region(300, [1.5, 0, 0], V_sphere / 10)  # airbox
-
-    ret = tgen.tetrahedralize(switches="pzq1.4Aa")
-
-    assert ret is not None
-    assert len(ret) == 4
-
-    attrib = ret[2]
+    node, elem, attr, triface_markers = tgen.tetrahedralize(switches="pzq1.4Aa")
 
     # get all the region IDs assigned from tetgen
-    regions = np.unique(attrib[:, 0])
+    regions = np.unique(attr[:, 0])
 
     assert len(regions) == 3
