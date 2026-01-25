@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     tags:
-    - '*'
+    - v*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   docs_build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     env:
       PYVISTA_OFF_SCREEN: true
@@ -25,19 +25,15 @@ jobs:
       with:
         python-version: '3.13'
         cache: pip
-        cache-dependency-path: |
-          **/requirements*.txt
 
     - name: Setup headless display
       uses: pyvista/setup-headless-display-action@v4
 
     - name: Install tetgen
-      run: pip install .
+      run: pip install .[docs]
 
     - name: Build Documentation
-      run: |
-        pip install -r requirements_docs.txt
-        make -C doc html
+      run: make -C doc html
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@v4.7.3

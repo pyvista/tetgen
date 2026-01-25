@@ -26,6 +26,27 @@ readme = "README.rst"
 requires-python = ">=3.10"
 version = "0.8.dev0"
 
+[project.optional-dependencies]
+docs = [
+  "pyvista",
+  "Sphinx",
+  "imageio",
+  "matplotlib",
+  "pyacvd",
+  "pydata-sphinx-theme",
+  "pymeshfix",
+  "pyvista[trame]",
+  "sphinx-copybutton",
+  "sphinx-notfound-page>=0.3.0",
+  "sphinx_gallery"
+]
+tests = [
+  "pymeshfix>=0.13.4",
+  "pyvista",
+  "pytest",
+  "pytest-cov"
+]
+
 [project.urls]
 'Bug Reports' = 'https://github.com/pyvista/tetgen/issues'
 Documentation = 'https://tetgen.pyvista.org/'
@@ -34,12 +55,16 @@ Homepage = 'https://github.com/pyvista/tetgen'
 
 [tool.cibuildwheel]
 archs = ["auto64"]  # 64-bit only
-before-test = "pip install -r requirements_test.txt"
-skip = "pp* *musllinux* cp38-* cp39-* cp314-*"  # Build CPython 3.10 - 3.13
+build = "cp310-* cp311-* cp312-* cp313-* cp314*"
+skip = " cp314t-* *musllinux*"  # disable musl-based wheels and free threading
 test-command = "pytest {project}/tests"
+test-requires = "pytest pyvista"
 
 [tool.cibuildwheel.macos]
 archs = ["native"]
+
+[tool.cibuildwheel.macos.environment]
+MACOSX_DEPLOYMENT_TARGET = "10.14"  # Needed for full C++17 support on MacOS
 
 [tool.codespell]
 ignore-words-list = ['THIRDPARTY']
