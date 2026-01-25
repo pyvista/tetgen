@@ -9,3 +9,5 @@ try:
     __version__ = version("tetgen")
 except PackageNotFoundError:
     __version__ = "unknown"
+
+__all__ = ["TetGen", "__version__"]
