@@ -1420,7 +1420,7 @@ bool tetgenio::load_ply(char* filebasename)
   strncpy(infilename, filebasename, FILENAMESIZE - 1);
   infilename[FILENAMESIZE - 1] = '\0';
   if (infilename[0] == '\0') {
-    printf("Error:  No filename.\n");
+    std::cerr << "Error:  No filename." << std::endl;
     return false;
   }
   if (strcmp(&infilename[strlen(infilename) - 4], ".ply") != 0) {
@@ -1428,7 +1428,7 @@ bool tetgenio::load_ply(char* filebasename)
   }
 
   if (!(fp = fopen(infilename, "r"))) {
-    printf("Error:  Unable to open file %s\n", infilename);
+    std::cerr << "Error:  Unable to open file " << infilename << std::endl;
     return false;
   }
   // printf("Opening %s.\n", infilename);
@@ -1647,7 +1647,7 @@ bool tetgenio::load_stl(char* filebasename)
   strncpy(infilename, filebasename, FILENAMESIZE - 1);
   infilename[FILENAMESIZE - 1] = '\0';
   if (infilename[0] == '\0') {
-    printf("Error:  No filename.\n");
+    std::cerr << "Error:  No filename." << std::endl;
     return false;
   }
   if (strcmp(&infilename[strlen(infilename) - 4], ".stl") != 0) {
@@ -1655,7 +1655,7 @@ bool tetgenio::load_stl(char* filebasename)
   }
 
   if (!(fp = fopen(infilename, "rb"))) {
-    printf("Error:  Unable to open file %s\n", infilename);
+    std::cerr << "Error:  Unable to open file " << infilename << std::endl;
     return false;
   }
   // printf("Opening %s.\n", infilename);
@@ -1825,7 +1825,7 @@ bool tetgenio::load_medit(char* filebasename, int istetmesh)
   strncpy(infilename, filebasename, FILENAMESIZE - 1);
   infilename[FILENAMESIZE - 1] = '\0';
   if (infilename[0] == '\0') {
-    //printf("Error:  No filename.\n");
+    std::cerr << "Error:  No filename." << std::endl;
     return false;
   }
   if (strcmp(&infilename[strlen(infilename) - 5], ".mesh") != 0) {
@@ -1833,7 +1833,7 @@ bool tetgenio::load_medit(char* filebasename, int istetmesh)
   }
 
   if (!(fp = fopen(infilename, "r"))) {
-    //printf("Error:  Unable to open file %s\n", infilename);
+    std::cerr << "Error:  Unable to open file " << infilename << std::endl;
     return false;
   }
   // printf("Opening %s.\n", infilename);
@@ -2184,14 +2184,14 @@ bool tetgenio::load_vtk(char* filebasename)
   strncpy(infilename, filebasename, FILENAMESIZE - 1);
   infilename[FILENAMESIZE - 1] = '\0';
   if (infilename[0] == '\0') {
-    printf("Error:  No filename.\n");
+    std::cerr << "Error:  No filename." << std::endl;
     return false;
   }
   if (strcmp(&infilename[strlen(infilename) - 4], ".vtk") != 0) {
     strcat(infilename, ".vtk");
   }
   if (!(fp = fopen(infilename, "r"))) {
-    printf("Error:  Unable to open file %s\n", infilename);
+    std::cerr << "Error:  Unable to open file " << infilename << std::endl;
     return false;
   }
   // printf("Opening %s.\n", infilename);
@@ -11973,7 +11973,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
   int i, j;
 
   if (!b->quiet) {
-    printf("Delaunizing vertices...\n");
+    std::cout << "Delaunizing vertices..." << std::endl;
   }
   // Form a random permuation (uniformly at random) of the set of vertices.
   permutarray = new point[in->numberofpoints];
@@ -11981,14 +11981,14 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
 
   if (b->no_sort) {
     if (b->verbose) {
-      printf("  Using the input order.\n");
+      std::cout << "  Using the input order." << std::endl;
     }
     for (i = 0; i < in->numberofpoints; i++) {
       permutarray[i] = (point) points->traverse();
     }
   } else {
     if (b->verbose) {
-      printf("  Permuting vertices.\n");
+      std::cout << "  Permuting vertices." << std::endl;
     }
     srand(in->numberofpoints);
     for (i = 0; i < in->numberofpoints; i++) {
@@ -11998,7 +11998,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
     }
     if (b->brio_hilbert) { // -b option
       if (b->verbose) {
-        printf("  Sorting vertices.\n");
+        std::cout << "  Sorting vertices." << std::endl;
       }
       hilbert_init(in->mesh_dim);
       brio_multiscale_sort(permutarray, in->numberofpoints, b->brio_threshold,
@@ -12018,8 +12018,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
   while ((distance(permutarray[0],permutarray[i])/bboxsize)<b->epsilon) {
     i++;
     if (i == in->numberofpoints - 1) {
-      printf("Exception:  All vertices are (nearly) identical (Tol = %g).\n",
-             b->epsilon);
+      std::cerr << "Exception:  All vertices are (nearly) identical (Tol = " << b->epsilon << ")." << std::endl;
       terminatetetgen(this, 10);
     }
   }
@@ -12040,8 +12039,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
   while ((sqrt(norm2(n[0], n[1], n[2])) / bboxsize2) < b->epsilon) {
     i++;
     if (i == in->numberofpoints - 1) {
-      printf("Exception:  All vertices are (nearly) collinear (Tol = %g).\n",
-             b->epsilon);
+        std::cerr << "Exception:  All vertices are (nearly) collinear (Tol = " << b->epsilon << ")." << std::endl;
       terminatetetgen(this, 10);
     }
     for (j = 0; j < 3; j++) {
@@ -12063,8 +12061,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
   while ((fabs(ori) / bboxsize3) < b->epsilon) {
     i++;
     if (i == in->numberofpoints) {
-      printf("Exception:  All vertices are coplanar (Tol = %g).\n",
-             b->epsilon);
+      std::cerr << "Exception:  All vertices are coplanar (Tol = " << b->epsilon << ")." << std::endl;
       terminatetetgen(this, 10);
     }
     ori = orient3dfast(permutarray[0], permutarray[1], permutarray[2],
@@ -12091,7 +12088,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
                   permutarray[3]);
 
   if (b->verbose) {
-    printf("  Incrementally inserting vertices.\n");
+    std::cout << "  Incrementally inserting vertices." << std::endl;
   }
   insertvertexflags ivf;
   flipconstraints fc;
@@ -33509,7 +33506,7 @@ void tetgenmesh::outnodes(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outnodefilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", outnodefilename);
+      std::cerr << "File I/O Error:  Cannot create file " << outnodefilename << std::endl;
       terminatetetgen(this, 1);
     }
     // Number of points, number of dimensions, number of point attributes,
@@ -33522,14 +33519,14 @@ void tetgenmesh::outnodes(tetgenio* out)
     // Allocate space for 'pointlist';
     out->pointlist = new REAL[points->items * 3];
     if (out->pointlist == (REAL *) NULL) {
-      printf("Error:  Out of memory.\n");
+      std::cerr << "Error:  Out of memory." << std::endl;
       terminatetetgen(this, 1);
     }
     // Allocate space for 'pointattributelist' if necessary;
     if (nextras > 0) {
       out->pointattributelist = new REAL[points->items * nextras];
       if (out->pointattributelist == (REAL *) NULL) {
-        printf("Error:  Out of memory.\n");
+        std::cerr << "Error:  Out of memory." << std::endl;
         terminatetetgen(this, 1);
       }
     }
@@ -33537,14 +33534,14 @@ void tetgenmesh::outnodes(tetgenio* out)
     if (bmark) {
       out->pointmarkerlist = new int[points->items];
       if (out->pointmarkerlist == (int *) NULL) {
-        printf("Error:  Out of memory.\n");
+        std::cerr << "Error:  Out of memory." << std::endl;
         terminatetetgen(this, 1);
       }
     }
     if (b->psc) {
       out->pointparamlist = new tetgenio::pointparam[points->items];
       if (out->pointparamlist == NULL) {
-        printf("Error:  Out of memory.\n");
+        std::cerr << "Error:  Out of memory." << std::endl;
         terminatetetgen(this, 1);
       }
     }
@@ -33705,7 +33702,7 @@ void tetgenmesh::outmetrics(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outmtrfilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", outmtrfilename);
+      std::cerr << "File I/O Error:  Cannot create file " << outmtrfilename << std::endl;
       terminatetetgen(this, 3);
     }
     // Number of points, number of point metrices,
@@ -33752,7 +33749,7 @@ void tetgenmesh::outmetrics(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outmtrfilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", outmtrfilename);
+      std::cerr << "File I/O Error:  Cannot create file " << outmtrfilename << std::endl;
       terminatetetgen(this, 3);
     }
     // Number of points,
@@ -34004,7 +34001,7 @@ void tetgenmesh::outfaces(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(facefilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", facefilename);
+      std::cerr << "File I/O Error:  Cannot create file " << facefilename << std::endl;
       terminatetetgen(this, 1);
     }
     fprintf(outfile, "%ld  %d\n", faces, !b->nobound);
@@ -34012,7 +34009,7 @@ void tetgenmesh::outfaces(tetgenio* out)
     // Allocate memory for 'trifacelist'.
     out->trifacelist = new int[faces * 3];
     if (out->trifacelist == (int *) NULL) {
-      printf("Error:  Out of memory.\n");
+      std::cerr << "Error:  Out of memory." << std::endl;
       terminatetetgen(this, 1);
     }
     if (b->order == 2) {
@@ -34022,7 +34019,7 @@ void tetgenmesh::outfaces(tetgenio* out)
     if (!b->nobound) {
       out->trifacemarkerlist = new int[faces];
       if (out->trifacemarkerlist == (int *) NULL) {
-        printf("Error:  Out of memory.\n");
+        std::cerr << "Error:  Out of memory." << std::endl;
         terminatetetgen(this, 1);
       }
     }
@@ -34030,7 +34027,7 @@ void tetgenmesh::outfaces(tetgenio* out)
       // '-nn' switch.
       out->face2tetlist = new int[faces * 2];
       if (out->face2tetlist == (int *) NULL) {
-        printf("Error:  Out of memory.\n");
+        std::cerr << "Error:  Out of memory." << std::endl;
         terminatetetgen(this, 1);
       }
     }
@@ -34222,7 +34219,7 @@ void tetgenmesh::outhullfaces(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(facefilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", facefilename);
+      std::cerr << "File I/O Error:  Cannot create file " << facefilename << std::endl;
       terminatetetgen(this, 1);
     }
     fprintf(outfile, "%ld  0\n", hullsize);
@@ -34230,7 +34227,7 @@ void tetgenmesh::outhullfaces(tetgenio* out)
     // Allocate memory for 'trifacelist'.
     out->trifacelist = new int[hullsize * 3];
     if (out->trifacelist == (int *) NULL) {
-      printf("Error:  Out of memory.\n");
+      std::cerr << "Error:  Out of memory." << std::endl;
       terminatetetgen(this, 1);
     }
     out->numberoftrifaces = hullsize;
@@ -34326,7 +34323,7 @@ void tetgenmesh::outsubfaces(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(facefilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", facefilename);
+      std::cerr << "File I/O Error:  Cannot create file " << facefilename << std::endl;
       terminatetetgen(this, 3);
     }
     // Number of subfaces.
@@ -34506,7 +34503,7 @@ void tetgenmesh::outedges(tetgenio* out)
     if (out == (tetgenio *) NULL) {
       printf("Writing %s.\n", edgefilename);
     } else {
-      printf("Writing edges.\n");
+      std::cout << "Writing edges." << std::endl;
     }
   }
 
@@ -34528,7 +34525,7 @@ void tetgenmesh::outedges(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(edgefilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", edgefilename);
+      std::cerr << "File I/O Error:  Cannot create file " << edgefilename << std::endl;
       terminatetetgen(this, 1);
     }
     // Write the number of edges, boundary markers (0 or 1).
@@ -34538,7 +34535,7 @@ void tetgenmesh::outedges(tetgenio* out)
     out->numberofedges = meshedges;
     out->edgelist = new int[meshedges * 2];
     if (out->edgelist == (int *) NULL) {
-      printf("Error:  Out of memory.\n");
+      std::cerr << "Error:  Out of memory." << std::endl;
       terminatetetgen(this, 1);
     }
     if (b->order == 2) { // -o2 switch
@@ -34698,7 +34695,7 @@ void tetgenmesh::outedges(tetgenio* out)
         if (out == (tetgenio *) NULL) {
           printf("Writing %s.\n", edgefilename);
         } else {
-          printf("Writing face-to-edge map.\n");
+          std::cout << "Writing face-to-edge map." << std::endl;
         }
       }
 	  if (out == (tetgenio *) NULL) {
@@ -34725,7 +34722,7 @@ void tetgenmesh::outedges(tetgenio* out)
       if (out == (tetgenio *) NULL) {
         printf("Writing %s.\n", edgefilename);
       } else {
-        printf("Writing tetrahedron-to-edge map.\n");
+        std::cout << "Writing tetrahedron-to-edge map." << std::endl;
       }
     }
 	if (out == (tetgenio *) NULL) {
@@ -34784,14 +34781,14 @@ void tetgenmesh::outsubsegments(tetgenio* out)
     if (out == (tetgenio *) NULL) {
       printf("Writing %s.\n", edgefilename);
     } else {
-      printf("Writing edges.\n");
+      std::cout << "Writing edges." << std::endl;
     }
   }
 
   if (out == (tetgenio *) NULL) {
     outfile = fopen(edgefilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", edgefilename);
+      std::cerr << "File I/O Error:  Cannot create file " << edgefilename << std::endl;
       terminatetetgen(this, 3);
     }
     // Number of subsegments.
@@ -34935,7 +34932,7 @@ void tetgenmesh::outneighbors(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(neighborfilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", neighborfilename);
+      std::cerr << "File I/O Error:  Cannot create file " << neighborfilename << std::endl;
       terminatetetgen(this, 1);
     }
     // Number of tetrahedra, four faces per tetrahedron.
@@ -34944,7 +34941,7 @@ void tetgenmesh::outneighbors(tetgenio* out)
     // Allocate memory for 'neighborlist'.
     out->neighborlist = new int[ntets * 4];
     if (out->neighborlist == (int *) NULL) {
-      printf("Error:  Out of memory.\n");
+      std::cerr << "Error:  Out of memory." << std::endl;
       terminatetetgen(this, 1);
     }
     nlist = out->neighborlist;
@@ -35080,7 +35077,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outfilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", outfilename);
+      std::cerr << "File I/O Error:  Cannot create file " << outfilename << std::endl;
       terminatetetgen(this, 3);
     }
     // Number of voronoi points, 3 dim, no attributes, no marker.
@@ -35145,7 +35142,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outfilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", outfilename);
+      std::cerr << "File I/O Error:  Cannot create file " << outfilename << std::endl;
       terminatetetgen(this, 3);
     }
     // Number of Voronoi edges, no marker.
@@ -35247,7 +35244,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outfilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", outfilename);
+      std::cerr << "File I/O Error:  Cannot create file " << outfilename << std::endl;
       terminatetetgen(this, 3);
     }
     // Number of Voronoi faces.
@@ -35361,7 +35358,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outfilename, "w");
     if (outfile == (FILE *) NULL) {
-      printf("File I/O Error:  Cannot create file %s.\n", outfilename);
+      std::cerr << "File I/O Error:  Cannot create file " << outfilename << std::endl;
       terminatetetgen(this, 3);
     }
     // Number of Voronoi cells.
@@ -35498,7 +35495,7 @@ void tetgenmesh::outsmesh(char* smfilename)
   }
   outfile = fopen(smefilename, "w");
   if (outfile == (FILE *) NULL) {
-    printf("File I/O Error:  Cannot create file %s.\n", smefilename);
+    std::cerr << "File I/O Error:  Cannot create file " << smefilename << std::endl;
     return;
   }
 
@@ -35610,7 +35607,7 @@ void tetgenmesh::outmesh2medit(char* mfilename)
   }
   outfile = fopen(mefilename, "w");
   if (outfile == (FILE *) NULL) {
-    printf("File I/O Error:  Cannot create file %s.\n", mefilename);
+    std::cerr << "File I/O Error:  Cannot create file " << mefilename << std::endl;
     return;
   }
 
@@ -35795,7 +35792,7 @@ void tetgenmesh::outmesh2vtk(char* ofilename, int mesh_idx)
   int celltype = 10;
 
   if (b->order == 2) {
-    printf("  Write VTK not implemented for order 2 elements \n");
+    std::cerr << "Error:  Write VTK not implemented for order 2 elements." << std::endl;
     return;
   }
 

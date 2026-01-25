@@ -72,7 +72,7 @@ def test_tetrahedralize_switches(sphere: PolyData, capfd: pytest.CaptureFixture[
     assert tets.shape == (n_cells, 4)
 
 
-def test_tetrahedralize(sphere: PolyData, capfd: pytest.CaptureFixture[str]) -> None:
+def test_tetrahedralize(sphere: PolyData) -> None:
     faces = sphere._connectivity_array.reshape(-1, 3).astype(np.int32)
     tgen = PyTetgen()
     tgen.load_mesh(sphere.points, faces)
@@ -172,7 +172,7 @@ def test_load_bgmesh() -> None:
     assert tgen.n_bg_nodes == bgmesh.n_points
 
 
-def test_face2tet(sphere: PolyData, capfd: pytest.CaptureFixture[str]) -> None:
+def test_face2tet(sphere: PolyData) -> None:
     faces = sphere._connectivity_array.reshape(-1, 3).astype(np.int32)
     tgen = PyTetgen()
     tgen.load_mesh(sphere.points, faces)
@@ -184,3 +184,19 @@ def test_face2tet(sphere: PolyData, capfd: pytest.CaptureFixture[str]) -> None:
     tgen.load_mesh(sphere.points, faces)
     tgen.tetrahedralize(neighout=True)
     assert tgen.return_face2tet().shape == (tgen.n_trifaces, 2)
+
+
+def test_edges(sphere: PolyData) -> None:
+    faces = sphere._connectivity_array.reshape(-1, 3).astype(np.int32)
+    tgen = PyTetgen()
+    tgen.load_mesh(sphere.points, faces)
+    tgen.tetrahedralize(edgesout=False)
+
+    n_expected = sphere.extract_all_edges().n_cells
+    assert tgen.return_edges().shape == (n_expected, 2)
+
+    # includes internal with edgesout
+    tgen.tetrahedralize(edgesout=True)
+    ugrid = _to_ugrid(tgen.return_nodes(), tgen.return_tets())
+    n_expected = ugrid.extract_all_edges().n_cells
+    assert tgen.return_edges().shape == (n_expected, 2)

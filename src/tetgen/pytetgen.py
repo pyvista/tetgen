@@ -571,7 +571,6 @@ class TetGen:
             Enables/disables mesh improvement. Enabled by default. Disable
             this to speed up mesh generation while sacrificing quality. Default
             True.
-
         minratio : double, default: 2.0
             Maximum allowable radius-edge ratio. Must be greater than 1.0 the
             closer to 1.0, the higher the quality of the mesh. Be sure to
@@ -581,7 +580,6 @@ class TetGen:
 
             Testing has showed that 1.1 is a reasonable input for a high
             quality mesh.
-
         mindihedral : double, default: 0.0
             Minimum allowable dihedral angle. The larger this number, the
             higher the quality of the resulting mesh. Be sure to raise
@@ -590,17 +588,14 @@ class TetGen:
             otherwise, meshing will appear to hang.
 
             Testing has shown that 10.0 is a reasonable input.
-
         quiet : bool, default: True
             Generate no output to stdout.
-
         verbose : int, default: 0
             Controls the underlying TetGen library to output text to
             console. Users using ``ipython`` may not see this output. Setting
             to 1 enables some information about the mesh generation while
             setting verbose to 2 enables more debug output. Default (``0``) is
             minimal output.
-
         nobisect : bool, default: False
             Controls if Steiner points are added to the input surface
             mesh. When enabled, the surface mesh will be modified.
@@ -608,46 +603,48 @@ class TetGen:
             Testing has shown that if your input surface mesh is already well
             shaped, disabling this setting will improve meshing speed and mesh
             quality.
-
+        edgesout : bool, default: False
+            Store all the edges of the tetrahedral mesh after
+            tetrahedralization. By default, only the edges of the input faces
+            are stored. Retrieve of edges and edge markers via
+            :attr:`TetGen.edges`and :attr:`TetGen.edge_markers`.
         steinerleft : int, default: 100000
             Steiner points are points added to the original surface mesh to
-            create a valid tetrahedral mesh. Settings this to -1 will allow
+            create a valid tetrahedral mesh. Settings this to ``-1`` will allow
             tetgen to create an unlimited number of steiner points, but the
             program will likely hang if this is used in combination with narrow
             quality requirements.
 
             The first type of Steiner points are used in creating an initial
             tetrahedralization of PLC. These Steiner points are mandatory in
-            order to create a valid tetrahedralization
+            order to create a valid tetrahedralization.
 
             The second type of Steiner points are used in creating quality
-            tetra- hedral meshes of PLCs. These Steiner points are optional,
-            while they may be necessary in order to improve the mesh quality or
-            to conform the size of mesh elements.
-
+            tetrahedral meshes of PLCs. While these Steiner points are
+            optional, they may be necessary in order to improve the mesh
+            quality or to conform the size of mesh elements.
         facesout : bool, default: False
-            Build the faces to edge array.
-
+            By default (``False``) only the input faces are kept in the
+            output. Enabling this converts all the tetrahedral faces to
+            triangular faces and these can be retrieved after
+            tetrahedralization from :attr:`TetGen.trifaces`.
         order : int, default: 1
             Controls whether TetGen creates linear tetrahedrals or quadradic
             tetrahedrals. Set order to 2 to output quadradic tetrahedrals.
-
+        regionattrib : bool, default: False
+            Return region attributes.
+        switches : str, default: ""
+            String of switches. When passed, overrides all keyword arguments
+            except for bgmesh associated keyword arguments.
         bgmeshfilename : str, default: ""
             Filename of the background mesh with the target size associated
             with the nodes. Cannot specify both ``bgmeshfilename`` and
             ``bgmesh``.
-
-        regionattrib : bool, default: False
-            Return region attributes.
-
         bgmesh : pyvista.UnstructuredGrid
             Background mesh to be processed. Must be composed of only linear
             tetra with the sizing contained in the `point_data` of the mesh
             within the `'target_size'` key. Cannot specify both
             ``bgmeshfilename`` and ``bgmesh``.
-
-        switches : str, default: ""
-            String of switches. When passed, overrides all keyword arguments.
 
         Returns
         -------
@@ -1011,16 +1008,22 @@ class TetGen:
         This attribute is only available after running
         :meth:`TetGen.tetrahedralize`.
 
+        .. note::
+           Run :meth:`TetGen.tetrahedralize` with ``edgesout=True`` to allow
+           retrevial of all edges, including those of the tetrahedrals. By
+           default with ``edgesout=False``, only the edges of the input faces
+           can be retrieved. The switch equivalent is ``"e"``.
+
         Examples
         --------
-        Tetrahedralize a sphere and the first 10 edges composing the tetrahedralized
-        grid.
+        Tetrahedralize a sphere and return the first 10 edges composing the
+        tetrahedralized grid.
 
         >>> import tetgen
         >>> import pyvista as pv
         >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
         >>> tet = tetgen.TetGen(sphere)
-        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> tet.tetrahedralize(switches="pq1.1/10YQe")
         >>> tet.edges[:10]
         array([[46, 47],
                [46, 40],
@@ -1036,7 +1039,7 @@ class TetGen:
         """
         if not self.is_tetrahedralized:
             raise MeshNotTetrahedralizedError
-        return self._edges
+        return self._tetgen.return_edges()
 
     @property
     def edge_markers(self) -> NDArray[np.int32]:
@@ -1048,6 +1051,12 @@ class TetGen:
         This attribute is only available after running
         :meth:`TetGen.tetrahedralize`.
 
+        .. note::
+           Run :meth:`TetGen.tetrahedralize` with ``edgesout=True`` to allow
+           retrevial of all edges, including those of the tetrahedrals. By
+           default with ``edgesout=False``, only the edges of the input faces
+           can be retrieved. The switch equivalent is ``"e"``.
+
         Examples
         --------
         Tetrahedralize a sphere and create a mask of internal edges, ``is_internal``.
@@ -1056,7 +1065,7 @@ class TetGen:
         >>> import pyvista as pv
         >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
         >>> tet = tetgen.TetGen(sphere)
-        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> tet.tetrahedralize(switches="pq1.1/10YQe")
         >>> is_internal = tet.edge_markers == 0
         >>> is_internal[:10]
         array([ True,  True, False, False,  True, False,  True,  True, False,
@@ -1065,7 +1074,7 @@ class TetGen:
         """
         if not self.is_tetrahedralized:
             raise MeshNotTetrahedralizedError
-        return self._edge_markers
+        return self._tetgen.return_edge_markers()
 
     @property
     def triface_markers(self) -> NDArray[np.int32]:
@@ -1077,6 +1086,12 @@ class TetGen:
         This attribute is only available after running
         :meth:`TetGen.tetrahedralize`.
 
+        .. note::
+           Run :meth:`TetGen.tetrahedralize` with ``facesout=True`` to allow
+           retrevial of all faces, including those of the tetrahedrals. By
+           default with ``facesout=False``, only the faces of the input
+           can be retrieved. The switch equivalent is ``"f"``.
+
         Examples
         --------
         Tetrahedralize a sphere and return the array of the triangular faces
@@ -1086,7 +1101,7 @@ class TetGen:
         >>> import pyvista as pv
         >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
         >>> tet = tetgen.TetGen(sphere)
-        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> tet.tetrahedralize(switches="pq1.1/10YQf")
         >>> is_interior = tet.triface_markers == 0
         >>> is_interior[:10]
         array([ True,  True,  True, False,  True,  True,  True, False,  True,
@@ -1107,6 +1122,12 @@ class TetGen:
         This attribute is only available after running
         :meth:`TetGen.tetrahedralize`.
 
+        .. note::
+           Run :meth:`TetGen.tetrahedralize` with ``facesout=True`` to allow
+           retrevial of all faces, including those of the tetrahedrals. By
+           default with ``facesout=False``, only the faces of the input
+           can be retrieved. The switch equivalent is ``"f"``.
+
         Examples
         --------
         Tetrahedralize a sphere and return the array of the triangular faces
@@ -1116,7 +1137,7 @@ class TetGen:
         >>> import pyvista as pv
         >>> sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
         >>> tet = tetgen.TetGen(sphere)
-        >>> tet.tetrahedralize(switches="pq1.1/10YQ")
+        >>> tet.tetrahedralize(switches="pq1.1/10YQf")
         >>> tet.trifaces
         array([[107,   1,   9],
                [107,  81,   1],
