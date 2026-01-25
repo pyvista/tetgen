@@ -63,7 +63,7 @@ Homepage = 'https://github.com/pyvista/tetgen'
 archs = ["auto64"]  # 64-bit only
 build = "cp310-* cp311-* cp312-* cp313-*"  # " cp314*"  # skip 3.14 until vtk 9.6 is released
 skip = " cp314t-* *musllinux*"  # disable musl-based wheels and free threading
-test-command = "pytest {project}/tests"
+test-command = "pytest {project}/tests -vv"
 test-requires = "pytest pyvista meshio pymeshfix"
 
 [tool.cibuildwheel.macos]
