@@ -200,3 +200,43 @@ def test_edges(sphere: PolyData) -> None:
     ugrid = _to_ugrid(tgen.return_nodes(), tgen.return_tets())
     n_expected = ugrid.extract_all_edges().n_cells
     assert tgen.return_edges().shape == (n_expected, 2)
+
+
+def test_edge_markers(sphere: PolyData) -> None:
+    faces = sphere._connectivity_array.reshape(-1, 3).astype(np.int32)
+    tgen = PyTetgen()
+    tgen.load_mesh(sphere.points, faces)
+    tgen.tetrahedralize(edgesout=False)
+
+    n_expected = sphere.extract_all_edges().n_cells
+    edge_markers = tgen.return_edge_markers()
+    assert edge_markers.shape == (n_expected,)
+    assert (edge_markers == -1).all(), "expected all edge markers to be marked internal (-1)"
+
+    # includes internal with edgesout
+    tgen.tetrahedralize(edgesout=True)
+    ugrid = _to_ugrid(tgen.return_nodes(), tgen.return_tets())
+    n_expected = ugrid.extract_all_edges().n_cells
+    edge_markers = tgen.return_edge_markers()
+    assert edge_markers.shape == (n_expected,)
+
+    assert not (edge_markers == -1).all(), (
+        "expected only some edge markers to be marked internal (-1)"
+    )
+
+
+def test_triface_markers(sphere: PolyData) -> None:
+    faces = sphere._connectivity_array.reshape(-1, 3).astype(np.int32)
+    tgen = PyTetgen()
+    tgen.load_mesh(sphere.points, faces)
+
+    tgen.tetrahedralize(facesout=False)
+    triface_markers = tgen.return_triface_markers()
+    assert (triface_markers == -1).all(), "expected all triface markers to be marked internal (-1)"
+
+    tgen.tetrahedralize(facesout=True)
+    triface_markers = tgen.return_triface_markers()
+
+    assert not (triface_markers == -1).all(), (
+        "expected only some triface markers to be marked internal (-1)"
+    )
