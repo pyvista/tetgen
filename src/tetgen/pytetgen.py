@@ -551,7 +551,7 @@ class TetGen:
         switches: str = "",
         bgmeshfilename: str = "",
         bgmesh: Optional["UnstructuredGrid"] = None,
-    ):
+    ) -> tuple[NDArray[np.float64], NDArray[np.int32], NDArray[np.float64], NDArray[np.int32]]:
         """
         Generate tetrahedrals interior to the surface mesh.
 
@@ -652,14 +652,18 @@ class TetGen:
         Returns
         -------
         nodes : np.ndarray[np.float64]
-            Array of nodes representing the tetrahedral mesh.
+            Array of nodes representing the tetrahedral mesh. Also accessible
+            from :attr:`TetGen.nodes`.
         elems : np.ndarray[np.int32]
-            Array of elements representing the tetrahedral mesh.
+            Array of elements representing the tetrahedral mesh. Also accessible
+            from :attr:`TetGen.elems`.
         attr : np.ndarray[np.float64]
             Region attributes. Empty unless ``regionattrib=True`` or the tetgen
-            flag ``"A"`` is passed.
+            flag ``"A"`` is passed. Also accessible from
+            :attr:`TetGen.attributes`.
         triface_markers : np.ndarray[np.int32]
-            Marker for each face in :attr:`TetGen.triface_list`.
+            Marker for each face. Also accessible from
+            :attr:`TetGen.triface_markers`.
 
         Examples
         --------
@@ -840,9 +844,7 @@ class TetGen:
         +---------------------------+---------------+---------+
 
         """
-        plc = True  # must be always true
-
-        # # Validate background mesh parameters
+        # Validate background mesh parameters
         if bgmesh and bgmeshfilename:
             raise ValueError("Cannot specify both `bgmesh` and `bgmeshfilename`")
         if bgmesh or bgmeshfilename:
@@ -857,18 +859,6 @@ class TetGen:
             self._process_bgmesh(bgmesh)
         elif bgmeshfilename:
             self._tetgen.load_bgmesh_from_filename(bgmeshfilename)
-
-        # else:
-        #     bgmesh_v, bgmesh_tet, bgmesh_mtr = None, None, None
-
-        # self.fmarkers if hasattr(self, "fmarkers") else None,
-        # regions,
-        # self.holes,
-        # bgmesh_v,
-        # bgmesh_tet,
-        # bgmesh_mtr,
-        # return_surface_data=True,
-        # return_edge_data=True,
 
         self._tetgen.tetrahedralize(
             plc,
@@ -954,66 +944,64 @@ class TetGen:
             refine_progress_ratio,
             switches,
         )
-        # except RuntimeError as e:
-        #     raise RuntimeError(
-        #         "Failed to tetrahedralize.\n"
-        #         f"May need to repair surface by making it manifold:\n{str(e)}"
-        #     )
 
-        # # Unpack results (backwards compatible)
-        # if len(result) >= 8:
-        #     (
-        #         self._node,
-        #         self._elem,
-        #         self._attributes,
-        #         self._triface_markers,
-        #         self._trifaces,
+        # return_surface_data=True,
+        # return_edge_data=True,
+
         #         self._face2tet,
         #         self._edges,
         #         self._edge_markers,
-        #     ) = result
-        # else:
-        #     self._node, self._elem, self._attributes, self._triface_markers = result
 
-        # # check if a mesh was generated
-        # if not np.any(self._node):
-        #     raise RuntimeError(
-        #         "Failed to tetrahedralize.\nMay need to repair surface by making it manifold"
-        #     )
+        # check if a mesh was generated
+        if not self._tetgen.n_nodes:
+            raise RuntimeError(
+                "Failed to tetrahedralize. You may need to repair surface by making it manifold"
+            )
 
-        # LOG.info(
-        #     "Generated mesh with %d nodes and %d elements",
-        #     self._node.shape[0],
-        #     self._elem.shape[0],
-        # )
+        LOG.info(
+            "Generated mesh with %d nodes and %d elements",
+            self._tetgen.n_nodes,
+            self._tetgen.n_cells,
+        )
 
         self._grid = None  # reset the cached grid
-        return self._node, self._elem, self._attributes, self._triface_markers
+        return self.node, self.elem, self.attributes, self.triface_markers
 
     @property
-    def _triface_markers(self) -> NDArray[np.int32]:
-        return self._tetgen.return_triface_markers()
+    def is_tetrahedralized(self) -> bool:
+        """Return True when this mesh has been tetrahedralized."""
+        return self._tetgen.n_cells != 0
 
     @property
-    def _attributes(self) -> NDArray[np.float64]:
+    def attributes(self) -> NDArray[np.float64]:
+        """
+        Return the array of tetrahedron attributes.
+
+        These generally correspond to the regions set from
+        :func:`TetGen.add_region`.
+        """
         return self._tetgen.return_tetrahedron_attributes()
 
     @property
-    def _node(self) -> NDArray[np.float64]:
-        return self._tetgen.return_nodes()
+    def face2tet(self) -> NDArray[np.int32]:
+        """
+        Return the face-to-tetrahedra mapping ``(n, 2)`` array.
 
-    @property
-    def _elem(self) -> NDArray[np.int32]:
-        return self._tetgen.return_tets()
+        ``-1`` denotes boundary.
 
-    @property
-    def _trifaces(self) -> NDArray[np.int32]:
-        return self._tetgen.return_trifaces()
+        .. warning::
+           May be one indexed.
 
-    @property
-    def face2tet(self) -> NDArray:
-        """Return the mapping between each triface and the tetrahedral elements."""
-        return self._face2tet
+        """
+        if not self.is_tetrahedralized:
+            raise MeshNotTetrahedralizedError
+        arr = self._tetgen.return_face2tet()
+        if arr.size == 0:
+            raise RuntimeError(
+                "Face to tetrahedra mapping not generated. To enable this "
+                "array, pass `neighout=True`  or 'n' to tetrahedralize"
+            )
+        return arr
 
     @property
     def edges(self) -> NDArray[np.int32]:
@@ -1046,7 +1034,7 @@ class TetGen:
                [ 3,  4]], dtype=int32)
 
         """
-        if self._edges is None:
+        if not self.is_tetrahedralized:
             raise MeshNotTetrahedralizedError
         return self._edges
 
@@ -1075,7 +1063,7 @@ class TetGen:
                False])
 
         """
-        if self._edge_markers is None:
+        if not self.is_tetrahedralized:
             raise MeshNotTetrahedralizedError
         return self._edge_markers
 
@@ -1105,9 +1093,9 @@ class TetGen:
                 True])
 
         """
-        if not self._tetgen.n_cells:
+        if not self.is_tetrahedralized:
             raise MeshNotTetrahedralizedError
-        return self._triface_markers
+        return self._tetgen.return_triface_markers()
 
     @property
     def trifaces(self) -> NDArray[np.int32]:
@@ -1139,9 +1127,9 @@ class TetGen:
                [ 15,   6,  14]], shape=(814, 3), dtype=int32)
 
         """
-        if self._trifaces is None:
+        if not self.is_tetrahedralized:
             raise MeshNotTetrahedralizedError
-        return self._trifaces
+        return self._tetgen.return_trifaces()
 
     @property
     def node(self) -> NDArray[np.float64]:
@@ -1166,9 +1154,9 @@ class TetGen:
                [ 0.17101008,  0.        ,  0.46984631]])
 
         """
-        if self._node is None:
+        if not self.is_tetrahedralized:
             raise MeshNotTetrahedralizedError
-        return self._node
+        return self._tetgen.return_nodes()
 
     @property
     def elem(self) -> NDArray[np.int32]:
@@ -1195,9 +1183,9 @@ class TetGen:
                [ 82,  91,  92, 102]], dtype=int32)
 
         """
-        if self._elem is None:
+        if not self.is_tetrahedralized:
             raise MeshNotTetrahedralizedError
-        return self._elem
+        return self._tetgen.return_tets()
 
     @property
     def grid(self) -> "UnstructuredGrid":
@@ -1228,11 +1216,11 @@ class TetGen:
           N Arrays:   0
 
         """
-        if not self._tetgen.n_nodes or not self._tetgen.n_cells:
+        if not self.is_tetrahedralized:
             raise MeshNotTetrahedralizedError
 
         if self._grid is None:
-            self._grid = _to_ugrid(self._node, self._elem)
+            self._grid = _to_ugrid(self.node, self.elem)
         return self._grid
 
     def write(self, filename: str | Path, binary: bool = True) -> None:

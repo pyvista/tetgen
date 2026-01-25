@@ -34926,7 +34926,7 @@ void tetgenmesh::outneighbors(tetgenio* out)
     if (out == (tetgenio *) NULL) {
       printf("Writing %s.\n", neighborfilename);
     } else {
-      printf("Writing neighbors.\n");
+      std::cout << "Writing neighbors." << std::endl;
     }
   }
 

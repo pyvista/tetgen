@@ -170,3 +170,17 @@ def test_load_bgmesh() -> None:
     bgmesh_mtr = np.ones(bgmesh.n_points)
     tgen.load_bgmesh_from_arrays(bgmesh.points.astype(np.float64, copy=False), cells, bgmesh_mtr)
     assert tgen.n_bg_nodes == bgmesh.n_points
+
+
+def test_face2tet(sphere: PolyData, capfd: pytest.CaptureFixture[str]) -> None:
+    faces = sphere._connectivity_array.reshape(-1, 3).astype(np.int32)
+    tgen = PyTetgen()
+    tgen.load_mesh(sphere.points, faces)
+    assert tgen.return_face2tet().shape == (0, 2)
+    tgen.tetrahedralize(neighout=False)
+    assert tgen.return_face2tet().shape == (0, 2)
+
+    tgen = PyTetgen()
+    tgen.load_mesh(sphere.points, faces)
+    tgen.tetrahedralize(neighout=True)
+    assert tgen.return_face2tet().shape == (tgen.n_trifaces, 2)
