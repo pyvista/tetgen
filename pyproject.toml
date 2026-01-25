@@ -40,10 +40,15 @@ docs = [
   "sphinx-notfound-page>=0.3.0",
   "sphinx_gallery"
 ]
+extras = [
+  "pyvista",
+  "meshio"
+]
 tests = [
   "pymeshfix>=0.13.4",
   "pyvista",
   "pytest",
+  "meshio",
   "pytest-cov"
 ]
 
@@ -55,10 +60,10 @@ Homepage = 'https://github.com/pyvista/tetgen'
 
 [tool.cibuildwheel]
 archs = ["auto64"]  # 64-bit only
-build = "cp310-* cp311-* cp312-* cp313-* cp314*"
+build = "cp310-* cp311-* cp312-* cp313-*"  # " cp314*"  # skip 3.14 until vtk 9.6 is released
 skip = " cp314t-* *musllinux*"  # disable musl-based wheels and free threading
 test-command = "pytest {project}/tests"
-test-requires = "pytest pyvista"
+test-requires = "pytest pyvista meshio"
 
 [tool.cibuildwheel.macos]
 archs = ["native"]
