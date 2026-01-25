@@ -28,13 +28,8 @@ compile_commands.json
 # local dev
 .clang
 *.bat
+.venv
 
-# Testing
-factory/
-Testing/
-UnitTesting/
-TODO
-test.sh
 .pytest_cache/
 
 # docs
