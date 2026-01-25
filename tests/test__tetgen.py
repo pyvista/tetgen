@@ -6,7 +6,7 @@ import sys
 import gc
 
 from tetgen._tetgen import PyTetgen
-from tetgen.pytetgen import _to_ugrid, VTK_TETRA, VTK_QUADRATIC_TETRA
+from tetgen.pytetgen import _to_ugrid, VTK_TETRA, VTK_QUADRATIC_TETRA, MTR_POINTDATA_KEY
 import numpy as np
 import pytest
 import pyvista.core as pv
@@ -110,7 +110,7 @@ def test_tetrahedralize(sphere: PolyData, capfd: pytest.CaptureFixture[str]) -> 
     # assert (ugrid.celltypes == VTK_QUADRATIC_TETRA).all()
 
 
-def test_load_region(sphere: PolyData):
+def test_load_region(sphere: PolyData) -> None:
     faces = sphere._connectivity_array.reshape(-1, 3).astype(np.int32)
 
     tgen = PyTetgen()
@@ -154,3 +154,19 @@ def test_load_hole(sphere: PolyData) -> None:
 
     # expecting no cells as the entire mesh is a "hole"
     assert not tgen.n_cells
+
+
+def test_load_bgmesh() -> None:
+    tgen = PyTetgen()
+    assert tgen.n_bg_nodes == 0
+
+    lspace = np.linspace(-1, 1, 5)
+    vertices = np.meshgrid(lspace, lspace, lspace, indexing="ij")
+
+    # tetgen supports only tetrahedral meshes
+    bgmesh = pv.StructuredGrid(*vertices).triangulate()
+
+    cells = bgmesh.cell_connectivity.reshape(-1, 4).astype(np.int32, copy=False)
+    bgmesh_mtr = np.ones(bgmesh.n_points)
+    tgen.load_bgmesh_from_arrays(bgmesh.points.astype(np.float64, copy=False), cells, bgmesh_mtr)
+    assert tgen.n_bg_nodes == bgmesh.n_points

@@ -632,15 +632,19 @@ class TetGen:
             Controls whether TetGen creates linear tetrahedrals or quadradic
             tetrahedrals. Set order to 2 to output quadradic tetrahedrals.
 
-        bgmeshfilename : str, optional
-            Filename of the background mesh.
+        bgmeshfilename : str, default: ""
+            Filename of the background mesh with the target size associated
+            with the nodes. Cannot specify both ``bgmeshfilename`` and
+            ``bgmesh``.
 
         regionattrib : bool, default: False
             Return region attributes.
 
-        bgmesh : pv.UnstructuredGrid
+        bgmesh : pyvista.UnstructuredGrid
             Background mesh to be processed. Must be composed of only linear
-            tetra. Cannot specify both ``bgmeshfilename`` and ``bgmesh``.
+            tetra with the sizing contained in the `point_data` of the mesh
+            within the `'target_size'` key. Cannot specify both
+            ``bgmeshfilename`` and ``bgmesh``.
 
         switches : str, default: ""
             String of switches. When passed, overrides all keyword arguments.
@@ -839,14 +843,21 @@ class TetGen:
         plc = True  # must be always true
 
         # # Validate background mesh parameters
-        # if bgmesh and bgmeshfilename:
-        #     raise ValueError("Cannot specify both `bgmesh` and `bgmeshfilename`")
-        # if bgmesh or bgmeshfilename:
-        #     # Passing a background mesh only makes sense with metric set to true
-        #     # (will be silently ignored otherwise)
-        #     metric = True
-        # if bgmesh:
-        #     bgmesh_v, bgmesh_tet, bgmesh_mtr = self._process_bgmesh(bgmesh)
+        if bgmesh and bgmeshfilename:
+            raise ValueError("Cannot specify both `bgmesh` and `bgmeshfilename`")
+        if bgmesh or bgmeshfilename:
+            # Passing a background mesh only makes sense with metric set to true
+            # (will be silently ignored otherwise)
+            if switches and "m" not in switches:
+                switches += "m"
+            else:
+                metric = True
+
+        if bgmesh:
+            self._process_bgmesh(bgmesh)
+        elif bgmeshfilename:
+            self._tetgen.load_bgmesh_from_filename(bgmeshfilename)
+
         # else:
         #     bgmesh_v, bgmesh_tet, bgmesh_mtr = None, None, None
 
@@ -941,7 +952,6 @@ class TetGen:
             coarsen_percent,
             elem_growth_ratio,
             refine_progress_ratio,
-            bgmeshfilename,
             switches,
         )
         # except RuntimeError as e:
@@ -1259,10 +1269,7 @@ class TetGen:
         """
         self.grid.save(filename, binary)
 
-    @staticmethod
-    def _process_bgmesh(
-        mesh: "UnstructuredGrid",
-    ) -> tuple[NDArray[np.float64], NDArray[np.int32], NDArray[np.float64]]:
+    def _process_bgmesh(self, mesh: "UnstructuredGrid") -> None:
         """
         Process a background mesh.
 
@@ -1272,27 +1279,30 @@ class TetGen:
             Background mesh to be processed. Must be composed of only linear
             tetrahedra.
 
-        Returns
-        -------
-        bgmesh_v: np.ndarray[np.float64]
-            Vertex array of the background mesh.
-        bgmesh_tet: np.ndarray[np.int32]
-            Tet array of the background mesh.
-        bgmesh_mtr: np.ndarray[np.float64]
-            Target size array of the background mesh.
         """
         import pyvista.core as pv
 
         if MTR_POINTDATA_KEY not in mesh.point_data:
             raise ValueError(
-                f"Background mesh does not have target size information in key '{MTR_POINTDATA_KEY}'"
+                "Background mesh does not have target size information in "
+                f"key '{MTR_POINTDATA_KEY}' in the point data"
             )
 
         # Celltype check
         if not (mesh.celltypes == pv.CellType.TETRA).all():
-            raise ValueError("`mesh` must contain only tetrahedrons")
+            raise ValueError("Background mesh must contain only tetrahedrons.")
 
-        bgmesh_v = mesh.points.astype(np.float64, copy=True).ravel()
-        bgmesh_tet = mesh.cell_connectivity.astype(np.int32, copy=True)
-        bgmesh_mtr = mesh.point_data[MTR_POINTDATA_KEY].astype(np.float64, copy=True).ravel()
-        return bgmesh_v, bgmesh_tet, bgmesh_mtr
+        # Vertex array of the background mesh.
+        bgmesh_v = mesh.points.astype(np.float64, copy=False)
+
+        # Tet array of the background mesh.
+        bgmesh_tet = mesh.cell_connectivity.astype(np.int32, copy=False).reshape(-1, 4)
+
+        # Target size array of the background mesh.
+        bgmesh_mtr = mesh.point_data[MTR_POINTDATA_KEY].astype(np.float64, copy=False)
+        if bgmesh_mtr.ndim != 1:
+            raise ValueError(
+                f"Expected 1 dimensional background mesh sizing, got {bgmesh_mtr.shape}"
+            )
+
+        self._tetgen.load_bgmesh_from_arrays(bgmesh_v, bgmesh_tet, bgmesh_mtr)
