@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     tags:
-    - '*'
+    - v*
     branches:
     - main
 
@@ -55,7 +55,7 @@ jobs:
     - name: Run tests
       run: pytest
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v6
       with:
         name: tetgen-sdist
         path: dist/*.tar.gz
@@ -73,7 +73,7 @@ jobs:
       id-token: write  # this permission is mandatory for trusted publishing
       contents: write  # required to create a release
     steps:
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v7
     - name: Flatten directory structure
       run: |
         mkdir -p dist/
