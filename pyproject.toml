@@ -24,7 +24,7 @@ description = "Python interface to tetgen"
 name = "tetgen"
 readme = "README.rst"
 requires-python = ">=3.10"
-version = "0.9.dev0"
+version = "0.8.0"
 
 [project.optional-dependencies]
 docs = [
