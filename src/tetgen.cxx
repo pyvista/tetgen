@@ -45,9 +45,12 @@
 //                                                                            //
 //============================================================================//
 
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
 #include "tetgen.h"
 
-#include <iostream>
 
 //== io_cxx ==================================================================//
 //                                                                            //
@@ -81,24 +84,24 @@ bool tetgenio::load_node_call(FILE* infile, int markers, int uvflag,
   // Initialize 'pointlist', 'pointattributelist', and 'pointmarkerlist'.
   pointlist = new REAL[numberofpoints * 3];
   if (pointlist == (REAL *) NULL) {
-    terminatetetgen(NULL, 1);
+    throw std::runtime_error("Out of memory");
   }
   if (numberofpointattributes > 0) {
     pointattributelist = new REAL[numberofpoints * numberofpointattributes];
     if (pointattributelist == (REAL *) NULL) {
-      terminatetetgen(NULL, 1);
+      throw std::runtime_error("Out of memory");
     }
   }
   if (markers) {
     pointmarkerlist = new int[numberofpoints];
     if (pointmarkerlist == (int *) NULL) {
-      terminatetetgen(NULL, 1);
+      throw std::runtime_error("Out of memory");
     }
   }
   if (uvflag) {
     pointparamlist = new pointparam[numberofpoints];
     if (pointparamlist == NULL) {
-      terminatetetgen(NULL, 1);
+      throw std::runtime_error("Out of memory");
     }
   }
 
@@ -294,7 +297,7 @@ bool tetgenio::load_edge(char* filebasename)
   if (numberofedges > 0) {
     edgelist = new int[numberofedges * 2];
     if (edgelist == (int *) NULL) {
-      terminatetetgen(NULL, 1);
+      throw std::runtime_error("Out of memory");
     }
     stringptr = findnextnumber(stringptr);
     if (*stringptr == '\0') {
@@ -315,13 +318,15 @@ bool tetgenio::load_edge(char* filebasename)
     for (j = 0; j < 2; j++) {
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        std::cerr << "Error:  Edge " << i + firstnumber << " is missing vertex " << j + 1 << " in " << inedgefilename << "." << std::endl;
-        terminatetetgen(NULL, 1);
+        throw std::runtime_error(
+                                 "Edge " + std::to_string(i + firstnumber) +
+                                 " is missing vertex " + std::to_string(j + 1) +
+                                 " in " + inedgefilename + "."
+                                 );
       }
       corner = (int) strtol(stringptr, &stringptr, 0);
       if (corner < firstnumber || corner >= numberofpoints + firstnumber) {
-        std::cerr << "Error:  Edge " << i + firstnumber << " has an invalid vertex index." << std::endl;
-        terminatetetgen(NULL, 1);
+        throw std::runtime_error("Edge " + std::to_string(i + firstnumber) + " has an invalid vertex index.");
       }
       edgelist[index++] = corner;
     }
@@ -383,12 +388,12 @@ bool tetgenio::load_face(char* filebasename)
   if (numberoftrifaces > 0) {
     trifacelist = new int[numberoftrifaces * 3];
     if (trifacelist == (int *) NULL) {
-      terminatetetgen(NULL, 1);
+      throw std::runtime_error("Out of memory");
     }
     if (markers) {
       trifacemarkerlist = new int[numberoftrifaces];
       if (trifacemarkerlist == (int *) NULL) {
-        terminatetetgen(NULL, 1);
+        throw std::runtime_error("Out of memory");
       }
     }
   }
@@ -401,13 +406,17 @@ bool tetgenio::load_face(char* filebasename)
     for (j = 0; j < 3; j++) {
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        std::cerr << "Error:  Face " << i + firstnumber << " is missing vertex " << j + 1 << " in " << infilename << std::endl;
-        terminatetetgen(NULL, 1);
+          throw std::runtime_error(
+                                   "Face " + std::to_string(i + firstnumber) +
+                                   " is missing vertex " + std::to_string(j + 1) +
+                                   " in " + infilename + "."
+                                   );
       }
       corner = (int) strtol(stringptr, &stringptr, 0);
       if (corner < firstnumber || corner >= numberofpoints + firstnumber) {
-        std::cerr << "Error:  Face " << i + firstnumber << " has an invalid vertex index." << std::endl;
-        terminatetetgen(NULL, 1);
+        throw std::runtime_error(
+                                 "Face " + std::to_string(i + firstnumber) + " has an invalid vertex index."
+                                 );
       }
       trifacelist[index++] = corner;
     }
@@ -491,14 +500,14 @@ bool tetgenio::load_tet(char* filebasename)
   // Allocate memory for tetrahedra.
   tetrahedronlist = new int[numberoftetrahedra * numberofcorners];
   if (tetrahedronlist == (int *) NULL) {
-    terminatetetgen(NULL, 1);
+    throw std::runtime_error("Out of memory");
   }
   // Allocate memory for output tetrahedron attributes if necessary.
   if (numberoftetrahedronattributes > 0) {
     tetrahedronattributelist = new REAL[numberoftetrahedra *
                                         numberoftetrahedronattributes];
     if (tetrahedronattributelist == (REAL *) NULL) {
-      terminatetetgen(NULL, 1);
+      throw std::runtime_error("Out of memory");
     }
   }
 
@@ -511,13 +520,15 @@ bool tetgenio::load_tet(char* filebasename)
     for (j = 0; j < numberofcorners; j++) {
       stringptr = findnextnumber(stringptr);
       if (*stringptr == '\0') {
-        std::cerr << "Error:  Tetrahedron " << (i + firstnumber) << " is missing vertex " << (j + 1) << " in " << infilename << std::endl;
-        terminatetetgen(NULL, 1);
+        throw std::runtime_error(
+                                 "Tetrahedron " + std::to_string(i + firstnumber) +
+                                 " is missing vertex " + std::to_string(j + 1) +
+                                 " in " + infilename + "."
+                                 );
       }
       corner = (int) strtol(stringptr, &stringptr, 0);
       if (corner < firstnumber || corner >= numberofpoints + firstnumber) {
-        std::cerr << "Error:  Tetrahedron " << (i + firstnumber) << " has an invalid vertex index." << std::endl;
-        terminatetetgen(NULL, 1);
+        throw std::runtime_error("Tetrahedron " + std::to_string(i + firstnumber) + " has an invalid vertex index.");
       }
       tetrahedronlist[index++] = corner;
     }
@@ -578,7 +589,7 @@ bool tetgenio::load_vol(char* filebasename)
 
   tetrahedronvolumelist = new REAL[volelements];
   if (tetrahedronvolumelist == (REAL *) NULL) {
-    terminatetetgen(NULL, 1);
+    throw std::runtime_error("Out of memory");
   }
 
   // Read the list of volume constraints.
@@ -766,7 +777,7 @@ bool tetgenio::load_mtr(char* filebasename)
   // Allocate space for pointmtrlist.
   pointmtrlist = new REAL[numberofpoints * numberofpointmtrs];
   if (pointmtrlist == (REAL *) NULL) {
-    terminatetetgen(NULL, 1);
+    throw std::runtime_error("Out of memory");
   }
   mtrindex = 0;
   for (i = 0; i < numberofpoints; i++) {
@@ -774,8 +785,11 @@ bool tetgenio::load_mtr(char* filebasename)
     stringptr = readnumberline(inputline, infile, mtrfilename);
     for (j = 0; j < numberofpointmtrs; j++) {
       if (*stringptr == '\0') {
-        std::cerr << "Error:  Metric " << i + firstnumber << " is missing value #" << j + 1 << " in " << mtrfilename << "." << std::endl;
-        terminatetetgen(NULL, 1);
+          throw std::runtime_error(
+                                   "Metric " + std::to_string(i + firstnumber) +
+                                   " is missing value #" + std::to_string(j + 1) +
+                                   " in " + mtrfilename + "."
+                                   );
       }
       mtr = (REAL) strtod(stringptr, &stringptr);
       pointmtrlist[mtrindex++] = mtr;
@@ -4217,7 +4231,7 @@ void tetgenmesh::memorypool::poolinit(int bytecount,int itemcount,int wordsize,
   firstblock = (void **) malloc(itemsperblock * itembytes + sizeof(void *)
                                 + alignbytes);
   if (firstblock == (void **) NULL) {
-    terminatetetgen(NULL, 1);
+    throw std::runtime_error("Out of memory");
   }
   // Set the next block pointer to NULL.
   *(firstblock) = (void *) NULL;
@@ -4281,7 +4295,7 @@ void* tetgenmesh::memorypool::alloc()
         newblock = (void **) malloc(itemsperblock * itembytes + sizeof(void *)
                                     + alignbytes);
         if (newblock == (void **) NULL) {
-          terminatetetgen(NULL, 1);
+          throw std::runtime_error("Out of memory");
         }
         *nowblock = (void *) newblock;
         // The next block pointer is NULL.
@@ -4972,7 +4986,7 @@ void tetgenmesh::initializepools()
   //   flags and element counter.
   if (!(sizeof(int) <= sizeof(tetrahedron)) ||
       ((sizeof(tetrahedron) % sizeof(int)))) {
-    terminatetetgen(this, 2);
+    throw std::runtime_error("Internal TetGen error within `initializepools`");
   }
   elemmarkerindex = (elesize - sizeof(tetrahedron)) / sizeof(int);
 
@@ -5167,7 +5181,7 @@ REAL tetgenmesh::insphere_s(REAL* pa, REAL* pb, REAL* pc, REAL* pd, REAL* pe)
 
   oriB = -orient3d(pt[0], pt[2], pt[3], pt[4]);
   if (oriB == 0.0) {
-    terminatetetgen(this, 2);
+    throw std::runtime_error("Internal TetGen error within `insphere_s`");
   }
   // Flip the sign if there are odd number of swaps.
   if ((swaps % 2) != 0) oriB = -oriB;
@@ -5241,7 +5255,7 @@ REAL tetgenmesh::orient4d_s(REAL* pa, REAL* pb, REAL* pc, REAL* pd, REAL* pe,
 
   oriB = -orient3d(pt[0], pt[2], pt[3], pt[4]);
   if (oriB == 0.0) {
-    terminatetetgen(this, 2);
+    throw std::runtime_error("Internal TetGen error within `orient4d_s`");
   }
   // Flip the sign if there are odd number of swaps.
   if ((swaps % 2) != 0) oriB = -oriB;
@@ -7787,7 +7801,7 @@ void tetgenmesh::flip32(triface* fliptets, int hullflag, flipconstraints *fc)
         tsbond(topcastets[0], flipfaces[0]);
       } else {
         // An invalid 2-to-2 flip. Report a bug.
-        terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `flip32` ");
       }
       // Connect the bot subface to the bottom tets.
       esymself(botcastets[0]);
@@ -7801,7 +7815,7 @@ void tetgenmesh::flip32(triface* fliptets, int hullflag, flipconstraints *fc)
         tsbond(botcastets[0], flipfaces[1]);
       } else {
         // An invalid 2-to-2 flip. Report a bug.
-        terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `flip32` ");
       }
     } // if (scount > 0)
   } // if (checksubfaceflag)
@@ -8511,7 +8525,7 @@ int tetgenmesh::flipnm(triface* abtets, int n, int level, int abedgepivot,
           if (n1 < 3) {
             // This is only possible when the mesh contains inverted
             //   elements.  Reprot a bug.
-            terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `flipnm`: Mesh contains inverted elements.");
           }
           if (j > 2) {
             // The Star(flipedge) overlaps other Stars.
@@ -8805,7 +8819,7 @@ int tetgenmesh::flipnm(triface* abtets, int n, int level, int abedgepivot,
           }
         } else if (nn == 3) {
           // Report a bug.
-          terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `flipnm`.");
         }
       }
 
@@ -9263,7 +9277,7 @@ int tetgenmesh::insertpoint(point insertpt, triface *searchtet, face *splitsh,
     return 0;
   } else {
     // Unknown case
-    terminatetetgen(this, 2);
+    throw std::runtime_error("Internal TetGen error within `insertpoint`.");
   }
 
   if (ivf->collect_inial_cavity_flag) {
@@ -9770,7 +9784,7 @@ int tetgenmesh::insertpoint(point insertpt, triface *searchtet, face *splitsh,
             }
             if (j == 0) {
               // Not found such a face.
-              terminatetetgen(this, 2);
+              throw std::runtime_error("Internal TetGen error within `insertpoint`.");
             }
             neightet = spintet;
             if (b->verbose > 4) {
@@ -10148,7 +10162,7 @@ int tetgenmesh::insertpoint(point insertpt, triface *searchtet, face *splitsh,
             *paryseg = checkseg;
           } else {
             //assert(0); // Not possible.
-            terminatetetgen(this, 2);
+              throw std::runtime_error("Internal TetGen error within `insertpoint`.");
           }
         }
       } else {
@@ -10194,7 +10208,7 @@ int tetgenmesh::insertpoint(point insertpt, triface *searchtet, face *splitsh,
             *parysh = checksh;
           } else {
             //assert(0); // Not possible.
-            terminatetetgen(this, 2);
+              throw std::runtime_error("Internal TetGen error within `insertpoint`.");
           }
         }
       } else {
@@ -10344,7 +10358,7 @@ int tetgenmesh::insertpoint(point insertpt, triface *searchtet, face *splitsh,
             fnextself(spintet);
             if (!infected(spintet)) break;
             if (spintet.tet == neightet.tet) {
-              terminatetetgen(this, 2);
+                throw std::runtime_error("Internal TetGen error within `insertpoint`.");
             }
           }
           // The adjacent tet connects to a new tet in C(p).
@@ -10415,7 +10429,7 @@ int tetgenmesh::insertpoint(point insertpt, triface *searchtet, face *splitsh,
             finddirection(&neightet, sdest(checkseg));
           }
           if (isdeadtet(neightet)) {
-            terminatetetgen(this, 2);
+              throw std::runtime_error("Internal TetGen error within `insertpoint`.");
           }
           sstbond1(checkseg, neightet);
           spintet = neightet;
@@ -10761,8 +10775,7 @@ void tetgenmesh::transfernodes()
   // 'longest' is the largest possible edge length formed by input vertices.
   longest = sqrt(x * x + y * y + z * z);
   if (longest == 0.0) {
-    printf("Error:  The point set is trivial.\n");
-    terminatetetgen(this, 10);
+    throw std::runtime_error("Internal TetGen error within `transfernodes`: the point set is trivial.");
   }
   // Two identical points are distinguished by 'minedgelength'.
   minedgelength = longest * b->epsilon;
@@ -11217,7 +11230,7 @@ enum tetgenmesh::locateresult
   }
 
   if (searchtet->ver == 4) {
-    terminatetetgen(this, 2);
+      throw std::runtime_error("Internal TetGen error within `locate_dt`.");
   }
 
   // Walk through tetrahedra to locate the point.
@@ -11346,7 +11359,7 @@ enum tetgenmesh::locateresult
     if (ori < 0.0) break;
   }
   if (searchtet->ver == 4) {
-    terminatetetgen(this, 2);
+      throw std::runtime_error("Internal TetGen error within `locate`.");
   }
 
   // Walk through tetrahedra to locate the point.
@@ -12018,8 +12031,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
   while ((distance(permutarray[0],permutarray[i])/bboxsize)<b->epsilon) {
     i++;
     if (i == in->numberofpoints - 1) {
-      std::cerr << "Exception:  All vertices are (nearly) identical (Tol = " << b->epsilon << ")." << std::endl;
-      terminatetetgen(this, 10);
+      throw std::runtime_error("All vertices are (nearly) identical (Tol = " + std::to_string(b->epsilon) + ").");
     }
   }
   if (i > 1) {
@@ -12039,8 +12051,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
   while ((sqrt(norm2(n[0], n[1], n[2])) / bboxsize2) < b->epsilon) {
     i++;
     if (i == in->numberofpoints - 1) {
-        std::cerr << "Exception:  All vertices are (nearly) collinear (Tol = " << b->epsilon << ")." << std::endl;
-      terminatetetgen(this, 10);
+        throw std::runtime_error("All vertices are (nearly) collinear (Tol = " + std::to_string(b->epsilon) + ").");
     }
     for (j = 0; j < 3; j++) {
       v2[j] = permutarray[i][j] - permutarray[0][j];
@@ -12061,8 +12072,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
   while ((fabs(ori) / bboxsize3) < b->epsilon) {
     i++;
     if (i == in->numberofpoints) {
-      std::cerr << "Exception:  All vertices are coplanar (Tol = " << b->epsilon << ")." << std::endl;
-      terminatetetgen(this, 10);
+      throw std::runtime_error("All vertices are coplanar (Tol = " + std::to_string(b->epsilon) + ").");
     }
     ori = orient3dfast(permutarray[0], permutarray[1], permutarray[2],
                        permutarray[i]);
@@ -12125,7 +12135,7 @@ void tetgenmesh::incrementaldelaunay(clock_t& tv)
         dupverts++;
       } else if (ivf.iloc == (int) NEARVERTEX) {
         // This should not happen by insert_point_bw().
-        terminatetetgen(this, 2); // report a bug.
+          throw std::runtime_error("Internal TetGen error within `incrementaldelaunay`.");
       } else if (ivf.iloc == (int) NONREGULAR) {
         // The point is non-regular. Skipped.
         if (b->verbose) {
@@ -13569,7 +13579,7 @@ enum tetgenmesh::interresult tetgenmesh::sscoutsegment(face *searchsh,
             break;
           } else { // (00)
             // startpt == endpt. Not possible.
-            terminatetetgen(this, 2);
+              throw std::runtime_error("Internal TetGen error within `sscoutsegment`.");
           }
         }
       }
@@ -14786,7 +14796,7 @@ enum tetgenmesh::interresult
       if (nonconvex) {
         return ACROSSFACE; // return ACROSSSUB; // Hit a bounday.
       } else {
-        terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `finddirection`.");
       }
     }
 
@@ -14901,7 +14911,7 @@ enum tetgenmesh::interresult
       enextself(*searchtet);
     }
     if (org(*searchtet) != pa) {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `finddirection`.");
     }
     pb = dest(*searchtet);
     pc = apex(*searchtet);
@@ -14947,13 +14957,13 @@ enum tetgenmesh::interresult tetgenmesh::scoutsegment(point startpt,point endpt,
     if (pd == endpt) {
       if (issubseg(*searchtet)) {
         //report_selfint_edge(startpt, endpt, sedge, searchtet, dir);
-        terminatetetgen(this, 3);
+        throw std::runtime_error("The input surface mesh contain self-intersections.");
       }
       return SHAREEDGE;
     } else {
       // A point is on the path.
       //report_selfint_edge(startpt, endpt, sedge, searchtet, dir);
-      terminatetetgen(this, 3);
+      throw std::runtime_error("The input surface mesh contain self-intersections.");
       return ACROSSVERT;
     }
   }
@@ -14966,18 +14976,18 @@ enum tetgenmesh::interresult tetgenmesh::scoutsegment(point startpt,point endpt,
     // Check whether two segments are intersecting.
     if (issubseg(*searchtet)) {
       //report_selfint_edge(startpt, endpt, sedge, searchtet, dir);
-      terminatetetgen(this, 3);
+      throw std::runtime_error("The input surface mesh contain self-intersections.");
     }
   } else if (dir == ACROSSFACE) {
     if (checksubfaceflag) {
       // Check whether a segment and a subface are intersecting.
       if (issubface(*searchtet)) {
         //report_selfint_edge(startpt, endpt, sedge, searchtet, dir);
-        terminatetetgen(this, 3);
+        throw std::runtime_error("The input surface mesh contain self-intersections.");
       }
     }
   } else {
-    terminatetetgen(this, 2);
+      throw std::runtime_error("Internal TetGen error within `scoutsegment`.");
   }
 
   if (refpt == NULL) {
@@ -15082,7 +15092,7 @@ enum tetgenmesh::interresult tetgenmesh::scoutsegment(point startpt,point endpt,
       eprev(neightet, *searchtet);
       // dest(*searchtet) lies on the segment.
       //report_selfint_edge(startpt, endpt, sedge, searchtet, dir);
-      terminatetetgen(this, 3);
+      throw std::runtime_error("The input surface mesh contain self-intersections.");
       return ACROSSVERT;
     } else if (dir == ACROSSEDGE) {
       // Get the edge intersects with the segment.
@@ -15097,18 +15107,18 @@ enum tetgenmesh::interresult tetgenmesh::scoutsegment(point startpt,point endpt,
       // Check whether two segments are intersecting.
       if (issubseg(*searchtet)) {
         //report_selfint_edge(startpt, endpt, sedge, searchtet, dir);
-        terminatetetgen(this, 3);
+        throw std::runtime_error("The input surface mesh contain self-intersections.");
       }
     } else if (dir == ACROSSFACE) {
       if (checksubfaceflag) {
         // Check whether a segment and a subface are intersecting.
         if (issubface(*searchtet)) {
           //report_selfint_edge(startpt, endpt, sedge, searchtet, dir);
-          terminatetetgen(this, 3);
+          throw std::runtime_error("The input surface mesh contain self-intersections.");
         }
       }
     } else {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `scoutsegment`.");
     }
 
   } // while (1)
@@ -15296,9 +15306,9 @@ void tetgenmesh::delaunizesegments()
                      pointmark(p2), shellmark(sseg));
               printf("  Segment 2: [%d, %d] #%d\n", pointmark(p3),
                      pointmark(p4), shellmark(parentseg));
-              terminatetetgen(this, 4);
+              throw std::runtime_error("A very small input feature size was detected. Program stopped. Hint: use -T option to set a smaller tolerance. Current is " + std::to_string(b->epsilon));
             } else {
-              terminatetetgen(this, 2);
+                throw std::runtime_error("Internal TetGen error within `delaunizesegments`.");
             }
           } else if (ivf.iloc == (int) ONVERTEX) {
             // The new point (in the segment) is coincident with an existing
@@ -15306,15 +15316,15 @@ void tetgenmesh::delaunizesegments()
             eprevself(searchtet);
             //report_selfint_edge(sorg(sseg), sdest(sseg), &sseg, &searchtet,
             //                    ACROSSVERT);
-            terminatetetgen(this, 3);
+            throw std::runtime_error("The input surface mesh contain self-intersections.");
           } else {
             // An unknown case. Report a bug.
-            terminatetetgen(this, 2);
+              throw std::runtime_error("Internal TetGen error within `delaunizesegments`.");
           }
         }
       } else {
         // An unknown case. Report a bug.
-        terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `delaunizesegments`.");
       }
     }
   } // while
@@ -15348,9 +15358,9 @@ int tetgenmesh::scoutsubface(face* searchsh, triface* searchtet, int shflag)
 	  if (shflag) {
         // A vertex lies on the search edge.
 	    //report_selfint_edge(pa, pb, searchsh, searchtet, dir);
-        terminatetetgen(this, 3);
+        throw std::runtime_error("The input surface mesh contain self-intersections.");
 	  } else {
-	    terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `scoutsubface`.");
 	  }
     }
 	int t1ver;
@@ -15370,7 +15380,7 @@ int tetgenmesh::scoutsubface(face* searchsh, triface* searchtet, int shflag)
           *searchtet = spintet;
           return 1;
         } else {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `scoutsubface`.");
         }
       }
       fnextself(spintet);
@@ -15437,7 +15447,7 @@ void tetgenmesh::formregion(face* missh, arraypool* missingshs,
         if (dest(searchtet) != pb) {
 		  // Report a PLC problem.
 		  //report_selfint_edge(pa, pb, missh, &searchtet, dir);
-          terminatetetgen(this, 3);
+          throw std::runtime_error("The input surface mesh contain self-intersections.");
         }
       }
       // Collect the vertices of R.
@@ -15559,7 +15569,7 @@ int tetgenmesh::scoutcrossedge(triface& crosstet, arraypool* missingshbds,
 		      sesymself(searchsh);
 		      senextself(searchsh);
 		    } else if (ori == 0) {
-		      terminatetetgen(this, 2);
+                throw std::runtime_error("Internal TetGen error within `scoutcrossedge`.");
 		    }
 			if (sscoutsegment(&searchsh,dest(neightet),0,0,1)==SHAREEDGE) {
               // Insert a temp segment to protect the recovered edge.
@@ -15660,7 +15670,7 @@ int tetgenmesh::scoutcrossedge(triface& crosstet, arraypool* missingshbds,
 				    // It is a segment. Report a PLC problem.
 				    //report_selfint_face(pa, pb, pc, parysh, &crosstet,
 					//                    interflag, types, poss);
-                    terminatetetgen(this, 3);
+                    throw std::runtime_error("The input surface mesh contain self-intersections.");
                   } else {
 				    triface chkface = crosstet;
 					while (1) {
@@ -15672,7 +15682,7 @@ int tetgenmesh::scoutcrossedge(triface& crosstet, arraypool* missingshbds,
 					  // Two subfaces are intersecting.
                       //report_selfint_face(pa, pb, pc, parysh, &chkface,
 					  //                  interflag, types, poss);
-                      terminatetetgen(this, 3);
+                      throw std::runtime_error("The input surface mesh contain self-intersections.");
 					}
 				  }
                   // Adjust the edge such that d lies below [a,b,c].
@@ -15687,7 +15697,7 @@ int tetgenmesh::scoutcrossedge(triface& crosstet, arraypool* missingshbds,
                   // Maybe it is due to a PLC problem.
 				  //report_selfint_face(pa, pb, pc, parysh, &crosstet,
 				  //	                  interflag, types, poss);
-                  terminatetetgen(this, 3);
+                  throw std::runtime_error("The input surface mesh contain self-intersections.");
                 }
               }
               break;
@@ -15874,7 +15884,7 @@ bool tetgenmesh::formcavity(triface* searchtet, arraypool* missingshs,
               if (issubseg(neightet)) {
 				//report_selfint_face(sorg(*parysh), sdest(*parysh),
                 //  sapex(*parysh),parysh,&neightet,intflag,types,poss);
-                terminatetetgen(this, 3);
+                throw std::runtime_error("The input surface mesh contain self-intersections.");
               }
 			  // Check if it is an edge of a subface.
 			  chkface = neightet;
@@ -15887,7 +15897,7 @@ bool tetgenmesh::formcavity(triface* searchtet, arraypool* missingshs,
                 // Two subfaces are intersecting.
                 //report_selfint_face(sorg(*parysh), sdest(*parysh),
                 //  sapex(*parysh),parysh,&chkface,intflag,types,poss);
-                terminatetetgen(this, 3);
+                throw std::runtime_error("The input surface mesh contain self-intersections.");
               }
 
               // Mark this edge to avoid testing it again.
@@ -16341,7 +16351,7 @@ bool tetgenmesh::fillcavity(arraypool* topshells, arraypool* botshells,
                   pa = org(toptet);
                   pb = dest(toptet);
                 } else if (ori == 0) {
-                  terminatetetgen(this, 2);
+                    throw std::runtime_error("Internal TetGen error within `fillcavity`.");
                 }
                 // Search the face [b,a,c] in 'botnewtets'.
                 for (j = 0; j < botnewtets->objects; j++) {
@@ -16417,7 +16427,7 @@ bool tetgenmesh::fillcavity(arraypool* topshells, arraypool* botshells,
             break; // Find a subface.
           }
           if (pc == dummypoint) {
-            terminatetetgen(this, 2); // Check this case.
+              throw std::runtime_error("Internal TetGen error within `fillcavity`.");
             break; // Find a subface.
           }
           // Go to the adjacent tet.
@@ -16457,7 +16467,7 @@ bool tetgenmesh::fillcavity(arraypool* topshells, arraypool* botshells,
               }
               else {
                 // The 'bottet' is not inside the cavity!
-                terminatetetgen(this, 2); // Check this case
+                  throw std::runtime_error("Internal TetGen error within `fillcavity`.");
               }
             } else { // mflag == false
               // Adjust 'toptet' and 'bottet' to be the crossing edges.
@@ -16482,7 +16492,7 @@ bool tetgenmesh::fillcavity(arraypool* topshells, arraypool* botshells,
                     eprevself(bottet); // [d,b]
                   } else {
                     // b,c,#,and d are coplanar!.
-                    terminatetetgen(this, 2); //assert(0);
+                      throw std::runtime_error("Internal TetGen error within `fillcavity`.");
                   }
                   break; // Not matched
                 }
@@ -16625,10 +16635,10 @@ bool tetgenmesh::fillcavity(arraypool* topshells, arraypool* botshells,
           // Found. Return it.
           recentsh = *parysh;
         } else {
-          terminatetetgen(this, 2); //assert(0);
+            throw std::runtime_error("Internal TetGen error within `fillcavity`.");
         }
       } else {
-        //terminatetetgen(this, 2); // Report a bug
+          throw std::runtime_error("Internal TetGen error within `fillcavity`.");
       }
     }
 
@@ -17403,7 +17413,7 @@ void tetgenmesh::flipinsertfacet(arraypool *crosstets, arraypool *toppoints,
   if (bfacearray->objects > 0) {
     if (fcount == 0) {
       printf("!! No flip is found in %ld faces.\n", bfacearray->objects);
-      terminatetetgen(this, 2); //assert(0);
+      throw std::runtime_error("Internal TetGen error within `flipinsertfacet`.");
     }
   }
 
@@ -17651,7 +17661,7 @@ void tetgenmesh::refineregion(face &splitsh, arraypool *cavpoints,
       if (!insertpoint_cdt(steinpt, &searchtet, &splitsh, &splitseg, &ivf,
                            cavpoints, cavfaces, cavshells, newtets,
                            crosstets, misfaces)) {
-        terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `refineregion`.");
       }
       if (useinsertradius) {
         //save_segmentpoint_insradius(steinpt, ivf.parentpt, ivf.smlen);
@@ -17659,7 +17669,7 @@ void tetgenmesh::refineregion(face &splitsh, arraypool *cavpoints,
       st_segref_count++;
       if (steinerleft > 0) steinerleft--;
     } else {
-      terminatetetgen(this, 2); // assert(0);
+        throw std::runtime_error("Internal TetGen error within `refineregion`.");
     }
   } else {
     if (useinsertradius) {
@@ -17702,7 +17712,7 @@ void tetgenmesh::refineregion(face &splitsh, arraypool *cavpoints,
         if (!insertpoint_cdt(steinpt, &searchtet, &splitsh, &splitseg, &ivf,
                              cavpoints, cavfaces, cavshells, newtets,
                              crosstets, misfaces)) {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `refineregion`.");
         }
         if (useinsertradius) {
           //save_segmentpoint_insradius(steinpt, ivf.parentpt, ivf.smlen);
@@ -17710,7 +17720,7 @@ void tetgenmesh::refineregion(face &splitsh, arraypool *cavpoints,
         st_segref_count++;
         if (steinerleft > 0) steinerleft--;
       } else {
-        terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `refineregion`.");
       }
     }
   } // while
@@ -17887,7 +17897,7 @@ void tetgenmesh::constrainedfacets()
               dir = scoutsegment(sorg(*paryseg), sdest(*paryseg), paryseg,
                                  &searchtet, NULL, NULL);
               if (dir != SHAREEDGE) {
-                terminatetetgen(this, 2);
+                  throw std::runtime_error("Internal TetGen error within `constrainedfacets`.");
               }
               // Insert this segment.
               // Let the segment remember an adjacent tet.
@@ -17903,7 +17913,7 @@ void tetgenmesh::constrainedfacets()
           } // success - remesh cavity
         } // success - form cavity
         else {
-          terminatetetgen(this, 2); // Report a bug.
+            throw std::runtime_error("Internal TetGen error within `constrainedfacets`.");
         } // Not success - form cavity
       } else {
         // Put all subfaces in R back to tg_facfaces.
@@ -18420,7 +18430,7 @@ int tetgenmesh::checkflipeligibility(int fliptype, point pa, point pb,
             }
             else if (dir == ACROSSFACE) {
               //assert(0); // This should be not possible.
-              terminatetetgen(this, 2);
+                throw std::runtime_error("Internal TetGen error within `checkflipeligibility`.");
             }
             else {
               if ((dir == ACROSSVERT) || (dir == TOUCHEDGE) ||
@@ -18682,7 +18692,7 @@ int tetgenmesh::removeedgebyflips(triface *flipedge, flipconstraints* fc)
   }
   if (n < 3) {
     // It is only possible when the mesh contains inverted tetrahedra.
-    terminatetetgen(this, 2); // Report a bug
+      throw std::runtime_error("Internal TetGen error within `removeedgebyflips`.");
   }
 
   if (fc->noflip_in_surface) {
@@ -18894,12 +18904,12 @@ int tetgenmesh::recoveredgebyflips(point startpt, point endpt, face *sedge,
                   intersect_flag = true;
                 } else {
                   //if (ivf.iloc == ONVERTEX) {
-                  terminatetetgen(this, 2); // This should not be possible.
+                    throw std::runtime_error("Internal TetGen error within `recoveredgebyflips`.");
                   //}
                 }
               } else if (pointtype(nearpt) == FREEFACETVERTEX) {
                 // This case is very unlikely.
-                terminatetetgen(this, 2); // to debug...
+                  throw std::runtime_error("Internal TetGen error within `recoveredgebyflips`.");
                 if (!b->quiet && !b->nowarning) { // -no -Q no -W
                   //face parsentsh;
                   //sdecode(point2sh(nearpt), parsentsh);
@@ -18908,7 +18918,7 @@ int tetgenmesh::recoveredgebyflips(point startpt, point endpt, face *sedge,
                 intersect_flag = true;
               } else {
                 // other cases...
-                terminatetetgen(this, 2); // to be checked.
+                  throw std::runtime_error("Internal TetGen error within `recoveredgebyflips`.");
               }
             }
           } else {
@@ -18944,7 +18954,7 @@ int tetgenmesh::recoveredgebyflips(point startpt, point endpt, face *sedge,
               } else {
                 // A FREEVOLVERTEX.
                 // This is not a real self-intersection.
-                terminatetetgen(this, 2); // check this case.
+                  throw std::runtime_error("Internal TetGen error within `recoveredgebyflips`.");
               }
             }
           }
@@ -19024,7 +19034,7 @@ int tetgenmesh::recoveredgebyflips(point startpt, point endpt, face *sedge,
                   printf("  2nd seg: [%d,%d] tag(%d).\n",
                          pointmark(p3), pointmark(p4), shellmark(seg));
                 } else {
-                  terminatetetgen(this, 2);
+                    throw std::runtime_error("Internal TetGen error within `recoveredgebyflips`.");
                 }
               } else {
                 // It is a subedge of a facet.
@@ -19049,7 +19059,7 @@ int tetgenmesh::recoveredgebyflips(point startpt, point endpt, face *sedge,
         continue;
       }
     } else {
-      terminatetetgen(this, 2); // report a bug
+        throw std::runtime_error("Internal TetGen error within `recoveredgebyflips`.");
     }
 
     // The edge is missing.
@@ -19098,7 +19108,7 @@ int tetgenmesh::recoveredgebyflips(point startpt, point endpt, face *sedge,
           } // i
           // There must be an intersection face/edge.
           if (dir == DISJOINT) {
-            terminatetetgen(this, 2);
+              throw std::runtime_error("Internal TetGen error within `recoveredgebyflips`.");
           }
         } else if (dir == ACROSSEDGE) {
           while (1) { // Loop I-I-I
@@ -19130,7 +19140,7 @@ int tetgenmesh::recoveredgebyflips(point startpt, point endpt, face *sedge,
             fnextself(*searchtet);
           } // while (1) // Loop I-I-I
         } else {
-          terminatetetgen(this, 2); // Report a bug
+            throw std::runtime_error("Internal TetGen error within `recoveredgebyflips`.");
         }
 
         // Adjust to the intersecting edge/vertex.
@@ -19182,7 +19192,7 @@ int tetgenmesh::recoveredgebyflips(point startpt, point endpt, face *sedge,
         } else if (dir == ACROSSVERT) {
           return 0;
         } else {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `recoveredgebyflips`.");
         }
 
         // The face/edge is not flipped.
@@ -19793,12 +19803,12 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
               intersect_flag = true;
             } else {
               if (ivf.iloc == ONVERTEX) {
-                terminatetetgen(this, 2); // This should not be possible.
+                  throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
               }
             }
           } else {
             // other cases...
-            terminatetetgen(this, 2);
+              throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
           }
         }
       } // if (misseg != NULL)
@@ -19876,13 +19886,13 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
                   //intersect_flag = true;
                 } else {
                   //if (ivf.iloc == ONVERTEX) {
-                  terminatetetgen(this, 2); // This should not be possible.
+                    throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
                   //}
                 }
               } else {
                 // Other case to report.
                 //  assert(0); // to do...
-                terminatetetgen(this, 2);
+                  throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
               }
             }
           }
@@ -19932,7 +19942,7 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
 
     if (issubface(searchtet)) {
       if (misseg != NULL) {
-        terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
         // Report a segment and a facet intersect.
         if (!b->quiet && !b->nowarning) {
           face fac; tspivot(searchtet, fac);
@@ -19963,7 +19973,7 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
   }
   else { // dir == ACROSSEDGE;
     if (issubseg(searchtet)) {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
       if (misseg != NULL) {
         // Report a self_intersection.
         //bool intersect_flag = false;
@@ -19989,7 +19999,7 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
           //intersect_flag = true;
         } else {
           if (ivf.iloc == ONVERTEX) {
-            terminatetetgen(this, 2); // This should not be possible.
+              throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
           }
         }
         idir = (int) SELF_INTERSECT;
@@ -20033,7 +20043,7 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
       } else if (dir == ACROSSEDGE) {
         // PLC check.
         if (issubseg(searchtet)) {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
         }
         if (n > 4) {
           // In this case, 'abtets' is separated by the plane (containing the
@@ -20060,7 +20070,7 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
           //   recoveredge() function.
         }
       } else {
-        terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
       }
 
       delete [] abtets;
@@ -20120,7 +20130,7 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
     } else {
       // This should be a self-intersection.
       if (misseg != NULL) {
-        terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
         // report_seg_vertex_intersect(misseg, dest(searchtet), ONVERTEX);
         idir = (int) SELF_INTERSECT;
       }
@@ -20236,7 +20246,7 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
             } else {
               // report other cases.
               // to do...
-              terminatetetgen(this, 2);
+                throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
             }
           }
           if (intersect_flag) {
@@ -20292,7 +20302,7 @@ int tetgenmesh::add_steinerpt_to_recover_edge(point startpt, point endpt,
         recoverdelaunay();
       }
     } else {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_recover_edge`.");
     }
   } // if (endi > 0)
 
@@ -20691,7 +20701,7 @@ int tetgenmesh::recoverfacebyflips(point pa, point pb, point pc,
 				    // Other cases may be due to a bug or a PLC error.
 					//return report_selfint_face(pa, pb, pc, searchsh, &flipedge,
                     //                           intflag, types, poss);
-                    terminatetetgen(this, 2); // to debug...
+                      throw std::runtime_error("Internal TetGen error within `recoverfacebyflips`.");
                     dir = (int) SELF_INTERSECT;
                     return 0; // Found a self-intersection.
 				  }
@@ -20700,7 +20710,7 @@ int tetgenmesh::recoverfacebyflips(point pa, point pb, point pc,
                   // SHAREVERTEX should not be possible or due to a PLC error.
                   //return report_selfint_face(pa, pb, pc, searchsh, &flipedge,
                   //                           intflag, types, poss);
-                  terminatetetgen(this, 2); // to report
+                    throw std::runtime_error("Internal TetGen error within `recoverfacebyflips`.");
                   dir = (int) SELF_INTERSECT;
                   return 0;
                 }
@@ -20708,14 +20718,14 @@ int tetgenmesh::recoverfacebyflips(point pa, point pb, point pc,
             } else { // intflag == 4. Coplanar case.
               // Found a mesh edge is coplanar with this subface.
               // It migh be caused by a self-intersection.
-              terminatetetgen(this, 2); // report this bug
+                throw std::runtime_error("Internal TetGen error within `recoverfacebyflips`.");
             }
             break;
           } // if (intflag > 0)
         }
         fnextself(spintet);
         if (spintet.tet == searchtet->tet) {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `recoverfacebyflips`.");
         }
       } // while (1)
       // Try to flip the edge [d,e].
@@ -20861,7 +20871,7 @@ int tetgenmesh::recoversubfaces(arraypool *misshlist, int steinerflag)
           // This edge exists.
           if (issubseg(searchtet)) {
             // A segment already exists at this edge!
-            //terminatetetgen(this, 2); // to debug
+              throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
             //dir = SELF_INTERSECT;
             // We contnue to recover this subface instead of reporting a
             //   SELF_INTERSECT event.
@@ -21011,7 +21021,7 @@ int tetgenmesh::recoversubfaces(arraypool *misshlist, int steinerflag)
               if (is_collinear_at(steinerpt, startpt, endpt) ||
                   is_collinear_at(steinerpt, endpt, apexpt) ||
                   is_collinear_at(steinerpt, apexpt, startpt)) {
-                terminatetetgen(this, 2);
+                  throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
               }
             }
           } else {
@@ -21024,7 +21034,7 @@ int tetgenmesh::recoversubfaces(arraypool *misshlist, int steinerflag)
                 is_collinear_at(steinerpt, endpt, apexpt) ||
                 is_collinear_at(steinerpt, apexpt, startpt)) {
               //assert(0); // to debug...
-              terminatetetgen(this, 2);
+                throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
             }
           }
 
@@ -21088,7 +21098,7 @@ int tetgenmesh::recoversubfaces(arraypool *misshlist, int steinerflag)
                 }
               } else {
                 // Report other types of possible (nearly) self-intersection.
-                terminatetetgen(this, 2);
+                  throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
                 dir = SELF_INTERSECT;
               }
             }
@@ -21097,13 +21107,13 @@ int tetgenmesh::recoversubfaces(arraypool *misshlist, int steinerflag)
               if (ivf.iloc == NULLCAVITY) {
                 // Collect a list of bad quality tets which prevent the
                 //   insertion of this Steiner point.
-                terminatetetgen(this, 2);
+                  throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
                 point2tetorg(startpt, searchtet);
                 ivf.iloc = (int) OUTSIDE; // re-do point location.
                 ivf.collect_inial_cavity_flag = 1;
                 insertpoint(steinerpt, &searchtet, &searchsh, NULL, &ivf);
               } else {
-                terminatetetgen(this, 2); // report a bug.
+                  throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
               }
             } // if (steinerflag >= 2)
 
@@ -21167,7 +21177,7 @@ int tetgenmesh::recoversubfaces(arraypool *misshlist, int steinerflag)
               ivf.iloc = (int) ONEDGE;
               //ivf.refineflag = 8; // Check if the crossing edge is removed.
             } else {
-              terminatetetgen(this, 2);
+                throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
             }
             //ivf.iloc = (int) OUTSIDE; // do point location.
             //ivf.refinetet = searchtet; // The crossing face/edge.
@@ -21277,16 +21287,16 @@ int tetgenmesh::recoversubfaces(arraypool *misshlist, int steinerflag)
                   }
                 } else if (dir == ACROSSFACE)  {
                   // to do...
-                  terminatetetgen(this, 2);
+                    throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
                 } else {
-                  terminatetetgen(this, 2); // not possible.
+                    throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
                 }
               } else if (ivf.iloc == NULLCAVITY) {
                 // Collect a list of bad quality tets which prevent the
                 //   insertion of this Steiner point.
-                terminatetetgen(this, 2);
+                  throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
               } else {
-                terminatetetgen(this, 2); // report a bug.
+                  throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
               }
             } // if (steinerflag >= 2)
 
@@ -21320,7 +21330,7 @@ int tetgenmesh::recoversubfaces(arraypool *misshlist, int steinerflag)
 
     // This subface is missing.
     if (steinerflag >= 2) {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `recoversubfaces`.");
     } // if (steinerflag >= 2)
 
     // Save this subface to recover it later.
@@ -21659,7 +21669,7 @@ int tetgenmesh::reduceedgesatvertex(point startpt, arraypool* endptlist)
           }
         }
         else {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `reduceedgesatvertex`.");
         }
       } else {
         // The edge has been flipped.
@@ -22249,7 +22259,7 @@ int tetgenmesh::removevertexbyflips(point steinerpt)
     point2tetorg(lpt, searchtet);
     finddirection(&searchtet, rpt);
     if (dest(searchtet) != rpt) {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `removevertexbyflips`.");
     }
     sstbond1(rightseg, searchtet);
     spintet = searchtet;
@@ -22465,7 +22475,7 @@ int tetgenmesh::smoothpoint(point smtpt, arraypool *linkfacelist, int ccw,
         //if ((oldang - newang) < 0.00174) diff = 0.0; // about 0.1 degree.
       } else {
         // Unknown objective function.
-        terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `smoothpoint`.");
       }
     }
 
@@ -23458,7 +23468,7 @@ void tetgenmesh::recoverboundary(clock_t& tv)
     if (b->verbose) {
       printf("  !! %ld subfaces are missing.\n", misshlist->objects);
     }
-    terminatetetgen(this, 2);
+    throw std::runtime_error("Internal TetGen error within `recoverboundary`.");
     // Save the list of missing subface.
     //missing_tri_list = new arraypool(sizeof(face), 8);
     //for (i = 0; i < misshlist->objects; i++) {
@@ -23488,7 +23498,7 @@ void tetgenmesh::recoverboundary(clock_t& tv)
         faceloop.shver = 0;
         stpivot(faceloop, neightet);
         if (neightet.tet == NULL) {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `recoverboundary`.");
         }
         // Update the subface connections at its three edges.
         for (int k= 0; k < 3; k++) {
@@ -23504,7 +23514,7 @@ void tetgenmesh::recoverboundary(clock_t& tv)
               tspivot(spintet, sfaces[snum++]);
               if (snum > snum_limit) {
                 // Unlikely to happen.
-                terminatetetgen(this, 2);
+                  throw std::runtime_error("Internal TetGen error within `recoverboundary`.");
                 //tmp_sfaces = new face[snum_limit * 2];
               }
             }
@@ -24465,7 +24475,7 @@ void tetgenmesh::reconstructmesh()
   if (b->convex) { // -c option.
     // Assume the mesh is convex. Exterior tets have region attribute -1.
     if (!(in->numberoftetrahedronattributes > 0)) {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `reconstructmesh`.");
     }
   } else {
     // Assume the mesh is non-convex.
@@ -27083,7 +27093,7 @@ bool tetgenmesh::split_segment(face *splitseg, point encpt, REAL *param,
   } else {
     // Point is not inserted.
     if (ivf.iloc == (int) NEARVERTEX) {
-      terminatetetgen(this, 2); // report a bug.
+        throw std::runtime_error("Internal TetGen error within `split_segment`.");
     }
 
 
@@ -27213,7 +27223,7 @@ bool tetgenmesh::get_subface_ccent(face *chkfac, REAL *pos)
   if (circumsphere(P, Q, R, NULL, pos, NULL)) {
     return true;
   } else {
-    terminatetetgen(this, 2);
+      throw std::runtime_error("Internal TetGen error within `get_subface_ccent`.");
     return false;
   }
 
@@ -27567,7 +27577,7 @@ tetgenmesh::locate_on_surface(point searchpt, face* searchsh)
     enextself(searchtet);
   }
   if (i == 3) {
-    terminatetetgen(this, 2);
+      throw std::runtime_error("Internal TetGen error within `locate_on_surface`.");
   }
 
   while (true) {
@@ -27651,7 +27661,7 @@ tetgenmesh::locate_on_surface(point searchpt, face* searchsh)
       fcount++;
     }
     if (!issubface(searchtet)) {
-      terminatetetgen(this, 2); // report a bug
+        throw std::runtime_error("Internal TetGen error within `locate_on_surface`.");
     }
 
     // Update the vertices.
@@ -27792,7 +27802,7 @@ bool tetgenmesh::split_subface(face *splitfac, point encpt, REAL *ccent,
   }
 
   if ((ivf.iloc != (int) ONFACE) && (ivf.iloc != (int) ONEDGE)) {
-    terminatetetgen(this, 2); // report a bug
+      throw std::runtime_error("Internal TetGen error within `split_subface`.");
   }
 
   // Insert the point.
@@ -27916,7 +27926,7 @@ bool tetgenmesh::split_subface(face *splitfac, point encpt, REAL *ccent,
       }
     }
   } else if (ivf.iloc == (int) NEARVERTEX) {
-    terminatetetgen(this, 2); // report a bug
+      throw std::runtime_error("Internal TetGen error within `split_subface`.");
   }
 
   *iloc = ivf.iloc;
@@ -27974,7 +27984,7 @@ void tetgenmesh::repairencfacs(REAL *param, int qflag, int chkencflag)
               }
             } else {
               // report a bug.
-              terminatetetgen(this, 2);
+                throw std::runtime_error("Internal TetGen error within `repairencfacs`.");
             }
           }
         }
@@ -28097,7 +28107,7 @@ bool tetgenmesh::check_tetrahedron(triface *chktet, REAL* param, int &qflag)
 
   if (D >= 0.0) {
     // A degenerated tetrahedron.
-    terminatetetgen(this, 2);
+      throw std::runtime_error("Internal TetGen error within `check_tetrahedron`.");
   }
 
   qflag = 0; // default
@@ -28333,7 +28343,7 @@ bool tetgenmesh::checktet4split(triface *chktet, REAL* param, int& qflag)
     REAL D = orient3dexact(pa, pb, pc, pd); // =6*vol
     if (D >= 0.0) {
       // A degenerated tetrahedron.
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `checktet4split`.");
     }
     // We temporarily leave this tet. It should be fixed by mesh improvement.
     return false;
@@ -28434,7 +28444,7 @@ bool tetgenmesh::checktet4split(triface *chktet, REAL* param, int& qflag)
     for (i = 0; i < 4; i++) {
       L[i] = sqrt(dot(N[i], N[i]));
       if (L[i] == 0) {
-        terminatetetgen(this, 2);
+          throw std::runtime_error("Internal TetGen error within `checktet4split`.");
       }
       for (j = 0; j < 3; j++) N[i][j] /= L[i];
     }
@@ -28492,7 +28502,7 @@ enum tetgenmesh::locateresult
   }
 
   if (searchtet->ver == 4) {
-    terminatetetgen(this, 2);
+      throw std::runtime_error("Internal TetGen error within `locate_point_walk`.");
   }
   int max_visited_tets = 10000; // tetrahedrons->items;
 
@@ -29430,7 +29440,7 @@ void tetgenmesh::delaunayrefinement()
             }
           }
         } else {
-          terminatetetgen(this, 2); // report a bug.
+            throw std::runtime_error("Internal TetGen error within `delaunayrefinement`.");
         }
         checksh.sh = shellfacetraverse(subfaces);
       }
@@ -30316,7 +30326,7 @@ int tetgenmesh::get_seg_laplacian_center(point mesh_vert, REAL target[3])
       sesymself(rightseg);
     }
     if (sorg(rightseg) != mesh_vert) {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `get_seg_laplacian_center`.");
     }
   } else {
     rightseg = leftseg;
@@ -30327,7 +30337,7 @@ int tetgenmesh::get_seg_laplacian_center(point mesh_vert, REAL target[3])
       sesymself(leftseg);
     }
     if (sdest(leftseg) != mesh_vert) {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `get_seg_laplacian_center`.");
     }
   }
   point lpt = sorg(leftseg);
@@ -30591,7 +30601,7 @@ void tetgenmesh::smooth_vertices()
   if ((volcount != st_volref_count) ||
       (faccount != st_facref_count) ||
       (segcount != st_segref_count)) {
-    terminatetetgen(this, 2);
+      throw std::runtime_error("Internal TetGen error within `smooth_vertices`.");
   }
 
   if (b->verbose > 1) {
@@ -31148,7 +31158,7 @@ bool tetgenmesh::add_steinerpt_to_repair(badface *bf, bool bSmooth)
       if ((fabs(Lmin - dd) / Lmin) < 1e-4) break;
     }
     if (i == 6) {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_repair`.");
     }
 
     if (Lmin <= minedgelength) {
@@ -31157,11 +31167,11 @@ bool tetgenmesh::add_steinerpt_to_repair(badface *bf, bool bSmooth)
       point e2 = dest(short_edge);
       if (issteinerpoint(e1)) {
         if (!create_a_shorter_edge(e1, e2)) {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_repair`.");
         }
       } else if (issteinerpoint(e2)) {
         if (!create_a_shorter_edge(e2, e1)) {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `add_steinerpt_to_repair`.");
         }
       }
     }
@@ -31328,7 +31338,7 @@ bool tetgenmesh::flip_edge_to_improve(triface *sliver_edge, REAL& improved_cosma
               enqueue_badtet(&bf);
             }
           } else {
-            terminatetetgen(this, 2);
+              throw std::runtime_error("Internal TetGen error within `flip_edge_to_improve`.");
           }
         }
       } // j
@@ -31408,7 +31418,7 @@ bool tetgenmesh::repair_tet(badface *bf, bool bFlips, bool bSmooth, bool bSteine
       if ((fabs(Lmin - dd) / Lmin) < 1e-4) break;
     }
     if (i == 6) {
-      terminatetetgen(this, 2);
+        throw std::runtime_error("Internal TetGen error within `repair_tet`.");
     }
 
 
@@ -31418,11 +31428,11 @@ bool tetgenmesh::repair_tet(badface *bf, bool bFlips, bool bSmooth, bool bSteine
       point e2 = dest(short_edge);
       if (issteinerpoint(e1)) {
         if (!create_a_shorter_edge(e1, e2)) {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `repair_tet`.");
         }
       } else if (issteinerpoint(e2)) {
         if (!create_a_shorter_edge(e2, e1)) {
-          terminatetetgen(this, 2);
+            throw std::runtime_error("Internal TetGen error within `repair_tet`.");
         }
       }
     }
@@ -31573,7 +31583,7 @@ void tetgenmesh::improve_mesh()
         enqueue_badtet(&bf);
       }
     } else {
-      terminatetetgen(this, 2); // a degenerated tet.
+        throw std::runtime_error("Internal TetGen error within `improve_mesh`.");
     }
     checktet.tet = tetrahedrontraverse();
   }
@@ -33313,9 +33323,9 @@ void tetgenmesh::highorder()
   }
 
   // Initialize the 'highordertable'.
-  point *highordertable = new point[tetrahedrons->items * 6];
+  highordertable = new point[tetrahedrons->items * 6];
   if (highordertable == (point *) NULL) {
-    terminatetetgen(this, 1);
+    throw std::runtime_error("Out of memory");
   }
 
   // This will overwrite the slot for element markers.
@@ -33384,7 +33394,6 @@ void tetgenmesh::highorder()
     tetloop.tet = tetrahedrontraverse();
   }
 
-  delete [] highordertable;
 }
 
 //============================================================================//
@@ -33506,8 +33515,7 @@ void tetgenmesh::outnodes(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outnodefilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << outnodefilename << std::endl;
-      terminatetetgen(this, 1);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + outnodefilename);
     }
     // Number of points, number of dimensions, number of point attributes,
     //   and number of boundary markers (zero or one).
@@ -33519,30 +33527,30 @@ void tetgenmesh::outnodes(tetgenio* out)
     // Allocate space for 'pointlist';
     out->pointlist = new REAL[points->items * 3];
     if (out->pointlist == (REAL *) NULL) {
-      std::cerr << "Error:  Out of memory." << std::endl;
-      terminatetetgen(this, 1);
+
+      throw std::runtime_error("Out of memory");
     }
     // Allocate space for 'pointattributelist' if necessary;
     if (nextras > 0) {
       out->pointattributelist = new REAL[points->items * nextras];
       if (out->pointattributelist == (REAL *) NULL) {
-        std::cerr << "Error:  Out of memory." << std::endl;
-        terminatetetgen(this, 1);
+
+        throw std::runtime_error("Out of memory");
       }
     }
     // Allocate space for 'pointmarkerlist' if necessary;
     if (bmark) {
       out->pointmarkerlist = new int[points->items];
       if (out->pointmarkerlist == (int *) NULL) {
-        std::cerr << "Error:  Out of memory." << std::endl;
-        terminatetetgen(this, 1);
+
+        throw std::runtime_error("Out of memory");
       }
     }
     if (b->psc) {
       out->pointparamlist = new tetgenio::pointparam[points->items];
       if (out->pointparamlist == NULL) {
-        std::cerr << "Error:  Out of memory." << std::endl;
-        terminatetetgen(this, 1);
+
+        throw std::runtime_error("Out of memory");
       }
     }
     out->numberofpoints = points->items;
@@ -33702,8 +33710,7 @@ void tetgenmesh::outmetrics(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outmtrfilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << outmtrfilename << std::endl;
-      terminatetetgen(this, 3);
+      throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + outmtrfilename);
     }
     // Number of points, number of point metrices,
     fprintf(outfile, "%ld  %d\n", points->items, msize);
@@ -33712,7 +33719,7 @@ void tetgenmesh::outmetrics(tetgenio* out)
     out->numberofpointmtrs = msize;
     out->pointmtrlist = new REAL[points->items * msize];
     if (out->pointmtrlist == (REAL *) NULL) {
-      terminatetetgen(this, 1);
+      throw std::runtime_error("Out of memory");
     }
   }
 
@@ -33749,8 +33756,7 @@ void tetgenmesh::outmetrics(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outmtrfilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << outmtrfilename << std::endl;
-      terminatetetgen(this, 3);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + outmtrfilename);
     }
     // Number of points,
     //fprintf(outfile, "%ld\n", points->items);
@@ -33758,7 +33764,7 @@ void tetgenmesh::outmetrics(tetgenio* out)
     // Allocate space for 'point2tetlist'.
     out->point2tetlist = new int[points->items];
     if (out->point2tetlist == (int *) NULL) {
-      terminatetetgen(this, 1);
+      throw std::runtime_error("Out of memory");
     }
   }
 
@@ -33832,7 +33838,7 @@ void tetgenmesh::outelements(tetgenio* out)
     if (out == (tetgenio *) NULL) {
       printf("Writing %s.\n", outelefilename);
     } else {
-      printf("Writing elements.\n");
+      std::cout << "Writing elements.\n" << std::endl;
     }
   }
 
@@ -33843,8 +33849,7 @@ void tetgenmesh::outelements(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outelefilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << outelefilename <<std::endl;
-      terminatetetgen(this, 1);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + outelefilename);
     }
     // Number of tetras, points per tetra, attributes per tetra.
     fprintf(outfile, "%ld  %d  %d\n", ntets, b->order == 1 ? 4 : 10, eextras);
@@ -33852,15 +33857,15 @@ void tetgenmesh::outelements(tetgenio* out)
     // Allocate memory for output tetrahedra.
     out->tetrahedronlist = new int[ntets * (b->order == 1 ? 4 : 10)];
     if (out->tetrahedronlist == (int *) NULL) {
-      std::cerr << "Error:  Out of memory." << std::endl;
-      terminatetetgen(this, 1);
+
+      throw std::runtime_error("Out of memory");
     }
     // Allocate memory for output tetrahedron attributes if necessary.
     if (eextras > 0) {
       out->tetrahedronattributelist = new REAL[ntets * eextras];
       if (out->tetrahedronattributelist == (REAL *) NULL) {
-        std::cerr << "Error:  Out of memory." << std::endl;
-        terminatetetgen(this, 1);
+
+        throw std::runtime_error("Out of memory");
       }
     }
     out->numberoftetrahedra = ntets;
@@ -33892,6 +33897,7 @@ void tetgenmesh::outelements(tetgenio* out)
     }
     p3 = (point) tptr[6];
     p4 = (point) tptr[7];
+
     if (out == (tetgenio *) NULL) {
       // Tetrahedron number, indices for four points.
       fprintf(outfile, "%5d   %5d %5d %5d %5d", elementnumber,
@@ -33916,12 +33922,13 @@ void tetgenmesh::outelements(tetgenio* out)
       tlist[pointindex++] = pointmark(p4) - shift;
       if (b->order == 2) {
         extralist = (point *) tptr[highorderindex];
-        tlist[pointindex++] = pointmark(extralist[0]) - shift; // segfault here
+        tlist[pointindex++] = pointmark(extralist[0]) - shift;
         tlist[pointindex++] = pointmark(extralist[1]) - shift;
         tlist[pointindex++] = pointmark(extralist[2]) - shift;
         tlist[pointindex++] = pointmark(extralist[3]) - shift;
         tlist[pointindex++] = pointmark(extralist[4]) - shift;
         tlist[pointindex++] = pointmark(extralist[5]) - shift;
+
       }
       for (i = 0; i < eextras; i++) {
         talist[attribindex++] = elemattribute(tptr, i);
@@ -34001,16 +34008,15 @@ void tetgenmesh::outfaces(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(facefilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << facefilename << std::endl;
-      terminatetetgen(this, 1);
+      throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + facefilename);
     }
     fprintf(outfile, "%ld  %d\n", faces, !b->nobound);
   } else {
     // Allocate memory for 'trifacelist'.
     out->trifacelist = new int[faces * 3];
     if (out->trifacelist == (int *) NULL) {
-      std::cerr << "Error:  Out of memory." << std::endl;
-      terminatetetgen(this, 1);
+
+      throw std::runtime_error("Out of memory");
     }
     if (b->order == 2) {
       out->o2facelist = new int[faces * 3];
@@ -34019,16 +34025,16 @@ void tetgenmesh::outfaces(tetgenio* out)
     if (!b->nobound) {
       out->trifacemarkerlist = new int[faces];
       if (out->trifacemarkerlist == (int *) NULL) {
-        std::cerr << "Error:  Out of memory." << std::endl;
-        terminatetetgen(this, 1);
+
+        throw std::runtime_error("Out of memory");
       }
     }
     if (b->neighout > 1) {
       // '-nn' switch.
       out->face2tetlist = new int[faces * 2];
       if (out->face2tetlist == (int *) NULL) {
-        std::cerr << "Error:  Out of memory." << std::endl;
-        terminatetetgen(this, 1);
+
+        throw std::runtime_error("Out of memory");
       }
     }
     out->numberoftrifaces = faces;
@@ -34219,16 +34225,15 @@ void tetgenmesh::outhullfaces(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(facefilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << facefilename << std::endl;
-      terminatetetgen(this, 1);
+      throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + facefilename);
     }
     fprintf(outfile, "%ld  0\n", hullsize);
   } else {
     // Allocate memory for 'trifacelist'.
     out->trifacelist = new int[hullsize * 3];
     if (out->trifacelist == (int *) NULL) {
-      std::cerr << "Error:  Out of memory." << std::endl;
-      terminatetetgen(this, 1);
+
+      throw std::runtime_error("Out of memory");
     }
     out->numberoftrifaces = hullsize;
     elist = out->trifacelist;
@@ -34323,8 +34328,7 @@ void tetgenmesh::outsubfaces(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(facefilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << facefilename << std::endl;
-      terminatetetgen(this, 3);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + facefilename);
     }
     // Number of subfaces.
     fprintf(outfile, "%ld  %d\n", subfaces->items, !b->nobound);
@@ -34332,7 +34336,7 @@ void tetgenmesh::outsubfaces(tetgenio* out)
     // Allocate memory for 'trifacelist'.
     out->trifacelist = new int[subfaces->items * 3];
     if (out->trifacelist == (int *) NULL) {
-      terminatetetgen(this, 1);
+      throw std::runtime_error("Out of memory");
     }
     if (b->order == 2) {
       out->o2facelist = new int[subfaces->items * 3];
@@ -34341,14 +34345,14 @@ void tetgenmesh::outsubfaces(tetgenio* out)
       // Allocate memory for 'trifacemarkerlist'.
       out->trifacemarkerlist = new int[subfaces->items];
       if (out->trifacemarkerlist == (int *) NULL) {
-        terminatetetgen(this, 1);
+        throw std::runtime_error("Out of memory");
       }
     }
     if (b->neighout > 1) {
       // '-nn' switch.
       out->face2tetlist = new int[subfaces->items * 2];
       if (out->face2tetlist == (int *) NULL) {
-        terminatetetgen(this, 1);
+        throw std::runtime_error("Out of memory");
       }
     }
     out->numberoftrifaces = subfaces->items;
@@ -34525,8 +34529,7 @@ void tetgenmesh::outedges(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(edgefilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << edgefilename << std::endl;
-      terminatetetgen(this, 1);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + edgefilename);
     }
     // Write the number of edges, boundary markers (0 or 1).
     fprintf(outfile, "%ld  %d\n", meshedges, !b->nobound);
@@ -34535,8 +34538,8 @@ void tetgenmesh::outedges(tetgenio* out)
     out->numberofedges = meshedges;
     out->edgelist = new int[meshedges * 2];
     if (out->edgelist == (int *) NULL) {
-      std::cerr << "Error:  Out of memory." << std::endl;
-      terminatetetgen(this, 1);
+
+      throw std::runtime_error("Out of memory");
     }
     if (b->order == 2) { // -o2 switch
       out->o2edgelist = new int[meshedges];
@@ -34788,8 +34791,7 @@ void tetgenmesh::outsubsegments(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(edgefilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << edgefilename << std::endl;
-      terminatetetgen(this, 3);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + edgefilename);
     }
     // Number of subsegments.
     fprintf(outfile, "%ld  1\n", subsegs->items);
@@ -34797,14 +34799,14 @@ void tetgenmesh::outsubsegments(tetgenio* out)
     // Allocate memory for 'edgelist'.
     out->edgelist = new int[subsegs->items * (b->order == 1 ? 2 : 3)];
     if (out->edgelist == (int *) NULL) {
-      terminatetetgen(this, 1);
+      throw std::runtime_error("Out of memory");
     }
     if (b->order == 2) {
       out->o2edgelist = new int[subsegs->items];
     }
     out->edgemarkerlist = new int[subsegs->items];
     if (out->edgemarkerlist == (int *) NULL) {
-      terminatetetgen(this, 1);
+      throw std::runtime_error("Out of memory");
     }
     if (b->neighout > 1) {
       out->edge2tetlist = new int[subsegs->items];
@@ -34932,8 +34934,7 @@ void tetgenmesh::outneighbors(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(neighborfilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << neighborfilename << std::endl;
-      terminatetetgen(this, 1);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + neighborfilename);
     }
     // Number of tetrahedra, four faces per tetrahedron.
     fprintf(outfile, "%ld  %d\n", ntets, 4);
@@ -34941,8 +34942,8 @@ void tetgenmesh::outneighbors(tetgenio* out)
     // Allocate memory for 'neighborlist'.
     out->neighborlist = new int[ntets * 4];
     if (out->neighborlist == (int *) NULL) {
-      std::cerr << "Error:  Out of memory." << std::endl;
-      terminatetetgen(this, 1);
+
+      throw std::runtime_error("Out of memory");
     }
     nlist = out->neighborlist;
   }
@@ -35077,8 +35078,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outfilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << outfilename << std::endl;
-      terminatetetgen(this, 3);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + outfilename);
     }
     // Number of voronoi points, 3 dim, no attributes, no marker.
     fprintf(outfile, "%ld  3  0  0\n", ntets);
@@ -35087,7 +35087,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
     out->numberofvpoints = (int) ntets;
     out->vpointlist = new REAL[out->numberofvpoints * 3];
     if (out->vpointlist == (REAL *) NULL) {
-      terminatetetgen(this, 1);
+      throw std::runtime_error("Out of memory");
     }
   }
 
@@ -35142,8 +35142,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outfilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << outfilename << std::endl;
-      terminatetetgen(this, 3);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + outfilename);
     }
     // Number of Voronoi edges, no marker.
     fprintf(outfile, "%ld  0\n", faces);
@@ -35244,8 +35243,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outfilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << outfilename << std::endl;
-      terminatetetgen(this, 3);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + outfilename);
     }
     // Number of Voronoi faces.
     fprintf(outfile, "%ld  0\n", edges);
@@ -35253,7 +35251,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
     out->numberofvfacets = edges;
     out->vfacetlist = new tetgenio::vorofacet[out->numberofvfacets];
     if (out->vfacetlist == (tetgenio::vorofacet *) NULL) {
-      terminatetetgen(this, 1);
+      throw std::runtime_error("Out of memory");
     }
   }
 
@@ -35358,8 +35356,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
   if (out == (tetgenio *) NULL) {
     outfile = fopen(outfilename, "w");
     if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << outfilename << std::endl;
-      terminatetetgen(this, 3);
+        throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + outfilename);
     }
     // Number of Voronoi cells.
     fprintf(outfile, "%ld\n", points->items - unuverts - dupverts);
@@ -35367,7 +35364,7 @@ void tetgenmesh::outvoronoi(tetgenio* out)
     out->numberofvcells = points->items - unuverts - dupverts;
     out->vcelllist = new int*[out->numberofvcells];
     if (out->vcelllist == (int **) NULL) {
-      terminatetetgen(this, 1);
+      throw std::runtime_error("Out of memory");
     }
   }
 
@@ -35495,8 +35492,7 @@ void tetgenmesh::outsmesh(char* smfilename)
   }
   outfile = fopen(smefilename, "w");
   if (outfile == (FILE *) NULL) {
-    std::cerr << "File I/O Error:  Cannot create file " << smefilename << std::endl;
-    return;
+      throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + smefilename);
   }
 
   // Determine the first index (0 or 1).
@@ -35607,8 +35603,7 @@ void tetgenmesh::outmesh2medit(char* mfilename)
   }
   outfile = fopen(mefilename, "w");
   if (outfile == (FILE *) NULL) {
-    std::cerr << "File I/O Error:  Cannot create file " << mefilename << std::endl;
-    return;
+      throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + mefilename);
   }
 
   fprintf(outfile, "MeshVersionFormatted 1\n");
@@ -35814,8 +35809,7 @@ void tetgenmesh::outmesh2vtk(char* ofilename, int mesh_idx)
   }
   outfile = fopen(vtkfilename, "w");
   if (outfile == (FILE *) NULL) {
-      std::cerr << "File I/O Error:  Cannot create file " << vtkfilename << std::endl;
-    return;
+      throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + vtkfilename);
   }
 
   //always write big endian
@@ -35923,8 +35917,7 @@ void tetgenmesh::out_surfmesh_vtk(char* ofilename, int mesh_idx)
   }
   outfile = fopen(vtkfilename, "w");
   if (outfile == (FILE *) NULL) {
-    std::cerr << "File I/O Error:  Cannot create file " << vtkfilename << std::endl;
-    return;
+      throw std::runtime_error(std::string("File I/O Error:  Cannot create file ") + vtkfilename);
   }
 
   //always write big endian
@@ -36215,7 +36208,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
       if (!b->nofacewritten) m.outsubfaces(out);
       if (!b->nofacewritten) m.outsubsegments(out);
 
-      terminatetetgen(NULL, 3); // This is not a normal exit.
+      throw std::runtime_error("The input surface mesh contain self-intersections.");
     }
 
     if (b->diagnose) { // -d
@@ -36250,8 +36243,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
         if (!b->noelewritten)  m.outelements(out);
         if (!b->nofacewritten) m.outsubfaces(out);
         if (!b->nofacewritten) m.outsubsegments(out);
-        std::cerr << "Error: Boundary contains Steiner points (-YY option). Program stopped." << std::endl;
-        terminatetetgen(&m, 200);
+        throw std::runtime_error("Boundary contains Steiner points (-YY option). Program stopped.");
       }
     }
   }
