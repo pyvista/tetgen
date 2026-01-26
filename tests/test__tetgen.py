@@ -99,15 +99,15 @@ def test_tetrahedralize(sphere: PolyData) -> None:
     assert trifaces.max() < tgen.n_nodes
 
     # quadratic order appears to be broken in tetgen
-    # tgen = PyTetgen()
-    # tgen.load_mesh(sphere.points, faces)
-    # tgen.tetrahedralize(minratio=1.5, mindihedral=60.0, order=2)  # segfault here
-    # points = tgen.return_nodes()
-    # tets = tgen.return_tets()
-    # ugrid = _to_ugrid(points, tets)
-    # qual = ugrid.cell_quality()
-    # assert qual["scaled_jacobian"].mean() > 0.2
-    # assert (ugrid.celltypes == VTK_QUADRATIC_TETRA).all()
+    tgen = PyTetgen()
+    tgen.load_mesh(sphere.points, faces)
+    tgen.tetrahedralize(minratio=1.5, mindihedral=60.0, order=2)  # segfault here
+    points = tgen.return_nodes()
+    tets = tgen.return_tets()
+    ugrid = _to_ugrid(points, tets)
+    qual = ugrid.cell_quality()
+    assert qual["scaled_jacobian"].mean() > 0.2
+    assert (ugrid.celltypes == VTK_QUADRATIC_TETRA).all()
 
 
 def test_load_region(sphere: PolyData) -> None:

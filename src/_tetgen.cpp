@@ -157,7 +157,7 @@ struct PyTetgen {
             behavior.refine = refine;
             behavior.quality = quality;
             behavior.nobisect = nobisect;
-            behavior.cdt = cdt;
+            // behavior.cdt = cdt;
             behavior.cdtrefine = cdtrefine;
             behavior.coarsen = coarsen;
             behavior.weighted = weighted;
@@ -181,7 +181,7 @@ struct PyTetgen {
             behavior.voroout = voroout;
             behavior.meditview = meditview;
             behavior.vtkview = vtkview;
-            behavior.vtksurfview = vtksurfview;
+            // behavior.vtksurfview = vtksurfview;
             behavior.nobound = nobound;
             behavior.nonodewritten = nonodewritten;
             behavior.noelewritten = noelewritten;
@@ -190,7 +190,7 @@ struct PyTetgen {
             behavior.nojettison = nojettison;
             behavior.docheck = docheck;
             behavior.quiet = quiet;
-            behavior.nowarning = nowarning;
+            // behavior.nowarning = nowarning;
             behavior.verbose = verbose;
             // Parameters of TetGen.
             behavior.vertexperblock = vertexperblock;
@@ -203,16 +203,16 @@ struct PyTetgen {
             behavior.fliplinklevel = fliplinklevel;
             behavior.flipstarsize = flipstarsize;
             behavior.fliplinklevelinc = fliplinklevelinc;
-            behavior.opt_max_flip_level = opt_max_flip_level;
-            behavior.opt_scheme = opt_scheme;
-            behavior.opt_iterations = opt_iterations;
-            behavior.smooth_cirterion = smooth_cirterion;
-            behavior.smooth_maxiter = smooth_maxiter;
+            // behavior.opt_max_flip_level = opt_max_flip_level;
+            // behavior.opt_scheme = opt_scheme;
+            // behavior.opt_iterations = opt_iterations;
+            // behavior.smooth_cirterion = smooth_cirterion;
+            // behavior.smooth_maxiter = smooth_maxiter;
             behavior.delmaxfliplevel = delmaxfliplevel;
             behavior.order = order;
             behavior.reversetetori = reversetetori;
             behavior.steinerleft = steinerleft;
-            behavior.unflip_queue_limit = unflip_queue_limit;
+            // behavior.unflip_queue_limit = unflip_queue_limit;
             behavior.no_sort = no_sort;
             behavior.hilbert_order = hilbert_order;
             behavior.hilbert_limit = hilbert_limit;
@@ -220,20 +220,20 @@ struct PyTetgen {
             behavior.brio_ratio = brio_ratio;
             behavior.epsilon = epsilon;
             behavior.facet_separate_ang_tol = facet_separate_ang_tol;
-            behavior.collinear_ang_tol = collinear_ang_tol;
+            // behavior.collinear_ang_tol = collinear_ang_tol;
             behavior.facet_small_ang_tol = facet_small_ang_tol;
             behavior.maxvolume = maxvolume;
-            behavior.maxvolume_length = maxvolume_length;
+            // behavior.maxvolume_length = maxvolume_length;
             behavior.minratio = minratio;
-            behavior.opt_max_asp_ratio = opt_max_asp_ratio;
-            behavior.opt_max_edge_ratio = opt_max_edge_ratio;
+            // behavior.opt_max_asp_ratio = opt_max_asp_ratio;
+            // behavior.opt_max_edge_ratio = opt_max_edge_ratio;
             behavior.mindihedral = mindihedral;
             behavior.optmaxdihedral = optmaxdihedral;
-            behavior.metric_scale = metric_scale;
-            behavior.smooth_alpha = smooth_alpha;
+            // behavior.metric_scale = metric_scale;
+            // behavior.smooth_alpha = smooth_alpha;
             behavior.coarsen_percent = coarsen_percent;
-            behavior.elem_growth_ratio = elem_growth_ratio;
-            behavior.refine_progress_ratio = refine_progress_ratio;
+            // behavior.elem_growth_ratio = elem_growth_ratio;
+            // behavior.refine_progress_ratio = refine_progress_ratio;
         }
 
         _finalize_regions();
