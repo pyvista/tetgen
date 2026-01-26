@@ -2287,6 +2287,10 @@ class tetgenmesh {
     //                                                                            //
     //============================================================================//
 
+    // array (size = numberoftetrahedra * 6) for storing high-order nodes of each
+    // tetrahedron
+    point *highordertable;
+
     void jettisonnodes();
     void highorder();
     void indexelements();
@@ -2361,6 +2365,7 @@ class tetgenmesh {
 
         subdomains = 0;
         subdomain_markers = NULL;
+        highordertable = NULL;
 
         numpointattrib = numelemattrib = 0;
         sizeoftensor = 0;
@@ -2505,6 +2510,10 @@ class tetgenmesh {
 
         if (subdomain_markers != NULL) {
             delete[] subdomain_markers;
+        }
+
+        if (highordertable != NULL) {
+            delete[] highordertable;
         }
 
         initializetetgenmesh();

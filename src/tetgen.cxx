@@ -33322,7 +33322,7 @@ void tetgenmesh::highorder()
   }
 
   // Initialize the 'highordertable'.
-  point *highordertable = new point[tetrahedrons->items * 6];
+  highordertable = new point[tetrahedrons->items * 6];
   if (highordertable == (point *) NULL) {
     throw std::runtime_error("Out of memory");
   }
@@ -33393,7 +33393,6 @@ void tetgenmesh::highorder()
     tetloop.tet = tetrahedrontraverse();
   }
 
-  delete [] highordertable;
 }
 
 //============================================================================//
