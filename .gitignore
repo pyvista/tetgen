@@ -29,6 +29,7 @@ compile_commands.json
 .clang
 *.bat
 .venv
+.coverage
 
 .pytest_cache/
 

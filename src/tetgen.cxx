@@ -36156,7 +36156,7 @@ void tetrahedralize(tetgenbehavior *b, tetgenio *in, tetgenio *out,
   tv[3] = clock();
 
   if ((b->metric) && (m.bgm != NULL)) { // -m
-    m.bgm->initializepools();
+    // m.bgm->initializepools();
     m.bgm->transfernodes();
     m.bgm->reconstructmesh();
 
