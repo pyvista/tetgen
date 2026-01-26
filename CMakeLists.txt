@@ -40,7 +40,10 @@ if(MSVC)
   # /openmp:llvm
 else()
   # Assuming GCC or Clang
-  target_compile_options(_tetgen PRIVATE -O3)
+  target_compile_options(_tetgen PRIVATE
+    -O3
+    -fno-expensive-optimizations  # causes severe issues on ARM
+  )
   # -fopenmp
 endif()
 

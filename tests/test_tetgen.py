@@ -34,7 +34,7 @@ def test_vtk_tetrahedralize() -> None:
     assert grid.n_points
 
 
-def test_tetrahedralize_swithces() -> None:
+def test_tetrahedralize_switches() -> None:
     sphere = pv.Sphere(theta_resolution=10, phi_resolution=10)
     tet = tetgen.TetGen(sphere)
     tet.tetrahedralize(switches="pq1.1/10YQ")
