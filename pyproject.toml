@@ -61,10 +61,17 @@ Homepage = 'https://github.com/pyvista/tetgen'
 
 [tool.cibuildwheel]
 archs = ["auto64"]  # 64-bit only
-build = "cp310-* cp311-* cp312-* cp313-*"  # " cp314*"  # skip 3.14 until vtk 9.6 is released
-skip = " cp314t-* *musllinux*"  # disable musl-based wheels and free threading
+before-build = "pip install abi3audit"
+build = "cp310-* cp311-*"  # 3.11+ are abi3 wheels
+skip = "*musllinux*"
 test-command = "pytest {project}/tests -vv"
 test-requires = "pytest pyvista meshio pymeshfix"
+
+[tool.cibuildwheel.linux]
+repair-wheel-command = [
+  "auditwheel repair -w {dest_dir} {wheel}",
+  "bash tools/audit_wheel.sh {wheel}"
+]
 
 [tool.cibuildwheel.macos]
 archs = ["native"]
