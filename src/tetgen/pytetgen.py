@@ -598,10 +598,10 @@ class TetGen:
             minimal output.
         nobisect : bool, default: False
             Controls if Steiner points are added to the input surface
-            mesh. When enabled, the surface mesh will be modified.
+            mesh. When enabled, the surface mesh will not be modified.
 
             Testing has shown that if your input surface mesh is already well
-            shaped, disabling this setting will improve meshing speed and mesh
+            shaped, enabling this setting will improve meshing speed and mesh
             quality.
         edgesout : bool, default: False
             Store all the edges of the tetrahedral mesh after

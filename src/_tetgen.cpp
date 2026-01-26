@@ -47,6 +47,16 @@ struct PyTetgen {
         int n_cells = io_out.numberoftetrahedra;
         auto arr = MakeNDArray<int, 2>({n_cells, n_nodes});
         std::memcpy(arr.data(), io_out.tetrahedronlist, sizeof(int) * n_cells * n_nodes);
+
+        // ensure it's 1 based regardless of internal indexing
+        if (io_out.firstnumber == 1) {
+            int *p = arr.data();
+            int total = n_cells * n_nodes;
+            for (int i = 0; i < total; ++i) {
+                --p[i];
+            }
+        }
+
         return arr;
     }
 
@@ -263,18 +273,13 @@ struct PyTetgen {
         int *faces = faces_arr.data();
         std::memcpy(faces, io_out.trifacelist, sizeof(int) * 3 * n_faces);
 
-        // // Determine if indices are 1-based (tetgen might be 1-based)
-        // int n_points = io_out.numberofpoints;
-        // int max_index = 0;
-        // for (int i = 0; i < n_faces * 3; ++i)
-        //     if (faces[i] > max_index)
-        //         max_index = faces[i];
-
-        // // Only convert to 0-based if max index ≥ number of points
-        // if (max_index >= n_points) {
-        //     for (int i = 0; i < n_faces * 3; ++i)
-        //         faces[i] -= 1;
-        // }
+        // ensure it's 1 based regardless of internal indexing
+        if (io_out.firstnumber == 1) {
+            int total = n_faces * 3;
+            for (int i = 0; i < total; ++i) {
+                --faces[i];
+            }
+        }
 
         return faces_arr;
     }
