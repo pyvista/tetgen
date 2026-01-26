@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Reference &#8212; tetgen 0.8.0 documentation</title>
+    <title>API Reference &#8212; tetgen 0.8.1 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=486e5634"></script>
+    <script src="_static/documentation_options.js?v=ec16d22d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -56,7 +56,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.0" />
+  <meta name="docsearch:version" content="0.8.1" />
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
@@ -128,8 +128,8 @@
       
     
     
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.8.0 documentation - Home"/>
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.8.0 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.8.1 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.8.1 documentation - Home"/>
   
   
 </a></div>
@@ -587,6 +587,18 @@ tetrahedralized grid.</p>
 <dd><p>Return the <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">4)</span></code> or <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">10)</span></code> array of elements composing the grid.</p>
 <p>This attribute is only available after running
 <a class="reference internal" href="#tetgen.TetGen.tetrahedralize" title="tetgen.TetGen.tetrahedralize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TetGen.tetrahedralize()</span></code></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When quadratic cells are used (<code class="docutils literal notranslate"><span class="pre">order=2</span></code>), the node order of
+these cells is not compatible with VTK’s ordering. By convention
+and out of respect for the original TetGen API, the order has been
+conserved, but if you need to access the raw, and correctly ordered
+cells without accessing <a class="reference internal" href="#tetgen.TetGen.grid" title="tetgen.TetGen.grid"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TetGen.grid</span></code></a>, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tet</span><span class="o">.</span><span class="n">_tetgen</span><span class="o">.</span><span class="n">return_tets</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">tet</span></code> is an instance of <a class="reference internal" href="#tetgen.TetGen" title="tetgen.TetGen"><code class="xref py py-class docutils literal notranslate"><span class="pre">TetGen</span></code></a>.</p>
+</div>
 <p class="rubric">Examples</p>
 <p>Tetrahedralize a sphere and return the first five elements.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
@@ -777,9 +789,9 @@ to 1 enables some information about the mesh generation while
 setting verbose to 2 enables more debug output. Default (<code class="docutils literal notranslate"><span class="pre">0</span></code>) is
 minimal output.</p></li>
 <li><p><strong>nobisect</strong> (<em>bool</em><em>, </em><em>default: False</em>) – <p>Controls if Steiner points are added to the input surface
-mesh. When enabled, the surface mesh will be modified.</p>
+mesh. When enabled, the surface mesh will not be modified.</p>
 <p>Testing has shown that if your input surface mesh is already well
-shaped, disabling this setting will improve meshing speed and mesh
+shaped, enabling this setting will improve meshing speed and mesh
 quality.</p>
 </p></li>
 <li><p><strong>edgesout</strong> (<em>bool</em><em>, </em><em>default: False</em>) – Store all the edges of the tetrahedral mesh after
