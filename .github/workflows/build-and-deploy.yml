@@ -4,9 +4,9 @@ on:
   pull_request:
   push:
     tags:
-      - "*"
+    - v*
     branches:
-      - "main"
+    - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -19,46 +19,46 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-24.04, windows-2025, macos-15]
+        os: [ubuntu-24.04, windows-2025, macos-latest, macos-15-intel, ubuntu-24.04-arm]
 
     steps:
-      - uses: actions/checkout@v6
+    - uses: actions/checkout@v6
 
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v3.0.0
+    - name: Build wheels
+      uses: pypa/cibuildwheel@v3.3.1
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: tetgen-wheels-${{ matrix.os }}
-          path: ./wheelhouse/*.whl
+    - uses: actions/upload-artifact@v4
+      with:
+        name: tetgen-wheels-${{ matrix.os }}
+        path: ./wheelhouse/*.whl
 
   build_sdist:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+    - uses: actions/checkout@v6
 
-      - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: '3.13'
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.13'
 
-      - name: Build sdist
-        run: pipx run build --sdist
+    - name: Build sdist
+      run: pipx run build --sdist
 
-      - name: Install package from sdist
-        run: pip install dist/*.tar.gz
+    - name: Install package from sdist
+      run: pip install dist/*.tar.gz
 
-      - name: Install test requirements
-        run: pip install -r requirements_test.txt
+    - name: Install test requirements
+      run: pip install .[tests]
 
-      - name: Run tests
-        run: pytest
+    - name: Run tests
+      run: pytest
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: tetgen-sdist
-          path: dist/*.tar.gz
+    - uses: actions/upload-artifact@v6
+      with:
+        name: tetgen-sdist
+        path: dist/*.tar.gz
 
 
   release:
@@ -73,17 +73,17 @@ jobs:
       id-token: write  # this permission is mandatory for trusted publishing
       contents: write  # required to create a release
     steps:
-      - uses: actions/download-artifact@v4
-      - name: Flatten directory structure
-        run: |
-          mkdir -p dist/
-          find . -name '*.whl' -exec mv {} dist/ \;
-          find . -name '*.tar.gz' -exec mv {} dist/ \;
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          generate_release_notes: true
-          files: |
-            ./**/*.whl
+    - uses: actions/download-artifact@v7
+    - name: Flatten directory structure
+      run: |
+        mkdir -p dist/
+        find . -name '*.whl' -exec mv {} dist/ \;
+        find . -name '*.tar.gz' -exec mv {} dist/ \;
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        generate_release_notes: true
+        files: |
+          ./**/*.whl

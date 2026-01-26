@@ -1,5 +1,0 @@
-meshio
-pymeshfix>=0.13.4
-pytest
-pytest-cov
-pillow<=11.2.1

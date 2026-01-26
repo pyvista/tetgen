@@ -2,8 +2,6 @@
 ###################
 *.pyc
 *.pyd
-*.c
-*.cpp
 *.so
 *.o
 *.cache
@@ -20,15 +18,19 @@ tetgen.egg-info/
 build/
 dist/
 
-# MISC
-*.bat
+# Cmake
+CMakeFiles/
+Makefile
+cmake_install.cmake
+compile_commands.json
+.clangd
 
-# Testing
-factory/
-Testing/
-UnitTesting/
-TODO
-test.sh
+# local dev
+.clang
+*.bat
+.venv
+.coverage
+
 .pytest_cache/
 
 # docs
