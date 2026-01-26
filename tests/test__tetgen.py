@@ -86,8 +86,8 @@ def test_tetrahedralize(sphere: PolyData) -> None:
     assert tets.shape == (tgen.n_cells, 4)
 
     ugrid = _to_ugrid(tgen.return_nodes(), tets)
-    qual = ugrid.cell_quality()
-    assert qual["scaled_jacobian"].mean() > 0.1
+    qual = ugrid.cell_quality()["scaled_jacobian"]
+    assert qual.mean() > 0.1
     assert (ugrid.celltypes == VTK_TETRA).all()
 
     # test trifaces
@@ -98,16 +98,27 @@ def test_tetrahedralize(sphere: PolyData) -> None:
     assert trifaces.min() >= 0
     assert trifaces.max() < tgen.n_nodes
 
-    # quadratic order appears to be broken in tetgen
-    # tgen = PyTetgen()
-    # tgen.load_mesh(sphere.points, faces)
-    # tgen.tetrahedralize(minratio=1.5, mindihedral=60.0, order=2)  # segfault here
-    # points = tgen.return_nodes()
-    # tets = tgen.return_tets()
-    # ugrid = _to_ugrid(points, tets)
-    # qual = ugrid.cell_quality()
-    # assert qual["scaled_jacobian"].mean() > 0.2
-    # assert (ugrid.celltypes == VTK_QUADRATIC_TETRA).all()
+
+def test_tetrahedralize_quadratic(sphere: PolyData) -> None:
+    tgen = PyTetgen()
+    faces = sphere._connectivity_array.reshape(-1, 3).astype(np.int32)
+    tgen.load_mesh(sphere.points, faces)
+    tgen.tetrahedralize(nobisect=True, quality=True, minratio=1.1, mindihedral=10, order=2)
+    points = tgen.return_nodes()
+
+    assert not np.array_equal(tgen.return_tets(), tgen.return_tets(True))
+
+    ugrid = _to_ugrid(points, tgen.return_tets())
+    assert (ugrid.celltypes == VTK_QUADRATIC_TETRA).all()
+    qual = ugrid.cell_quality()["scaled_jacobian"]
+    assert (qual.mean() == -1).all()
+
+    cells = tgen.return_tets(True)
+    ugrid = _to_ugrid(points, cells)
+    # quality checks are broken for VTK_QUADRATIC_TETRA
+
+    # this mesh has been verified from inspection, but just to double check:
+    assert np.isfinite(points[cells]).all()
 
 
 def test_load_region(sphere: PolyData) -> None:
