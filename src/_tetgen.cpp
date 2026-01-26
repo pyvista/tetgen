@@ -42,7 +42,7 @@ struct PyTetgen {
         return points_arr;
     }
 
-    NDArray<int, 2> return_tets() {
+    NDArray<int, 2> return_tets(bool vtk_indexing = false) {
         int n_nodes = io_out.numberofcorners;
         int n_cells = io_out.numberoftetrahedra;
         auto arr = MakeNDArray<int, 2>({n_cells, n_nodes});
@@ -54,6 +54,26 @@ struct PyTetgen {
             int total = n_cells * n_nodes;
             for (int i = 0; i < total; ++i) {
                 --p[i];
+            }
+        }
+
+        // Convert to VTK style indexing when requested
+        if (n_nodes == 10 && vtk_indexing) {
+            for (int i = 0; i < n_cells; ++i) {
+                int *r = &arr(i, 0);
+
+                int t4 = r[4];
+                int t5 = r[5];
+                int t6 = r[6];
+                int t7 = r[7];
+                int t9 = r[9];
+
+                r[4] = t6;
+                r[5] = t7;
+                r[6] = t9;
+                r[7] = t5;
+                // r[8] unchanged
+                r[9] = t4;
             }
         }
 
@@ -521,7 +541,7 @@ NB_MODULE(_tetgen, m) { // "_tetgen" must match library name from CMakeLists.txt
         .def("return_input_points", &PyTetgen::return_input_points)
         .def("return_nodes", &PyTetgen::return_nodes)
         .def("return_tetrahedron_attributes", &PyTetgen::return_tetrahedron_attributes)
-        .def("return_tets", &PyTetgen::return_tets)
+        .def("return_tets", &PyTetgen::return_tets, nb::arg("vtk_indexing") = false)
         .def("return_triface_markers", &PyTetgen::return_triface_markers)
         .def("return_trifaces", &PyTetgen::return_trifaces)
         .def_prop_ro("n_bg_nodes", &PyTetgen::n_bg_nodes)

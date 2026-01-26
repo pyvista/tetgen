@@ -942,13 +942,6 @@ class TetGen:
             switches,
         )
 
-        # return_surface_data=True,
-        # return_edge_data=True,
-
-        #         self._face2tet,
-        #         self._edges,
-        #         self._edge_markers,
-
         # check if a mesh was generated
         if not self._tetgen.n_nodes:
             raise RuntimeError(
@@ -1187,6 +1180,17 @@ class TetGen:
         This attribute is only available after running
         :meth:`TetGen.tetrahedralize`.
 
+        .. note::
+            When quadratic cells are used (``order=2``), the node order of
+            these cells is not compatible with VTK's ordering. By convention
+            and out of respect for the original TetGen API, the order has been
+            conserved, but if you need to access the raw, and correctly ordered
+            cells without accessing :attr:`TetGen.grid`, use::
+
+               tet._tetgen.return_tets()
+
+            Where ``tet`` is an instance of :class:`TetGen`.
+
         Examples
         --------
         Tetrahedralize a sphere and return the first five elements.
@@ -1241,7 +1245,7 @@ class TetGen:
             raise MeshNotTetrahedralizedError
 
         if self._grid is None:
-            self._grid = _to_ugrid(self.node, self.elem)
+            self._grid = _to_ugrid(self.node, self._tetgen.return_tets(True))
         return self._grid
 
     def write(self, filename: str | Path, binary: bool = True) -> None:

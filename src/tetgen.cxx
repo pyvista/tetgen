@@ -33876,8 +33876,6 @@ void tetgenmesh::outelements(tetgenio* out)
     attribindex = 0;
   }
 
-  std::cout << "HERE" << std::endl;
-
   // Determine the first index (0 or 1).
   firstindex = b->zeroindex ? 0 : in->firstnumber;
   shift = 0; // Default no shift.
@@ -33922,33 +33920,16 @@ void tetgenmesh::outelements(tetgenio* out)
       tlist[pointindex++] = pointmark(p3) - shift;
       tlist[pointindex++] = pointmark(p4) - shift;
       if (b->order == 2) {
-          // debug
-          std::cout << "element " << elementnumber << "\n";
-          std::cout << "tptr=" << (void*)tptr << "\n";
-          std::cout << "highorderindex=" << highorderindex << "\n";
-          std::cout << "tptr[highorderindex]="
-                    << (void*)tptr[highorderindex] << "\n";
-
-          extralist = (point*) tptr[highorderindex];
-          std::cout << "extralist=" << (void*)extralist << "\n";
-
-          for (int k = 0; k < 6; ++k) {
-              std::cout << "extralist[" << k << "]="
-                        << (void*)extralist[k] << "\n";
-          }
-
-          std::cout << "about to call pointmark(extralist[0])\n";
-          std::cout.flush();
-
-          // end debug
-
         extralist = (point *) tptr[highorderindex];
-        tlist[pointindex++] = pointmark(extralist[0]) - shift; // segfault here
+
+        // TetGen indexing
+        tlist[pointindex++] = pointmark(extralist[0]) - shift;
         tlist[pointindex++] = pointmark(extralist[1]) - shift;
         tlist[pointindex++] = pointmark(extralist[2]) - shift;
         tlist[pointindex++] = pointmark(extralist[3]) - shift;
         tlist[pointindex++] = pointmark(extralist[4]) - shift;
         tlist[pointindex++] = pointmark(extralist[5]) - shift;
+
       }
       for (i = 0; i < eextras; i++) {
         talist[attribindex++] = elemattribute(tptr, i);
