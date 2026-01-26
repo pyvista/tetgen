@@ -1,16 +1,15 @@
 
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="../" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Using external modules to create a mesh &#8212; tetgen 0.7.0 documentation</title>
+    <title>Using external modules to create a mesh &#8212; tetgen 0.8.0 documentation</title>
   
   
   
@@ -32,12 +31,12 @@
   <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
   <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -45,11 +44,11 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/documentation_options.js?v=486e5634"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=49e1bf35"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/sphere';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -58,7 +57,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7.0" />
+  <meta name="docsearch:version" content="0.8.0" />
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
@@ -130,8 +129,8 @@
       
     
     
-    <img src="../_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.7.0 documentation - Home"/>
-    <img src="../_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.7.0 documentation - Home"/>
+    <img src="../_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.8.0 documentation - Home"/>
+    <img src="../_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.8.0 documentation - Home"/>
   
   
 </a></div>
@@ -393,7 +392,7 @@
 to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="using-external-modules-to-create-a-mesh">
-<span id="sphx-glr-examples-sphere-py"></span><h1>Using external modules to create a mesh<a class="headerlink" href="#using-external-modules-to-create-a-mesh" title="Permalink to this heading">#</a></h1>
+<span id="sphx-glr-examples-sphere-py"></span><h1>Using external modules to create a mesh<a class="headerlink" href="#using-external-modules-to-create-a-mesh" title="Link to this heading">#</a></h1>
 <p>Tetrahedralize a sphere</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sphinx_gallery_thumbnail_number = 2</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
@@ -402,7 +401,7 @@ to download the full example code.</p>
 </div>
 </section>
 <section id="using-pyvista">
-<h1>Using PyVista<a class="headerlink" href="#using-pyvista" title="Permalink to this heading">#</a></h1>
+<h1>Using PyVista<a class="headerlink" href="#using-pyvista" title="Link to this heading">#</a></h1>
 <p>Create a surface mesh using <code class="docutils literal notranslate"><span class="pre">pyvista</span></code> and then tetrahedralize it.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">()</span>
 <span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
@@ -459,7 +458,7 @@ jacobian of each cell.</p>
 </div>
 </section>
 <section id="using-pyacvd">
-<h1>Using pyacvd<a class="headerlink" href="#using-pyacvd" title="Permalink to this heading">#</a></h1>
+<h1>Using pyacvd<a class="headerlink" href="#using-pyacvd" title="Link to this heading">#</a></h1>
 <p>We can use <a class="reference external" href="https://github.com/pyvista/pyacvd">pyacvd</a> to create a
 more uniform mesh using the mesh generated from <code class="docutils literal notranslate"><span class="pre">pyvista</span></code>.  We can
 use the <code class="docutils literal notranslate"><span class="pre">pyacvd</span></code> module to generate a more uniform surface mesh
@@ -503,13 +502,13 @@ and then tetrahedralize that.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_sphere_005.png" srcset="../_images/sphx_glr_sphere_005.png" alt="sphere" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.13.9/x64/lib/python3.13/site-packages/pyvista/core/filters/data_set.py:5650: PyVistaDeprecationWarning: This filter is deprecated. Use `cell_quality` instead. Note that this
+<img src="../_images/sphx_glr_sphere_005.png" srcset="../_images/sphx_glr_sphere_005.png" alt="sphere" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.13.11/x64/lib/python3.13/site-packages/pyvista/core/filters/data_set.py:5650: PyVistaDeprecationWarning: This filter is deprecated. Use `cell_quality` instead. Note that this
 new filter does not include an array named ``&#39;CellQuality&#39;`
   warnings.warn(msg, PyVistaDeprecationWarning)
-Mean cell quality: 0.648
+Mean cell quality: 0.646
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.351 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.224 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-sphere-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/c1e72683f2866b0f79702e3bf8ba6a4b/sphere.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sphere.ipynb</span></code></a></p>
@@ -588,7 +587,7 @@ Mean cell quality: 0.648
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The PyVista Developers.
+      © Copyright 2017-2026, The PyVista Developers.
       <br/>
     
   </p>
@@ -597,7 +596,7 @@ Mean cell quality: 0.648
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
     <br/>
   </p>
 </div>

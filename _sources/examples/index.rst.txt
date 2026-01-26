@@ -22,7 +22,7 @@ Here are several complex ``tetgen`` examples.
   .. image:: /examples/images/thumb/sphx_glr_cow_thumb.gif
     :alt:
 
-  :ref:`sphx_glr_examples_cow.py`
+  :doc:`/examples/cow`
 
 .. raw:: html
 
@@ -39,7 +39,7 @@ Here are several complex ``tetgen`` examples.
   .. image:: /examples/images/thumb/sphx_glr_holes_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_holes.py`
+  :doc:`/examples/holes`
 
 .. raw:: html
 
@@ -56,7 +56,7 @@ Here are several complex ``tetgen`` examples.
   .. image:: /examples/images/thumb/sphx_glr_regions_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_regions.py`
+  :doc:`/examples/regions`
 
 .. raw:: html
 
@@ -73,7 +73,7 @@ Here are several complex ``tetgen`` examples.
   .. image:: /examples/images/thumb/sphx_glr_sphere_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_sphere.py`
+  :doc:`/examples/sphere`
 
 .. raw:: html
 
@@ -90,7 +90,7 @@ Here are several complex ``tetgen`` examples.
   .. image:: /examples/images/thumb/sphx_glr_super_toroid_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_super_toroid.py`
+  :doc:`/examples/super_toroid`
 
 .. raw:: html
 
@@ -107,7 +107,7 @@ Here are several complex ``tetgen`` examples.
   .. image:: /examples/images/thumb/sphx_glr_trifaces_thumb.png
     :alt:
 
-  :ref:`sphx_glr_examples_trifaces.py`
+  :doc:`/examples/trifaces`
 
 .. raw:: html
 

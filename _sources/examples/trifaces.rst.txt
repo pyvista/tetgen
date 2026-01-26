@@ -107,7 +107,7 @@ accessible from the :attr:`tetgen.TetGen.trifaces` attribute.
 
     <table style='width: 100%;'>
     <tr><th>PolyData</th><th>Information</th></tr>
-    <tr><td>N Cells</td><td>200</td></tr>
+    <tr><td>N Cells</td><td>80</td></tr>
     <tr><td>N Points</td><td>43</td></tr>
     <tr><td>N Strips</td><td>0</td></tr>
     <tr><td>X Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
@@ -177,18 +177,11 @@ the :attr:`tetgen.TetGen.triface_markers` array.
  .. code-block:: none
 
 
-    array([ 0,  0,  0, -1,  0,  0,  0, -1,  0,  0,  0, -1,  0,  0,  0, -1,  0,
-            0,  0, -1,  0,  0,  0, -1,  0,  0, -1, -1,  0,  0, -1,  0,  0, -1,
-           -1,  0,  0, -1, -1,  0, -1,  0,  0, -1,  0,  0, -1,  0, -1,  0, -1,
-            0,  0, -1,  0,  0, -1,  0,  0, -1,  0, -1,  0,  0, -1,  0, -1,  0,
-            0,  0, -1,  0,  0, -1,  0, -1,  0, -1,  0,  0, -1,  0, -1,  0, -1,
-            0,  0, -1,  0, -1,  0, -1,  0,  0, -1,  0,  0, -1,  0, -1,  0,  0,
-           -1,  0,  0, -1,  0,  0, -1,  0, -1,  0,  0,  0, -1,  0,  0,  0, -1,
-            0, -1,  0, -1,  0, -1,  0, -1,  0,  0, -1,  0,  0,  0, -1,  0, -1,
-            0, -1,  0,  0, -1,  0,  0, -1, -1,  0,  0, -1,  0,  0, -1,  0, -1,
-            0,  0,  0, -1, -1,  0,  0, -1,  0, -1,  0, -1,  0, -1,  0,  0, -1,
-            0, -1, -1,  0,  0, -1,  0, -1,  0, -1,  0,  0, -1, -1,  0,  0, -1,
-            0, -1, -1,  0, -1,  0, -1,  0, -1, -1,  0, -1, -1], dtype=int32)
+    array([-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+           -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], dtype=int32)
 
 
 
@@ -226,7 +219,7 @@ Finally, create an edges :class:`pyvista.PolyData` from the
 
     <table style='width: 100%;'>
     <tr><th>PolyData</th><th>Information</th></tr>
-    <tr><td>N Cells</td><td>162</td></tr>
+    <tr><td>N Cells</td><td>120</td></tr>
     <tr><td>N Points</td><td>43</td></tr>
     <tr><td>N Strips</td><td>0</td></tr>
     <tr><td>X Bounds</td><td>-1.000e+00, 1.000e+00</td></tr>
@@ -272,7 +265,7 @@ Plot the edges with ``pyvista`` and color the interior and exterior edges.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 20.295 seconds)
+   **Total running time of the script:** (0 minutes 18.764 seconds)
 
 
 .. _sphx_glr_download_examples_trifaces.py:

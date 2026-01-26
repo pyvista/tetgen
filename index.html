@@ -1,16 +1,15 @@
 
 
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tetgen &#8212; tetgen 0.7.0 documentation</title>
+    <title>tetgen &#8212; tetgen 0.8.0 documentation</title>
   
   
   
@@ -32,12 +31,12 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -45,11 +44,11 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script src="_static/documentation_options.js?v=486e5634"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=49e1bf35"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -57,7 +56,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7.0" />
+  <meta name="docsearch:version" content="0.8.0" />
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
@@ -129,8 +128,8 @@
       
     
     
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.7.0 documentation - Home"/>
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.7.0 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.8.0 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.8.0 documentation - Home"/>
   
   
 </a></div>
@@ -343,40 +342,40 @@
                 <article class="bd-article">
                   
   <section id="tetgen">
-<h1>tetgen<a class="headerlink" href="#tetgen" title="Permalink to this heading">#</a></h1>
-<a class="reference external image-reference" href="https://pypi.org/project/tetgen/"><img alt="https://img.shields.io/pypi/v/tetgen.svg?logo=python&amp;logoColor=white" src="https://img.shields.io/pypi/v/tetgen.svg?logo=python&amp;logoColor=white" /></a>
-<p>This Python library is an interface to Hang Si’s
-<a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> C++ software.
-This module combines speed of C++ with the portability and ease of installation
-of Python along with integration to <a class="reference external" href="https://docs.pyvista.org">PyVista</a> for
-3D visualization and analysis.
-See the <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> GitHub page for more details
-on the original creator.</p>
+<h1>tetgen<a class="headerlink" href="#tetgen" title="Link to this heading">#</a></h1>
+<a class="reference external image-reference" href="https://pypi.org/project/tetgen/"><img alt="https://img.shields.io/pypi/v/tetgen.svg?logo=python&amp;logoColor=white" src="https://img.shields.io/pypi/v/tetgen.svg?logo=python&amp;logoColor=white" />
+</a>
+<p>This Python library is an interface to Hang Si’s <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> C++ software. This module combines
+speed of C++ with the portability and ease of installation of Python
+along with integration to <a class="reference external" href="https://docs.pyvista.org">PyVista</a> for 3D
+visualization and analysis. See the <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> GitHub page for more details on the
+original creator.</p>
 <p>This Python library uses the C++ source from TetGen (version 1.6.0,
 released on August 31, 2020) hosted at <a class="reference external" href="https://github.com/libigl/tetgen">libigl/tetgen</a>.</p>
-<p>Brief description from
-<a class="reference external" href="http://wias-berlin.de/software/index.jsp?id=TetGen&amp;lang=1">Weierstrass Institute Software</a>:</p>
+<p>Brief description from <a class="reference external" href="http://wias-berlin.de/software/index.jsp?id=TetGen&amp;lang=1">Weierstrass Institute Software</a>:</p>
 <blockquote>
-<div><p>TetGen is a program to generate tetrahedral meshes of any 3D polyhedral domains.
-TetGen generates exact constrained Delaunay tetrahedralization, boundary
-conforming Delaunay meshes, and Voronoi partitions.</p>
-<p>TetGen provides various features to generate good quality and adaptive
-tetrahedral meshes suitable for numerical methods, such as finite element or
-finite volume methods. For more information of TetGen, please take a look at a
-list of <a class="reference external" href="http://wias-berlin.de/software/tetgen/features.html">features</a>.</p>
+<div><p>TetGen is a program to generate tetrahedral meshes of any 3D
+polyhedral domains. TetGen generates exact constrained Delaunay
+tetrahedralization, boundary conforming Delaunay meshes, and Voronoi
+partitions.</p>
+<p>TetGen provides various features to generate good quality and
+adaptive tetrahedral meshes suitable for numerical methods, such as
+finite element or finite volume methods. For more information of
+TetGen, please take a look at a list of <a class="reference external" href="http://wias-berlin.de/software/tetgen/features.html">features</a>.</p>
 </div></blockquote>
 <section id="license-agpl">
-<h2>License (AGPL)<a class="headerlink" href="#license-agpl" title="Permalink to this heading">#</a></h2>
-<p>The original <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> software is under AGPL
-(see <a class="reference external" href="https://github.com/pyvista/tetgen/blob/main/LICENSE">LICENSE</a>) and thus this
+<h2>License (AGPL)<a class="headerlink" href="#license-agpl" title="Link to this heading">#</a></h2>
+<p>The original <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> software is
+under AGPL (see <a class="reference external" href="https://github.com/pyvista/tetgen/blob/main/LICENSE">LICENSE</a>) and thus this
 Python wrapper package must adopt that license as well.</p>
-<p>Please look into the terms of this license before creating a dynamic link to this software
-in your downstream package and understand commercial use limitations. We are not lawyers
-and cannot provide any guidance on the terms of this license.</p>
+<p>Please look into the terms of this license before creating a dynamic
+link to this software in your downstream package and understand
+commercial use limitations. We are not lawyers and cannot provide any
+guidance on the terms of this license.</p>
 <p>Please see <a class="reference external" href="https://www.gnu.org/licenses/agpl-3.0.en.html">https://www.gnu.org/licenses/agpl-3.0.en.html</a></p>
 </section>
 <section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h2>
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>From <a class="reference external" href="https://pypi.python.org/pypi/tetgen">PyPI</a></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>tetgen
 </pre></div>
@@ -389,10 +388,10 @@ pip<span class="w"> </span>install<span class="w"> </span>.
 </div>
 </section>
 <section id="basic-example">
-<h2>Basic Example<a class="headerlink" href="#basic-example" title="Permalink to this heading">#</a></h2>
+<h2>Basic Example<a class="headerlink" href="#basic-example" title="Link to this heading">#</a></h2>
 <p>The features of the C++ TetGen software implemented in this module are
 primarily focused on the tetrahedralization a manifold triangular
-surface.  This basic example demonstrates how to tetrahedralize a
+surface. This basic example demonstrates how to tetrahedralize a
 manifold surface and plot part of the mesh.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tetgen</span>
@@ -407,13 +406,14 @@ manifold surface and plot part of the mesh.</p>
 </pre></div>
 </div>
 <figure class="align-default" id="id1">
-<a class="reference internal image-reference" href="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere.png"><img alt="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere.png" src="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere.png" style="width: 300pt;" /></a>
+<a class="reference internal image-reference" href="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere.png"><img alt="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere.png" src="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere.png" style="width: 300pt;" />
+</a>
 <figcaption>
-<p><span class="caption-text">Tetrahedralized Sphere</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Tetrahedralized Sphere</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Extract a portion of the sphere’s tetrahedral mesh below the xy plane and plot
-the mesh quality.</p>
+<p>Extract a portion of the sphere’s tetrahedral mesh below the xy plane
+and plot the mesh quality.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get cell centroids</span>
 <span class="n">cells</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">:]</span>
 <span class="n">cell_center</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">cells</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -433,7 +433,8 @@ the mesh quality.</p>
 </pre></div>
 </div>
 <img alt="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere_subgrid.png" src="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere_subgrid.png" />
-<p>Here is the cell quality as computed according to the minimum scaled jacobian.</p>
+<p>Here is the cell quality as computed according to the minimum scaled
+jacobian.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Compute</span> <span class="n">cell</span> <span class="n">quality</span>
 
 <span class="o">&gt;&gt;&gt;</span> <span class="n">cell_qual</span> <span class="o">=</span> <span class="n">subgrid</span><span class="o">.</span><span class="n">cell_quality</span><span class="p">()[</span><span class="s1">&#39;scaled_jacobian&#39;</span><span class="p">]</span>
@@ -447,31 +448,34 @@ the mesh quality.</p>
 <img alt="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere_qual.png" src="https://github.com/pyvista/tetgen/raw/main/doc/images/sphere_qual.png" />
 </section>
 <section id="using-a-background-mesh">
-<h2>Using a Background Mesh<a class="headerlink" href="#using-a-background-mesh" title="Permalink to this heading">#</a></h2>
+<h2>Using a Background Mesh<a class="headerlink" href="#using-a-background-mesh" title="Link to this heading">#</a></h2>
 <p>A background mesh in TetGen is used to define a mesh sizing function for
-adaptive mesh refinement. This function informs TetGen of the desired element
-size throughout the domain, allowing for detailed refinement in specific areas
-without unnecessary densification of the entire mesh. Here’s how to utilize a
-background mesh in your TetGen workflow:</p>
+adaptive mesh refinement. This function informs TetGen of the desired
+element size throughout the domain, allowing for detailed refinement in
+specific areas without unnecessary densification of the entire mesh.
+Here’s how to utilize a background mesh in your TetGen workflow:</p>
 <ol class="arabic simple">
-<li><p><strong>Generate the Background Mesh</strong>: Create a tetrahedral mesh that spans the
-entirety of your input piecewise linear complex (PLC) domain. This mesh will
-serve as the basis for your sizing function.</p></li>
-<li><p><strong>Define the Sizing Function</strong>: At the nodes of your background mesh, define
-the desired mesh sizes. This can be based on geometric features, proximity
-to areas of interest, or any criterion relevant to your simulation needs.</p></li>
-<li><p><strong>Optional: Export the Background Mesh and Sizing Function</strong>: Save your
-background mesh in the TetGen-readable <cite>.node</cite> and <cite>.ele</cite> formats, and the
-sizing function values in a <cite>.mtr</cite> file. These files will be used by TetGen
-to guide the mesh generation process.</p></li>
-<li><p><strong>Run TetGen with the Background Mesh</strong>: Invoke TetGen, specifying the
-background mesh. TetGen will adjust the mesh according to the provided
-sizing function, refining the mesh where smaller elements are desired.</p></li>
+<li><p><strong>Generate the Background Mesh</strong>: Create a tetrahedral mesh that
+spans the entirety of your input piecewise linear complex (PLC)
+domain. This mesh will serve as the basis for your sizing function.</p></li>
+<li><p><strong>Define the Sizing Function</strong>: At the nodes of your background mesh,
+define the desired mesh sizes. This can be based on geometric
+features, proximity to areas of interest, or any criterion relevant
+to your simulation needs.</p></li>
+<li><p><strong>Optional: Export the Background Mesh and Sizing Function</strong>: Save
+your background mesh in the TetGen-readable <cite>.node</cite> and <cite>.ele</cite>
+formats, and the sizing function values in a <cite>.mtr</cite> file. These files
+will be used by TetGen to guide the mesh generation process.</p></li>
+<li><p><strong>Run TetGen with the Background Mesh</strong>: Invoke TetGen, specifying
+the background mesh. TetGen will adjust the mesh according to the
+provided sizing function, refining the mesh where smaller elements
+are desired.</p></li>
 </ol>
 <p><strong>Full Example</strong></p>
-<p>To illustrate, consider a scenario where you want to refine a mesh around a
-specific region with increased detail. The following steps and code snippets
-demonstrate how to accomplish this with TetGen and PyVista:</p>
+<p>To illustrate, consider a scenario where you want to refine a mesh
+around a specific region with increased detail. The following steps and
+code snippets demonstrate how to accomplish this with TetGen and
+PyVista:</p>
 <ol class="arabic">
 <li><p><strong>Prepare Your PLC and Background Mesh</strong>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pyvista</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pv</span>
@@ -480,6 +484,7 @@ demonstrate how to accomplish this with TetGen and PyVista:</p>
 
 <span class="c1"># Load or create your PLC</span>
 <span class="n">sphere</span> <span class="o">=</span> <span class="n">pv</span><span class="o">.</span><span class="n">Sphere</span><span class="p">(</span><span class="n">theta_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">phi_resolution</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
 
 <span class="c1"># Generate a background mesh with desired resolution</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">generate_background_mesh</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
@@ -492,17 +497,22 @@ demonstrate how to accomplish this with TetGen and PyVista:</p>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">pv</span><span class="o">.</span><span class="n">StructuredGrid</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">grid_z</span><span class="p">)</span><span class="o">.</span><span class="n">triangulate</span><span class="p">()</span>
 
+
 <span class="n">bg_mesh</span> <span class="o">=</span> <span class="n">generate_background_mesh</span><span class="p">(</span><span class="n">sphere</span><span class="o">.</span><span class="n">bounds</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
 <li><p><strong>Define the Sizing Function and Write to Disk</strong>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define sizing function based on proximity to a point of interest</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">sizing_function</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">focus_point</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">max_size</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">min_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sizing_function</span><span class="p">(</span>
+    <span class="n">points</span><span class="p">,</span> <span class="n">focus_point</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">max_size</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">min_size</span><span class="o">=</span><span class="mf">0.1</span>
+<span class="p">):</span>
     <span class="n">distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">points</span> <span class="o">-</span> <span class="n">focus_point</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">max_size</span> <span class="o">-</span> <span class="n">distances</span><span class="p">,</span> <span class="n">min_size</span><span class="p">,</span> <span class="n">max_size</span><span class="p">)</span>
 
-<span class="n">bg_mesh</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s1">&#39;target_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sizing_function</span><span class="p">(</span><span class="n">bg_mesh</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+
+<span class="n">bg_mesh</span><span class="o">.</span><span class="n">point_data</span><span class="p">[</span><span class="s2">&quot;target_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sizing_function</span><span class="p">(</span><span class="n">bg_mesh</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+
 
 <span class="c1"># Optionally write out the background mesh</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">write_background_mesh</span><span class="p">(</span><span class="n">background_mesh</span><span class="p">,</span> <span class="n">out_stem</span><span class="p">):</span>
@@ -522,7 +532,8 @@ demonstrate how to accomplish this with TetGen and PyVista:</p>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">mtr_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">mtr_content</span><span class="p">))</span>
 
-<span class="n">write_background_mesh</span><span class="p">(</span><span class="n">bg_mesh</span><span class="p">,</span> <span class="s1">&#39;bgmesh.b&#39;</span><span class="p">)</span>
+
+<span class="n">write_background_mesh</span><span class="p">(</span><span class="n">bg_mesh</span><span class="p">,</span> <span class="s2">&quot;bgmesh.b&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </li>
@@ -536,19 +547,20 @@ demonstrate how to accomplish this with TetGen and PyVista:</p>
 </div>
 <p>Alternatively, use the background mesh files.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tet</span> <span class="o">=</span> <span class="n">tetgen</span><span class="o">.</span><span class="n">TetGen</span><span class="p">(</span><span class="n">sphere</span><span class="p">)</span>
-<span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">bgmeshfilename</span><span class="o">=</span><span class="s1">&#39;bgmesh.b&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">tet_kwargs</span><span class="p">)</span>
+<span class="n">tet</span><span class="o">.</span><span class="n">tetrahedralize</span><span class="p">(</span><span class="n">bgmeshfilename</span><span class="o">=</span><span class="s2">&quot;bgmesh.b&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">tet_kwargs</span><span class="p">)</span>
 <span class="n">refined_mesh</span> <span class="o">=</span> <span class="n">tet</span><span class="o">.</span><span class="n">grid</span>
 </pre></div>
 </div>
 </li>
 </ol>
-<p>This example demonstrates generating a background mesh, defining a spatially
-varying sizing function, and using this background mesh to guide TetGen in
-refining a PLC. By following these steps, you can achieve adaptive mesh
-refinement tailored to your specific simulation requirements.</p>
+<p>This example demonstrates generating a background mesh, defining a
+spatially varying sizing function, and using this background mesh to
+guide TetGen in refining a PLC. By following these steps, you can
+achieve adaptive mesh refinement tailored to your specific simulation
+requirements.</p>
 </section>
 <section id="acknowledgments">
-<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permalink to this heading">#</a></h2>
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
 <p>Software was originally created by Hang Si based on work published in
 <a class="reference external" href="https://dl.acm.org/citation.cfm?doid=2629697">TetGen, a Delaunay-Based Quality Tetrahedral Mesh Generator</a>.</p>
 <div class="toctree-wrapper compound">
@@ -627,7 +639,7 @@ refinement tailored to your specific simulation requirements.</p>
 
   <p class="copyright">
     
-      © Copyright 2017-2025, The PyVista Developers.
+      © Copyright 2017-2026, The PyVista Developers.
       <br/>
     
   </p>
@@ -636,7 +648,7 @@ refinement tailored to your specific simulation requirements.</p>
         <div class="footer-item">
 
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
     <br/>
   </p>
 </div>
