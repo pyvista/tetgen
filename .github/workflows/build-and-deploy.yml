@@ -37,8 +37,9 @@ jobs:
     needs: build_wheels
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ['3.13', '3.14']
+        python-version: ['3.13'] # , '3.14']  # skip 3.14 testing until vtk 9.6 is released
         os: [ubuntu-24.04, windows-2025, macos-latest, macos-15-intel, ubuntu-24.04-arm]
     steps:
     - uses: actions/checkout@v6
@@ -56,7 +57,11 @@ jobs:
         WHEEL=$(ls wheels/*abi3*.whl | head -n 1)
         echo "wheel=$WHEEL" >> "$GITHUB_OUTPUT"
     - name: Install wheel
-      run: pip install "${{ steps.find_wheel.outputs.wheel }}"[tests]
+      run: pip install "${{ steps.find_wheel.outputs.wheel }}"
+    - name: Install test dependencies from source
+      run: |
+        pip install tomli
+        pip install $(python -c "import tomli; print(' '.join(tomli.load(open('pyproject.toml','rb'))['project']['optional-dependencies']['tests']))")
     - name: Run tests
       run: pytest
 
