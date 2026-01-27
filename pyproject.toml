@@ -63,7 +63,6 @@ Homepage = 'https://github.com/pyvista/tetgen'
 archs = ["auto64"]  # 64-bit only
 before-build = "pip install abi3audit"
 build = "cp310-* cp311-* cp312-*"  # 3.12+ are abi3 wheels
-build-frontend = "build[uv]"
 skip = "*musllinux*"
 test-command = "pytest {project}/tests -vv"
 test-requires = "pytest pyvista meshio pymeshfix"
