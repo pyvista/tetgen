@@ -62,7 +62,7 @@ Homepage = 'https://github.com/pyvista/tetgen'
 [tool.cibuildwheel]
 archs = ["auto64"]  # 64-bit only
 before-build = "pip install abi3audit"
-build = "cp310-* cp311-*"  # 3.11+ are abi3 wheels
+build = "cp310-* cp311-* cp312-*"  # 3.12+ are abi3 wheels
 skip = "*musllinux*"
 test-command = "pytest {project}/tests -vv"
 test-requires = "pytest pyvista meshio pymeshfix"
@@ -90,3 +90,6 @@ junit_family = "legacy"
 [tool.ruff]
 indent-width = 4
 line-length = 99
+
+[tool.scikit-build]
+wheel.py-api = "cp312"
