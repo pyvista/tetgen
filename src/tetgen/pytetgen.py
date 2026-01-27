@@ -23,7 +23,7 @@ LOG.setLevel("CRITICAL")
 MTR_POINTDATA_KEY = "target_size"
 
 invalid_input = TypeError(
-    "Invalid input. First argument must be either a pyvista.PolyData object or vertex array, followed by a face arrays and optionally a face marker array."
+    "Invalid input. First argument must be either a pyvista.PolyData object or a vertex array and a face array and optionally a face marker array."
 )
 
 
@@ -193,15 +193,7 @@ class TetGen:
             faces = mesh._connectivity_array.reshape(-1, 3).astype(np.int32, copy=False)
             self._tetgen.load_mesh(points, faces)
 
-        if "PolyData" in str(type(arg0)):  # check without importing
-            from pyvista.core.pointset import PolyData
-
-            if not isinstance(arg0, PolyData):
-                raise TypeError(f"Unknown type {type(arg0)}. Expected a `pyvista.PolyData`.")
-            mesh: PolyData = arg0
-
-            store_mesh(mesh)
-        elif isinstance(arg0, (np.ndarray, list)):
+        if isinstance(arg0, (np.ndarray, list)):
             points = np.asarray(arg0, dtype=np.float64)
             if isinstance(arg1, (np.ndarray, list)) and isinstance(arg2, (np.ndarray, list)):
                 self._load_arrays(points, arg1, arg2)
@@ -209,6 +201,14 @@ class TetGen:
                 self._load_arrays(points, arg1)
             else:
                 raise invalid_input
+        elif "PolyData" in str(type(arg0)):  # check without importing
+            from pyvista.core.pointset import PolyData
+
+            if not isinstance(arg0, PolyData):
+                raise TypeError(f"Unknown type {type(arg0)}. Expected a `pyvista.PolyData`.")
+            mesh: PolyData = arg0
+
+            store_mesh(mesh)
         elif isinstance(arg0, (str, Path)):
             try:
                 import pyvista.core as pv
