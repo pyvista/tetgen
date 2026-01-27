@@ -62,7 +62,7 @@ jobs:
       run: |
         pip install tomli
         python tools/extract-deps.py
-        pip install requirements-tests.txt
+        pip install -r requirements-tests.txt
     - name: Run tests
       run: pytest
 
