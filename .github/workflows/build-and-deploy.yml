@@ -61,7 +61,8 @@ jobs:
     - name: Install test dependencies from source
       run: |
         pip install tomli
-        pip install $(python tools/extract-deps.py)
+        python tools/extract-deps.py
+        pip install requirements-tests.txt
     - name: Run tests
       run: pytest
 
