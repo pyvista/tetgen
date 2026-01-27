@@ -61,9 +61,10 @@ jobs:
     - name: Install test dependencies from source
       run: |
         pip install tomli
-        pip install $(python -c "import tomli; print(' '.join(tomli.load(open('pyproject.toml','rb'))['project']['optional-dependencies']['tests']))")
+        pip install $(python tools/extract-deps.py)
     - name: Run tests
       run: pytest
+
 
   build_sdist:
     name: Build source distribution
