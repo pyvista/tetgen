@@ -139,7 +139,7 @@ Show the cell quality
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.519 seconds)
+   **Total running time of the script:** (0 minutes 2.576 seconds)
 
 
 .. _sphx_glr_download_examples_super_toroid.py:
