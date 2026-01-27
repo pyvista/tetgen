@@ -1,4 +1,5 @@
 import os
+import sys
 
 import numpy as np
 import pytest
@@ -73,6 +74,9 @@ def test_attributes() -> None:
     assert isinstance(tet.edges, np.ndarray)
 
 
+@pytest.mark.skipif(
+    sys.platform.startswith("win"), reason="Skip on Windows due to cross-drive relpath issue"
+)
 def test_numpy_tetrahedralize(tmpdir):
     v = np.array(
         [
