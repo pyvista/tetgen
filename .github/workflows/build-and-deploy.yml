@@ -32,6 +32,34 @@ jobs:
         name: tetgen-wheels-${{ matrix.os }}
         path: ./wheelhouse/*.whl
 
+  test_abi3:
+    name: Test ABI3 wheels
+    needs: build_wheels
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ['3.13', '3.14']
+        os: [ubuntu-24.04, windows-2025, macos-latest, macos-15-intel, ubuntu-24.04-arm]
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-python@v6
+      with:
+        python-version: ${{ matrix.python-version }}
+    - uses: actions/download-artifact@v7
+      with:
+        pattern: tetgen-wheels-${{ matrix.os }}
+        path: wheels/
+    - name: Find ABI3 wheel
+      id: find_wheel
+      shell: bash
+      run: |
+        WHEEL=$(ls wheels/*abi3*.whl | head -n 1)
+        echo "wheel=$WHEEL" >> "$GITHUB_OUTPUT"
+    - name: Install wheel
+      run: pip install "${{ steps.find_wheel.outputs.wheel }}"[tests]
+    - name: Run tests
+      run: pytest
+
   build_sdist:
     name: Build source distribution
     runs-on: ubuntu-latest
