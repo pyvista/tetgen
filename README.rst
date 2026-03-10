@@ -11,11 +11,12 @@ speed of C++ with the portability and ease of installation of Python
 along with integration to `PyVista <https://docs.pyvista.org>`_ for 3D
 visualization and analysis. See the `TetGen
 <https://github.com/ufz/tetgen>`__ GitHub page for more details on the
-original creator.
+underlying software.
 
 This Python library uses the C++ source from TetGen (version 1.6.0,
 released on August 31, 2020) hosted at `libigl/tetgen
-<https://github.com/libigl/tetgen>`__.
+<https://github.com/libigl/tetgen>`__. Some modifications have been made
+correct minor bugs.
 
 Brief description from `Weierstrass Institute Software
 <http://wias-berlin.de/software/index.jsp?id=TetGen&lang=1>`__:
@@ -30,22 +31,6 @@ Brief description from `Weierstrass Institute Software
    finite element or finite volume methods. For more information of
    TetGen, please take a look at a list of `features
    <http://wias-berlin.de/software/tetgen/features.html>`__.
-
-****************
- License (AGPL)
-****************
-
-The original `TetGen <https://github.com/ufz/tetgen>`__ software is
-under AGPL (see `LICENSE
-<https://github.com/pyvista/tetgen/blob/main/LICENSE>`_) and thus this
-Python wrapper package must adopt that license as well.
-
-Please look into the terms of this license before creating a dynamic
-link to this software in your downstream package and understand
-commercial use limitations. We are not lawyers and cannot provide any
-guidance on the terms of this license.
-
-Please see https://www.gnu.org/licenses/agpl-3.0.en.html
 
 **************
  Installation
@@ -262,3 +247,17 @@ requirements.
 Software was originally created by Hang Si based on work published in
 `TetGen, a Delaunay-Based Quality Tetrahedral Mesh Generator
 <https://dl.acm.org/citation.cfm?doid=2629697>`__.
+
+*********
+ License
+*********
+
+This Python wrapper is licensed under the MIT license. However, the
+underlying `TetGen <https://github.com/ufz/tetgen>`__ library is
+licensed under AGPL (see `tetgen-license
+<https://github.com/pyvista/tetgen/blob/main/src/tetgen-license>`_).
+
+Please look into the terms of this license before creating a dynamic
+link to this software in your downstream package and understand
+commercial use limitations. We are not lawyers and cannot provide any
+guidance on the terms of this license.
