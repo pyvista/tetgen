@@ -41,7 +41,7 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v6
       with:
-        python-version: '3.13'
+        python-version: '3.14'
 
     - name: Build sdist
       run: pipx run build --sdist
@@ -55,7 +55,7 @@ jobs:
     - name: Run tests
       run: pytest
 
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       with:
         name: tetgen-sdist
         path: dist/*.tar.gz
