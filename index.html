@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>tetgen &#8212; tetgen 0.8.2 documentation</title>
+    <title>tetgen &#8212; tetgen 0.8.3 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=dbee5847"></script>
+    <script src="_static/documentation_options.js?v=7f96dc5e"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -56,7 +56,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.2" />
+  <meta name="docsearch:version" content="0.8.3" />
 
 <meta name="description" content="">
 <meta name="author" content="Alex Kaszynski">
@@ -128,8 +128,8 @@
       
     
     
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.8.2 documentation - Home"/>
-    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.8.2 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-light" alt="tetgen 0.8.3 documentation - Home"/>
+    <img src="_static/pyvista_logo_sm.png" class="logo__image only-dark pst-js-only" alt="tetgen 0.8.3 documentation - Home"/>
   
   
 </a></div>
@@ -349,9 +349,10 @@
 speed of C++ with the portability and ease of installation of Python
 along with integration to <a class="reference external" href="https://docs.pyvista.org">PyVista</a> for 3D
 visualization and analysis. See the <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> GitHub page for more details on the
-original creator.</p>
+underlying software.</p>
 <p>This Python library uses the C++ source from TetGen (version 1.6.0,
-released on August 31, 2020) hosted at <a class="reference external" href="https://github.com/libigl/tetgen">libigl/tetgen</a>.</p>
+released on August 31, 2020) hosted at <a class="reference external" href="https://github.com/libigl/tetgen">libigl/tetgen</a>. Some modifications have been made
+correct minor bugs.</p>
 <p>Brief description from <a class="reference external" href="http://wias-berlin.de/software/index.jsp?id=TetGen&amp;lang=1">Weierstrass Institute Software</a>:</p>
 <blockquote>
 <div><p>TetGen is a program to generate tetrahedral meshes of any 3D
@@ -363,17 +364,6 @@ adaptive tetrahedral meshes suitable for numerical methods, such as
 finite element or finite volume methods. For more information of
 TetGen, please take a look at a list of <a class="reference external" href="http://wias-berlin.de/software/tetgen/features.html">features</a>.</p>
 </div></blockquote>
-<section id="license-agpl">
-<h2>License (AGPL)<a class="headerlink" href="#license-agpl" title="Link to this heading">#</a></h2>
-<p>The original <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> software is
-under AGPL (see <a class="reference external" href="https://github.com/pyvista/tetgen/blob/main/LICENSE">LICENSE</a>) and thus this
-Python wrapper package must adopt that license as well.</p>
-<p>Please look into the terms of this license before creating a dynamic
-link to this software in your downstream package and understand
-commercial use limitations. We are not lawyers and cannot provide any
-guidance on the terms of this license.</p>
-<p>Please see <a class="reference external" href="https://www.gnu.org/licenses/agpl-3.0.en.html">https://www.gnu.org/licenses/agpl-3.0.en.html</a></p>
-</section>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>From <a class="reference external" href="https://pypi.python.org/pypi/tetgen">PyPI</a></p>
@@ -563,6 +553,16 @@ requirements.</p>
 <h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
 <p>Software was originally created by Hang Si based on work published in
 <a class="reference external" href="https://dl.acm.org/citation.cfm?doid=2629697">TetGen, a Delaunay-Based Quality Tetrahedral Mesh Generator</a>.</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading">#</a></h2>
+<p>This Python wrapper is licensed under the MIT license. However, the
+underlying <a class="reference external" href="https://github.com/ufz/tetgen">TetGen</a> library is
+licensed under AGPL (see <a class="reference external" href="https://github.com/pyvista/tetgen/blob/main/src/tetgen-license">tetgen-license</a>).</p>
+<p>Please look into the terms of this license before creating a dynamic
+link to this software in your downstream package and understand
+commercial use limitations. We are not lawyers and cannot provide any
+guidance on the terms of this license.</p>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -595,11 +595,11 @@ requirements.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license-agpl">License (AGPL)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-example">Basic Example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-background-mesh">Using a Background Mesh</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license">License</a><ul class="nav section-nav flex-column">
 </ul>
 </li>
 </ul>
