@@ -405,6 +405,11 @@ class TetGen:
                 "`pymeshfix` is not installed. Install it with:\npip install pymeshfix"
             )
 
+        from packaging.version import Version
+
+        if Version(pymeshfix.__version__) < Version("0.18.0"):
+            raise RuntimeError("pymeshfix >= 0.18.0 is required")
+
         # Run meshfix
         meshfix = pymeshfix.MeshFix(
             self._tetgen.return_input_points(), self._tetgen.return_input_faces()
@@ -412,7 +417,7 @@ class TetGen:
         meshfix.repair(verbose)
 
         # overwrite the loaded arrays object with the cleaned mesh
-        self._tetgen.load_mesh(meshfix.v, meshfix.f)
+        self._tetgen.load_mesh(meshfix.points, meshfix.faces)
 
     def plot(self, **kwargs: Any) -> Any:
         """Display the input mesh.

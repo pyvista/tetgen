@@ -7,7 +7,6 @@ authors = [
   {name = "PyVista Developers", email = "info@pyvista.org"}
 ]
 classifiers = [
-  "License :: OSI Approved :: GNU Affero General Public License v3",
   "Operating System :: Microsoft :: Windows",
   "Operating System :: POSIX",
   "Intended Audience :: Science/Research",
@@ -21,9 +20,11 @@ dependencies = [
   "numpy"
 ]
 description = "Python interface to tetgen"
+license = "MIT"
+license-files = ["LICENSE", "src/tetgen-license"]
 name = "tetgen"
 readme = "README.rst"
-requires-python = ">=3.10,<3.15"
+requires-python = ">=3.10"
 version = "0.9.dev0"
 
 [project.optional-dependencies]
@@ -43,10 +44,10 @@ docs = [
 extras = [
   "pyvista",
   "meshio",
-  "pymeshfix"
+  "pymeshfix>=0.18.0"
 ]
 tests = [
-  "pymeshfix>=0.13.4",
+  "pymeshfix>=0.18.0",
   "pyvista",
   "pytest",
   "meshio",
@@ -62,7 +63,7 @@ Homepage = 'https://github.com/pyvista/tetgen'
 [tool.cibuildwheel]
 archs = ["auto64"]  # 64-bit only
 before-build = "pip install abi3audit"
-build = "cp310-* cp311-* cp312-*"  # 3.12+ are abi3 wheels
+build = "cp310-* cp311-* cp312-* cp313-* cp314-*"  # 3.12+ are abi3 wheels
 skip = "*musllinux*"
 test-command = "pytest {project}/tests -vv"
 test-requires = "pytest pyvista meshio pymeshfix"
