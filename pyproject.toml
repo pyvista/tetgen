@@ -54,6 +54,11 @@ tests = [
   "pytest-cov"
 ]
 
+[project.entry-points."pyvista.accessors"]
+# Value points at the plugin module; importing it runs the
+# ``@register_dataset_accessor`` decorator as a side effect.
+tetgen = "tetgen._accessor"
+
 [project.urls]
 'Bug Reports' = 'https://github.com/pyvista/tetgen/issues'
 Documentation = 'https://tetgen.pyvista.org/'
