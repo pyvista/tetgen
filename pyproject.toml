@@ -27,6 +27,11 @@ readme = "README.rst"
 requires-python = ">=3.10"
 version = "0.8.3"
 
+[project.entry-points."pyvista.accessors"]
+# Value points at the plugin module; importing it runs the
+# ``@register_dataset_accessor`` decorator as a side effect.
+tetgen = "tetgen._accessor"
+
 [project.optional-dependencies]
 docs = [
   "pyvista",
