@@ -25,7 +25,7 @@ license-files = ["LICENSE", "src/tetgen-license"]
 name = "tetgen"
 readme = "README.rst"
 requires-python = ">=3.10"
-version = "0.8.3"
+version = "0.8.4"
 
 [project.entry-points."pyvista.accessors"]
 # Value points at the plugin module; importing it runs the
