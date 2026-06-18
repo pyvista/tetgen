@@ -210,21 +210,26 @@ class TetGen:
 
             store_mesh(mesh)
         elif isinstance(arg0, (str, Path)):
-            try:
-                import pyvista.core as pv
-                from pyvista.core.pointset import PolyData
-            except ModuleNotFoundError:
-                raise ModuleNotFoundError(
-                    "To load from a filename install pyvista with:\n\n    `pip install pyvista"
-                )
+            arg0_path = Path(arg0)
+            if arg0_path.suffix in {".poly", ".smesh"}:
+                if not self._tetgen.load_poly(str(arg0_path.with_suffix(''))):
+                    raise RuntimeError(f"Failed to load poly from {arg0}")
+            else:
+                try:
+                    import pyvista.core as pv
+                    from pyvista.core.pointset import PolyData
+                except ModuleNotFoundError:
+                    raise ModuleNotFoundError(
+                        "To load from a filename install pyvista with:\n\n    `pip install pyvista"
+                    )
 
-            mesh = pv.read(arg0)
-            if not isinstance(mesh, PolyData):
-                raise RuntimeError(
-                    "Loaded surface is not readable by pyvista as a "
-                    f"surface. Expected `pyvista.PolyData`, got `{type(mesh)}`"
-                )
-            store_mesh(mesh)
+                mesh = pv.read(arg0)
+                if not isinstance(mesh, PolyData):
+                    raise RuntimeError(
+                        "Loaded surface is not readable by pyvista as a "
+                        f"surface. Expected `pyvista.PolyData`, got `{type(mesh)}`"
+                    )
+                store_mesh(mesh)
         else:
             raise invalid_input
 
