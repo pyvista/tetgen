@@ -212,7 +212,7 @@ class TetGen:
         elif isinstance(arg0, (str, Path)):
             arg0_path = Path(arg0)
             if arg0_path.suffix in {".poly", ".smesh"}:
-                if not self._tetgen.load_poly(str(arg0_path.with_suffix(''))):
+                if not self._tetgen.load_poly(str(arg0_path.with_suffix(""))):
                     raise RuntimeError(f"Failed to load poly from {arg0}")
             else:
                 try:
