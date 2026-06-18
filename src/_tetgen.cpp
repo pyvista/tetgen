@@ -421,8 +421,8 @@ struct PyTetgen {
 
     } // load_mesh
 
-    bool load_poly(const std::string & filebasename){
-        return io.load_poly((char*)filebasename.c_str());
+    bool load_poly(const std::string &filebasename) {
+        return io.load_poly((char *)filebasename.c_str());
     }
 
     NDArray<double, 2> return_input_points() {
