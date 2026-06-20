@@ -121,7 +121,7 @@ class TetGen:
     Parameters
     ----------
     args : str | pyvista.PolyData | numpy.ndarray
-        Either a pyvista surface mesh or a ``(n, 3)`` vertex array and ``(m,
+        Either a pyvista surface mesh, tetgen `.poly` | `.smesh` filename, or a ``(n, 3)`` vertex array and ``(m,
         3)`` face array.
 
     Examples
