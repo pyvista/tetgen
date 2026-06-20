@@ -92,7 +92,7 @@ mask = cell_center[:, 2] < 0
 cell_ind = mask.nonzero()[0]
 subgrid = uniform_grid.extract_cells(cell_ind)
 
-cell_qual = subgrid.compute_cell_quality()["CellQuality"]
+cell_qual = subgrid.cell_quality()["scaled_jacobian"]
 print(f"Mean cell quality: {cell_qual.mean():.3}")
 
 # plot quality
