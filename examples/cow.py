@@ -60,7 +60,7 @@ nframe = 36
 xb = np.array(cow_grid.bounds[0:2])
 step = np.ptp(xb) / nframe
 for val in np.arange(xb[0] + step, xb[1] + step, step):
-    mask = np.argwhere(cow_grid.cell_centers().points[:, 0] < val)
+    mask = np.flatnonzero(cow_grid.cell_centers().points[:, 0] < val)
     half_cow = cow_grid.extract_cells(mask)
     pl.add_mesh(half_cow, color="w", show_edges=True, name="building")
     pl.update()

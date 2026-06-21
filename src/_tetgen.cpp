@@ -421,6 +421,10 @@ struct PyTetgen {
 
     } // load_mesh
 
+    bool load_poly(const std::string &filebasename) {
+        return io.load_poly((char *)filebasename.c_str());
+    }
+
     NDArray<double, 2> return_input_points() {
         int n_points = io.numberofpoints;
         NDArray<double, 2> arr = MakeNDArray<double, 2>({n_points, 3});
@@ -531,6 +535,7 @@ NB_MODULE(_tetgen, m) { // "_tetgen" must match library name from CMakeLists.txt
         .def("load_mesh", &PyTetgen::load_mesh)
         .def("load_region", &PyTetgen::load_region)
         .def("load_hole", &PyTetgen::load_hole)
+        .def("load_poly", &PyTetgen::load_poly)
         .def("load_bgmesh_from_filename", &PyTetgen::load_bgmesh_from_filename)
         .def("load_bgmesh_from_arrays", &PyTetgen::load_bgmesh_from_arrays)
         .def("return_edges", &PyTetgen::return_edges)
