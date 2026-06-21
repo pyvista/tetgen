@@ -32298,7 +32298,9 @@ int tetgenmesh::check_segments()
   }
 
   if (horrors == 0) {
-    printf("  Segments are connected properly.\n");
+    if (!b->quiet) {
+      printf("  Segments are connected properly.\n");
+    }
   } else {
     printf("  !! !! !! !! Found %d missing connections.\n", horrors);
   }
