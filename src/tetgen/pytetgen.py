@@ -1,13 +1,15 @@
 """Python module to interface with wrapped TetGen C++ code."""
 
-from importlib.util import find_spec
 import ctypes
 import logging
+from collections.abc import Sequence
+from importlib.util import find_spec
 from pathlib import Path
-from typing import Any, Sequence, TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
 import numpy as np
 from numpy.typing import NDArray
+
 from tetgen import _tetgen
 
 if TYPE_CHECKING:
@@ -51,8 +53,8 @@ def _polydata_from_faces(points: NDArray[np.float64], faces: NDArray[np.int32]) 
 
     from pyvista.core.pointset import PolyData
     from vtkmodules.util.numpy_support import numpy_to_vtk
-    from vtkmodules.vtkCommonDataModel import vtkCellArray
     from vtkmodules.vtkCommonCore import vtkTypeInt32Array
+    from vtkmodules.vtkCommonDataModel import vtkCellArray
 
     if faces.ndim != 2:
         raise ValueError("Expected a two dimensional face array.")
@@ -83,8 +85,8 @@ def _to_ugrid(points: NDArray[np.float64], cells: NDArray[np.int32]) -> "Unstruc
 
     from pyvista.core.pointset import UnstructuredGrid
     from vtkmodules.util.numpy_support import numpy_to_vtk
-    from vtkmodules.vtkCommonDataModel import vtkCellArray
     from vtkmodules.vtkCommonCore import vtkTypeInt32Array
+    from vtkmodules.vtkCommonDataModel import vtkCellArray
 
     n_cells, node_per_cell = cells.shape
     cell_type = VTK_TETRA if node_per_cell == 4 else VTK_QUADRATIC_TETRA

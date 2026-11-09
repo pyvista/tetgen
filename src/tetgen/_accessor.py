@@ -10,8 +10,7 @@ On older versions importing this module is a no-op.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pyvista as pv
 
@@ -59,7 +58,7 @@ class TetGenAccessor:
         ``.make_manifold()`` preprocessor.
         """
         if self._tetgen is None:
-            from tetgen import TetGen  # noqa: PLC0415
+            from tetgen import TetGen
 
             self._tetgen = TetGen(self._mesh)
         return self._tetgen
