@@ -4,7 +4,7 @@ requires = ["scikit-build-core >=0.4.3", "nanobind >=1.3.2"]
 
 [project]
 authors = [
-  {name = "PyVista Developers", email = "info@pyvista.org"}
+  { name = "PyVista Developers", email = "info@pyvista.org" }
 ]
 classifiers = [
   "Operating System :: Microsoft :: Windows",
